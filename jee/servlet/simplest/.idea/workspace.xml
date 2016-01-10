@@ -23,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="logic" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/bin/logic">
+      <file leaf-file-name="deployment-logic" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44423792">
-              <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.8761062">
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -57,6 +57,7 @@
         <option value="$PROJECT_DIR$/bin/undeploy" />
         <option value="$PROJECT_DIR$/bin/deploy" />
         <option value="$PROJECT_DIR$/bin/logic" />
+        <option value="$PROJECT_DIR$/bin/deployment-logic" />
       </list>
     </option>
   </component>
@@ -435,12 +436,12 @@
       <workItem from="1452372900650" duration="2077000" />
       <workItem from="1452375107046" duration="208000" />
       <workItem from="1452384679047" duration="1042000" />
-      <workItem from="1452385914132" duration="321000" />
+      <workItem from="1452385914132" duration="572000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3648000" />
+    <option name="totallyTimeSpent" value="3899000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="464" y="38" width="2068" height="662" extended-state="0" />
@@ -542,10 +543,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/logic">
+    <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44423792">
-          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.8761062">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
           <folding />
         </state>
       </provider>

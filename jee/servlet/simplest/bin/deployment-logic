@@ -1,4 +1,15 @@
 #!/bin/bash
+#
+# Link to this file as "deploy" and "undeploy" and use those as deployment/undeployment commands.
+#
+# Example:
+#
+#   ln -s deployment-logic deploy; ln -s deployment-logic undeploy
+#
+#   deploy
+#   undeploy
+#
+#
 
 # space separated list of deployment servers. One is fine.
 deployment_servers="172.20.2.42 172.20.2.43"
