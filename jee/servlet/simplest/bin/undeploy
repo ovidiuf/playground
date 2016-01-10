@@ -1,14 +1,1 @@
-#!/bin/bash
-
-project_home=$(dirname $0)/..
-artifact_file=servlet-example.war
-deployment_user=wildfly
-deployment_server=172.20.2.42
-deployment_path=/opt/wildfly/profiles/ap1/deployments
-
-ssh ${deployment_user}@${deployment_server} rm ${deployment_path}/${artifact_file} && \
-    echo "${artifact_file} successfully removed from ${deployment_user}@${deployment_server}:${deployment_path}" || \
-    { echo "undeployment failed" 1>&2; exit 1; }
-
-
-
+logic

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# space separated list of deployment servers. One is fine.
+deployment_servers="172.20.2.42 172.20.2.43"
+
+artifact_file_name=servlet-example.war
+deployment_user=wildfly
+deployment_path=/opt/wildfly/profiles/ap/deployments
+
+function deploy() {
+
+    local artifact_file=$1 # absolute path
+    local deployment_user=$2
+    local deployment_server=$3
+    local deployment_path=$4
+
+    scp ${artifact_file} ${deployment_user}@${deployment_server}:${deployment_path} && \
+        echo "$(basename ${artifact_file}) successfully deployed in ${deployment_user}@${deployment_server}:${deployment_path}" || \
+        { echo "deployment failed" 1>&2; exit 1; }
+}
+
+function undeploy() {
+
+    local artifact_file=$1 # absolute path (even if does not exist)
+    local deployment_user=$2
+    local deployment_server=$3
+    local deployment_path=$4
+
+    local artifact_file_name=$(basename ${artifact_file})
+
+    ssh ${deployment_user}@${deployment_server} rm ${deployment_path}/${artifact_file_name} && \
+        echo "${artifact_file_name} successfully removed from ${deployment_user}@${deployment_server}:${deployment_path}" || \
+        { echo "undeployment failed" 1>&2; exit 1; }
+}
+
+function main() {
+
+    local project_home=$(dirname $0)/..
+    local artifact_file=${project_home}/target/${artifact_file_name}
+    local command=$(basename $0)
+
+    [ "${command}" = "deploy" -a ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
+
+    for ds in ${deployment_servers}; do
+        ${command} ${artifact_file} ${deployment_user} ${ds} ${deployment_path}
+    done
+}
+
+main;
+
+
+
+

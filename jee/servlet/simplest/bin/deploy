@@ -1,16 +1,1 @@
-#!/bin/bash
-
-project_home=$(dirname $0)/..
-artifact_file=servlet-example.war
-deployment_user=wildfly
-deployment_server=172.20.2.42
-deployment_path=/opt/wildfly/profiles/ap1/deployments
-
-[ ! -f ${project_home}/target/${artifact_file} ] && { echo "${artifact_file} not built" 1>&2; exit 1; }
-
-scp ${project_home}/target/${artifact_file} ${deployment_user}@${deployment_server}:${deployment_path} && \
-    echo "${artifact_file} successfully deployed at ${deployment_user}@${deployment_server}:${deployment_path}" || \
-    { echo "deployment failed" 1>&2; exit 1; }
-
-
-
+logic
