@@ -9,7 +9,6 @@
 #   deploy
 #   undeploy
 #
-#
 
 # space separated list of deployment servers. One is fine.
 deployment_servers="172.20.2.42 172.20.2.43"

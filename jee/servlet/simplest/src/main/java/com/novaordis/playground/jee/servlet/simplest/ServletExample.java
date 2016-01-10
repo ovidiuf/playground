@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -50,7 +52,7 @@ public class ServletExample extends HttpServlet {
         PrintWriter out = res.getWriter();
 
         out.println("<html>");
-        out.println("GET OK");
+        out.println("GET handled by " + getHostName());
         out.println("</html>");
     }
 
@@ -64,17 +66,27 @@ public class ServletExample extends HttpServlet {
         PrintWriter out = res.getWriter();
 
         out.println("<html>");
-        out.println("POST OK");
+        out.println("POST handled by " + getHostName());
         out.println("</html>");
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    @Override
+    public String toString() {
+        return "ServletExample[" + Integer.toHexString(System.identityHashCode(this)) + "]";
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private String getHostName() {
+
+        return System.getenv("HOSTNAME");
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
