@@ -6,7 +6,7 @@ The simplest possible example of a JEE servlet that gets deployed as a WAR.
 
 #Related
 
-https://wiki.novaordis.com/index.php/Servlet
+https://kb.novaordis.com/index.php/Servlet
 
 #Build
 
