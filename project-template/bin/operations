@@ -96,8 +96,12 @@ function run() {
 
     local deployment_server=$1
     local artifact_file=$2 # absolute path
+    local deployment_user=$3
+    local deployment_path=$4
 
-    java -cp ${artifact_file} ${main_class}
+    shift; shift; shift; shift;
+
+    java -cp ${artifact_file} ${main_class} $1
 }
 
 function main() {
@@ -114,11 +118,11 @@ function main() {
     fi
 
     for ds in ${deployment_servers}; do
-        ${command} ${ds} ${artifact_file} ${deployment_user} ${deployment_path}
+        ${command} "${ds}" "${artifact_file}" "${deployment_user}" "${deployment_path}" $@
     done
 }
 
-main;
+main $@;
 
 
 
