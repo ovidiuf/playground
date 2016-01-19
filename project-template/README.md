@@ -13,3 +13,12 @@ https://kb.novaordis.com/index.php/Playground
 
 Recursively compy the template under a new name, and customize it.
 
+```
+cp -r .../project-template .../<your-project-name>
+cd .../<your-project-name>
+rm -r .idea
+```
+
+then edit pom.xml, create an IntelliJ project, etc.
+
+
