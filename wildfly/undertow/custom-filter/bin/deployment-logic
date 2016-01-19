@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# Link to this file as "deploy" and "undeploy" and use those as deployment/undeployment commands.
+#
+# Example:
+#
+#   ln -s deployment-logic deploy; ln -s deployment-logic undeploy
+#
+#   deploy
+#   undeploy
+#
+
+# space separated list of deployment servers. One is fine. For local deployment, 
+# use "local"
+version="1"
+deployment_servers="local"
+artifact_file_name=custom-undertow-filter-${version}.jar
+deployment_path=${JBOSS_HOME}/modules/com/novaordis/playground/wildfly/undertow/customfilter/${version}
+
+
+function deploy() {
+
+    local artifact_file=$1 # absolute path
+    local deployment_server=$2
+    local deployment_user=$3
+    local deployment_path=$4
+
+    if [ "${deployment_server}" = "local" ]; then
+        [ ! -d ${deployment_path} ] && mkdir -p ${deployment_path}
+        local module_file=$(dirname ${artifact_file})/../src/main/resources/module.xml
+        cp ${module_file} ${deployment_path} && \
+            echo "${module_file} successfully deployed in ${deployment_path}" || \
+            { echo "deployment failed" 1>&2; exit 1; }
+        cp ${artifact_file} ${deployment_path} && \
+            echo "$(basename ${artifact_file}) successfully deployed in ${deployment_path}" || \
+            { echo "deployment failed" 1>&2; exit 1; }
+    else
+        echo "remote servers not supported" 1<&2;
+        exit 1
+    fi
+}
+
+function undeploy() {
+
+    local artifact_file=$1 # absolute path (even if does not exist)
+    local deployment_server=$2
+    local deployment_user=$3
+    local deployment_path=$4
+
+    local artifact_file_name=$(basename ${artifact_file})
+
+    if [ "${deployment_server}" = "local" ]; then
+        rm ${deployment_path}/${artifact_file_name} && \
+            echo "${artifact_file_name} successfully removed from ${deployment_path}" || \
+            { echo "undeployment failed" 1>&2; exit 1; }
+        rm ${deployment_path}/module.xml && \
+            echo "module.xml successfully removed from ${deployment_path}" || \
+            { echo "undeployment failed" 1>&2; exit 1; }
+    else
+        echo "remote servers not supported" 1<&2;
+        exit 1
+    fi
+}
+
+function main() {
+
+    local project_home=$(dirname $0)/..
+    local artifact_file=${project_home}/target/${artifact_file_name}
+    local command=$(basename $0)
+
+    [ "${command}" = "deploy" -a ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
+
+    for ds in ${deployment_servers}; do
+        ${command} "${artifact_file}" "${ds}" "${deployment_user}" "${deployment_path}"
+    done
+}
+
+main;
+
+
+
+

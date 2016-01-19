@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/modules/EAP 7.0 Beta Undertow/EAP 7.0 Beta Undertow.iml" filepath="$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/modules/EAP 7.0 Beta Undertow/EAP 7.0 Beta Undertow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/custom-undertow-filter.iml" filepath="$PROJECT_DIR$/custom-undertow-filter.iml" />
+    </modules>
+  </component>
+</project>
