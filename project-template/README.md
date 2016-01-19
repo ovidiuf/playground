@@ -2,24 +2,14 @@
 
 #Overview
 
-The simplest possible example of a JEE servlet that gets deployed as a WAR.
+This template contains a basic structure and artifacts to be used when starting new
+playground project.
 
 #Related
 
-https://kb.novaordis.com/index.php/Servlet
+https://kb.novaordis.com/index.php/Playground
 
-#Build
+#Create a New Project
 
-```
-mvn clean install
-```
-
-#Deploy
-
-Update ./bin/deploy configuration and run:
-
-```
-./bin/deploy
-```
-
+Recursively compy the template under a new name, and customize it.
 
