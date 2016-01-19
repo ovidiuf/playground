@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module xmlns="urn:jboss:module:1.1" name="com.novaordis.playground.wildfly.custommodule" slot="1.0">
+
+    <!--
+    <main-class name="com.novaordis.playground.wildfly.custommodule.SharedFunctionality"/>
+    -->
+
+    <properties>
+        <property name="some.property.name" value="some.property.value"/>
+    </properties>
+
+    <resources>
+        <resource-root path="custom-wildfly-module-1.0.jar"/>
+    </resources>
+
+</module>

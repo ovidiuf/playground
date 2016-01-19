@@ -8,7 +8,7 @@
     <artifactId>custom-wildfly-module</artifactId>
     <packaging>jar</packaging>
 
-    <version>1</version>
+    <version>1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,9 +16,17 @@
     </properties>
 
     <build>
-
-        <finalName>custom-wildfly-module</finalName>
-
+        <!--
+            We want to exclude module.xml from the artifact, it does not belong there.
+        -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>module.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -70,10 +78,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
 

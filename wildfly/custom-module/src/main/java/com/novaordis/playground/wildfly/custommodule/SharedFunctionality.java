@@ -1,5 +1,7 @@
 package com.novaordis.playground.wildfly.custommodule;
 
+import java.util.UUID;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/18/16
@@ -9,6 +11,10 @@ public class SharedFunctionality {
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
+
+    public static String randomString() {
+        return UUID.randomUUID().toString();
+    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
