@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="standalone.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="standalone.xml" pinned="false" current-in-tab="true">
         <entry file="file://$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-18.88889">
+            <state vertical-scroll-proportion="0.7005494">
               <caret line="316" column="57" selection-start-line="316" selection-start-column="57" selection-end-line="316" selection-end-column="57" />
               <folding />
             </state>
@@ -43,14 +43,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServletExample.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ServletExample.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3178808">
-              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -92,6 +90,7 @@
         <option value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/profile.conf" />
         <option value="$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/jboss-deployment-structure.xml" />
+        <option value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml" />
       </list>
     </option>
   </component>
@@ -118,8 +117,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="726" />
-    <option name="y" value="58" />
+    <option name="x" value="680" />
+    <option name="y" value="53" />
     <option name="width" value="1699" />
     <option name="height" value="1296" />
   </component>
@@ -570,15 +569,15 @@
       <workItem from="1453167046974" duration="220000" />
       <workItem from="1453167287869" duration="277000" />
       <workItem from="1453168109583" duration="3338000" />
-      <workItem from="1453178231220" duration="7424000" />
+      <workItem from="1453178231220" duration="7886000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19696000" />
+    <option name="totallyTimeSpent" value="20158000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="726" y="58" width="1699" height="1296" extended-state="0" />
+    <frame x="680" y="53" width="1699" height="1296" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1048,14 +1047,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-18.88889">
-          <caret line="316" column="57" selection-start-line="316" selection-start-column="57" selection-end-line="316" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/lang/reflect/Method.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1074,11 +1065,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3178808">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7005494">
+          <caret line="316" column="57" selection-start-line="316" selection-start-column="57" selection-end-line="316" selection-end-column="57" />
+          <folding />
         </state>
       </provider>
     </entry>
