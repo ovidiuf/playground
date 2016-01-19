@@ -15,16 +15,49 @@
 #deployment_servers="172.20.2.42 172.20.2.43"
 deployment_servers="local"
 
-artifact_file_name=servlet-example.war
 deployment_user=wildfly
 #deployment_path=/opt/wildfly/profiles/ap/deployments
 deployment_path=${JBOSS_HOME}/profiles/undertow/deployments
 
+main_class=com.novaordis.playground.java.nio.fileblockio.Main
+
+#
+# returns the artifact file name, as it is supposed to be created in the target directory
+#
+function get-artifact-file-name() {
+
+    local pom=$(dirname $0)/../pom.xml
+
+    [ -f ${pom} ] || { echo "POM file ${pom} not found" 1>&2; exit 1; }
+
+    # get first <artifactId> in the file
+    local artifact_file_name
+    artifact_file_name=$(grep -m 1 "<artifactId>" ${pom}) || exit 1
+    [ -z "${artifact_file_name}" ] && { echo "<artifactId> not found in ${pom}" 1>&2; exit 1; }
+    artifact_file_name=${artifact_file_name#*<artifactId>}
+    artifact_file_name=${artifact_file_name%\</artifactId*}
+
+    # get first <version> in the file
+    local version
+    version=$(grep -m 1 "<version>" ${pom}) || exit 1
+    [ -z "${version}" ] && { echo "<version> not found in ${pom}" 1>&2; exit 1; }
+    version=${version#*<version>}
+    version=${version%\</version*}
+
+    # get first <packaging> in the file
+    local packaging
+    packaging=$(grep -m 1 "<packaging>" ${pom}) || exit 1
+    [ -z "${packaging}" ] && { echo "<packaging> not found in ${pom}" 1>&2; exit 1; }
+    packaging=${packaging#*<packaging>}
+    packaging=${packaging%\</packaging*}
+
+    echo ${artifact_file_name}-${version}.${packaging}
+}
 
 function deploy() {
 
-    local artifact_file=$1 # absolute path
-    local deployment_server=$2
+    local deployment_server=$1
+    local artifact_file=$2 # absolute path
     local deployment_user=$3
     local deployment_path=$4
 
@@ -41,8 +74,8 @@ function deploy() {
 
 function undeploy() {
 
-    local artifact_file=$1 # absolute path (even if does not exist)
-    local deployment_server=$2
+    local deployment_server=$1
+    local artifact_file=$2 # absolute path (even if does not exist)
     local deployment_user=$3
     local deployment_path=$4
 
@@ -59,16 +92,29 @@ function undeploy() {
     fi
 }
 
+function run() {
+
+    local deployment_server=$1
+    local artifact_file=$2 # absolute path
+
+    java -cp ${artifact_file} ${main_class}
+}
+
 function main() {
 
     local project_home=$(dirname $0)/..
+    local artifact_file_name
+    artifact_file_name=$(get-artifact-file-name) || exit 1;
     local artifact_file=${project_home}/target/${artifact_file_name}
+
     local command=$(basename $0)
 
-    [ "${command}" = "deploy" -a ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
+    if [ "${command}" = "deploy" -o "${command}" = "run" ]; then
+        [ ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
+    fi
 
     for ds in ${deployment_servers}; do
-        ${command} ${artifact_file} ${ds} ${deployment_user} ${deployment_path}
+        ${command} ${ds} ${artifact_file} ${deployment_user} ${deployment_path}
     done
 }
 
