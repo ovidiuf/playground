@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/modules/EAP 7.0 Beta Undertow/EAP 7.0 Beta Undertow.iml" filepath="$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/modules/EAP 7.0 Beta Undertow/EAP 7.0 Beta Undertow.iml" />
       <module fileurl="file://$PROJECT_DIR$/servlet-example.iml" filepath="$PROJECT_DIR$/servlet-example.iml" />
     </modules>
   </component>
