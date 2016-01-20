@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe019988-0c4b-4ff8-ae29-7ae76c4f90c6" name="Default" comment="" />
+    <list default="true" id="fe019988-0c4b-4ff8-ae29-7ae76c4f90c6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../java/nio/file-channel/.idea/.name" afterPath="$PROJECT_DIR$/../../../java/nio/file-channel/.idea/.name" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../wildfly/undertow/custom-filter/src/main/java/com/novaordis/playground/wildfly/undertow/customfilter/ResponseTime.java" afterPath="$PROJECT_DIR$/../../../wildfly/undertow/custom-filter/src/main/java/com/novaordis/playground/wildfly/undertow/customfilter/ResponseTime.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java" afterPath="$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="servlet-example.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,21 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="standalone.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="standalone.xml" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7005494">
-              <caret line="316" column="57" selection-start-line="316" selection-start-column="57" selection-end-line="316" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jboss-deployment-structure.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jboss-deployment-structure.xml">
-          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+              <caret line="328" column="34" selection-start-line="328" selection-start-column="34" selection-end-line="328" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -47,17 +43,20 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
-              <folding />
+              <caret line="47" column="13" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+              <folding>
+                <element signature="e#2484#2485#0" expanded="true" />
+                <element signature="e#2583#2584#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Method.java" pinned="false" current-in-tab="false">
-        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/lang/reflect/Method.java">
+      <file leaf-file-name="AccessLogHandler.java" pinned="true" current-in-tab="true">
+        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/accesslog/AccessLogHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="468" column="18" selection-start-line="468" selection-start-column="18" selection-end-line="468" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.4178218">
+              <caret line="131" column="5" selection-start-line="131" selection-start-column="5" selection-end-line="131" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -71,6 +70,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -88,8 +90,8 @@
         <option value="$PROJECT_DIR$/bin/deployment-logic" />
         <option value="$PROJECT_DIR$/bin/deploy" />
         <option value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/profile.conf" />
-        <option value="$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/jboss-deployment-structure.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java" />
         <option value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml" />
       </list>
     </option>
@@ -117,12 +119,12 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="680" />
-    <option name="y" value="53" />
-    <option name="width" value="1699" />
-    <option name="height" value="1296" />
+    <option name="x" value="854" />
+    <option name="y" value="27" />
+    <option name="width" value="1710" />
+    <option name="height" value="1360" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -145,6 +147,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -179,14 +182,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webapp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -236,9 +231,18 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlet-example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EAP 7.0 Beta Undertow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -246,7 +250,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="FullScreen" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -570,19 +574,21 @@
       <workItem from="1453167287869" duration="277000" />
       <workItem from="1453168109583" duration="3338000" />
       <workItem from="1453178231220" duration="7886000" />
+      <workItem from="1453252912311" duration="18145000" />
+      <workItem from="1453282341749" duration="608000" />
+      <workItem from="1453314499605" duration="3855000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20158000" />
+    <option name="totallyTimeSpent" value="42766000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="680" y="53" width="1699" height="1296" extended-state="0" />
+    <frame x="854" y="27" width="1710" height="1360" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -592,18 +598,19 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23131254" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26081872" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3618582" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.58714175" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24955857" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14590542" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -626,24 +633,37 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/WorkerThread.java</url>
+          <line>125</line>
+          <properties />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/NioXnioWorker.java</url>
+          <line>173</line>
+          <properties />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/wildfly/wildfly-undertow/10.0.0.CR6-redhat-1/wildfly-undertow-10.0.0.CR6-redhat-1-sources.jar!/org/wildfly/extension/undertow/HttpListenerService.java</url>
+          <line>125</line>
+          <properties />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java</url>
           <line>45</line>
           <properties />
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/HttpServerExchange.java</url>
-          <line>789</line>
+          <url>jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/accesslog/AccessLogHandler.java</url>
+          <line>136</line>
           <properties />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/ServletInitialHandler.java</url>
-          <line>120</line>
-          <properties />
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="6" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -652,166 +672,17 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/security/SSLInformationAssociationHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/channels/CloseableChannel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+          <caret line="31" column="43" selection-start-line="31" selection-start-column="43" selection-end-line="31" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/security/ServletAuthenticationCallHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/channels/BoundChannel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/security/ServletConfidentialityConstraintHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43330503">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/security/handlers/AuthenticationMechanismsHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44604927">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/security/CachedAuthenticatedSessionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/security/handlers/NotificationReceiverHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35683942">
-          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/security/handlers/AbstractSecurityContextAssociationHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28037384">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/PredicateHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30586237">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/XnioWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="584" column="6" selection-start-line="584" selection-start-column="6" selection-end-line="584" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/ajp/AjpOpenListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="47" selection-start-line="50" selection-start-column="47" selection-end-line="50" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/OpenListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/HttpHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.02548853">
-          <caret line="18" column="26" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/connector/ByteBufferPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11469839">
-          <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#939#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/Handlers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="78" column="20" selection-start-line="78" selection-start-column="20" selection-end-line="78" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/WorkerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="538" column="0" selection-start-line="538" selection-start-column="0" selection-end-line="538" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/NioHandle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/nio/channels/Channel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#2105#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/NioSocketStreamConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/StreamConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="51" selection-start-line="33" selection-start-column="51" selection-end-line="33" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/Connection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="65" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
-          <folding />
+          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -819,111 +690,186 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="45" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/channels/BoundChannel.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/Connection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="43" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="43" />
-          <folding />
+          <caret line="35" column="71" selection-start-line="35" selection-start-column="71" selection-end-line="35" selection-end-column="71" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/channels/CloseableChannel.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/connector/PooledByteBuffer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="43" selection-start-line="31" selection-start-column="43" selection-end-line="31" selection-end-column="43" />
-          <folding />
+          <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/nio/channels/InterruptibleChannel.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/nio/channels/Selector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="64" column="17" selection-start-line="64" selection-start-column="17" selection-end-line="64" selection-end-column="17" />
-          <folding />
+          <caret line="205" column="22" selection-start-line="205" selection-start-column="22" selection-end-line="205" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/util/AbstractAttachable.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/util/Queue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
+          <caret line="143" column="17" selection-start-line="143" selection-start-column="17" selection-end-line="143" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/ServerConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25037935">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/AbstractServerConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3323217">
-          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/ChannelListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31866464">
-          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpRequestParser.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/nio/channels/spi/AbstractSelector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="110" column="24" selection-start-line="110" selection-start-column="24" selection-end-line="110" selection-end-column="24" />
-          <folding />
+          <caret line="68" column="22" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpServerConnection.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/rt.jar!/sun/nio/ch/SelectorImpl.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37784523">
-          <caret line="58" column="29" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="29" />
-          <folding>
-            <element signature="e#3442#3618#0" expanded="true" />
-            <element signature="e#3617#3618#0" expanded="true" />
-            <element signature="e#8866#8867#0" expanded="true" />
-            <element signature="e#8914#8915#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-3.3333333">
+          <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/util/HeaderMap.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/rt.jar!/sun/nio/ch/KQueueSelectorImpl.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-          <folding />
+        <state vertical-scroll-proportion="66.55556">
+          <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/lang/Thread.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/XnioIoThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="744" column="0" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
-          <folding />
+          <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/XnioExecutor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/Xnio.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/util/concurrent/ThreadPoolExecutor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="1141" column="0" selection-start-line="1141" selection-start-column="0" selection-end-line="1141" selection-end-column="0" />
+          <caret line="318" column="13" selection-start-line="318" selection-start-column="13" selection-end-line="318" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/nio/channels/ServerSocketChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="73" column="22" selection-start-line="73" selection-start-column="22" selection-end-line="73" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/connector/ByteBufferPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/wildfly/wildfly-undertow/10.0.0.CR6-redhat-1/wildfly-undertow-10.0.0.CR6-redhat-1-sources.jar!/org/wildfly/extension/undertow/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/OptionMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="532" column="0" selection-start-line="532" selection-start-column="0" selection-end-line="532" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/jre/lib/rt.jar!/sun/nio/ch/ServerSocketChannelImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.333333">
+          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/AbstractNioChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/WorkerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="677" column="0" selection-start-line="677" selection-start-column="0" selection-end-line="677" selection-end-column="0" />
           <folding>
-            <element signature="e#25063#25064#0" expanded="false" />
-            <element signature="e#25102#25103#0" expanded="false" />
+            <element signature="e#3259#3269#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/nio/channels/SelectionKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="386" column="43" selection-start-line="386" selection-start-column="43" selection-end-line="386" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/NioXnioWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.333333">
+          <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/XnioWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.333333">
+          <caret line="242" column="0" selection-start-line="242" selection-start-column="0" selection-end-line="242" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/NioHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-nio/3.3.2.Final-redhat-1/xnio-nio-3.3.2.Final-redhat-1-sources.jar!/org/xnio/nio/NioTcpServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="450" column="0" selection-start-line="450" selection-start-column="0" selection-end-line="450" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/wildfly/wildfly-undertow/10.0.0.CR6-redhat-1/wildfly-undertow-10.0.0.CR6-redhat-1-sources.jar!/org/wildfly/extension/undertow/HttpListenerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="0" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/wildfly/wildfly-undertow/10.0.0.CR6-redhat-1/wildfly-undertow-10.0.0.CR6-redhat-1-sources.jar!/org/wildfly/extension/undertow/ListenerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="177" column="0" selection-start-line="177" selection-start-column="0" selection-end-line="177" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -931,9 +877,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding>
-            <element signature="e#1688#1689#0" expanded="false" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/channels/AcceptingChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -941,124 +891,133 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpOpenListener.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpServerConnection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="144" column="0" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
-          <folding />
+          <caret line="219" column="0" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/channels/StreamSourceChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="17" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/conduits/ConduitStreamSourceChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/StreamConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpReadListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="226" column="0" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
-          <folding />
+          <caret line="183" column="37" selection-start-line="183" selection-start-column="37" selection-end-line="183" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/Connectors.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpRequestParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30555555">
-          <caret line="201" column="0" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="260" column="13" selection-start-line="260" selection-start-column="13" selection-end-line="260" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/ChannelUpgradeHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/spec/HttpServletResponseImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44444445">
-          <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="79" column="11" selection-start-line="79" selection-start-column="11" selection-end-line="79" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/CanonicalPathHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/core/ServletBlockingHttpExchange.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/error/SimpleErrorPageHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/ServletChain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/NameVirtualHostHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/HttpContinueReadHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
+        <state vertical-scroll-proportion="0.0">
           <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/PathHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/spec/ServletContextImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="771" column="0" selection-start-line="771" selection-start-column="0" selection-end-line="771" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/SetHeaderHandler.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/core/DeploymentImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="192" column="0" selection-start-line="192" selection-start-column="0" selection-end-line="192" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/HttpServerExchange.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="802" column="39" selection-start-line="802" selection-start-column="39" selection-end-line="802" selection-end-column="39" />
-          <folding>
-            <element signature="e#26349#26524#0" expanded="true" />
-            <element signature="e#26523#26524#0" expanded="true" />
-          </folding>
+          <caret line="789" column="0" selection-start-line="789" selection-start-column="0" selection-end-line="789" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/ServletPathMatch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="88" column="15" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/ServletRequestContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="167" column="0" selection-start-line="167" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wildfly/undertow/custom-filter/src/main/java/com/novaordis/playground/wildfly/undertow/customfilter/ResponseTime.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42307693">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/ServletInitialHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6666666">
-          <caret line="169" column="0" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
-          <folding>
-            <element signature="e#7755#8665#0" expanded="true" />
-            <element signature="e#8664#8665#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.41346154">
+          <caret line="173" column="0" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/lang/reflect/Method.java">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpOpenListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="468" column="18" selection-start-line="468" selection-start-column="18" selection-end-line="468" selection-end-column="18" />
-          <folding />
+        <state vertical-scroll-proportion="0.72115386">
+          <caret line="103" column="17" selection-start-line="103" selection-start-column="17" selection-end-line="103" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jboss-deployment-structure.xml">
+    <entry file="file://$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+          <caret line="328" column="34" selection-start-line="328" selection-start-column="34" selection-end-line="328" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -1066,15 +1025,18 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
-          <folding />
+          <caret line="47" column="13" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+          <folding>
+            <element signature="e#2484#2485#0" expanded="true" />
+            <element signature="e#2583#2584#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml">
+    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/accesslog/AccessLogHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7005494">
-          <caret line="316" column="57" selection-start-line="316" selection-start-column="57" selection-end-line="316" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.4178218">
+          <caret line="131" column="5" selection-start-line="131" selection-start-column="5" selection-end-line="131" selection-end-column="5" />
           <folding />
         </state>
       </provider>
