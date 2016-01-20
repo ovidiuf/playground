@@ -1,5 +1,6 @@
 package com.novaordis.playground.wildfly.undertow.customfilter;
 
+import io.undertow.server.ExchangeCompletionListener;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import org.slf4j.Logger;
@@ -9,11 +10,11 @@ import org.slf4j.LoggerFactory;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/19/16
  */
-public class ResponseTime implements HttpHandler {
+public class ResponseTimeHandler implements HttpHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(ResponseTime.class);
+    private static final Logger log = LoggerFactory.getLogger(ResponseTimeHandler.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -23,7 +24,7 @@ public class ResponseTime implements HttpHandler {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public ResponseTime(HttpHandler next) {
+    public ResponseTimeHandler(HttpHandler next) {
         this.next = next;
     }
 
@@ -32,9 +33,14 @@ public class ResponseTime implements HttpHandler {
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
 
-        log.info("before");
+        //
+        // it is very important NOT to run anything that could block the thread - this is executed by one of the
+        // XNIO Worker's IO threads.
+        //
+
+        ExchangeCompletionListener stopWatch = new StopWatch();
+        exchange.addExchangeCompleteListener(stopWatch);
         next.handleRequest(exchange);
-        log.info("after");
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -44,6 +50,21 @@ public class ResponseTime implements HttpHandler {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private class StopWatch implements ExchangeCompletionListener {
+
+        // ExchangeCompletionListener implementation -------------------------------------------------------------------
+
+        /**
+         * This code gets executed on one of XNIO Worker's worker thread (as opposite to the IO threads), after
+         * the exchange is completed.
+         */
+        @Override
+        public void exchangeEvent(HttpServerExchange exchange, NextListener nextListener) {
+
+            log.info("exchange completed");
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
