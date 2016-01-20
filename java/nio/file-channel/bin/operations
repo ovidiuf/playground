@@ -21,7 +21,7 @@ deployment_user=wildfly
 #deployment_path=/opt/wildfly/profiles/ap/deployments
 deployment_path=${JBOSS_HOME}/profiles/undertow/deployments
 
-main_class=com.novaordis.playground.java.nio.fileblockio.Main
+main_class=com.novaordis.playground.java.nio.filechannel.Main
 
 #
 # returns the artifact file name, as it is supposed to be created in the target directory

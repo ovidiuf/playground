@@ -1,4 +1,4 @@
-package com.novaordis.playground.java.nio.fileblockio;
+package com.novaordis.playground.java.nio.filechannel;
 
 import java.io.File;
 import java.io.FileInputStream;

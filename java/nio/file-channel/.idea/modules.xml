@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/file-block-io.iml" filepath="$PROJECT_DIR$/file-block-io.iml" />
+      <module fileurl="file://$PROJECT_DIR$/file-channel.iml" filepath="$PROJECT_DIR$/file-channel.iml" />
     </modules>
   </component>
 </project>
