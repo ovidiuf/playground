@@ -24,6 +24,10 @@ public class ResponseTimeHandler implements HttpHandler {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    /**
+     * Instantiated by reflection by the Undertow machinery.
+     */
+    @SuppressWarnings("unused")
     public ResponseTimeHandler(HttpHandler next) {
         this.next = next;
     }
@@ -38,7 +42,8 @@ public class ResponseTimeHandler implements HttpHandler {
         // XNIO Worker's IO threads.
         //
 
-        ExchangeCompletionListener stopWatch = new StopWatch();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.setT0(System.currentTimeMillis());
         exchange.addExchangeCompleteListener(stopWatch);
         next.handleRequest(exchange);
     }
@@ -53,6 +58,10 @@ public class ResponseTimeHandler implements HttpHandler {
 
     private class StopWatch implements ExchangeCompletionListener {
 
+        // Attributes ------------------------------------------------------------------------------------------------------
+
+        private long t0;
+
         // ExchangeCompletionListener implementation -------------------------------------------------------------------
 
         /**
@@ -62,7 +71,24 @@ public class ResponseTimeHandler implements HttpHandler {
         @Override
         public void exchangeEvent(HttpServerExchange exchange, NextListener nextListener) {
 
-            log.info("exchange completed");
+            try {
+
+                // stop the watch and calculate the difference
+                long t1 = System.currentTimeMillis();
+                log.info("request took " + (t1 - t0) + " ms");
+            }
+            finally {
+
+                if (nextListener != null) {
+                    nextListener.proceed();
+                }
+            }
+        }
+
+        // Public ------------------------------------------------------------------------------------------------------
+
+        public void setT0(long t0) {
+            this.t0 = t0;
         }
     }
 

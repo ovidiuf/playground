@@ -8,7 +8,7 @@ interesting because the start watch event happens on a different thread than the
 event, unlike in Tomcat's case, where a filters' pre-invocation and post-invocation code is executed on the same
 thread.
 
-#Related
+#More Details
 
 https://kb.novaordis.com/index.php/Configuring_a_Custom_Undertow_Filter_in_WildFly
 
