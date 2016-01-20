@@ -10,6 +10,8 @@
 #   undeploy
 #
 
+debug=false
+
 # space separated list of deployment servers. One is fine. For local deployment, 
 # use "local"
 #deployment_servers="172.20.2.42 172.20.2.43"
@@ -101,10 +103,23 @@ function run() {
 
     shift; shift; shift; shift;
 
-    java -cp ${artifact_file} ${main_class} $1
+    ${debug} && debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+
+    java ${debug_args} -cp ${artifact_file} ${main_class} $1
 }
 
 function main() {
+
+    local args=""
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "--debug" ]; then
+            debug=true
+        else
+            [ "${args}" = "" ] && args=$1 || args="${args} $1"
+        fi
+        shift
+    done
 
     local project_home=$(dirname $0)/..
     local artifact_file_name
@@ -118,7 +133,7 @@ function main() {
     fi
 
     for ds in ${deployment_servers}; do
-        ${command} "${ds}" "${artifact_file}" "${deployment_user}" "${deployment_path}" $@
+        ${command} "${ds}" "${artifact_file}" "${deployment_user}" "${deployment_path}" ${args}
     done
 }
 
