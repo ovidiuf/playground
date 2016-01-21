@@ -1,2 +1,2 @@
 # playground
-Code Examples for https://wiki.novaordis.com
+Code Examples for https://kb.novaordis.com
