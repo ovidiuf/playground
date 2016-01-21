@@ -22,6 +22,8 @@ public class ResponseTimeHandler implements HttpHandler {
 
     private HttpHandler next;
 
+    private String param1;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -46,6 +48,18 @@ public class ResponseTimeHandler implements HttpHandler {
         stopWatch.setT0(System.currentTimeMillis());
         exchange.addExchangeCompleteListener(stopWatch);
         next.handleRequest(exchange);
+    }
+
+    // Filter parameter mutators ---------------------------------------------------------------------------------------
+
+    //
+    // If filter parameters are declared, the class implementing it must expose corresponding mutators, otherwise
+    // java.beans.IntrospectionException are thrown at runtime
+    //
+
+    public void setParam1(String s) {
+
+        this.param1 = s;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -75,7 +89,7 @@ public class ResponseTimeHandler implements HttpHandler {
 
                 // stop the watch and calculate the difference
                 long t1 = System.currentTimeMillis();
-                log.info("request took " + (t1 - t0) + " ms");
+                log.info("request took " + (t1 - t0) + " ms, param1 value: " + param1);
             }
             finally {
 

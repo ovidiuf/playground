@@ -17,6 +17,37 @@ https://kb.novaordis.com/index.php/Configuring_a_Custom_Undertow_Filter_in_WildF
 ```
 mvn clean install
 ```
+#WildFly Configuration
+
+```
+        <subsystem xmlns="urn:jboss:domain:undertow:3.0">
+            <buffer-cache name="default"/>
+            <server name="default-server">
+                <http-listener name="default-http-listener" redirect-socket="https" worker="undertow-xnio-worker" socket-binding="http"/>
+                <host name="default-host" alias="localhost">
+                    <location name="/" handler="welcome-content"/>
+                    <filter-ref name="custom-filter"/>
+                    <filter-ref name="server-header"/>
+                    <filter-ref name="x-powered-by-header"/>
+                </host>
+            </server>
+            <servlet-container name="default">
+                <jsp-config/>
+                <websockets/>
+            </servlet-container>
+            <handlers>
+                <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
+            </handlers>
+            <filters>
+                <response-header name="server-header" header-value="JBoss-EAP/7" header-name="Server"/>
+                <response-header name="x-powered-by-header" header-value="Undertow/1" header-name="X-Powered-By"/>
+                <filter name="custom-filter" module="com.novaordis.playground.wildfly.undertow.customfilter:1" class-name="com.novaordis.playground.wildfly.undertow.customfilter.ResponseTimeHandler">
+                    <param name="param1" value="value1"/>
+                </filter>
+            </filters>
+        </subsystem>
+
+```
 
 #Deploy
 
