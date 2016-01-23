@@ -39,6 +39,14 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <configuration>
+                        <mainClass>com.novaordis.playground.google.maps.distance.UsageExample</mainClass>
+                        <commandlineArgs>-verbose true</commandlineArgs>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
