@@ -1,0 +1,144 @@
+#!/bin/bash
+#
+# Link to this file as "deploy" and "undeploy" and use those as deployment/undeployment commands.
+#
+# Example:
+#
+#   ln -s deployment-logic deploy; ln -s deployment-logic undeploy
+#
+#   deploy
+#   undeploy
+#
+
+debug=false
+
+# space separated list of deployment servers. One is fine. For local deployment, 
+# use "local"
+#deployment_servers="172.20.2.42 172.20.2.43"
+deployment_servers="local"
+
+deployment_user=wildfly
+#deployment_path=/opt/wildfly/profiles/ap/deployments
+deployment_path=${JBOSS_HOME}/profiles/undertow/deployments
+
+main_class=com.novaordis.playground.java.nio.fileblockio.Main
+
+#
+# returns the artifact file name, as it is supposed to be created in the target directory
+#
+function get-artifact-file-name() {
+
+    local pom=$(dirname $0)/../pom.xml
+
+    [ -f ${pom} ] || { echo "POM file ${pom} not found" 1>&2; exit 1; }
+
+    # get first <artifactId> in the file
+    local artifact_file_name
+    artifact_file_name=$(grep -m 1 "<artifactId>" ${pom}) || exit 1
+    [ -z "${artifact_file_name}" ] && { echo "<artifactId> not found in ${pom}" 1>&2; exit 1; }
+    artifact_file_name=${artifact_file_name#*<artifactId>}
+    artifact_file_name=${artifact_file_name%\</artifactId*}
+
+    # get first <version> in the file
+    local version
+    version=$(grep -m 1 "<version>" ${pom}) || exit 1
+    [ -z "${version}" ] && { echo "<version> not found in ${pom}" 1>&2; exit 1; }
+    version=${version#*<version>}
+    version=${version%\</version*}
+
+    # get first <packaging> in the file
+    local packaging
+    packaging=$(grep -m 1 "<packaging>" ${pom}) || exit 1
+    [ -z "${packaging}" ] && { echo "<packaging> not found in ${pom}" 1>&2; exit 1; }
+    packaging=${packaging#*<packaging>}
+    packaging=${packaging%\</packaging*}
+
+    echo ${artifact_file_name}-${version}.${packaging}
+}
+
+function deploy() {
+
+    local deployment_server=$1
+    local artifact_file=$2 # absolute path
+    local deployment_user=$3
+    local deployment_path=$4
+
+    if [ "${deployment_server}" = "local" ]; then
+        cp ${artifact_file} ${deployment_path} && \
+            echo "$(basename ${artifact_file}) successfully deployed in ${deployment_path}" || \
+            { echo "deployment failed" 1>&2; exit 1; }
+    else
+        scp ${artifact_file} ${deployment_user}@${deployment_server}:${deployment_path} && \
+            echo "$(basename ${artifact_file}) successfully deployed in ${deployment_user}@${deployment_server}:${deployment_path}" || \
+            { echo "deployment failed" 1>&2; exit 1; }
+    fi
+}
+
+function undeploy() {
+
+    local deployment_server=$1
+    local artifact_file=$2 # absolute path (even if does not exist)
+    local deployment_user=$3
+    local deployment_path=$4
+
+    local artifact_file_name=$(basename ${artifact_file})
+
+    if [ "${deployment_server}" = "local" ]; then
+        rm ${deployment_path}/${artifact_file_name} && \
+            echo "${artifact_file_name} successfully removed from ${deployment_path}" || \
+            { echo "undeployment failed" 1>&2; exit 1; }
+    else
+        ssh ${deployment_user}@${deployment_server} rm ${deployment_path}/${artifact_file_name} && \
+            echo "${artifact_file_name} successfully removed from ${deployment_user}@${deployment_server}:${deployment_path}" || \
+            { echo "undeployment failed" 1>&2; exit 1; }
+    fi
+}
+
+function run() {
+
+    local deployment_server=$1
+    local artifact_file=$2 # absolute path
+    local deployment_user=$3
+    local deployment_path=$4
+
+    shift; shift; shift; shift;
+
+    ${debug} && debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+
+    java ${debug_args} -cp ${artifact_file} ${main_class} $1
+}
+
+function main() {
+
+    local args=""
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "--debug" ]; then
+            debug=true
+        else
+            [ "${args}" = "" ] && args=$1 || args="${args} $1"
+        fi
+        shift
+    done
+
+    local project_home=$(dirname $0)/..
+    local artifact_file_name
+    artifact_file_name=$(get-artifact-file-name) || exit 1;
+    local artifact_file=${project_home}/target/${artifact_file_name}
+
+    local command=$(basename $0)
+
+    if [ "${command}" = "deploy" -o "${command}" = "run" ]; then
+        [ ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
+    fi
+
+    for ds in ${deployment_servers}; do
+        ${command} "${ds}" "${artifact_file}" "${deployment_user}" "${deployment_path}" ${args}
+    done
+}
+
+main $@;
+
+
+
+
