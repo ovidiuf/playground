@@ -16,46 +16,60 @@
 
 package com.novaordis.playground.google.maps.distance;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 
+import java.net.URI;
 import java.net.URL;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/22/16
  */
-public class UsageExample {
+public class Http {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    public static String invoke(CloseableHttpClient httpClient, HttpMethod method, URL host, String path,
+                                String entityBody, Header... headers) throws Exception {
 
-        URL googleApiServer = new URL("https://maps.googleapis.com");
-        String path = "/maps/api/distancematrix/json?";
+        HttpContext httpContext = HttpClientContext.create();
 
-        String origins="origins=800+Alma+Street+Menlo+Park+CA+94025";
-        String destinations="destinations=585+Franklin+St+Mountain+View+CA+94041";
-        String units="units=imperial";
+        URI uri = new URI(host.toExternalForm() + path);
+        HttpUriRequest httpRequest = method.toHttpUriRequest(uri);
 
-        String key=System.getenv("GOOGLE_API_KEY");
-        if (key == null) {
-            throw new Exception("GOOGLE_API_KEY environment variable not set");
+        for (Header h : headers) {
+            httpRequest.addHeader(h);
         }
-        key = "key=" + key;
 
-        path += origins + "&" + destinations + "&" + units + "&" + key;
+        System.out.println("URL: " + uri);
 
-        CloseableHttpClient httpClient = HttpClients.custom().build();
-        String json = Http.invoke(httpClient, HttpMethod.GET, googleApiServer, path, null);
-        System.out.println(json);
+        try (CloseableHttpResponse response = httpClient.execute(httpRequest, httpContext)) {
+
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            String reasonPhrase = statusLine.getReasonPhrase();
+
+            HttpEntity entity = response.getEntity();
+            return entity != null ? EntityUtils.toString(entity) : null;
+        }
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    private Http() {
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
