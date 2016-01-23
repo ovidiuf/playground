@@ -39,25 +39,19 @@ public class Http {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static String invoke(CloseableHttpClient httpClient, HttpMethod method, URL host, String path,
-                                String entityBody, Header... headers) throws Exception {
+    public static String invoke(
+            CloseableHttpClient httpClient, HttpMethod method, URL host, String path) throws Exception {
 
         HttpContext httpContext = HttpClientContext.create();
 
         URI uri = new URI(host.toExternalForm() + path);
         HttpUriRequest httpRequest = method.toHttpUriRequest(uri);
 
-        for (Header h : headers) {
-            httpRequest.addHeader(h);
-        }
-
         System.out.println("URL: " + uri);
 
         try (CloseableHttpResponse response = httpClient.execute(httpRequest, httpContext)) {
 
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            String reasonPhrase = statusLine.getReasonPhrase();
+            System.out.println("response status line: " + response.getStatusLine());
 
             HttpEntity entity = response.getEntity();
             return entity != null ? EntityUtils.toString(entity) : null;

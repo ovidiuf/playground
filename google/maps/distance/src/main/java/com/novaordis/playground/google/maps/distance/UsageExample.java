@@ -49,7 +49,7 @@ public class UsageExample {
         path += origins + "&" + destinations + "&" + units + "&" + key;
 
         CloseableHttpClient httpClient = HttpClients.custom().build();
-        String json = Http.invoke(httpClient, HttpMethod.GET, googleApiServer, path, null);
+        String json = Http.invoke(httpClient, HttpMethod.GET, googleApiServer, path);
         System.out.println(json);
     }
 
