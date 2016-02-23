@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fe019988-0c4b-4ff8-ae29-7ae76c4f90c6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/deployment-logic" afterPath="$PROJECT_DIR$/bin/deployment-logic" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="servlet-example.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,8 +50,8 @@
       <file leaf-file-name="deployment-logic" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48926014">
-              <caret line="245" column="18" selection-start-line="245" selection-start-column="18" selection-end-line="245" selection-end-column="18" />
+            <state vertical-scroll-proportion="-0.18138425">
+              <caret line="211" column="4" selection-start-line="211" selection-start-column="4" selection-end-line="211" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -185,8 +184,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1135" />
-    <option name="y" value="32" />
+    <option name="x" value="1150" />
+    <option name="y" value="29" />
     <option name="width" value="1399" />
     <option name="height" value="1354" />
   </component>
@@ -589,15 +588,15 @@
       <workItem from="1453410406999" duration="330000" />
       <workItem from="1456104208530" duration="9411000" />
       <workItem from="1456166233785" duration="3270000" />
-      <workItem from="1456182594704" duration="3171000" />
+      <workItem from="1456182594704" duration="3962000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65916000" />
+    <option name="totallyTimeSpent" value="66707000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1135" y="32" width="1399" height="1354" extended-state="0" />
+    <frame x="1150" y="29" width="1399" height="1354" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1066,8 +1065,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48926014">
-          <caret line="245" column="18" selection-start-line="245" selection-start-column="18" selection-end-line="245" selection-end-column="18" />
+        <state vertical-scroll-proportion="-0.18138425">
+          <caret line="211" column="4" selection-start-line="211" selection-start-column="4" selection-end-line="211" selection-end-column="4" />
           <folding />
         </state>
       </provider>

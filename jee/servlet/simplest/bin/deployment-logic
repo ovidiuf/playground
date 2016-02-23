@@ -13,26 +13,22 @@
 #
 #
 
-# space separated list of deployment servers. One is fine. For local deployment, 
-# use "local"
-
 verbose=false
 
+artifact_file_name=servlet-example.war
+
+# space separated list of deployment servers. One is fine. For local deployment, use "local"
 #deployment_servers="172.20.2.42 172.20.2.43"
-deployment_servers="local"
+#deployment_servers="local"
 deployment_servers="dc1"
 server_group="web"
-
-
-artifact_file_name=servlet-example.war
 deployment_user=wildfly
 #deployment_path=/opt/wildfly/profiles/ap/deployments
 deployment_path=${JBOSS_HOME}/profiles/undertow/deployments
 
-function debug {
-    ${verbose} && echo "$@" 1>&2;
-    return 0
-}
+########################################################################################################################
+# utility functions
+########################################################################################################################
 
 function info {
     echo "$@" 1>&2;
@@ -43,8 +39,12 @@ function fail {
     echo "[error]: $@" 1>&2 && exit 255
 }
 
-function debug-arguments
-{
+function debug {
+    ${verbose} && echo "$@" 1>&2;
+    return 0
+}
+
+function debug-arguments {
     #${verbose} && echo "${FUNCNAME[1]}($@)" 1>&2;
     # we need a more elaborate debug function because we need to mask some arguments
     local line
@@ -62,6 +62,10 @@ function debug-arguments
     fi
     return 0
 }
+
+########################################################################################################################
+# main deployment/undeployment functionality
+########################################################################################################################
 
 function deploy() {
 
@@ -149,7 +153,7 @@ function undeploy-locally() {
 }
 
 ########################################################################################################################
-# ec2
+# EC2
 ########################################################################################################################
 
 function deploy-ec2() {
@@ -161,15 +165,20 @@ function deploy-ec2() {
     local server_group=$3
 
     local artifact_name=$(basename ${local_artifact_file})
+
     debug "artifact name: ${artifact_name}"
 
     #
     # figure out if the deployment is in the repository. If it is, we only need to "--force" to deploy it;
     # otherwise we need to deploy it by specifying the --server-groups
     #
+
     local deployments=$(on-dc ${domain_controller_name} "deploy -l")
-    local cli_command
+
     debug "deployments: ${deployments}"
+
+    local cli_command
+
     if echo "${deployments}" | grep -q "^${artifact_name}"; then
 
         info "${artifact_name} found in the artifact repository, --force deployment ..."
@@ -177,9 +186,11 @@ function deploy-ec2() {
         #
         # already deployed, force
         #
+
         cli_command="deploy ./${artifact_name} --force"
 
     else
+
         #
         # not deployed yet
         #
@@ -198,6 +209,7 @@ function undeploy-ec2() {
 
     local artifact_name=$1
     local domain_controller_name=$2
+    
     on-dc ${domain_controller_name} "undeploy ${artifact_name} --all-relevant-server-groups"
 }
 
@@ -261,7 +273,6 @@ function on-dc() {
 ########################################################################################################################
 # end of ec2 generic functionality
 ########################################################################################################################
-
 
 function main() {
 
