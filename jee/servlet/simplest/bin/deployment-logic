@@ -71,7 +71,16 @@ function deploy() {
 
     if [ "$1" == "--help" ]; then
 cat <<EOF
-    deploying ...
+
+Deployment logic. Gets the module's artifact from ./target and deploys it locally or on an Amazon
+EC2 domain, depending on hardcoded configuration:
+
+    artifact_file_name
+    deployment_servers=local|<domain-controller-name>
+    server_group=
+    deployment_user=
+    deployment_path=
+
 EOF
     return 0
     fi
@@ -101,7 +110,16 @@ function undeploy() {
 
     if [ "$1" == "--help" ]; then
 cat <<EOF
-    undeploying ...
+
+Undeployment logic. Gets the module's artifact from ./target and undeploys it locally or on
+from an Amazon EC2 domain, depending on hardcoded configuration:
+
+    artifact_file_name
+    deployment_servers=local|<domain-controller-name>
+    server_group=
+    deployment_user=
+    deployment_path=
+
 EOF
     return 0
     fi
@@ -209,7 +227,7 @@ function undeploy-ec2() {
 
     local artifact_name=$1
     local domain_controller_name=$2
-    
+
     on-dc ${domain_controller_name} "undeploy ${artifact_name} --all-relevant-server-groups"
 }
 

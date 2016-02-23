@@ -25,103 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="HttpOpenListener.java" pinned="true" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpOpenListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="97" column="8" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="8" />
-              <folding>
-                <element signature="method#HttpOpenListener#3;class#HttpOpenListener#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServletExample.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="deployment-logic" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.18138425">
-              <caret line="211" column="4" selection-start-line="211" selection-start-column="4" selection-end-line="211" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpServerExchange.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/HttpServerExchange.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="794" column="10" selection-start-line="794" selection-start-column="10" selection-end-line="794" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Connectors.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/Connectors.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="201" column="0" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServletInitialHandler.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-servlet/1.3.7.Final-redhat-1/undertow-servlet-1.3.7.Final-redhat-1-sources.jar!/io/undertow/servlet/handlers/ServletInitialHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="283" column="0" selection-start-line="283" selection-start-column="0" selection-end-line="283" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpReadListener.java" pinned="true" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/protocol/http/HttpReadListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleErrorPageHandler.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/error/SimpleErrorPageHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CanonicalPathHandler.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/CanonicalPathHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChannelUpgradeHandler.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/ChannelUpgradeHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.29594272">
+              <caret line="92" column="49" selection-start-line="92" selection-start-column="49" selection-end-line="92" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -588,12 +496,12 @@
       <workItem from="1453410406999" duration="330000" />
       <workItem from="1456104208530" duration="9411000" />
       <workItem from="1456166233785" duration="3270000" />
-      <workItem from="1456182594704" duration="3962000" />
+      <workItem from="1456182594704" duration="4606000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66707000" />
+    <option name="totallyTimeSpent" value="67351000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1150" y="29" width="1399" height="1354" extended-state="0" />
@@ -1009,7 +917,7 @@
     </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/error/SimpleErrorPageHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.548926">
           <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
         </state>
@@ -1017,7 +925,7 @@
     </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/CanonicalPathHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.26252982">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding />
         </state>
@@ -1025,7 +933,7 @@
     </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/ChannelUpgradeHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.7732697">
           <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
           <folding />
         </state>
@@ -1065,8 +973,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.18138425">
-          <caret line="211" column="4" selection-start-line="211" selection-start-column="4" selection-end-line="211" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.29594272">
+          <caret line="92" column="49" selection-start-line="92" selection-start-column="49" selection-end-line="92" selection-end-column="49" />
           <folding />
         </state>
       </provider>
