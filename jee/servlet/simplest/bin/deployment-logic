@@ -9,30 +9,84 @@
 #   deploy
 #   undeploy
 #
+# All deployment/undeployment logic must be self-documented with --help
+#
+#
 
 # space separated list of deployment servers. One is fine. For local deployment, 
 # use "local"
+
+verbose=false
+
 #deployment_servers="172.20.2.42 172.20.2.43"
 deployment_servers="local"
+deployment_servers="dc1"
+server_group="web"
+
 
 artifact_file_name=servlet-example.war
 deployment_user=wildfly
 #deployment_path=/opt/wildfly/profiles/ap/deployments
 deployment_path=${JBOSS_HOME}/profiles/undertow/deployments
 
+function debug {
+    ${verbose} && echo "$@" 1>&2;
+    return 0
+}
+
+function info {
+    echo "$@" 1>&2;
+    return 0
+}
+
+function fail {
+    echo "[error]: $@" 1>&2 && exit 255
+}
+
+function debug-arguments
+{
+    #${verbose} && echo "${FUNCNAME[1]}($@)" 1>&2;
+    # we need a more elaborate debug function because we need to mask some arguments
+    local line
+    if ${verbose}; then
+        while [ -n "$1" ]; do
+            local arg=$1
+            if [ -z "${line}" ]; then
+                line=${arg}
+            else
+                line="${line} ${arg}"
+            fi
+            shift
+        done
+        echo "${FUNCNAME[1]}(${line})" 1>&2;
+    fi
+    return 0
+}
 
 function deploy() {
 
-    local artifact_file=$1 # absolute path
+    if [ "$1" == "--help" ]; then
+cat <<EOF
+    deploying ...
+EOF
+    return 0
+    fi
+
+    local local_artifact_file=$1 # absolute path
     local deployment_server=$2
     local deployment_user=$3
     local deployment_path=$4
 
     if [ "${deployment_server}" = "local" ]; then
-        cp ${artifact_file} ${deployment_path} && \
-            echo "$(basename ${artifact_file}) successfully deployed in ${deployment_path}" || \
-            { echo "deployment failed" 1>&2; exit 1; }
+
+        deploy-locally ${local_artifact_file} ${deployment_path}
+
+    elif $(is-ec2-host ${deployment_server}); then
+
+        deploy-ec2 ${local_artifact_file} ${deployment_server} ${server_group}
+
     else
+
         scp ${artifact_file} ${deployment_user}@${deployment_server}:${deployment_path} && \
             echo "$(basename ${artifact_file}) successfully deployed in ${deployment_user}@${deployment_server}:${deployment_path}" || \
             { echo "deployment failed" 1>&2; exit 1; }
@@ -40,6 +94,13 @@ function deploy() {
 }
 
 function undeploy() {
+
+    if [ "$1" == "--help" ]; then
+cat <<EOF
+    undeploying ...
+EOF
+    return 0
+    fi
 
     local artifact_file=$1 # absolute path (even if does not exist)
     local deployment_server=$2
@@ -49,9 +110,13 @@ function undeploy() {
     local artifact_file_name=$(basename ${artifact_file})
 
     if [ "${deployment_server}" = "local" ]; then
-        rm ${deployment_path}/${artifact_file_name} && \
-            echo "${artifact_file_name} successfully removed from ${deployment_path}" || \
-            { echo "undeployment failed" 1>&2; exit 1; }
+
+        undeploy-locally ${deployment_path} ${artifact_file_name}
+
+    elif $(is-ec2-host ${deployment_server}); then
+
+        undeploy-ec2 ${artifact_file_name} ${deployment_server}
+
     else
         ssh ${deployment_user}@${deployment_server} rm ${deployment_path}/${artifact_file_name} && \
             echo "${artifact_file_name} successfully removed from ${deployment_user}@${deployment_server}:${deployment_path}" || \
@@ -59,11 +124,161 @@ function undeploy() {
     fi
 }
 
+########################################################################################################################
+# local
+########################################################################################################################
+
+function deploy-locally() {
+
+    local local_artifact_file=$1
+    local deployment_path=$2
+
+    cp ${local_artifact_file} ${deployment_path} && \
+        echo "$(basename ${local_artifact_file}) successfully deployed in ${deployment_path}" || \
+        { echo "deployment failed" 1>&2; exit 1; }
+}
+
+function undeploy-locally() {
+
+    local deployment_path=$1
+    local artifact_file_name=$2
+
+    rm ${deployment_path}/${artifact_file_name} && \
+        echo "${artifact_file_name} successfully removed from ${deployment_path}" || \
+        { echo "undeployment failed" 1>&2; exit 1; }
+}
+
+########################################################################################################################
+# ec2
+########################################################################################################################
+
+function deploy-ec2() {
+
+    debug-arguments $@
+
+    local local_artifact_file=$1
+    local domain_controller_name=$2
+    local server_group=$3
+
+    local artifact_name=$(basename ${local_artifact_file})
+    debug "artifact name: ${artifact_name}"
+
+    #
+    # figure out if the deployment is in the repository. If it is, we only need to "--force" to deploy it;
+    # otherwise we need to deploy it by specifying the --server-groups
+    #
+    local deployments=$(on-dc ${domain_controller_name} "deploy -l")
+    local cli_command
+    debug "deployments: ${deployments}"
+    if echo "${deployments}" | grep -q "^${artifact_name}"; then
+
+        info "${artifact_name} found in the artifact repository, --force deployment ..."
+
+        #
+        # already deployed, force
+        #
+        cli_command="deploy ./${artifact_name} --force"
+
+    else
+        #
+        # not deployed yet
+        #
+
+        info "no ${artifact_name} artifact found in the artifact repository, initial deployment ..."
+
+        cli_command="deploy ./${artifact_name} --server-groups=${server_group}"
+    fi
+
+    on-dc ${domain_controller_name} "${cli_command}"
+}
+
+function undeploy-ec2() {
+
+    debug-arguments $@
+
+    local artifact_name=$1
+    local domain_controller_name=$2
+    on-dc ${domain_controller_name} "undeploy ${artifact_name} --all-relevant-server-groups"
+}
+
+########################################################################################################################
+# ec2 generic functionality
+########################################################################################################################
+
+function is-ec2-host() {
+
+    debug-arguments $@
+
+    local name=$1
+
+    local ip=$(ec2-name-to-ip ${name})
+
+    if [ "${ip}" = "" ]; then
+        return 1
+    fi
+
+    [[ "${ip}" =~ ^52 ]] && return 0 || return 1
+}
+
+#
+# returns empty string if the name cannot be translated
+#
+function ec2-name-to-ip() {
+
+    debug-arguments $@
+
+    local name=$1
+
+    local line=$(grep "^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]* "${name}"$" /etc/hosts)
+
+    if [ "${line}" = "" ]; then
+        echo "";
+        return 0
+    fi
+
+    line=${line% *}
+    echo "${line}"
+}
+
+#
+# executes the given command on the domain controller node
+#
+function on-dc() {
+
+    debug-arguments $@
+
+    local domain_controller_name=$1
+    local cli_command=$2
+
+    debug "cli_command: ${cli_command}"
+
+    local domain_controller_ip=$(ec2-name-to-ip ${domain_controller_name})
+
+    ssh -q -t ec2-user@${domain_controller_ip} \
+        "sudo -n /bin/bash -c \"(. ~/.bashrc; cd ~ec2-user/deployment-staging; /opt/eap/bin/jboss-cli.sh -c '"${cli_command}"')\""
+}
+
+########################################################################################################################
+# end of ec2 generic functionality
+########################################################################################################################
+
+
 function main() {
 
     local project_home=$(dirname $0)/..
     local artifact_file=${project_home}/target/${artifact_file_name}
+
     local command=$(basename $0)
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "--help" ]; then
+            ${command} "--help"
+            exit 1;
+        elif [ "$1" = "--verbose" -o "$1" = "-v" ]; then
+            verbose=true
+        fi
+        shift
+    done
 
     [ "${command}" = "deploy" -a ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
 
@@ -72,7 +287,7 @@ function main() {
     done
 }
 
-main;
+main $@;
 
 
 

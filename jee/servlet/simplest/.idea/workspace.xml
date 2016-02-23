@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe019988-0c4b-4ff8-ae29-7ae76c4f90c6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/Apache_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/deployment-logic" afterPath="$PROJECT_DIR$/bin/deployment-logic" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="servlet-example.iws" />
@@ -39,14 +38,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServletExample.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ServletExample.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32889584">
+            <state vertical-scroll-proportion="0.0">
               <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#3558#0" expanded="true" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="deployment-logic" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.48926014">
+              <caret line="245" column="18" selection-start-line="245" selection-start-column="18" selection-end-line="245" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -86,16 +93,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NameVirtualHostHandler.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/io/undertow/undertow-core/1.3.7.Final-redhat-1/undertow-core-1.3.7.Final-redhat-1-sources.jar!/io/undertow/server/handlers/NameVirtualHostHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -156,12 +153,12 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/bin/undeploy" />
         <option value="$PROJECT_DIR$/bin/logic" />
-        <option value="$PROJECT_DIR$/bin/deployment-logic" />
         <option value="$PROJECT_DIR$/bin/deploy" />
         <option value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/profile.conf" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/jboss-deployment-structure.xml" />
         <option value="$USER_HOME$/runtime/jboss-eap-7.0-beta/profiles/undertow/configuration/standalone.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java" />
+        <option value="$PROJECT_DIR$/bin/deployment-logic" />
       </list>
     </option>
   </component>
@@ -188,10 +185,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="2570" />
-    <option name="y" value="-131" />
-    <option name="width" value="1717" />
-    <option name="height" value="1374" />
+    <option name="x" value="1135" />
+    <option name="y" value="32" />
+    <option name="width" value="1399" />
+    <option name="height" value="1354" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -217,14 +214,38 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="servlet-example" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlet-example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simplest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="servlet-example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simplest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -566,14 +587,17 @@
       <workItem from="1453314499605" duration="3855000" />
       <workItem from="1453325240903" duration="6968000" />
       <workItem from="1453410406999" duration="330000" />
+      <workItem from="1456104208530" duration="9411000" />
+      <workItem from="1456166233785" duration="3270000" />
+      <workItem from="1456182594704" duration="3171000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50064000" />
+    <option name="totallyTimeSpent" value="65916000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2570" y="-131" width="1717" height="1374" extended-state="0" />
+    <frame x="1135" y="32" width="1399" height="1354" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -586,7 +610,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21607454" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22015725" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -673,13 +697,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/wildfly/wildfly-undertow/10.0.0.CR6-redhat-1/wildfly-undertow-10.0.0.CR6-redhat-1-sources.jar!/org/wildfly/extension/undertow/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/projects/eap7/beta/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/jboss/xnio/xnio-api/3.3.2.Final-redhat-1/xnio-api-3.3.2.Final-redhat-1-sources.jar!/org/xnio/OptionMap.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -988,7 +1005,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1042,11 +1058,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/novaordis/playground/jee/servlet/simplest/ServletExample.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32889584">
+        <state vertical-scroll-proportion="0.0">
           <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#3558#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/deployment-logic">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48926014">
+          <caret line="245" column="18" selection-start-line="245" selection-start-column="18" selection-end-line="245" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
