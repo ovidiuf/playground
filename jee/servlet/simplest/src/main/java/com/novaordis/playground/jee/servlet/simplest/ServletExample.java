@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -97,9 +99,54 @@ public class ServletExample extends HttpServlet {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
+    /**
+     * May return null.
+     */
     private String getHostName() {
 
-        return System.getenv("HOSTNAME");
+        log.info("getHostName()");
+
+        String hostName = System.getenv("HOSTNAME");
+
+        if (hostName == null || hostName.length() == 0) {
+
+            String command = "/bin/hostname";
+
+            Process p = null;
+            StringBuilder sb = null;
+
+            try {
+
+                p = Runtime.getRuntime().exec(new String[]{command});
+
+                log.info(p + " created");
+
+                InputStream is = p.getInputStream();
+                sb = new StringBuilder();
+                int i;
+                while ((i = is.read()) != -1) {
+                    sb.append((char)i);
+                }
+            }
+            catch (Exception e) {
+
+                log.error("failed to execute \"" + command + "\"");
+            }
+            finally {
+
+                if (p != null) {
+                    p.destroy();
+                }
+            }
+
+            log.info("sb: " + sb);
+
+            if (sb != null) {
+                hostName = sb.toString();
+            }
+        }
+
+        return hostName;
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
