@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.hornetq;
+package io.novaordis.playground.wildfly.hornetq.jms;
 
-import java.util.TimerTask;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class MessageReceivedReporter extends TimerTask
+public class SimpleListener implements MessageListener
 {
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -31,17 +32,17 @@ public class MessageReceivedReporter extends TimerTask
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public MessageReceivedReporter(AtomicLong messageReceived)
+    public SimpleListener(AtomicLong messageReceived)
     {
         this.messageReceived = messageReceived;
     }
 
-    // TimerTask implementation ---------------------------------------------------------------------------------------
+    // MessageListener implementation ----------------------------------------------------------------------------------
 
     @Override
-    public void run()
+    public void onMessage(Message message)
     {
-        System.out.println(messageReceived.get());
+        messageReceived.incrementAndGet();
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

@@ -51,5 +51,9 @@ function main()
 
     build-classpath
 
-    execute "${classpath}" "${debug_opts}" "${args}"
+    [ -z "${operation}" ] && { echo "'operation' not set. Must be either \"send\" or \"receive\"" 1>&2; exit 1; }
+
+    java -cp ${classpath} ${debug_opts} io.novaordis.playground.wildfly.hornetq.Main ${operation} ${args}
 }
+
+

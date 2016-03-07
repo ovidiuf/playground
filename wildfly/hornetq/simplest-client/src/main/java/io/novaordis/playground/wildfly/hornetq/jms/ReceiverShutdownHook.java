@@ -14,32 +14,50 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.hornetq;
+package io.novaordis.playground.wildfly.hornetq.jms;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Properties;
+import javax.jms.Connection;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class Statistics
+public class ReceiverShutdownHook extends Thread
 {
     // Constants -------------------------------------------------------------------------------------------------------
 
-    public static final Format CSV_TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-
     // Static ----------------------------------------------------------------------------------------------------------
-
-    public static void record(long t0, long t1, int messageCounter, String messageID)
-    {
-        System.out.println(CSV_TIMESTAMP_FORMAT.format(t0) + ", " + (t1 - t0) + ", " + messageCounter + ", " + messageID);
-    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Connection connection;
+    private AtomicLong messageReceived;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public ReceiverShutdownHook(Connection connection, AtomicLong messageReceived)
+    {
+        this.connection = connection;
+        this.messageReceived = messageReceived;
+    }
+
+    // Thread overrides ------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            if (connection != null)
+            {
+                connection.close();
+                System.out.println(
+                    "\nreceiver shutdown hook executed, connection cleanly closed, messages received: " + messageReceived.get());
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("failed to cleanly close connection: " + e);
+        }
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 

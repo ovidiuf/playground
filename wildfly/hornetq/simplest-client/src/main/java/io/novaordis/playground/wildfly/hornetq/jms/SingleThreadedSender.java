@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.hornetq;
+package io.novaordis.playground.wildfly.hornetq.jms;
 
 import javax.jms.Connection;
 import javax.jms.Destination;

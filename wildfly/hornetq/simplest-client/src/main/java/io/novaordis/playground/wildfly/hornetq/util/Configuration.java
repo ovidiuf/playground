@@ -24,6 +24,8 @@ public class Configuration
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Operation operation;
+
     private String jndiUrl;
     private String destinationName;
     private String connectionFactoryName;
@@ -116,6 +118,10 @@ public class Configuration
         return messageCount;
     }
 
+    public Operation getOperation() {
+        return operation;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
@@ -126,31 +132,34 @@ public class Configuration
     {
         for(int i = 0; i < args.length; i ++)
         {
-            if ("--destination".equals(args[i]))
-            {
+            if (operation == null) {
+
+                operation = Operation.valueOf(args[i]);
+            }
+            else if ("--destination".equals(args[i])) {
+
                 destinationName = args[++i];
             }
-            else if ("--jndi".equals(args[i]))
-            {
+            else if ("--jndi".equals(args[i])) {
+
                 jndiUrl = args[++i];
             }
-            else if ("--connection-factory".equals(args[i]))
-            {
+            else if ("--connection-factory".equals(args[i])) {
+
                 connectionFactoryName = args[++i];
             }
-            else if ("--messages".equals(args[i]))
-            {
+            else if ("--messages".equals(args[i])) {
+
                 messageCount = Integer.parseInt(args[++i]);
             }
-            else if ("--threads".equals(args[i]))
-            {
+            else if ("--threads".equals(args[i])) {
+
                 threadCount = Integer.parseInt(args[++i]);
             }
-            else
-            {
+            else {
+
                 throw new Exception("unknown argument: '" + args[i] + "'");
             }
-
         }
     }
 

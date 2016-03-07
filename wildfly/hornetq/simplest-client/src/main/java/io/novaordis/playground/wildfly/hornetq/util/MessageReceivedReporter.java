@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.hornetq;
+package io.novaordis.playground.wildfly.hornetq.util;
 
-import javax.jms.Connection;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ReceiverShutdownHook extends Thread
+public class MessageReceivedReporter extends TimerTask
 {
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -27,36 +27,21 @@ public class ReceiverShutdownHook extends Thread
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Connection connection;
     private AtomicLong messageReceived;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public ReceiverShutdownHook(Connection connection, AtomicLong messageReceived)
+    public MessageReceivedReporter(AtomicLong messageReceived)
     {
-        this.connection = connection;
         this.messageReceived = messageReceived;
     }
 
-    // Thread overrides ------------------------------------------------------------------------------------------------
-
+    // TimerTask implementation ---------------------------------------------------------------------------------------
 
     @Override
     public void run()
     {
-        try
-        {
-            if (connection != null)
-            {
-                connection.close();
-                System.out.println(
-                    "\nreceiver shutdown hook executed, connection cleanly closed, messages received: " + messageReceived.get());
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println("failed to cleanly close connection: " + e);
-        }
+        System.out.println(messageReceived.get());
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

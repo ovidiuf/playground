@@ -18,13 +18,6 @@ Usage:
 EOF
 }
 
-function execute() {
-
-    local classpath="$1"
-    local debug_opts="$2"
-    local args="$3"
-
-    java -cp ${classpath} ${debug_opts} io.novaordis.playground.wildfly.hornetq.Sender ${args}
-}
+operation=send
 
 main $@
