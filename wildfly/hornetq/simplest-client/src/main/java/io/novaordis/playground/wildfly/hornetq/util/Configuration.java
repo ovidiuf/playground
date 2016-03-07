@@ -42,7 +42,7 @@ public class Configuration
         threadCount = -1;
 
         username = "jmsuser";
-        password = "jmsuser123!";
+        password = "jmsuser123";
 
         parseArguments(args);
 
