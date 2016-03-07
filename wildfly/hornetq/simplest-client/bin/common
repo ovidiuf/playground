@@ -31,3 +31,25 @@ ${M2}/log4j/log4j/1.2.17/log4j-1.2.17.jar\
 "
 }
 
+function main()
+{
+    if [ -z "$1" -o "$1" = "--help" -o "$1" = "help" ]; then
+        display-help;
+        return;
+    fi
+
+    local args;
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "--debug" ]; then
+            debug_opts="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+        else
+            [ -z "${args}" ] && args="$1" || args="${args} $1"
+        fi
+        shift
+    done
+
+    build-classpath
+
+    execute "${classpath}" "${debug_opts}" "${args}"
+}
