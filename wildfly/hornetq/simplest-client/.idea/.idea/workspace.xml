@@ -59,16 +59,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="receive" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../bin/receive">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MessageReceivedReporter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/MessageReceivedReporter.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -79,11 +69,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2198697">
-              <caret line="50" column="51" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
               <folding>
                 <element signature="method#send#0;class#Main#0" expanded="false" />
                 <element signature="method#receive#0;class#Main#0" expanded="false" />
@@ -106,12 +96,34 @@
         <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="75" column="35" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+              <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
               <folding>
                 <element signature="e#2450#2451#0" expanded="true" />
                 <element signature="e#2488#2489#0" expanded="true" />
                 <element signature="e#3059#3060#0" expanded="true" />
                 <element signature="e#3091#3092#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SingleThreadedSender.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/jms/SingleThreadedSender.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.75191814">
+              <caret line="100" column="34" selection-start-line="100" selection-start-column="34" selection-end-line="100" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JNDI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/JNDI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="31" column="74" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="74" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -165,6 +177,7 @@
         <option value="$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/jms/ReceiverShutdownHook.java" />
         <option value="$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/Configuration.java" />
         <option value="$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/Main.java" />
+        <option value="$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/jms/SingleThreadedSender.java" />
       </list>
     </option>
   </component>
@@ -367,6 +380,52 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simple-hornetq-client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simplest-client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="novaordis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="playground" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wildfly" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hornetq" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jms" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -690,12 +749,12 @@
       <created>1457317562705</created>
       <option name="number" value="Default" />
       <updated>1457317562705</updated>
-      <workItem from="1457317563963" duration="7852000" />
+      <workItem from="1457317563963" duration="7993000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7852000" />
+    <option name="totallyTimeSpent" value="7993000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1000" y="28" width="1461" height="1325" extended-state="0" />
@@ -770,29 +829,11 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/jms/SingleThreadedSender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/jms/SimpleListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/JNDI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -844,10 +885,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+          <folding>
+            <element signature="method#send#0;class#Main#0" expanded="false" />
+            <element signature="method#receive#0;class#Main#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="75" column="35" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+          <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
           <folding>
             <element signature="e#2450#2451#0" expanded="true" />
             <element signature="e#2488#2489#0" expanded="true" />
@@ -857,14 +909,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/Main.java">
+    <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/util/JNDI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2198697">
-          <caret line="50" column="51" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="31" column="74" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="74" />
           <folding>
-            <element signature="method#send#0;class#Main#0" expanded="false" />
-            <element signature="method#receive#0;class#Main#0" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../src/main/java/io/novaordis/playground/wildfly/hornetq/jms/SingleThreadedSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75191814">
+          <caret line="100" column="34" selection-start-line="100" selection-start-column="34" selection-end-line="100" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>

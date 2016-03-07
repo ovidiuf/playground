@@ -16,6 +16,9 @@
 
 package io.novaordis.playground.wildfly.hornetq.jms;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.jms.Connection;
 import javax.jms.Destination;
 import javax.jms.Message;
@@ -27,6 +30,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SingleThreadedSender implements Runnable
 {
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(SingleThreadedSender.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -59,7 +64,7 @@ public class SingleThreadedSender implements Runnable
     {
         Session session;
 
-        System.out.println(this + " using connection " + connection);
+        log.info(this + " using connection " + connection);
 
         try
         {
@@ -83,7 +88,7 @@ public class SingleThreadedSender implements Runnable
         }
         catch(Exception e)
         {
-            System.out.println("thread " + Thread.currentThread().getName() + " failed: " + e);
+            log.info("thread " + Thread.currentThread().getName() + " failed: " + e);
         }
         finally
         {
@@ -93,7 +98,7 @@ public class SingleThreadedSender implements Runnable
             }
             catch(Exception e)
             {
-                System.out.println("failed to wait on barrier: " + e);
+                log.info("failed to wait on barrier: " + e);
             }
         }
     }
