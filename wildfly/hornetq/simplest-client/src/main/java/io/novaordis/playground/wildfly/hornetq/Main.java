@@ -42,7 +42,7 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    public static long REPORTING_PERIOD = 2000L;
+    public static long REPORTING_INTERVAL = 1000L;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -147,7 +147,7 @@ public class Main {
         consumer.setMessageListener(new SimpleListener(messageReceived));
 
         Timer timer = new Timer();
-        timer.schedule(new MessageReceivedReporter(messageReceived), REPORTING_PERIOD, REPORTING_PERIOD);
+        timer.schedule(new MessageReceivedReporter(messageReceived), REPORTING_INTERVAL, REPORTING_INTERVAL);
 
         Runtime.getRuntime().addShutdownHook(new ReceiverShutdownHook(connection, messageReceived));
 
