@@ -1,0 +1,44 @@
+#!/bin/bash
+
+[ -f $(dirname $0)/common ] && . $(dirname $0)/common || { echo "$(dirname $0)/common not found" 1>&2; exit 1; }
+
+function display-help()
+{
+cat <<EOF
+
+Usage:
+
+     ./bin/send \\
+       --jndi 127.0.0.1:4447 \\
+       --destination /topic/novaordis \\
+       --connection-factory /RemoteConnectionFactory \\
+       --messages 1000 \\
+       --threads 10
+
+EOF
+}
+
+function main()
+{
+    if [ -z "$1" -o "$1" = "--help" -o "$1" = "help" ]; then
+        display-help;
+        return;
+    fi
+
+    local args;
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "--debug" ]; then
+            debug_opts="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+        else
+            [ -z "${args}" ] && args="$1" || args="${args} $1"
+        fi
+        shift
+    done
+
+    build-classpath
+
+    java -cp ${classpath} ${debug_opts} io.novaordis.playground.wildfly.hornetq.Sender ${args}
+}
+
+main $@
