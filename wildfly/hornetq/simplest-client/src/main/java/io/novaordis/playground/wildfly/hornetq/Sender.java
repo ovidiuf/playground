@@ -31,7 +31,7 @@ public class Sender
 {
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final Logger log = LoggerFactory.getLogger(Sender.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-reldir=$(dirname $0)
+[ -f $(dirname $0)/common ] && . $(dirname $0)/common || { echo "$(dirname $0)/common not found" 1>&2; exit 1; }
 
 function display-help()
 {
@@ -8,49 +8,21 @@ cat <<EOF
 
 Usage:
 
-    ./receive --jndi 127.0.0.1:4447 --destination /queue/toyota --connection-factory /ConnectionFactory
+     ./bin/receive \\
+       --jndi 127.0.0.1:4447 \\
+       --destination /topic/novaordis \\
+       --connection-factory /RemoteConnectionFactory
 
 EOF
 }
 
-function configure()
-{
-    local n
-    n=$(uname -n)
-    if [ "${n:0:6}" = "NOMBP1" -o "${n:0:6}" = "nombp1" ]; then
-        # we're already configured
-        jboss_home=/Users/ovidiu/c086-Advent/runtime/tsjboss
-    else
-        jboss_home=/opt/jboss/jboss-eap-4.3-NEW/jboss-as/
-    fi
+function execute() {
 
-classpath="\
-${reldir}/target/hornetq-client-1.0.jar:\
-${jboss_home}/bin/client/jboss-client.jar:\
-${jboss_home}/modules/org/apache/log4j/main/log4j-1.2.16.jar:\
-"
-}
+    local classpath="$1"
+    local debug_opts="$2"
+    local args="$3"
 
-function main()
-{
-    if [ "$1" = "" ]; then
-        display-help;
-        return;
-    fi
-
-    local args;
-
-    while [ "$1" != "" ]; do
-        if [ "$1" = "--debug" ]; then
-            debug_opts="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5006"
-        else
-            [ "${args}" = "" ] && args="$1" || args="${args} $1"
-        fi
-        shift
-    done
-
-    configure
-    java -cp ${classpath} ${debug_opts} playground.hornetq.client.Receiver ${args}
+    java -cp ${classpath} ${debug_opts} io.novaordis.playground.wildfly.hornetq.Receiver ${args}
 }
 
 main $@

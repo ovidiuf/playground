@@ -18,6 +18,8 @@ package io.novaordis.playground.wildfly.hornetq;
 
 import io.novaordis.playground.wildfly.hornetq.util.Configuration;
 import io.novaordis.playground.wildfly.hornetq.util.JNDI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -30,6 +32,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Receiver
 {
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(Receiver.class);
 
     public static long REPORTER_PERIOD = 2000L;
 
@@ -44,13 +48,13 @@ public class Receiver
         String connectionFactoryName = conf.getConnectionFactoryName();
 
         Destination destination = JNDI.getDestination(jndiUrl, destinationName);
-        System.out.println("destination: " + destination);
+        log.info("destination: " + destination);
 
         ConnectionFactory connectionFactory = JNDI.getConnectionFactory(jndiUrl, connectionFactoryName);
-        System.out.println("connection factory: " + connectionFactory);
+        log.info("connection factory: " + connectionFactory);
 
         Connection connection = connectionFactory.createConnection(conf.getUserName(), conf.getPassword());
-        System.out.println("connection: " + connection);
+        log.info("connection: " + connection);
 
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         MessageConsumer consumer = session.createConsumer(destination);
@@ -65,7 +69,7 @@ public class Receiver
 
         connection.start();
 
-        System.out.println("listening for messages");
+        log.info("listening for messages");
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
