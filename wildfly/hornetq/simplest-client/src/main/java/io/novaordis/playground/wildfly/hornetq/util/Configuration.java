@@ -26,6 +26,8 @@ public class Configuration
 
     private Operation operation;
 
+    private boolean messageCountRequired;
+
     private String jndiUrl;
     private String destinationName;
     private String connectionFactoryName;
@@ -38,10 +40,10 @@ public class Configuration
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Configuration(String[] args, boolean messageCountRequired, boolean threadCountRequired) throws Exception
+    public Configuration(String[] args) throws Exception
     {
+        threadCount = 1;
         messageCount = -1;
-        threadCount = -1;
 
         username = "jmsuser";
         password = "jmsuser123";
@@ -67,12 +69,6 @@ public class Configuration
         {
             throw new Exception("specify the number of messages to send with --messages");
         }
-
-        if (threadCountRequired && threadCount == -1)
-        {
-            throw new Exception("specify the number of threads with --threads");
-        }
-
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -135,6 +131,10 @@ public class Configuration
             if (operation == null) {
 
                 operation = Operation.valueOf(args[i]);
+
+                if (Operation.send.equals(operation)) {
+                    messageCountRequired = true;
+                }
             }
             else if ("--destination".equals(args[i])) {
 

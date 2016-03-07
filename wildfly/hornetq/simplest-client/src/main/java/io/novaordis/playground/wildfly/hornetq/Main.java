@@ -48,7 +48,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Configuration conf = new Configuration(args, true, true);
+        Configuration conf = new Configuration(args);
 
         String jndiUrl = conf.getJndiUrl();
 
