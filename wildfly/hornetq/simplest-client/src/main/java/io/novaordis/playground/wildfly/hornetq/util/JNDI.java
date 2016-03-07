@@ -16,7 +16,6 @@
 
 package io.novaordis.playground.wildfly.hornetq.util;
 
-import io.novaordis.playground.wildfly.hornetq.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ public class JNDI
 {
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final Logger log = LoggerFactory.getLogger(JNDI.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
