@@ -42,8 +42,8 @@
       <file leaf-file-name="common" pinned="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../bin/common">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4338843">
-              <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.55785125">
+              <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -188,8 +188,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="997" />
-    <option name="y" value="28" />
+    <option name="x" value="1036" />
+    <option name="y" value="49" />
     <option name="width" value="1461" />
     <option name="height" value="1325" />
   </component>
@@ -640,15 +640,15 @@
       <created>1457317562705</created>
       <option name="number" value="Default" />
       <updated>1457317562705</updated>
-      <workItem from="1457317563963" duration="4737000" />
+      <workItem from="1457317563963" duration="5120000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4737000" />
+    <option name="totallyTimeSpent" value="5120000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="997" y="28" width="1461" height="1325" extended-state="0" />
+    <frame x="1036" y="49" width="1461" height="1325" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -830,8 +830,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../bin/common">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4338843">
-          <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.55785125">
+          <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
           <folding />
         </state>
       </provider>
