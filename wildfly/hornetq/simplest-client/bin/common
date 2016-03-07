@@ -12,7 +12,8 @@ function build-classpath()
     if [ "${short_name}" = "NOMBP2" ]; then
         jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4
     else
-        echo "we don't know how to build the classpath on ${name}"
+        echo "we don't know how to build the classpath on ${name}" 1>&2
+        exit 1
     fi
 
 classpath="\
