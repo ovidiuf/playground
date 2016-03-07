@@ -27,6 +27,7 @@ public class MessageReceivedReporter extends TimerTask
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private long reportedSoFar;
     private AtomicLong messageReceived;
 
     // Constructors ----------------------------------------------------------------------------------------------------
@@ -41,7 +42,9 @@ public class MessageReceivedReporter extends TimerTask
     @Override
     public void run()
     {
-        System.out.println(messageReceived.get());
+        long total = messageReceived.get();
+        System.out.println(total - reportedSoFar);
+        reportedSoFar = total;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
