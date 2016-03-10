@@ -19,14 +19,14 @@ artifact_file_name=servlet-example.war
 
 # space separated list of deployment servers. One is fine. For local deployment, use "local"
 #deployment_servers="172.20.2.42 172.20.2.43"
-#deployment_servers="local"
+deployment_servers="local"
 
-deployment_servers="dc1"
-server_group="web"
+#deployment_servers="dc1"
+#erver_group="web"
 
 #deployment_user=wildfly
 #deployment_path=/opt/wildfly/profiles/ap/deployments
-#deployment_path=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/fis/deployments
+deployment_path=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/msc/deployments
 
 ########################################################################################################################
 # utility functions
@@ -157,6 +157,8 @@ EOF
 ########################################################################################################################
 
 function deploy-locally() {
+
+    debug-arguments $@
 
     local local_artifact_file=$1
     local deployment_path=$2
@@ -319,7 +321,7 @@ function main() {
     [ "${command}" = "deploy" -a ! -f ${artifact_file} ] && { echo "${artifact_file_name} not built" 1>&2; exit 1; }
 
     for ds in ${deployment_servers}; do
-        ${command} ${artifact_file} ${ds} ${deployment_user} ${deployment_path}
+        ${command} ${artifact_file} ${ds} "${deployment_user}" ${deployment_path}
     done
 }
 

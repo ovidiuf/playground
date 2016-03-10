@@ -1,4 +1,4 @@
-package com.novaordis.playground.wildfly.custommodule;
+package io.novaordis.playground.wildfly.custommodule;
 
 import java.util.UUID;
 
