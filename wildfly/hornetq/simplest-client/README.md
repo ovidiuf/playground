@@ -15,7 +15,7 @@ Then, to send messages (more help in-line by simply running ./send):
     ./bin/send \
       --jndi 127.0.0.1:4447 \
       --destination /topic/novaordis \
-      --connection-factory /RemoteConnectionFactory \
+      --connection-factory /jms/RemoteConnectionFactory \
       --messages 1000 \
       --threads 10
 
@@ -24,9 +24,9 @@ To receive messages (more help in-line by simply running ./receive):
     ./bin/receive \
     --jndi 127.0.0.1:4447 \
     --destination /queue/toyota \
-    --connection-factory \
-    /ConnectionFactory
+    --connection-factory /jms/RemoteConnectionFactory
     
+
    
 
 
