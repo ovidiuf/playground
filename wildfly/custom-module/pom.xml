@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.novaordis.playground.wildfly.custom-module</groupId>
+    <groupId>io.novaordis.playground.wildfly.custommodule</groupId>
     <artifactId>custom-wildfly-module</artifactId>
     <packaging>jar</packaging>
 
