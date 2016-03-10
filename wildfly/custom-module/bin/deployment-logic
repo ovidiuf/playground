@@ -14,7 +14,7 @@
 # use "local"
 deployment_servers="local"
 artifact_file_name=custom-wildfly-module-1.0.jar
-deployment_path=${JBOSS_HOME}/modules/com/novaordis/playground/wildfly/custommodule/1.0
+deployment_path=${JBOSS_HOME}/modules/io/novaordis/playground/wildfly/custommodule/1.0
 
 
 function deploy() {

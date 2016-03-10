@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<module xmlns="urn:jboss:module:1.1" name="com.novaordis.playground.wildfly.custommodule" slot="1.0">
+<module xmlns="urn:jboss:module:1.1" name="io.novaordis.playground.wildfly.custommodule" slot="1.0">
 
     <!--
-    <main-class name="com.novaordis.playground.wildfly.custommodule.SharedFunctionality"/>
+    <main-class name="SharedFunctionality"/>
     -->
 
     <properties>
