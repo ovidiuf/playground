@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jboss-deployment-structure>
+    <!--
+        Use this in case we need to declare dependency on external modules.
+    -->
+    <!--
+    <deployment>
+        <dependencies>
+            <module name="com.novaordis.playground.wildfly.custommodule" slot="1.0"/>
+        </dependencies>
+    </deployment>
+    -->
+</jboss-deployment-structure>
