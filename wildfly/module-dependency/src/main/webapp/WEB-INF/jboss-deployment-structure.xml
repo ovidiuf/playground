@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
+<!--
+Explicit dependencies declared here can be replaced with a "global" module:
+
+<subsystem xmlns="urn:jboss:domain:ee:1.2">
+  <global-modules>
+    <module name="io.novaordis.playground.wildfly.custommodule" slot="1.0" />
+  </global-modules>
+  ...
+</subsystem>
+-->
+
 <jboss-deployment-structure>
-    <!--
-        Use this in case we need to declare dependency on external modules.
-    -->
-    <!--
     <deployment>
         <dependencies>
-            <module name="com.novaordis.playground.wildfly.custommodule" slot="1.0"/>
+            <module name="io.novaordis.playground.wildfly.custommodule" slot="1.0"/>
         </dependencies>
     </deployment>
-    -->
 </jboss-deployment-structure>
