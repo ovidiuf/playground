@@ -8,12 +8,7 @@
         <version>1</version>
     </parent>
 
-    <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
     <artifactId>ear-embedded-lib</artifactId>
     <packaging>jar</packaging>
-
-    <build>
-        <finalName>${artifactId}</finalName>
-    </build>
 
 </project>
