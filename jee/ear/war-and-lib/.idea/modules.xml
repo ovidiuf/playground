@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lib/ear-embedded-lib.iml" filepath="$PROJECT_DIR$/lib/ear-embedded-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/war/ear-embedded-web-application.iml" filepath="$PROJECT_DIR$/war/ear-embedded-web-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ear/ear-example.iml" filepath="$PROJECT_DIR$/ear/ear-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven-root.iml" filepath="$PROJECT_DIR$/maven-root.iml" />
+    </modules>
+  </component>
+</project>

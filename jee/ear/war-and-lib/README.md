@@ -1,5 +1,7 @@
-#playground Project Template
+#JEE EAR with an embedded lib and WAR
 
-See https://kb.novaordis.com/index.php/Playground#New_Project
+An example of how to build a simple JEE EAR with an embedded lib and WAR.
+The functionality is not relevant, but the Maven configuration that builds
+it is.
 
 

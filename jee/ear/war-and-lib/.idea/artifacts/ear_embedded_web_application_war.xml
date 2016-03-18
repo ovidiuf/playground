@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ear-embedded-web-application:war">
+    <output-path>$PROJECT_DIR$/war/target</output-path>
+    <root id="archive" name="ear-embedded-web-application.war">
+      <element id="artifact" artifact-name="ear-embedded-web-application:war exploded" />
+    </root>
+  </artifact>
+</component>
