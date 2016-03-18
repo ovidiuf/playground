@@ -54,6 +54,7 @@ public class ServletExample extends HttpServlet {
         PrintWriter out = res.getWriter();
 
         out.println("<html>");
+        //out.println("GET calling library function and getting: " + LibraryFunctionality.getValue());
         out.println("GET ok");
         out.println("</html>");
     }

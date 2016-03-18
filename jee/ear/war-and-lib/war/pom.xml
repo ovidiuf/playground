@@ -37,6 +37,12 @@
                 <version>${servlet-api-version}</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
+                <artifactId>ear-embedded-lib</artifactId>
+                <version>${version}</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -52,6 +58,10 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
+            <artifactId>ear-embedded-lib</artifactId>
         </dependency>
     </dependencies>
 

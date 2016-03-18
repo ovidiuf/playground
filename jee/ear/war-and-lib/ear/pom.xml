@@ -17,9 +17,11 @@
             <plugin>
                 <artifactId>maven-ear-plugin</artifactId>
                 <configuration>
+                    <!--
                     <jboss>
                         <version>5</version>
                     </jboss>
+                    -->
                     <modules>
                         <jarModule>
                             <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
@@ -28,7 +30,7 @@
                         <webModule>
                             <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
                             <artifactId>ear-embedded-web-application</artifactId>
-                            <context-root>/test</context-root>
+                            <context-root>/example</context-root>
                         </webModule>
                     </modules>
                 </configuration>
