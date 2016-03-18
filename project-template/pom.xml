@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.novaordis.playground</groupId>
+    <groupId>io.novaordis.playground</groupId>
     <artifactId>playground-project-template</artifactId>
     <packaging>jar</packaging>
 
