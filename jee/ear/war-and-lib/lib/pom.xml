@@ -2,8 +2,6 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>ear-example</name>
-
     <parent>
         <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
         <artifactId>maven-root</artifactId>
@@ -11,11 +9,11 @@
     </parent>
 
     <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
-    <artifactId>ear-embedded-web-application</artifactId>
+    <artifactId>ear-embedded-lib</artifactId>
     <packaging>jar</packaging>
 
     <build>
-        <finalName>ear-embedded-web-application</finalName>
+        <finalName>${artifactId}</finalName>
     </build>
 
 </project>
