@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>ear-example</name>
+
+    <parent>
+        <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
+        <artifactId>maven-root</artifactId>
+        <version>1</version>
+    </parent>
+
+    <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
+    <artifactId>ear-example</artifactId>
+    <packaging>ear</packaging>
+
+    <build>
+        <finalName>ear-example</finalName>
+    </build>
+
+</project>
