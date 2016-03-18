@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.jee.ear.warandlib.war;
 
+import io.novaordis.playground.jee.ear.warandlib.lib.LibraryFunctionality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +55,8 @@ public class ServletExample extends HttpServlet {
         PrintWriter out = res.getWriter();
 
         out.println("<html>");
-        //out.println("GET calling library function and getting: " + LibraryFunctionality.getValue());
-        out.println("GET ok");
+        out.println("GET calling library function and getting: " + LibraryFunctionality.getValue());
+        //out.println("GET ok");
         out.println("</html>");
     }
 

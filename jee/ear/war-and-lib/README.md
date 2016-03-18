@@ -13,8 +13,7 @@ If correctly deployed, the application will be available under the root context 
 
 Tested with:
 
-* JBoss EAP 5.2    
-    
+* JBoss EAP 5.2     
 
 Knowledge Base:
 

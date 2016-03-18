@@ -26,6 +26,11 @@
                         <jarModule>
                             <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
                             <artifactId>ear-embedded-lib</artifactId>
+                            <!--
+                                If the following flag is not specified, the JAR will be embedded in the EAR's root
+                                but no corresponding <java> <module> will be added to application.xml module list.
+                            -->
+                            <includeInApplicationXml>true</includeInApplicationXml>
                         </jarModule>
                         <webModule>
                             <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
