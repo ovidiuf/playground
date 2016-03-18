@@ -22,6 +22,13 @@
                         <version>5</version>
                     </jboss>
                     -->
+                    <!--
+                         We have a choice of installing third-party libraries as JEE JAR modules,
+                         or as simple (non-module) libraries, in /lib.  We also need to make sure
+                         they're not redundantly included by other JARs or  SAR or WAR.
+                    -->
+                    <defaultJavaBundleDir>lib/</defaultJavaBundleDir>
+
                     <modules>
                         <jarModule>
                             <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
@@ -30,13 +37,24 @@
                                 If the following flag is not specified, the JAR will be embedded in the EAR's root
                                 but no corresponding <java> <module> will be added to application.xml module list.
                             -->
+                            <!--
                             <includeInApplicationXml>true</includeInApplicationXml>
+                            -->
                         </jarModule>
                         <webModule>
                             <groupId>io.novaordis.playground.jee.ear.war-and-lib</groupId>
                             <artifactId>ear-embedded-web-application</artifactId>
                             <context-root>/example</context-root>
                         </webModule>
+
+                        <!--
+                              Optional, if EJB is involved:
+
+                        <ejbModule>
+                            <groupId>io.novaordis.playground.jee.ear</groupId>
+                            <artifactId>some-ejb-jar</artifactId>
+                        </ejbModule>
+                        -->
                     </modules>
                 </configuration>
             </plugin>

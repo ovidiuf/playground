@@ -6,8 +6,10 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/ear/target/ear-example/META-INF/MANIFEST.MF" />
       </element>
-      <element id="archive" name="ear-embedded-lib-1.jar">
-        <element id="module-output" name="ear-embedded-lib" />
+      <element id="directory" name="lib">
+        <element id="archive" name="ear-embedded-lib-1.jar">
+          <element id="module-output" name="ear-embedded-lib" />
+        </element>
       </element>
       <element id="archive" name="ear-embedded-web-application-1.war">
         <element id="artifact" artifact-name="ear-embedded-web-application:war exploded" />
