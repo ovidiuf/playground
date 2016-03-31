@@ -39,9 +39,7 @@ func main() {
     // os.File implements Writer.Write() so we use that to write bytes.
     //
 
-    fileContent := `This is what will be
-written into the file
-`
+    fileContent := "This is what will be\nwritten into the file\n"
 
     bs := []byte(fileContent)
 

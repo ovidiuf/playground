@@ -11,3 +11,7 @@ To run:
     
     go run ./read-file-2.go
     
+    go run ./write-file.go
+    
+    go run ./write-file-2.go
+    
