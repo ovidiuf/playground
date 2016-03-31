@@ -35,7 +35,7 @@ func main() {
         return
     }
 
-    fileInfos, err := dirPtr.Readdir(0)
+    fileInfos, err := dirPtr.Readdir(-1)
 
     for i, fileInfo := range fileInfos {
 
