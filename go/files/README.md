@@ -2,7 +2,7 @@
 
 Context
     
-https://kb.novaordis.com/index.php/Go_Package_os#Examples
+https://kb.novaordis.com/index.php/Go_Recipes
 
 
 To run:
