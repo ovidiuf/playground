@@ -11,46 +11,71 @@ func main() {
     fileName := "test.txt"
 
     //
-    // we use the os Open function that returns a File pointer or an error
+    // os.Open() function returns a File pointer or an error
     //
 
-    fileptr, err := os.Open(fileName)
+    filePtr, err := os.Open(fileName)
 
     //
-    // we make sure the file is closed, no matter of what happens in this
+    // we make sure the file will be closed, no matter what happens in this
     // function. We defer immediately so we don't forget. Even if an error
-    // occurs and fileptr is nil, the runtime will handle this situation
+    // occurs and filePtr is nil, the runtime will handle this situation
     // gracefully
     //
 
-    defer fileptr.Close()
+    defer filePtr.Close()
 
     if err != nil {
+
+        //
+        // exit on error
+        //
         fmt.Println("error", err)
         return
     }
 
     //
-    // File implements Reader's Read() so we use that to read bytes
+    // os.File implements Reader.Read() so we use that to read bytes.
+    // In order to read all bytes, we need to know how many bytes are
+    // in the file.
     //
 
-    fileInfoPtr, err := fileptr.Stat()
+    fileInfoPtr, err := filePtr.Stat()
 
     if err != nil {
+
+        //
+        // exit on error
+        //
         fmt.Println("error", err)
         return
     }
 
     fileSize := fileInfoPtr.Size()
 
+    //
+    // we make a slice large enough to accommodate all the bytes from the file
+    //
+
     bs := make([]byte, fileSize)
-    _, err = fileptr.Read(bs)
+
+    //
+    // we do the reading
+    //
+    _, err = filePtr.Read(bs)
 
     if err != nil {
+
+        //
+        // exit on error
+        //
         fmt.Println("error", err)
         return
     }
 
+    //
+    // we convert the bytes to a string
+    //
     fileContent := string(bs)
     fmt.Print(fileContent)
 }
