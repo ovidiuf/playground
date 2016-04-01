@@ -12,7 +12,6 @@ func server() {
     // Listen to a port
     //
 
-
     listener, err := net.Listen("tcp", ":8080")
 
     fmt.Println("listener created")
