@@ -41,3 +41,4 @@ func receiver(channel <-chan string) {
         fmt.Println("received from channel")
     }
 }
+
