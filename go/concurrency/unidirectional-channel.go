@@ -28,7 +28,6 @@ func sender(channel chan<- string) {
         channel <- "."
         time.Sleep(2 * time.Second)
     }
-
 }
 
 //
