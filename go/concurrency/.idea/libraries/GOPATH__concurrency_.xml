@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;concurrency&gt;">
+    <CLASSES>
+      <root url="file://$GOPATH$/src/main" />
+      <root url="file://$GOPATH$/src/main.go" />
+      <root url="file://$GOPATH$/src/search" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <excluded>
+      <root url="file://$PROJECT_DIR$" />
+    </excluded>
+  </library>
+</component>
