@@ -12,7 +12,7 @@ func main() {
     // Define the flags
     //
 
-    sPtr := flag.String("s", ".", "the path vale")
+    sPtr := flag.String("-s", ".", "the path vale")
     iPtr := flag.Int("i", 1, "the i value")
 
     flag.Parse()
