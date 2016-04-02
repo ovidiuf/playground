@@ -33,7 +33,7 @@ func player(name string, starts bool, channel chan string) {
             // put it on the channel
             //
 
-            fmt.Println(name + " sending the token to the channel ...")
+            fmt.Println(name + " writing the token on the channel ...")
             channel <- "."
 
         } else {
@@ -43,12 +43,10 @@ func player(name string, starts bool, channel chan string) {
             //
 
             _ = <- channel
-            fmt.Println(name + " got the token from the channel")
+            fmt.Println(name + " read the token from the channel")
             fmt.Println()
 
             sleep()
-
-
         }
 
         iHaveTheToken = !iHaveTheToken
