@@ -17,10 +17,7 @@ func main() {
 
 // each player function runs on its own thread and use the channel to
 // exchange a token back and forth
-func player(name string, starts bool, channel chan string) {
-
-
-    iHaveTheToken := starts
+func player(name string, iHaveTheToken bool, channel chan string) {
 
     //
     // we go in a loop and exchange the token
