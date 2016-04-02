@@ -56,6 +56,5 @@ func player(name string, starts bool, channel chan string) {
 }
 
 func sleep() {
-
     time.Sleep(2 * time.Second)
 }
