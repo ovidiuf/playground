@@ -15,7 +15,7 @@ import (
 func main() {
 
     //
-    // create the wait group
+    // create the wait group - the struct instance is initialized with zero values
     //
     var waitGroup sync.WaitGroup
 
