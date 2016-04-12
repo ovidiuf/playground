@@ -38,7 +38,7 @@ public class Configuration
     private String username;
     private String password;
 
-    private long sleepBetweenSendsMs = 1000L;
+    private long sleepBetweenSendsMs = 0L;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
