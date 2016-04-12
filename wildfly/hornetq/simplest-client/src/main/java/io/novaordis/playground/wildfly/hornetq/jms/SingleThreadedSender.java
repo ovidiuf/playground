@@ -43,10 +43,13 @@ public class SingleThreadedSender implements Runnable
     private CyclicBarrier barrier;
     private Connection connection;
     private Destination destination;
+    // negative or zero means "don't sleep"
+    private long sleepBetweenSendsMs;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public SingleThreadedSender(int id, Connection connection, Destination destination,
+                                long sleepBetweenSendsMs,
                                 AtomicInteger remainingToSend, AtomicInteger messagesSent,
                                 CyclicBarrier barrier)
     {
@@ -56,6 +59,7 @@ public class SingleThreadedSender implements Runnable
         this.remainingToSend = remainingToSend;
         this.messagesSent = messagesSent;
         this.barrier = barrier;
+        this.sleepBetweenSendsMs = sleepBetweenSendsMs;
     }
 
     // Runnable implementation -----------------------------------------------------------------------------------------
@@ -83,6 +87,11 @@ public class SingleThreadedSender implements Runnable
                 //Message m = session.createTextMessage("test");
                 Message m = session.createObjectMessage("test-" + System.currentTimeMillis());
                 producer.send(m);
+
+                if (sleepBetweenSendsMs > 0) {
+                    Thread.sleep(sleepBetweenSendsMs);
+                }
+
                 messagesSent.incrementAndGet();
             }
         }

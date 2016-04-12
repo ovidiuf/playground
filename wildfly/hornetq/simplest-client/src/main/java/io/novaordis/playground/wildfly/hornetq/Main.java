@@ -65,7 +65,7 @@ public class Main {
         if (Operation.send.equals(operation)) {
 
             send(conf.getUserName(), conf.getPassword(), connectionFactory, destination,
-                    conf.getThreadCount(), conf.getMessageCount());
+                    conf.getThreadCount(), conf.getMessageCount(), conf.getSleepBetweenSendsMs());
         }
         else if (Operation.receive.equals(operation)) {
 
@@ -90,7 +90,7 @@ public class Main {
 
     private static void send(String username, String password,
                              ConnectionFactory connectionFactory, Destination destination,
-                             int threadCount, int messageCount) throws Exception {
+                             int threadCount, int messageCount, long sleepBetweenSendsMs) throws Exception {
 
         Connection connections[] = new Connection[1];
 
@@ -119,7 +119,8 @@ public class Main {
 
         for(int i = 0; i < threadCount; i ++) {
             new Thread(new SingleThreadedSender(
-                    i, connections[i % connections.length], destination, remainingToSend, messagesSent, barrier),
+                    i, connections[i % connections.length], destination, sleepBetweenSendsMs,
+                    remainingToSend, messagesSent, barrier),
                     "Sender Thread " + i).start();
         }
 

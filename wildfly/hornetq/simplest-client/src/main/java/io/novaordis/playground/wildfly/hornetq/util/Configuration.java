@@ -38,6 +38,8 @@ public class Configuration
     private String username;
     private String password;
 
+    private long sleepBetweenSendsMs = 1000L;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public Configuration(String[] args) throws Exception
@@ -116,6 +118,13 @@ public class Configuration
 
     public Operation getOperation() {
         return operation;
+    }
+
+    /**
+     * @return the time (in milliseconds) to sleep between sends. Negative or zero means don't sleep.
+     */
+    public long getSleepBetweenSendsMs() {
+        return sleepBetweenSendsMs;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
