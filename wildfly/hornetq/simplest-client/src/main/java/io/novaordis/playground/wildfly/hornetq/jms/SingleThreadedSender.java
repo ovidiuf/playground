@@ -89,6 +89,8 @@ public class SingleThreadedSender implements Runnable
                 producer.send(m);
 
                 if (sleepBetweenSendsMs > 0) {
+
+                    log.info("sleeping " + (sleepBetweenSendsMs / 1000) + " seconds after sending ...");
                     Thread.sleep(sleepBetweenSendsMs);
                 }
 
