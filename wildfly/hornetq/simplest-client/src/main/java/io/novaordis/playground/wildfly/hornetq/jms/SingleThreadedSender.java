@@ -88,9 +88,14 @@ public class SingleThreadedSender implements Runnable
                 Message m = session.createObjectMessage("test-" + System.currentTimeMillis());
                 producer.send(m);
 
+                remaining --;
+                if (remaining < 0) {
+                    remaining = 0;
+                }
+
                 if (sleepBetweenSendsMs > 0) {
 
-                    log.info("sleeping " + (sleepBetweenSendsMs / 1000) + " seconds after sending ...");
+                    log.info("sleeping " + (sleepBetweenSendsMs / 1000) + " second(s) after sending the message, " + remaining + " message(s) remaining ...");
                     Thread.sleep(sleepBetweenSendsMs);
                 }
 
