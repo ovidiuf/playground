@@ -23,11 +23,13 @@ Then, to send messages (more help in-line by simply running ./send):
       --connection-factory /jms/RemoteConnectionFactory \
       --messages 1000 \
       [--sleep-between-sends-ms 1000] \
+      [--connections 10] \
       --threads 10 
 
 To receive messages (more help in-line by simply running ./receive):
 
     ./bin/receive \
+    [--connections 10] \
     --jndi 127.0.0.1:4447 \
     --destination /queue/toyota \
     --connection-factory /jms/RemoteConnectionFactory
