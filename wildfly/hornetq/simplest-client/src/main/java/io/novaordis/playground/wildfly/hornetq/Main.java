@@ -64,7 +64,7 @@ public class Main {
 
         if (Operation.send.equals(operation)) {
 
-            send(conf.getUserName(), conf.getPassword(), connectionFactory, destination,
+            send(conf.getConnectionCount(), conf.getUserName(), conf.getPassword(), connectionFactory, destination,
                     conf.getThreadCount(), conf.getMessageCount(), conf.getSleepBetweenSendsMs());
         }
         else if (Operation.receive.equals(operation)) {
@@ -88,11 +88,11 @@ public class Main {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
-    private static void send(String username, String password,
+    private static void send(int connectionCount, String username, String password,
                              ConnectionFactory connectionFactory, Destination destination,
                              int threadCount, int messageCount, long sleepBetweenSendsMs) throws Exception {
 
-        Connection connections[] = new Connection[1];
+        Connection connections[] = new Connection[connectionCount];
 
         for(int i = 0; i < connections.length; i ++) {
 
@@ -106,7 +106,7 @@ public class Main {
             log.info("connection[" + i + "]: " + connections[i]);
         }
 
-        log.info("sending " + messageCount + " messages on " + threadCount + " thread(s) ...");
+        log.info("sending " + messageCount + " messages on " + threadCount + " thread(s) using " + connectionCount + " connection(s) ...");
 
         for (Connection connection : connections) {
             connection.start();
