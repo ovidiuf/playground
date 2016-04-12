@@ -165,6 +165,10 @@ public class Configuration
 
                 threadCount = Integer.parseInt(args[++i]);
             }
+            else if ("--sleep-between-sends-ms".equals(args[i])) {
+
+                sleepBetweenSendsMs = Long.parseLong(args[++i]);
+            }
             else {
 
                 throw new Exception("unknown argument: '" + args[i] + "'");

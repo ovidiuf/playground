@@ -22,7 +22,8 @@ Then, to send messages (more help in-line by simply running ./send):
       --destination /topic/novaordis \
       --connection-factory /jms/RemoteConnectionFactory \
       --messages 1000 \
-      --threads 10
+      [--sleep-between-sends-ms 1000] \
+      --threads 10 
 
 To receive messages (more help in-line by simply running ./receive):
 
