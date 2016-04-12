@@ -10,6 +10,11 @@ To build:
 Then update ./bin/common so it builds the classpath correctly on the machine you're executing the
 client.
 
+Prepare the target WildFly instances you intend to connect to by:
+* Disabling authentication on the remoting subsystem (so JNDI calls can be performed without authentication)
+* Adding jmsuser/jmsuser123 with $JBOSS_HOME/bin/add-user.sh to the ApplicationRealm, and assign it to the
+"guest" role.
+
 Then, to send messages (more help in-line by simply running ./send):
 
     ./bin/send \
