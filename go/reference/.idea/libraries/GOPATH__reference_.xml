@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;reference&gt;">
+    <CLASSES>
+      <root url="file://$GOPATH$/src/main" />
+      <root url="file://$GOPATH$/src/main.go" />
+      <root url="file://$GOPATH$/src/search" />
+      <root url="file://$GOPATH$/src/matchers" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <excluded>
+      <root url="file://$PROJECT_DIR$" />
+    </excluded>
+  </library>
+</component>
