@@ -4,6 +4,7 @@
       <root url="file://$GOPATH$/src/main" />
       <root url="file://$GOPATH$/src/main.go" />
       <root url="file://$GOPATH$/src/search" />
+      <root url="file://$GOPATH$/src/matchers" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
