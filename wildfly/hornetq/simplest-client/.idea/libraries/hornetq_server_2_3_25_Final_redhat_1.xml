@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="hornetq-server-2.3.25.Final-redhat-1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/projects/eap6.4/6.4.0/jboss-eap-6.4.0.GA-maven-repository-CSP/org/hornetq/hornetq-server/2.3.25.Final-redhat-1/hornetq-server-2.3.25.Final-redhat-1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/projects/eap6.4/6.4.0/jboss-eap-6.4.0.GA-maven-repository-CSP/org/hornetq/hornetq-server/2.3.25.Final-redhat-1/hornetq-server-2.3.25.Final-redhat-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
