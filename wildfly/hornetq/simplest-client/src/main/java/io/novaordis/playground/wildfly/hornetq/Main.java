@@ -32,6 +32,7 @@ import javax.jms.Destination;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import java.util.Timer;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -69,7 +70,7 @@ public class Main {
         }
         else if (Operation.receive.equals(operation)) {
 
-            receive(conf.getUserName(), conf.getPassword(), connectionFactory, destination);
+            receive(conf.getUserName(), conf.getPassword(), connectionFactory, destination, conf.isStatsOnly());
         }
         else {
             throw new Exception("unknown operation: " + operation);
@@ -135,7 +136,8 @@ public class Main {
     }
 
     private static void receive(String username, String password,
-                                ConnectionFactory connectionFactory, Destination destination) throws Exception {
+                                ConnectionFactory connectionFactory, Destination destination,
+                                boolean statsOnly) throws Exception {
 
         Connection connection = connectionFactory.createConnection(username, password);
 
@@ -143,18 +145,25 @@ public class Main {
 
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         MessageConsumer consumer = session.createConsumer(destination);
-
         AtomicLong messageReceived = new AtomicLong(0);
-        consumer.setMessageListener(new SimpleListener(messageReceived));
 
-        Timer timer = new Timer();
-        timer.schedule(new MessageReceivedReporter(messageReceived), REPORTING_INTERVAL, REPORTING_INTERVAL);
+        if (statsOnly) {
+            consumer.setMessageListener(new SimpleListener(messageReceived, statsOnly));
+            Timer timer = new Timer();
+            timer.schedule(new MessageReceivedReporter(messageReceived), REPORTING_INTERVAL, REPORTING_INTERVAL);
+        }
+        else {
+            consumer.setMessageListener(new SimpleListener(messageReceived, statsOnly));
+        }
 
         Runtime.getRuntime().addShutdownHook(new ReceiverShutdownHook(connection, messageReceived));
 
         connection.start();
 
-        log.info("listening for messages");
+        log.info("listening for messages, Ctrl-C to exit ...");
+
+        CountDownLatch latch = new CountDownLatch(1);
+        latch.await();
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

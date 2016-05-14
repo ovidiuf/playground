@@ -41,15 +41,15 @@ public class Configuration
 
     private long sleepBetweenSendsMs = 0L;
 
+    private boolean statsOnly;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public Configuration(String[] args) throws Exception
     {
         threadCount = 1;
         messageCount = -1;
-
-        username = "jmsuser";
-        password = "jmsuser123";
+        statsOnly = false;
 
         parseArguments(args);
 
@@ -132,6 +132,10 @@ public class Configuration
         return connectionCount;
     }
 
+    public boolean isStatsOnly() {
+        return statsOnly;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
@@ -162,6 +166,14 @@ public class Configuration
 
                 connectionFactoryName = args[++i];
             }
+            else if ("--username".equals(args[i])) {
+
+                username = args[++i];
+            }
+            else if ("--password".equals(args[i])) {
+
+                password = args[++i];
+            }
             else if ("--messages".equals(args[i])) {
 
                 messageCount = Integer.parseInt(args[++i]);
@@ -169,14 +181,17 @@ public class Configuration
             else if ("--threads".equals(args[i])) {
 
                 threadCount = Integer.parseInt(args[++i]);
-            }
-            else if ("--connections".equals(args[i])) {
+            } else if ("--connections".equals(args[i])) {
 
                 connectionCount = Integer.parseInt(args[++i]);
             }
             else if ("--sleep-between-sends-ms".equals(args[i])) {
 
                 sleepBetweenSendsMs = Long.parseLong(args[++i]);
+            }
+            else if ("--stats".equals(args[i])) {
+
+                statsOnly = true;
             }
             else {
 

@@ -1,7 +1,16 @@
 #!/bin/bash
+#
+# Send error information at stderr and exit. The return code is 255.
+#
+function fail
+{
+    echo "[error]: $@" 1>&2 && exit 255
+}
 
 function build-classpath()
 {
+    [ -z "${M2}" ] && fail "we need access to the local Maven repository, set the M2 environment variable and try again ..."
+
     local name
     local short_name
     local jboss_home

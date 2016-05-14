@@ -8,10 +8,19 @@ cat <<EOF
 
 Usage:
 
-     ./bin/receive \\
-       --jndi 127.0.0.1:4447 \\
-       --destination /topic/novaordis \\
-       --connection-factory /RemoteConnectionFactory
+    ./bin/receive \\
+     --jndi 127.0.0.1:4447 \\
+     --destination /queue/novaordis \\
+     --connection-factory /jms/RemoteConnectionFactory \\
+     [--username jmsuser --password jmsuser123] \\
+     [--stats]
+
+The client listens for incoming messages and dumps them at stdout as they arrive or displays
+statistics if the "--stats" option was used.
+
+If no --username (and corresponding --password) options are specified, the JMS Connections will be
+created anonymously. The server may or may not allow anonymous connections, depending on its
+security settings.
 
 EOF
 }

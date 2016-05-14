@@ -16,8 +16,10 @@
 
 package io.novaordis.playground.wildfly.hornetq.jms;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class SimpleListener implements MessageListener
@@ -29,12 +31,14 @@ public class SimpleListener implements MessageListener
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private AtomicLong messageReceived;
+    private boolean statsOnly;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public SimpleListener(AtomicLong messageReceived)
+    public SimpleListener(AtomicLong messageReceived, boolean statsOnly)
     {
         this.messageReceived = messageReceived;
+        this.statsOnly = statsOnly;
     }
 
     // MessageListener implementation ----------------------------------------------------------------------------------
@@ -43,6 +47,22 @@ public class SimpleListener implements MessageListener
     public void onMessage(Message message)
     {
         messageReceived.incrementAndGet();
+        if (statsOnly) {
+            return;
+        }
+
+        String line = message.toString();
+
+        try {
+            if (message instanceof TextMessage) {
+                line += " " + ((TextMessage) message).getText();
+            }
+        }
+        catch (JMSException e) {
+            line += " failure to retrieve the text: " + e.getMessage();
+        }
+
+        System.out.println(line);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

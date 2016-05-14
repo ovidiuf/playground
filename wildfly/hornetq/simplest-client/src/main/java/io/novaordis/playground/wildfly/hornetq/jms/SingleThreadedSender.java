@@ -85,7 +85,7 @@ public class SingleThreadedSender implements Runnable
                 }
 
                 //Message m = session.createTextMessage("test");
-                Message m = session.createObjectMessage("test-" + System.currentTimeMillis());
+                Message m = session.createTextMessage("test-" + System.currentTimeMillis());
                 producer.send(m);
 
                 remaining --;
