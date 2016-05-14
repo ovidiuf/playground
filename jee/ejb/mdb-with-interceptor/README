@@ -1,0 +1,5 @@
+
+An example of an EJB3 MDB and a custom interceptor that looks at transaction details.
+
+Deploys as JAR.
+
