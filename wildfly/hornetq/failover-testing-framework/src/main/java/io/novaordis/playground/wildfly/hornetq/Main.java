@@ -64,7 +64,7 @@ public class Main {
         ConnectionFactory connectionFactory = JNDI.getConnectionFactory(jndiUrl, connectionFactoryName);
         log.info("connection factory: " + destination);
 
-        MessageRecordingFacility mrec = new MessageRecordingFacility();
+        MessageRecordingFacility mrec = new MessageRecordingFacility(conf.getOutputFileName());
 
         Operation operation = conf.getOperation();
 
@@ -80,6 +80,8 @@ public class Main {
         else {
             throw new Exception("unknown operation: " + operation);
         }
+
+        mrec.close();
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

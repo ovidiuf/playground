@@ -43,6 +43,8 @@ public class Configuration
 
     private boolean statsOnly;
 
+    private String outputFileName;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public Configuration(String[] args) throws Exception
@@ -72,6 +74,12 @@ public class Configuration
         {
             throw new Exception("specify the number of messages to send with --messages");
         }
+
+        if (outputFileName == null)
+        {
+            throw new Exception("specify the name of the statistics output file with --output");
+        }
+
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -132,8 +140,19 @@ public class Configuration
         return connectionCount;
     }
 
+    /**
+     * If true, the client with display output/input rates at stdout, not message details.
+     */
     public boolean isStatsOnly() {
         return statsOnly;
+    }
+
+    /**
+     * @return the file name to write message statistics.
+     */
+    public String getOutputFileName() {
+
+        return outputFileName;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
@@ -192,6 +211,10 @@ public class Configuration
             else if ("--stats".equals(args[i])) {
 
                 statsOnly = true;
+            }
+            else if ("--output".equals(args[i])) {
+
+                outputFileName = args[++i];
             }
             else {
 
