@@ -60,3 +60,7 @@ statistics if the "--stats" option was used.
 If no --username (and corresponding --password) options are specified, the JMS Connections will be
 created anonymously. The server may or may not allow anonymous connections, depending on its
 security settings.
+
+#Also See
+
+https://github.com/NovaOrdis/playground/tree/master/wildfly/hornetq/failover-testing-framework
