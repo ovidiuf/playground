@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.wildfly.hornetq.jms;
 
+import io.novaordis.playground.wildfly.hornetq.util.MessageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -45,13 +47,18 @@ public class SingleThreadedSender implements Runnable
     private Destination destination;
     // negative or zero means "don't sleep"
     private long sleepBetweenSendsMs;
+    private BlockingQueue<MessageInfo> messageInfoQueue;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    /**
+     * @param messageInfoQueue the queue to write message information on, for external storage.
+     */
     public SingleThreadedSender(int id, Connection connection, Destination destination,
                                 long sleepBetweenSendsMs,
                                 AtomicInteger remainingToSend, AtomicInteger messagesSent,
-                                CyclicBarrier barrier)
+                                CyclicBarrier barrier,
+                                BlockingQueue<MessageInfo> messageInfoQueue)
     {
         this.id = id;
         this.connection = connection;
@@ -60,6 +67,7 @@ public class SingleThreadedSender implements Runnable
         this.messagesSent = messagesSent;
         this.barrier = barrier;
         this.sleepBetweenSendsMs = sleepBetweenSendsMs;
+        this.messageInfoQueue = messageInfoQueue;
     }
 
     // Runnable implementation -----------------------------------------------------------------------------------------
@@ -88,6 +96,10 @@ public class SingleThreadedSender implements Runnable
                 Message m = session.createTextMessage("test-" + System.currentTimeMillis());
                 producer.send(m);
 
+                MessageInfo mi = new MessageInfo();
+                mi.init(m);
+                messageInfoQueue.add(mi);
+
                 remaining --;
                 if (remaining < 0) {
                     remaining = 0;
@@ -105,6 +117,10 @@ public class SingleThreadedSender implements Runnable
         catch(Exception e)
         {
             log.info("thread " + Thread.currentThread().getName() + " failed: " + e);
+
+            MessageInfo mi = new MessageInfo();
+            mi.init(e);
+            messageInfoQueue.add(mi);
         }
         finally
         {

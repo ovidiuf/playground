@@ -21,7 +21,9 @@ import io.novaordis.playground.wildfly.hornetq.jms.SimpleListener;
 import io.novaordis.playground.wildfly.hornetq.jms.SingleThreadedSender;
 import io.novaordis.playground.wildfly.hornetq.util.Configuration;
 import io.novaordis.playground.wildfly.hornetq.util.JNDI;
+import io.novaordis.playground.wildfly.hornetq.util.MessageInfo;
 import io.novaordis.playground.wildfly.hornetq.util.MessageReceivedReporter;
+import io.novaordis.playground.wildfly.hornetq.util.MessageRecordingFacility;
 import io.novaordis.playground.wildfly.hornetq.util.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ import javax.jms.Destination;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import java.util.Timer;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,12 +64,14 @@ public class Main {
         ConnectionFactory connectionFactory = JNDI.getConnectionFactory(jndiUrl, connectionFactoryName);
         log.info("connection factory: " + destination);
 
+        MessageRecordingFacility mrec = new MessageRecordingFacility();
+
         Operation operation = conf.getOperation();
 
         if (Operation.send.equals(operation)) {
 
             send(conf.getConnectionCount(), conf.getUserName(), conf.getPassword(), connectionFactory, destination,
-                    conf.getThreadCount(), conf.getMessageCount(), conf.getSleepBetweenSendsMs());
+                    conf.getThreadCount(), conf.getMessageCount(), conf.getSleepBetweenSendsMs(), mrec.getQueue());
         }
         else if (Operation.receive.equals(operation)) {
 
@@ -91,7 +96,8 @@ public class Main {
 
     private static void send(int connectionCount, String username, String password,
                              ConnectionFactory connectionFactory, Destination destination,
-                             int threadCount, int messageCount, long sleepBetweenSendsMs) throws Exception {
+                             int threadCount, int messageCount, long sleepBetweenSendsMs,
+                             BlockingQueue<MessageInfo> messageInfoQueue) throws Exception {
 
         Connection connections[] = new Connection[connectionCount];
 
@@ -121,7 +127,7 @@ public class Main {
         for(int i = 0; i < threadCount; i ++) {
             new Thread(new SingleThreadedSender(
                     i, connections[i % connections.length], destination, sleepBetweenSendsMs,
-                    remainingToSend, messagesSent, barrier),
+                    remainingToSend, messagesSent, barrier, messageInfoQueue),
                     "Sender Thread " + i).start();
         }
 
