@@ -30,4 +30,14 @@ Note that the client can also be used to receive messages.
 
 ##MDB
 
+The output file is configured with -Dplayground.failover.testing.framework.output.file in the JBoss configuration. 
+Once common option is to set it in its .conf file:
+
+    JAVA_OPTS="${JAVA_OPTS} -Dplayground.failover.testing.framework.output.file=/Users/ovidiu/tmp"
+    
+Alternatively it can be set in the standalone.xml <properties> section.
+
+The MDB is deployed as an EAR (built by the 'ear' module).
+
+
 

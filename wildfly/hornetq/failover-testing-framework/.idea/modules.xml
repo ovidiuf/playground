@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/client/failover-testing-client.iml" filepath="$PROJECT_DIR$/client/failover-testing-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/failover-testing-common.iml" filepath="$PROJECT_DIR$/common/failover-testing-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ear/failover-testing-ear.iml" filepath="$PROJECT_DIR$/ear/failover-testing-ear.iml" />
       <module fileurl="file://$PROJECT_DIR$/mdb/failover-testing-mdb.iml" filepath="$PROJECT_DIR$/mdb/failover-testing-mdb.iml" />
       <module fileurl="file://$PROJECT_DIR$/maven-root.iml" filepath="$PROJECT_DIR$/maven-root.iml" />
     </modules>

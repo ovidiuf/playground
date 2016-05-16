@@ -30,6 +30,9 @@ import java.util.concurrent.BlockingQueue;
  * Writes statistics externally. Initially developed with the goal of comparing sent messages with received messages in
  * failover scenarios.
  *
+ * Autoflush: in some cases, for example when used by MDBs, we don't really know when the last message was sent,
+ * so we need to flush after each message. Turn on this capability with setAutoflush(true)
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/16/16
  */
@@ -51,6 +54,8 @@ public class MessageRecordingFacility implements Runnable {
     private BufferedWriter bw;
 
     private long counter;
+
+    private boolean autoFlush;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -124,6 +129,10 @@ public class MessageRecordingFacility implements Runnable {
         }
     }
 
+    public void setAutoflush(boolean b) {
+        this.autoFlush = b;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
 
@@ -133,6 +142,10 @@ public class MessageRecordingFacility implements Runnable {
 
     private void writeHeader() throws Exception {
         bw.write("counter, message-id,\n");
+
+        if (autoFlush) {
+            bw.flush();
+        }
     }
 
     private void writeLine(MessageInfo mi) throws Exception {
@@ -151,6 +164,10 @@ public class MessageRecordingFacility implements Runnable {
         line += "\n";
 
         bw.write(line);
+
+        if (autoFlush) {
+            bw.flush();
+        }
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

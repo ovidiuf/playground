@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="failover-testing-mdb (1):ear">
+    <output-path>$PROJECT_DIR$/ear/target</output-path>
+    <root id="archive" name="failover-testing-ear.ear">
+      <element id="artifact" artifact-name="failover-testing-mdb (1):ear exploded" />
+    </root>
+  </artifact>
+</component>

@@ -37,6 +37,17 @@ public class MessageInfo {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    public MessageInfo() {
+    }
+
+    public MessageInfo(Message message) {
+        init(message);
+    }
+
+    public MessageInfo(Exception exception) {
+        init(exception);
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
     /**

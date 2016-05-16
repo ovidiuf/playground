@@ -22,7 +22,7 @@ import io.novaordis.playground.wildfly.hornetq.jms.SingleThreadedSender;
 import io.novaordis.playground.wildfly.hornetq.util.Configuration;
 import io.novaordis.playground.wildfly.hornetq.util.JNDI;
 import io.novaordis.playground.wildfly.hornetq.ftf.common.MessageInfo;
-import io.novaordis.playground.wildfly.hornetq.ftf.common.MessageReceivedReporter;
+import io.novaordis.playground.wildfly.hornetq.util.MessageReceivedReporter;
 import io.novaordis.playground.wildfly.hornetq.ftf.common.MessageRecordingFacility;
 import io.novaordis.playground.wildfly.hornetq.util.Operation;
 import org.slf4j.Logger;
