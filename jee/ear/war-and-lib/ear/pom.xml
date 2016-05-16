@@ -73,6 +73,15 @@
             <version>${version}</version>
             <type>war</type>
         </dependency>
+        <!--
+             Optional, if EJB is involved
+        <dependency>
+            <groupId>io.novaordis.playground.jee.ear</groupId>
+            <artifactId>some-ejb-jar</artifactId>
+            <version>${version}</version>
+            <type>ejb</type>
+        </dependency>
+        -->
     </dependencies>
 
 </project>
