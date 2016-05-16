@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <name>HornetQ Failover Testing Framework Client</name>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.novaordis.playground.wildfly.hornetq.hornetq-failover-framework</groupId>
+        <artifactId>maven-root</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>failover-testing-client</artifactId>
+    <packaging>jar</packaging>
+
+    <build>
+        <finalName>failover-testing-client</finalName>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.novaordis.playground.wildfly.hornetq.hornetq-failover-framework</groupId>
+            <artifactId>failover-testing-common</artifactId>
+            <version>1</version>
+        </dependency>
+    </dependencies>
+
+</project>

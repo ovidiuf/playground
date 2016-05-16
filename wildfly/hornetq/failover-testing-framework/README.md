@@ -1,5 +1,10 @@
 #HornetQ Failover Testing Framework
 
+A multi-component framework that can be used to test HornetQ failover. It consists in a remote client that
+sends (and records) messages and various receivers that receive (and record) messages.
+
+##Client
+
 A simple JMS client that sends messages in a loop, while recording their IDs and failures
 (if they occur), so the set of messages that was effectively sent can be compared with the set of 
 received messages.
@@ -17,6 +22,12 @@ Builds in top of the "simplest-client" so all the options supported by that clie
      [--messages 100] \
      --output /fully/qualified/name/of/the/file/to/write/statistics/into.csv
 
+Also see:
 
 https://github.com/NovaOrdis/playground/tree/master/wildfly/hornetq/simplest-client
+
+Note that the client can also be used to receive messages. 
+
+##MDB
+
 

@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/failover-testing-framework.iml" filepath="$PROJECT_DIR$/failover-testing-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/failover-testing-client.iml" filepath="$PROJECT_DIR$/client/failover-testing-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/failover-testing-common.iml" filepath="$PROJECT_DIR$/common/failover-testing-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mdb/failover-testing-mdb.iml" filepath="$PROJECT_DIR$/mdb/failover-testing-mdb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven-root.iml" filepath="$PROJECT_DIR$/maven-root.iml" />
     </modules>
   </component>
 </project>

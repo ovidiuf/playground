@@ -4,11 +4,17 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground.wildfly.hornetq</groupId>
-    <artifactId>failover-testing-framework</artifactId>
-    <packaging>jar</packaging>
+    <groupId>io.novaordis.playground.wildfly.hornetq.hornetq-failover-framework</groupId>
+    <artifactId>maven-root</artifactId>
+    <packaging>pom</packaging>
 
     <version>1</version>
+
+    <modules>
+        <module>common</module>
+        <module>client</module>
+        <module>mdb</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,8 +22,6 @@
     </properties>
 
     <build>
-
-        <finalName>failover-testing-framework</finalName>
 
         <pluginManagement>
             <plugins>
@@ -92,3 +96,5 @@
     </dependencies>
 
 </project>
+
+
