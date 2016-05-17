@@ -45,7 +45,6 @@ The MDB is deployed as an EAR (built by the 'ear' module).
 
 The "tools" module contains various command line script to reconcile the results the framework generates.
 
-
     reconcile <sender-file> <receiver-file-1> <receiver-file-2> ...
      
 Output example:
