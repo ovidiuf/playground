@@ -1,7 +1,9 @@
 #HornetQ Failover Testing Framework
 
 A multi-component framework that can be used to test HornetQ failover. It consists in a remote client that
-sends (and records) messages and various receivers that receive (and record) messages.
+sends and records message IDs on file storage and various receivers (MDBs, remote receivers, etc.) that receive and 
+record the IDs of the received messages. The framework comes with reconciliation utilities that can tell whether
+messages have not been delivered, or duplicate messages have been delivered.
 
 ##Client
 
