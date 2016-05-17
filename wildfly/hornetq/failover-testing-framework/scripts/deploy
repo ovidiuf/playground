@@ -1,0 +1,16 @@
+#!/bin/bash
+
+target_profile=$1
+
+jboss_profile_1=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/A
+jboss_profile_2=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/B
+
+file=$(dirname $0)/../ear/target/failover-testing-ear.ear
+
+if [ -n "${target_profile}" ]; then
+    cp ${file} /Users/ovidiu/runtime/jboss-eap-6.4/profiles/${target_profile}/deployments && echo "$(basename ${file}) deployed on profile ${target_profile}"
+else
+    echo "deploying on both profiles ..."
+    cp ${file} ${jboss_profile_1}/deployments && echo "$(basename ${file}) deployed on profile $(basename ${jboss_profile_1})"
+    cp ${file} ${jboss_profile_2}/deployments && echo "$(basename ${file}) deployed on profile $(basename ${jboss_profile_2})"
+fi

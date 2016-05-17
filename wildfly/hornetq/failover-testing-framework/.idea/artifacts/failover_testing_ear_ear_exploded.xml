@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="failover-testing-ear:ear exploded">
+    <output-path>$PROJECT_DIR$/ear/target/failover-testing-ear</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="failover-testing-ear/javaeeApplication/JavaEE" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/ear/target/failover-testing-ear/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="directory" name="lib">
+        <element id="archive" name="failover-testing-common-1.jar">
+          <element id="module-output" name="failover-testing-common" />
+        </element>
+        <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.12" />
+      </element>
+      <element id="archive" name="failover-testing-mdb-1.jar">
+        <element id="module-output" name="failover-testing-mdb" />
+      </element>
+    </root>
+  </artifact>
+</component>

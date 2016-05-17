@@ -57,6 +57,8 @@ public class MessageRecordingFacility implements Runnable {
 
     private boolean autoFlush;
 
+    private String fileName;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -67,6 +69,8 @@ public class MessageRecordingFacility implements Runnable {
         if (fileName == null) {
             throw new IllegalArgumentException("null file name");
         }
+
+        this.fileName = fileName;
 
         this.queue = new ArrayBlockingQueue<>(1000);
 
@@ -133,6 +137,19 @@ public class MessageRecordingFacility implements Runnable {
         this.autoFlush = b;
     }
 
+    public boolean getAutoflush() {
+        return autoFlush;
+    }
+
+    @Override
+    public String toString() {
+
+        return
+                "MessageRecordingFacility[output=" + fileName + ", autoFlush=" + getAutoflush() +
+                        ", closed=" + closed + "]";
+
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
 
@@ -152,15 +169,30 @@ public class MessageRecordingFacility implements Runnable {
 
         String line = counter ++ + ", ";
 
+        String messageId;
+        String exceptionMessage;
+
         Exception e = mi.getException();
 
         if (e != null) {
-            throw new RuntimeException("NOT YET IMPLEMENTED dkd32g");
+
+            //
+            // we record exception instead of message
+            //
+
+            exceptionMessage = e.getClass().getSimpleName() + ": " + e.getMessage();
+            messageId = mi.getMessageId();
+            if (messageId == null) {
+                messageId = "";
+            }
+        }
+        else {
+
+            messageId = mi.getMessageId();
+            exceptionMessage = "";
         }
 
-        String messageId = mi.getMessageId();
-
-        line += messageId + ",";
+        line += messageId + ", " + exceptionMessage + ", ";
         line += "\n";
 
         bw.write(line);

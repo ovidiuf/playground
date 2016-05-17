@@ -15,6 +15,7 @@
         <module>client</module>
         <module>mdb</module>
         <module>ear</module>
+        <module>tools</module>
     </modules>
 
     <properties>

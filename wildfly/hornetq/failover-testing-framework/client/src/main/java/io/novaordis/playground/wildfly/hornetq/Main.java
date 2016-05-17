@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.wildfly.hornetq;
 
+import io.novaordis.playground.wildfly.hornetq.jms.ConnectionManager;
 import io.novaordis.playground.wildfly.hornetq.jms.ReceiverShutdownHook;
 import io.novaordis.playground.wildfly.hornetq.jms.SimpleListener;
 import io.novaordis.playground.wildfly.hornetq.jms.SingleThreadedSender;
@@ -64,18 +65,21 @@ public class Main {
         ConnectionFactory connectionFactory = JNDI.getConnectionFactory(jndiUrl, connectionFactoryName);
         log.info("connection factory: " + destination);
 
+        ConnectionManager cm = new ConnectionManager(connectionFactory, conf.getUserName(), conf.getPassword());
+
         MessageRecordingFacility mrec = new MessageRecordingFacility(conf.getOutputFileName());
+        mrec.setAutoflush(true);
 
         Operation operation = conf.getOperation();
 
         if (Operation.send.equals(operation)) {
 
-            send(conf.getConnectionCount(), conf.getUserName(), conf.getPassword(), connectionFactory, destination,
-                    conf.getThreadCount(), conf.getMessageCount(), conf.getSleepBetweenSendsMs(), mrec.getQueue());
+            send(cm, destination, conf.getThreadCount(), conf.getMessageCount(), conf.getSleepBetweenSendsMs(),
+                    mrec.getQueue());
         }
         else if (Operation.receive.equals(operation)) {
 
-            receive(conf.getUserName(), conf.getPassword(), connectionFactory, destination, conf.isStatsOnly());
+            receive(cm, destination, conf.isStatsOnly());
         }
         else {
             throw new Exception("unknown operation: " + operation);
@@ -96,31 +100,11 @@ public class Main {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
-    private static void send(int connectionCount, String username, String password,
-                             ConnectionFactory connectionFactory, Destination destination,
+    private static void send(ConnectionManager cm, Destination destination,
                              int threadCount, int messageCount, long sleepBetweenSendsMs,
                              BlockingQueue<MessageInfo> messageInfoQueue) throws Exception {
 
-        Connection connections[] = new Connection[connectionCount];
-
-        for(int i = 0; i < connections.length; i ++) {
-
-            if (username != null) {
-                connections[i] = connectionFactory.createConnection(username, password);
-            }
-            else {
-                connections[i] = connectionFactory.createConnection();
-            }
-
-            log.info("connection[" + i + "]: " + connections[i]);
-        }
-
-        log.info("sending " + messageCount + " messages on " + threadCount + " thread(s) using " + connectionCount + " connection(s) ...");
-
-        for (Connection connection : connections) {
-            connection.start();
-            log.info(connection + " started");
-        }
+        log.info("sending " + messageCount + " messages on " + threadCount + " thread(s) ...");
 
         final AtomicInteger remainingToSend = new AtomicInteger(messageCount);
         final AtomicInteger messagesSent = new AtomicInteger(0);
@@ -128,26 +112,21 @@ public class Main {
 
         for(int i = 0; i < threadCount; i ++) {
             new Thread(new SingleThreadedSender(
-                    i, connections[i % connections.length], destination, sleepBetweenSendsMs,
-                    remainingToSend, messagesSent, barrier, messageInfoQueue),
+                    i, cm, destination, sleepBetweenSendsMs, remainingToSend, messagesSent, barrier, messageInfoQueue),
                     "Sender Thread " + i).start();
         }
 
         barrier.await();
 
-        for (Connection connection : connections) {
-            connection.close();
-            log.info(connection + " closed");
-        }
-
+        Connection connection = cm.getConnection();
+        connection.close();
+        log.info(connection + " closed");
         log.info("sender done, " + messagesSent.get() + " messages sent");
     }
 
-    private static void receive(String username, String password,
-                                ConnectionFactory connectionFactory, Destination destination,
-                                boolean statsOnly) throws Exception {
+    private static void receive(ConnectionManager cm, Destination destination, boolean statsOnly) throws Exception {
 
-        Connection connection = connectionFactory.createConnection(username, password);
+        Connection connection = cm.getConnection();
 
         log.info("connection: " + connection);
 

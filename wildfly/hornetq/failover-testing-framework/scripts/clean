@@ -1,0 +1,42 @@
+#!/bin/bash
+
+jboss_profile_1=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/A
+jboss_profile_2=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/B
+
+function delete_dir() {
+
+    local dir=$1
+
+    [ ! -d ${dir} ] && { echo "directory ${dir} already deleted" ; return 0; }
+
+    local parent=$(dirname ${dir})
+
+    rm -r ${dir} && echo "deleted profile $(basename ${parent}) $(basename ${dir})"
+}
+
+function delete_files_in_dir() {
+
+    local dir=$1
+    local pattern=$2
+
+    [ -z "${pattern}" ] && pattern=*
+
+    [ ! -d ${dir} ] && { echo "directory ${dir} does not exist" ; return 0; }
+
+    local parent=$(dirname ${dir})
+
+    rm -r ${dir}/${pattern} && echo "deleted ${pattern} from $(basename ${parent})"
+}
+
+function main() {
+
+    delete_dir ${jboss_profile_1}/data
+    delete_dir ${jboss_profile_1}/tmp
+    delete_files_in_dir ${jboss_profile_1}/log
+    delete_dir ${jboss_profile_2}/data
+    delete_dir ${jboss_profile_2}/tmp
+    delete_files_in_dir ${jboss_profile_2}/log
+    delete_files_in_dir /Users/ovidiu/tmp *.csv
+}
+
+main;

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+target_profile=$1
+
+jboss_profile_1=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/A
+jboss_profile_2=/Users/ovidiu/runtime/jboss-eap-6.4/profiles/B
+
+filename=failover-testing-ear
+
+if [ -n "${target_profile}" ]; then
+    rm /Users/ovidiu/runtime/jboss-eap-6.4/profiles/${target_profile}/deployments/${filename}* && echo "undeployed from ${target_profile}"
+else
+    echo "undeploying from both profiles ..."
+    rm ${jboss_profile_1}/deployments/${filename}* && echo "undeployed from profile $(basename ${jboss_profile_1})"
+    rm ${jboss_profile_2}/deployments/${filename}* && echo "undeployed from profile $(basename ${jboss_profile_2})"
+fi

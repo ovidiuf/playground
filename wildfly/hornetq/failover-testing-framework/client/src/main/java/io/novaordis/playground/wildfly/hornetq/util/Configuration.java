@@ -34,7 +34,6 @@ public class Configuration
 
     private int threadCount;
     private int messageCount;
-    private int connectionCount = 1;
 
     private String username;
     private String password;
@@ -136,10 +135,6 @@ public class Configuration
         return sleepBetweenSendsMs;
     }
 
-    public int getConnectionCount() {
-        return connectionCount;
-    }
-
     /**
      * If true, the client with display output/input rates at stdout, not message details.
      */
@@ -200,9 +195,6 @@ public class Configuration
             else if ("--threads".equals(args[i])) {
 
                 threadCount = Integer.parseInt(args[++i]);
-            } else if ("--connections".equals(args[i])) {
-
-                connectionCount = Integer.parseInt(args[++i]);
             }
             else if ("--sleep-between-sends-ms".equals(args[i])) {
 

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+$(dirname $0)/kill-profile-1.sh
+$(dirname $0)/kill-profile-2.sh
+$(dirname $0)/clean
+
