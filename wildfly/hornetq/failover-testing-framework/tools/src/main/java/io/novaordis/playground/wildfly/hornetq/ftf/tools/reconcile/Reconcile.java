@@ -72,7 +72,18 @@ public class Reconcile {
 
         log.info("sent messages:         " + sentMessages.size());
         log.info("received messages:     " + receivedMessages.size());
-        log.info("sent but not received: " + (sentMessages.size() - receivedMessages.size()));
+
+
+        int sentButNotReceivedCount = sentMessages.size() - receivedMessages.size();
+
+        if (sentButNotReceivedCount == 0) {
+
+            log.info("all sent messages were received");
+        }
+        else {
+
+            log.info("sent but not received: " + (sentMessages.size() - receivedMessages.size()));
+        }
 
         List<Message> sentButNotReceived = new ArrayList<>();
 
@@ -87,10 +98,13 @@ public class Reconcile {
             }
         }
 
-        log.info("messages that were not received: ");
+        if (!sentButNotReceived.isEmpty()) {
 
-        for(Message m: sentButNotReceived) {
-            log.info(m.toString());
+            log.info("messages that were not received: ");
+
+            for (Message m : sentButNotReceived) {
+                log.info(m.toString());
+            }
         }
 
         if (!receivedMessages.isEmpty()) {
