@@ -16,6 +16,9 @@
 
 package io.novaordis.playground.wildfly.hornetq.ftf.tools.reconcile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,6 +32,8 @@ import java.util.List;
 public class ResultsFile {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    public static final Logger log = LoggerFactory.getLogger(ResultsFile.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -59,8 +64,21 @@ public class ResultsFile {
                 if (line.startsWith("counter")) {
 
                     if (header != null) {
-                        throw new RuntimeException("duplicate header found");
+
+                        Header newHeader = new Header(line);
+
+                        if (header.equals(newHeader)) {
+                            //
+                            // that is fine, it's the result of appending to the bottom of the file
+                            //
+                            log.warn("duplicate header found");
+                            continue;
+                        }
+
+                        throw new RuntimeException(
+                                "different header found, old header: " + header + ", new header " + newHeader);
                     }
+
                     header = new Header(line);
                 }
                 else {

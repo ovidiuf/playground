@@ -36,7 +36,7 @@ function main() {
     delete_dir ${jboss_profile_2}/data
     delete_dir ${jboss_profile_2}/tmp
     delete_files_in_dir ${jboss_profile_2}/log
-    delete_files_in_dir /Users/ovidiu/tmp *.csv
+    delete_files_in_dir /Users/ovidiu/playground/wildfly/hornetq/failover-testing-framework/data *.csv
 }
 
 main;

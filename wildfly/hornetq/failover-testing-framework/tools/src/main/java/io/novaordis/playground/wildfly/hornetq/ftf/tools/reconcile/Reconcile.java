@@ -65,6 +65,8 @@ public class Reconcile {
         List<Message> receivedMessages = new ArrayList<>();
 
         for(ResultsFile rf: receiverFiles) {
+
+            // check for duplicates
             receivedMessages.addAll(rf.getMessages());
         }
 

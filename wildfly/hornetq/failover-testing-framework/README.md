@@ -46,4 +46,10 @@ The "tools" module contains various command line script to reconcile the results
 
     reconcile <sender-file> <receiver-file-1> <receiver-file-2> ...
      
+Output example:
+     
+     $ reconcile ./sent.csv received-A.csv ./received-B.csv
+     @main 19:43:25,137 INFO  [Reconcile] sent messages:         998
+     @main 19:43:25,137 INFO  [Reconcile] received messages:     998
+     @main 19:43:25,137 INFO  [Reconcile] all sent messages were received
     

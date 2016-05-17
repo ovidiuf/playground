@@ -74,7 +74,11 @@ public class MessageRecordingFacility implements Runnable {
 
         this.queue = new ArrayBlockingQueue<>(1000);
 
-        this.bw = new BufferedWriter(new FileWriter(fileName));
+        //
+        // if the file exists, always append
+        //
+
+        this.bw = new BufferedWriter(new FileWriter(fileName, true));
 
         writeHeader();
 

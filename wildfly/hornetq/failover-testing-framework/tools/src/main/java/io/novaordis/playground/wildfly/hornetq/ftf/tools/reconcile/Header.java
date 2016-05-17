@@ -16,6 +16,9 @@
 
 package io.novaordis.playground.wildfly.hornetq.ftf.tools.reconcile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/16/16
@@ -28,15 +31,62 @@ public class Header {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private String line;
+    // empty header is legal
+    private List<String> headers;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public Header(String line) {
-        this.line = line;
+
+        this.headers = new ArrayList<>();
+
+        String[] hs = line.split(",");
+
+        for(String h: hs) {
+            h = h.trim();
+            headers.add(h);
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Header)) {
+            return false;
+        }
+
+        Header that = (Header)o;
+
+        if (headers.size() != that.headers.size()) {
+            return false;
+        }
+
+        for(int i = 0; i < headers.size(); i ++) {
+            if (!headers.get(i).equals(that.headers.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        int h = 17;
+
+        for(String s: headers) {
+            h += 3 * s.hashCode();
+        }
+
+        return h;
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
