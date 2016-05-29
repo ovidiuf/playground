@@ -1,0 +1,27 @@
+<infinispan xmlns="urn:infinispan:config:5.1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <global>
+        <transport clusterName="default-cluster"
+                   nodeName="${playground.infinispan.node.name}">
+            <properties>
+                <property name="configurationFile" value="sapient-experimental-jgroups.xml"/>
+            </properties>
+        </transport>
+    </global>
+
+    <default>
+        <clustering mode="dist">
+            <sync replTimeout="300000"/>
+            <hash rehashWait="60000"
+                  rehashRpcTimeout="600000"
+                  rehashEnabled="true"
+                  numVirtualNodes="1"
+                  numOwners="1">
+                <groups enabled="false"/>
+            </hash>
+        </clustering>
+    </default>
+
+</infinispan>
+
+

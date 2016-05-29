@@ -1,0 +1,98 @@
+
+<config xmlns="urn:org:jgroups"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:org:jgroups file:schema/JGroups-2.8.xsd">
+    <TCP
+            bind_addr="localhost"
+            bind_port="${jgroups.tcp.port}"
+            loopback="false"
+            port_range="30"
+            recv_buf_size="20000000"
+            send_buf_size="640000"
+            discard_incompatible_packets="true"
+            max_bundle_size="64000"
+            max_bundle_timeout="30"
+            enable_bundling="true"
+            use_send_queues="true"
+            sock_conn_timeout="300"
+            enable_diagnostics="false"
+
+            thread_pool.enabled="true"
+            thread_pool.min_threads="10"
+            thread_pool.max_threads="300"
+            thread_pool.keep_alive_time="5000"
+            thread_pool.queue_enabled="true"
+            thread_pool.queue_max_size="10000"
+            thread_pool.rejection_policy="Discard"
+
+            oob_thread_pool.enabled="true"
+            oob_thread_pool.min_threads="8"
+            oob_thread_pool.max_threads="400"
+            oob_thread_pool.keep_alive_time="5000"
+            oob_thread_pool.queue_enabled="false"
+            oob_thread_pool.queue_max_size="100"
+            oob_thread_pool.rejection_policy="Discard"/>
+
+    <!--
+        jgroups.ping.timeout=5000
+        jgroups.ping.num_initial_members=4
+    -->
+    <TCPPING timeout="3000"
+             initial_hosts="localhost[7800]"
+             port_range="1"
+             num_initial_members="1"/>
+
+    <MERGE2 max_interval="30000"
+            min_interval="10000"/>
+
+    <FD_SOCK/>
+
+    <FD_ALL interval="5000" timeout="15000"/>
+
+    <VERIFY_SUSPECT timeout="15000"/>
+
+    <!--
+        jgroups.pbcast.NAKACK.use_stats_for_retransmission=false
+        jgroups.pbcast.NAKACK.exponential_backoff=0
+        jgroups.pbcast.nakack.gc_lag=0
+    -->
+    <pbcast.NAKACK
+            use_mcast_xmit="true"
+            retransmit_timeout="600,1200"
+            discard_delivered_msgs="true"/>
+
+
+    <UNICAST2 timeout="300,600,1200"/>
+
+    <pbcast.STABLE stability_delay="1000"
+                   desired_avg_gossip="50000"
+                   max_bytes="1000000"/>
+
+
+
+    <!--
+         jgroups.pbcast.gms.max_bundling_time=500
+    -->
+    <pbcast.GMS print_local_addr="true"
+                join_timeout="3000"
+                view_bundling="true"/>
+
+
+    <!--
+        jgroups.fc.max_credits=500000
+        jgroups.fc.min_threshold=0.20
+    -->
+    <UFC max_credits="2000000" min_threshold="0.10"/>
+    <MFC max_credits="2000000" min_threshold="0.10"/>
+
+
+
+    <FRAG2 frag_size="60000"/>
+
+    <!--
+    jgroups.barrier=true
+    jgroups.pbcast.streaming_state_transfer=true
+    jgroups.udp.tos=10
+    transport.maxThreads=25
+    -->
+</config>

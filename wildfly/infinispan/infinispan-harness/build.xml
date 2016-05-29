@@ -1,0 +1,82 @@
+<project name="infinispan-harness" default="jar" basedir=".">
+
+    <!-- ======================================================================================= -->
+    <!-- Default properties                                                                      -->
+    <!-- ======================================================================================= -->
+
+    <property environment="ENV"/>
+    <property name="os" value="unix"/>
+    <property name="infinispan.home" value="C:/runtime/infinispan-5.1.4.FINAL"/>
+
+    <!-- ======================================================================================= -->
+    <!-- Paths                                                                                   -->
+    <!-- ======================================================================================= -->
+
+    <!--
+         5.1.2 standalone compilation classpath
+    -->
+    <!--
+    <path id="compilation.classpath">
+        <pathelement location="${infinispan.home}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${infinispan.home}/infinispan-core.jar"/>
+        <pathelement location="${infinispan.home}/lib/rhq-pluginAnnotations-3.0.4.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-logging-3.1.0.CR2.jar"/>
+        <pathelement location="${infinispan.home}/lib/jgroups-3.0.6.Final.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-marshalling-1.3.6.GA.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-marshalling-river-1.3.6.GA.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+    </path>
+    -->
+
+    <!--
+         5.1.4 standalone compilation classpath
+    -->
+    <path id="compilation.classpath">
+        <pathelement location="${infinispan.home}/lib/log4j-1.2.16.jar"/>
+        <pathelement location="${infinispan.home}/infinispan-core.jar"/>
+        <pathelement location="${infinispan.home}/lib/rhq-pluginAnnotations-3.0.4.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-logging-3.1.0.GA.jar"/>
+        <pathelement location="${infinispan.home}/lib/jgroups-3.0.9.Final.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-marshalling-1.3.11.GA.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-marshalling-river-1.3.11.GA.jar"/>
+        <pathelement location="${infinispan.home}/lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+    </path>
+
+    <path id="execution.classpath">
+        <path refid="compilation.classpath"/>
+        <pathelement location="./target/infinispan-harness.jar"/>
+    </path>
+
+    <!-- ======================================================================================= -->
+    <!-- Targets                                                                                 -->
+    <!-- ======================================================================================= -->
+
+    <target name="init">
+        <mkdir dir="./target/classes"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="./src/main/java" destdir="./target/classes" debug="on" source="1.6" includeantruntime="false">
+            <classpath refid="compilation.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar jarfile="./target/infinispan-harness.jar">
+            <zipfileset dir="target/classes" includes="**"/>
+            <!-- <zipfileset dir="./src/main/resources" includes="log4j.xml"/> -->
+            <!-- <zipfileset dir="./src/main/resources" includes="infinispan-configuration.xml"/> -->
+        </jar>
+    </target>
+
+    <!-- ======================================================================================= -->
+    <!-- Clean                                                                                   -->
+    <!-- ======================================================================================= -->
+
+    <target name="clean">
+        <delete includeEmptyDirs="true" quiet="true">
+            <fileset dir="./target" includes="**" />
+        </delete>
+    </target>
+
+</project>
