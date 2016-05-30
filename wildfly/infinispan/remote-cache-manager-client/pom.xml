@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!--
+
+        This POM relies on access to a JDG Maven repository built for a specific JDG release. These Maven repositories
+        can be downloaded from Red Hat Customer Portal. The location of the local file system should be available as
+        the value of the jdg.maven.repository, and if the directory is not found, the build will fail.
+
+
+    -->
+
+    <name>remote-cache-manager-client</name>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.novaordis.playground.wildfly.infinispan.remote-cache-manager-client</groupId>
+    <artifactId>ic</artifactId>
+    <packaging>jar</packaging>
+
+    <version>1</version>
+
+    <properties>
+        <jdg.maven.repository>/Users/ovidiu/runtime/jboss-eap-6.4.0.GA-maven-repository</jdg.maven.repository>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>MM/dd/yy</maven.build.timestamp.format>
+        <release_date>${maven.build.timestamp}</release_date>
+        <slf4j-version>1.7.12</slf4j-version>
+        <junit-version>4.12</junit-version>
+        <infinispan-version>8.0.1.Final-redhat-1</infinispan-version>
+    </properties>
+
+    <build>
+
+        <finalName>ic</finalName>
+
+        <!-- needed by the version mechanism -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-commons</artifactId>
+            <version>${infinispan-version}</version>
+            <scope>system</scope>
+            <systemPath>/Users/ovidiu/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/infinispan/infinispan-commons/8.0.1.Final-redhat-1/infinispan-commons-8.0.1.Final-redhat-1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-client-hotrod</artifactId>
+            <version>${infinispan-version}</version>
+            <scope>system</scope>
+            <systemPath>/Users/ovidiu/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/infinispan/infinispan-client-hotrod/8.0.1.Final-redhat-1/infinispan-client-hotrod-8.0.1.Final-redhat-1.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+</project>
+
