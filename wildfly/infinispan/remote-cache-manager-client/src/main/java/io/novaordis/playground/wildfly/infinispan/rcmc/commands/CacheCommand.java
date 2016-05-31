@@ -16,7 +16,6 @@
 
 package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
 import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
 import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
 import org.infinispan.client.hotrod.RemoteCache;
@@ -49,7 +48,7 @@ public abstract class CacheCommand extends CommandBase {
     protected RemoteCache insureConnected() throws Exception {
 
         Runtime runtime = getRuntime();
-        RemoteCache defaultCache = runtime.getDefaultCache();
+        RemoteCache defaultCache = runtime.getCache();
         if (defaultCache == null) {
             throw new UserErrorException("not connected");
         }

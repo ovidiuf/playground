@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc;
+package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
 
+import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
+import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
 import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
+
+import java.util.Set;
 
 /**
- * The container for the runtime state. Spans the life of th eclient.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/29/16
  */
-public class Runtime {
+@SuppressWarnings("unused")
+public class Keys extends CacheCommand {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -33,38 +35,24 @@ public class Runtime {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private RemoteCache currentCache;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    // Command implementation ------------------------------------------------------------------------------------------
+
+    @Override
+    public void execute(String restOfTheLine) throws Exception {
+
+        RemoteCache defaultCache = insureConnected();
+
+        //noinspection unchecked
+        Set<Object> keys = defaultCache.keySet();
+
+        for(Object k: keys) {
+            Console.info(k == null ? "null" : k.toString());
+        }
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public void setCache(RemoteCache rc) {
-
-        if (currentCache != null) {
-            throw new IllegalStateException("Default cache already set: " + currentCache);
-        }
-
-        currentCache = rc;
-    }
-
-    /**
-     * May be null if the "connect" command was not executed or it failed.
-     */
-    public RemoteCache getCache() {
-        return currentCache;
-    }
-
-    public RemoteCacheManager getRemoteCacheManager() {
-
-        RemoteCache dc = getCache();
-
-        if (dc == null) {
-            return null;
-        }
-
-        return dc.getRemoteCacheManager();
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

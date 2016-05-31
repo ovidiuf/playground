@@ -27,7 +27,9 @@
           <root url="jar://$USER_HOME$/runtime/jboss-datagrid-6.6.0-server/modules/system/layers/base/org/infinispan/client/hotrod/main/infinispan-client-hotrod-6.4.0.Final-redhat-4.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/archive/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-client-hotrod/6.4.0.Final-redhat-4/infinispan-client-hotrod-6.4.0.Final-redhat-4-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

@@ -48,7 +48,7 @@ public class Status extends CommandBase {
     public void execute(String restOfTheLine) throws Exception {
 
         Runtime runtime = getRuntime();
-        RemoteCache rc = runtime.getDefaultCache();
+        RemoteCache rc = runtime.getCache();
 
         if (rc == null) {
 
@@ -76,7 +76,7 @@ public class Status extends CommandBase {
             }
 
             msg += "\n";
-            msg += "  default cache: \"" + rc.getName() + "\"";
+            msg += "  cache name: \"" + rc.getName() + "\"";
 
             Console.info(msg);
         }

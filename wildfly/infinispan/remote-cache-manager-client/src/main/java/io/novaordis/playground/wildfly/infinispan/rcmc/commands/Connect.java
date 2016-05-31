@@ -18,10 +18,13 @@ package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
 
 import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
 import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
+import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.infinispan.client.hotrod.configuration.Configuration;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+
+import java.util.StringTokenizer;
 
 /**
  * Command creates a new RemoteCacheManager instance and gets the default cache, which then places in Runtime.
@@ -38,7 +41,19 @@ public class Connect extends CommandBase {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private String host;
+    private int port;
+
+    // null means "default cache"
+    private String cacheName;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public Connect() {
+
+        this.host = "localhost";
+        this.port = 11222;
+    }
 
     // Command implementation ------------------------------------------------------------------------------------------
 
@@ -54,29 +69,32 @@ public class Connect extends CommandBase {
             return;
         }
 
-        String initialHost = "localhost";
-        int port = 11222;
+        parseOptions(restOfTheLine);
 
-        if (restOfTheLine != null && restOfTheLine.trim().length() != 0) {
+        Console.info("connecting to " + host + ":" + port + "(" + (cacheName == null ? "DEFAULT CACHE" : cacheName) + ") ...");
 
-            String hostAndPort = restOfTheLine.replaceAll(" .*$", "");
-            int i = hostAndPort.indexOf(':');
-            if (i == -1) {
-                initialHost = hostAndPort;
-            }
-            else {
-                initialHost = hostAndPort.substring(0, i);
-                String sport = hostAndPort.substring(i + 1);
-                port = Integer.parseInt(sport);
-            }
+        Configuration c = new ConfigurationBuilder().addServer().host(host).port(port).build();
+
+        rcm = new RemoteCacheManager(c);
+
+        RemoteCache cache = null;
+
+        if (cacheName == null) {
+
+            cache = rcm.getCache();
+        }
+        else {
+
+            cache = rcm.getCache(cacheName);
         }
 
-        Console.info("connecting to " + initialHost + ":" + port + " ...");
+        if (cache == null) {
 
-        Configuration c = new ConfigurationBuilder().addServer().host(initialHost).port(port).build();
-        rcm = new RemoteCacheManager(c);
-        RemoteCache defaultCache = rcm.getCache();
-        runtime.setDefaultCache(defaultCache);
+            throw new UserErrorException("no such cache: " + cacheName);
+        }
+
+        runtime.setCache(cache);
+        Console.info("cache \"" + cache.getName() + "\" installed in runtime");
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -86,6 +104,41 @@ public class Connect extends CommandBase {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private void parseOptions(String line) {
+
+        if (line == null) {
+            return;
+        }
+
+        StringTokenizer st = new StringTokenizer(line, " ");
+
+        while(st.hasMoreTokens()) {
+
+            String tok = st.nextToken();
+
+            if (tok.startsWith("--cache=")) {
+
+                cacheName = tok.substring("--cache=".length());
+            }
+            else {
+
+                //
+                // host:port
+                //
+
+                int i = tok.indexOf(':');
+                if (i == -1) {
+                    host = tok;
+                }
+                else {
+                    host = tok.substring(0, i);
+                    String sport = tok.substring(i + 1);
+                    port = Integer.parseInt(sport);
+                }
+            }
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
