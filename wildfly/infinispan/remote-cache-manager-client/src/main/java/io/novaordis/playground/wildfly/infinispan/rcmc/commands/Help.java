@@ -40,7 +40,7 @@ public class Help extends CommandBase {
 
         String msg =
                 "Available commands:\n" +
-                        "  connect\n" +
+                        "  connect [initial-host:hotrod-port]\n" +
                         "  status\n" +
                         "  put <key> <value>\n" +
                         "  get <key>\n" +

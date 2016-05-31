@@ -54,7 +54,26 @@ public class Connect extends CommandBase {
             return;
         }
 
-        Configuration c = new ConfigurationBuilder().addServer().host("localhost").port(11222).build();
+        String initialHost = "localhost";
+        int port = 11222;
+
+        if (restOfTheLine != null && restOfTheLine.trim().length() != 0) {
+
+            String hostAndPort = restOfTheLine.replaceAll(" .*$", "");
+            int i = hostAndPort.indexOf(':');
+            if (i == -1) {
+                initialHost = hostAndPort;
+            }
+            else {
+                initialHost = hostAndPort.substring(0, i);
+                String sport = hostAndPort.substring(i + 1);
+                port = Integer.parseInt(sport);
+            }
+        }
+
+        Console.info("connecting to " + initialHost + ":" + port + " ...");
+
+        Configuration c = new ConfigurationBuilder().addServer().host(initialHost).port(port).build();
         rcm = new RemoteCacheManager(c);
         RemoteCache defaultCache = rcm.getCache();
         runtime.setDefaultCache(defaultCache);
