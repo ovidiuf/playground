@@ -15,7 +15,7 @@
     <orderEntry type="module-library">
       <library name="Maven: org.infinispan:infinispan-commons:6.4.0.Final-redhat-4">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.m2/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-commons/6.4.0.Final-redhat-4/infinispan-commons-6.4.0.Final-redhat-4.jar!/" />
+          <root url="jar://$USER_HOME$/runtime/jboss-datagrid-6.6.0-server/modules/system/layers/base/org/infinispan/commons/main/infinispan-commons-6.4.0.Final-redhat-4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -24,7 +24,7 @@
     <orderEntry type="module-library">
       <library name="Maven: org.infinispan:infinispan-client-hotrod:6.4.0.Final-redhat-4">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.m2/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-client-hotrod/6.4.0.Final-redhat-4/infinispan-client-hotrod-6.4.0.Final-redhat-4.jar!/" />
+          <root url="jar://$USER_HOME$/runtime/jboss-datagrid-6.6.0-server/modules/system/layers/base/org/infinispan/client/hotrod/main/infinispan-client-hotrod-6.4.0.Final-redhat-4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -2,10 +2,10 @@
 
     <!--
 
-        This POM relies on access to a JDG Maven repository built for a specific JDG release. These Maven repositories
-        can be downloaded from Red Hat Customer Portal. The location of the local file system should be available as
-        the value of the jdg.maven.repository, and if the directory is not found, the build will fail.
+        This POM relies on access to a JBoss Data Grid 6.6.0 deployment.
 
+        We decided not to use the JDG Maven repository built for a specific JDG release, because some repositories
+        are missing some runtime dependencies.
 
     -->
 
@@ -21,7 +21,7 @@
 
     <properties>
 
-        <jdg.maven.repository>${user.home}/.m2/jboss-datagrid-6.6.0-maven-repository</jdg.maven.repository>
+        <jboss.home>${user.home}/runtime/jboss-datagrid-6.6.0-server</jboss.home>
         <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,9 +69,9 @@
                         <configuration>
                             <rules>
                                 <requireFilesExist>
-                                    <message>The JDG Maven Repository directory ${jdg.maven.repository} does not exist.</message>
+                                    <message>The JBoss Home directory ${jboss.home} does not exist.</message>
                                     <files>
-                                        <file>${jdg.maven.repository}</file>
+                                        <file>${jboss.home}</file>
                                     </files>
                                 </requireFilesExist>
                             </rules>
@@ -101,7 +101,7 @@
             <artifactId>infinispan-commons</artifactId>
             <version>${infinispan-version}</version>
             <scope>system</scope>
-            <systemPath>${jdg.maven.repository}/org/infinispan/infinispan-commons/${infinispan-version}/infinispan-commons-${infinispan-version}.jar</systemPath>
+            <systemPath>${jboss.home}/modules/system/layers/base/org/infinispan/commons/main/infinispan-commons-${infinispan-version}.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -109,7 +109,7 @@
             <artifactId>infinispan-client-hotrod</artifactId>
             <version>${infinispan-version}</version>
             <scope>system</scope>
-            <systemPath>${jdg.maven.repository}/org/infinispan/infinispan-client-hotrod/${infinispan-version}/infinispan-client-hotrod-${infinispan-version}.jar</systemPath>
+            <systemPath>${jboss.home}/modules/system/layers/base/org/infinispan/client/hotrod/main/infinispan-client-hotrod-${infinispan-version}.jar</systemPath>
         </dependency>
     </dependencies>
 

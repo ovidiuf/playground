@@ -4,7 +4,8 @@
 # configuration
 #
 
-JDG_MAVEN_REPOSITORY=/Users/ovidiu/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository
+jboss_home=~/runtime/jboss-datagrid-6.6.0-server
+infinispan_version=6.4.0.Final-redhat-4
 
 #
 # end of configuration
@@ -18,28 +19,23 @@ function build-classpath() {
 
     local cp=${ic_jar}
 
-
-    [ -d ${JDG_MAVEN_REPOSITORY} ] || { echo "the location of the local JDG maven repository is not a valid directory: ${JDG_MAVEN_REPOSITORY}" 1>&2; exit 1; }
+    [ -d ${jboss_home} ] || { echo "the location of the local JDG deployment is not a valid directory: ${jboss_home}" 1>&2; exit 1; }
 
     #
     # compilation
     #
 
-    cp="${cp}:${JDG_MAVEN_REPOSITORY}/org/infinispan/infinispan-commons/8.0.1.Final-redhat-1/infinispan-commons-8.0.1.Final-redhat-1.jar"
-    cp="${cp}:${JDG_MAVEN_REPOSITORY}/org/infinispan/infinispan-client-hotrod/8.0.1.Final-redhat-1/infinispan-client-hotrod-8.0.1.Final-redhat-1.jar"
+    cp="${cp}:${jboss_home}/modules/system/layers/base/org/infinispan/commons/main/infinispan-commons-${infinispan_version}.jar"
+    cp="${cp}:${jboss_home}/modules/system/layers/base/org/infinispan/client/hotrod/main/infinispan-client-hotrod-${infinispan_version}.jar"
 
     #
     # runtime
     #
 
-    cp="${cp}:${JDG_MAVEN_REPOSITORY}/org/jboss/logging/jboss-logging/3.3.0.Final-redhat-1/jboss-logging-3.3.0.Final-redhat-1.jar"
-    cp="${cp}:${JDG_MAVEN_REPOSITORY}/commons-pool/commons-pool/1.6.0.redhat-8/commons-pool-1.6.0.redhat-8.jar"
-    cp="${cp}:${JDG_MAVEN_REPOSITORY}/org/jboss/marshalling/jboss-marshalling/1.4.10.Final-redhat-2/jboss-marshalling-1.4.10.Final-redhat-2.jar"
-    cp="${cp}:${JDG_MAVEN_REPOSITORY}/org/jboss/marshalling/jboss-marshalling-river/1.4.10.Final-redhat-2/jboss-marshalling-river-1.4.10.Final-redhat-2.jar"
-
-
-
-
+    cp="${cp}:${jboss_home}/modules/system/layers/base/org/jboss/logging/main/jboss-logging-3.1.4.GA-redhat-2.jar"
+    cp="${cp}:${jboss_home}/modules/system/layers/base/org/apache/commons/pool/main/commons-pool-1.6.0.redhat-7.jar"
+    cp="${cp}:${jboss_home}/modules/system/layers/base/org/jboss/marshalling/main/jboss-marshalling-1.4.10.Final-redhat-1.jar"
+    cp="${cp}:${jboss_home}/modules/system/layers/base/org/jboss/marshalling/river/main/jboss-marshalling-river-1.4.10.Final-redhat-1.jar"
 
     echo "${cp}"
 }
