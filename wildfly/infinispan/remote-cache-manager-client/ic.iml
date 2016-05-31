@@ -13,18 +13,18 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-log4j12:1.7.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: org.infinispan:infinispan-commons:8.0.1.Final-redhat-1">
+      <library name="Maven: org.infinispan:infinispan-commons:6.4.0.Final-redhat-4">
         <CLASSES>
-          <root url="jar://$USER_HOME$/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/infinispan/infinispan-commons/8.0.1.Final-redhat-1/infinispan-commons-8.0.1.Final-redhat-1.jar!/" />
+          <root url="jar://$USER_HOME$/.m2/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-commons/6.4.0.Final-redhat-4/infinispan-commons-6.4.0.Final-redhat-4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: org.infinispan:infinispan-client-hotrod:8.0.1.Final-redhat-1">
+      <library name="Maven: org.infinispan:infinispan-client-hotrod:6.4.0.Final-redhat-4">
         <CLASSES>
-          <root url="jar://$USER_HOME$/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/infinispan/infinispan-client-hotrod/8.0.1.Final-redhat-1/infinispan-client-hotrod-8.0.1.Final-redhat-1.jar!/" />
+          <root url="jar://$USER_HOME$/.m2/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-client-hotrod/6.4.0.Final-redhat-4/infinispan-client-hotrod-6.4.0.Final-redhat-4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

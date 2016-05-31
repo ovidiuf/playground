@@ -20,26 +20,20 @@
     <version>1</version>
 
     <properties>
-        <jdg.maven.repository>/Users/ovidiu/runtime/jboss-eap-6.4.0.GA-maven-repository</jdg.maven.repository>
+
+        <jdg.maven.repository>${user.home}/.m2/jboss-datagrid-6.6.0-maven-repository</jdg.maven.repository>
+        <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.build.timestamp.format>MM/dd/yy</maven.build.timestamp.format>
-        <release_date>${maven.build.timestamp}</release_date>
+
         <slf4j-version>1.7.12</slf4j-version>
         <junit-version>4.12</junit-version>
-        <infinispan-version>8.0.1.Final-redhat-1</infinispan-version>
+
     </properties>
 
     <build>
 
         <finalName>ic</finalName>
-
-        <!-- needed by the version mechanism -->
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
 
         <plugins>
             <plugin>
@@ -60,6 +54,29 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-directroy-exists</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireFilesExist>
+                                    <message>The JDG Maven Repository directory ${jdg.maven.repository} does not exist.</message>
+                                    <files>
+                                        <file>${jdg.maven.repository}</file>
+                                    </files>
+                                </requireFilesExist>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -84,7 +101,7 @@
             <artifactId>infinispan-commons</artifactId>
             <version>${infinispan-version}</version>
             <scope>system</scope>
-            <systemPath>/Users/ovidiu/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/infinispan/infinispan-commons/8.0.1.Final-redhat-1/infinispan-commons-8.0.1.Final-redhat-1.jar</systemPath>
+            <systemPath>${jdg.maven.repository}/org/infinispan/infinispan-commons/${infinispan-version}/infinispan-commons-${infinispan-version}.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -92,7 +109,7 @@
             <artifactId>infinispan-client-hotrod</artifactId>
             <version>${infinispan-version}</version>
             <scope>system</scope>
-            <systemPath>/Users/ovidiu/archive/jboss-eap-7.0.0.Beta1-maven-repository/maven-repository/org/infinispan/infinispan-client-hotrod/8.0.1.Final-redhat-1/infinispan-client-hotrod-8.0.1.Final-redhat-1.jar</systemPath>
+            <systemPath>${jdg.maven.repository}/org/infinispan/infinispan-client-hotrod/${infinispan-version}/infinispan-client-hotrod-${infinispan-version}.jar</systemPath>
         </dependency>
     </dependencies>
 
