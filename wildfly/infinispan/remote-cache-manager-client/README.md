@@ -8,15 +8,15 @@ interactively read and write the cache.
 
 ##Build
 
-The JDG Maven repository corresponding to the JDG release you're experimenting with is required. Update the value
-of the "" system property in pom.xml with the location of the repository.
+Access to a JDG server deployment is required. Update the value of the "jboss.home" pom.xml system property with 
+the path to the JDG server deployment. 
 
     ...
     
     <properties>
         ...
-        <jdg.maven.repository>/Users/ovidiu/runtime/jboss-eap-6.4.0.GA-maven-repository</jdg.maven.repository>
-        <infinispan-version>8.0.1.Final-redhat-1</infinispan-version>
+        <jboss.home>${user.home}/runtime/jboss-datagrid-6.6.0-server</jboss.home>
+        <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
         ...
     </properties>
     
@@ -26,7 +26,10 @@ Then you can build:
     
     mvn clean package
 
-The build command also assembles the classpath required by the ./bin/ic wrapper.
+The ./bin/ic wrapper must also be updated to point to the same JDG server deployment:
+
+    jboss_home=~/runtime/jboss-datagrid-6.6.0-server
+    infinispan_version=6.4.0.Final-redhat-4
 
 ##Usage Example
 
