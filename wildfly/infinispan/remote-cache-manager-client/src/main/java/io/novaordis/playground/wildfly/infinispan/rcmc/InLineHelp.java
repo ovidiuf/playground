@@ -14,33 +14,69 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.rcmc;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import io.novaordis.playground.wildfly.infinispan.rcmc.InLineHelp;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 5/29/16
+ * @since 5/31/16
  */
-@SuppressWarnings("unused")
-public class Help extends CommandBase {
+public class InLineHelp {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
+    public static final String HELP_FILE_NAME="help.txt";
+
     // Static ----------------------------------------------------------------------------------------------------------
+
+    public static String get() throws UserErrorException {
+
+        InputStream is = InLineHelp.class.getClassLoader().getResourceAsStream(HELP_FILE_NAME);
+
+        if (is == null) {
+            throw new UserErrorException(
+                    "no " + HELP_FILE_NAME + " file found on the classpath; this usually means the utility was not built or installed correctly");
+        }
+
+        String help = "";
+        BufferedReader br = null;
+
+        try
+        {
+            br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while((line = br.readLine()) != null)
+            {
+                help += line + "\n";
+            }
+        }
+        catch (Exception e) {
+
+            throw new IllegalStateException(e);
+        }
+        finally
+        {
+            if (br != null)
+            {
+                try {
+                    br.close();
+                }
+                catch(IOException e) {
+                    System.err.println("warn: failed to close the input stream");
+                }
+            }
+        }
+
+        return help;
+    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
-
-    // Command implementation ------------------------------------------------------------------------------------------
-
-    @Override
-    public void execute(String restOfTheLine) throws Exception {
-
-        Console.info(InLineHelp.get());
-    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 

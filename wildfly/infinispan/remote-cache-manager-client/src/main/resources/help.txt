@@ -1,0 +1,23 @@
+
+ic - Infinispan Client
+
+A simple command line client that connects to a remote cache over the HotRod protocol and
+allows for simple cache operations, in a command line loop.
+
+Commands:
+
+    connect [initial-host:hotrod-port] [--cache=<cache-name>]
+
+        Connects the client to a HotRod server, optionally specifying a cache name. If no
+        cache name is specified, the default cache is used. If a name of a cache that does
+        not exist is used, the client will display an error message.
+
+    status
+
+    put <key> <value>
+
+    get <key>
+
+    keys
+
+    exit

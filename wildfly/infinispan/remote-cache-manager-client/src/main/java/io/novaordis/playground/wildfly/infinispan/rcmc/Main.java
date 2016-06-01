@@ -48,7 +48,12 @@ public class Main {
                     continue;
                 }
 
-                execute(line, runtime);
+                try {
+                    execute(line, runtime);
+                }
+                catch(UserErrorException e) {
+                    Console.error(e.getMessage());
+                }
             }
         }
         finally {
