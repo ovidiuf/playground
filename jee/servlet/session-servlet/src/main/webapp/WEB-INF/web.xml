@@ -40,4 +40,6 @@
     </security-role>
     -->
 
+    <distributable/>
+
 </web-app>

@@ -34,6 +34,8 @@ Example: http://locahost:8080/session-servlet?establish-session
 
 After the first request, obviously there's no need for "establish-session" anymore, the browser/server ensemble maintain the one that was established. The current implementation will throw an exception if it sees "establish-session=true" again.
 
+### Enable HTTP Session Replication
+
 ##Root Context
 
 You can change the root context as follows:

@@ -4,4 +4,23 @@
     <security-domain>java:/jaas/jmx-console</security-domain>
     -->
 
+
+    <replication-config>
+        <!--
+        <cache-name>eap-http-sessions</cache-name>
+        -->
+        <replication-trigger>SET</replication-trigger>
+        <replication-granularity>SESSION</replication-granularity>
+    </replication-config>
+
+    <!--
+
+    <passivation-config>
+        <use-session-passivation>true</use-session-passivation>
+        <passivation-min-idle-time>900</passivation-min-idle-time>
+        <passivation-max-idle-time>1800</passivation-max-idle-time>
+    </passivation-config>
+
+    -->
+
 </jboss-web>
