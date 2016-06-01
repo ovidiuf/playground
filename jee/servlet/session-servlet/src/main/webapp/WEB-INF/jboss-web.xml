@@ -6,9 +6,7 @@
 
 
     <replication-config>
-        <!--
-        <cache-name>eap-http-sessions</cache-name>
-        -->
+        <cache-name>cacheContainer.default-cache</cache-name>
         <replication-trigger>SET</replication-trigger>
         <replication-granularity>SESSION</replication-granularity>
     </replication-config>

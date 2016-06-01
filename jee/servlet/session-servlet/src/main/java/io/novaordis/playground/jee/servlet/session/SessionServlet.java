@@ -124,8 +124,7 @@ public class SessionServlet extends HttpServlet
         {
             for(int i = 0; i < cookies.length; i ++)
             {
-                out.println("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                        i + ") " + cookieToString(cookies[i]) + "<br>\n");
+                out.println("&nbsp;&nbsp;&nbsp;&nbsp;" + i + ") " + cookieToString(cookies[i]) + "<br>\n");
             }
         }
 
