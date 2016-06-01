@@ -16,18 +16,17 @@
 
 package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
-import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
+import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
 import org.infinispan.client.hotrod.RemoteCache;
 
+import java.util.Set;
+
 /**
- * A cache command, needs a an active cache in Runtime.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/29/16
  */
 @SuppressWarnings("unused")
-public abstract class CacheCommand extends CommandBase {
+public class Values extends CacheCommand {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -39,22 +38,21 @@ public abstract class CacheCommand extends CommandBase {
 
     // Command implementation ------------------------------------------------------------------------------------------
 
+    @Override
+    public void execute(String restOfTheLine) throws Exception {
+
+        RemoteCache cache = insureConnected();
+
+        for(Object v: cache.values()) {
+            Console.info(v == null ? "null" : v.toString());
+        }
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
-
-    protected RemoteCache insureConnected() throws Exception {
-
-        Runtime runtime = getRuntime();
-        RemoteCache cache = runtime.getCache();
-        if (cache == null) {
-            throw new UserErrorException("not connected");
-        }
-
-        return cache;
-    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

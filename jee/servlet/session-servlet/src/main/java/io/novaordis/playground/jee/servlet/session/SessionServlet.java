@@ -18,6 +18,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:ovidiu@novaordis.com">Ovidiu Feodorov</a>
@@ -69,15 +70,15 @@ public class SessionServlet extends HttpServlet
 
         dumpHeaders(req);
 
-        String executingHost = getExecutingHost();
+        String operationLog = interactWithCache(session, req);
 
+        String executingHost = getExecutingHost();
         String user = req.getRemoteUser();
         String remoteAddress = req.getRemoteAddr();
         String remoteHost = req.getRemoteHost();
-
         Cookie[] cookies = req.getCookies();
 
-        sendResponse(resp, path, executingHost, user, remoteAddress, remoteHost, cookies);
+        sendResponse(resp, path, executingHost, user, remoteAddress, remoteHost, cookies, operationLog);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -92,7 +93,7 @@ public class SessionServlet extends HttpServlet
      * @param nodeName - can be null if the node name cannot be determined
      */
     private void sendResponse(HttpServletResponse r, String path, String nodeName, String user, String remoteAddress,
-                              String remoteHost, Cookie[] cookies) throws IOException {
+                              String remoteHost, Cookie[] cookies, String operationLog) throws IOException {
 
         r.setContentType("text/html");
 
@@ -119,7 +120,6 @@ public class SessionServlet extends HttpServlet
                 remoteHost + "\n<br>");
         out.println("received cookies:&nbsp;" +
                 (cookies == null || cookies.length == 0 ? "no cookies" : "") + "<br>\n");
-
         if (cookies != null)
         {
             for(int i = 0; i < cookies.length; i ++)
@@ -128,6 +128,10 @@ public class SessionServlet extends HttpServlet
                         i + ") " + cookieToString(cookies[i]) + "<br>\n");
             }
         }
+
+        out.println("<br>\n");
+        out.println("operation log:&nbsp;" + (operationLog == null ? "-" : operationLog) + "<br>\n");
+
         out.println("</tt>\n<br>");
         out.println("</body></html>");
     }
@@ -222,7 +226,7 @@ public class SessionServlet extends HttpServlet
 
     private String cookieToString(Cookie c)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append(c.getName()).append("=").append(c.getValue());
 
@@ -236,12 +240,52 @@ public class SessionServlet extends HttpServlet
     private boolean shallWeEstablishSession(HttpServletRequest r) {
 
         String s = r.getParameter("establish-session");
+        return s != null;
+    }
 
-        if (s != null) {
-            return true;
+    /**
+     * @return a human-readable report ("A=B was stored in the session")
+     */
+    private String interactWithCache(HttpSession session, HttpServletRequest req) throws ServletException {
+
+        String path = req.getPathInfo();
+        String key = req.getParameter("key");
+        String value = req.getParameter("value");
+
+        if ("/put".equals(path)) {
+
+            if (session == null) {
+                throw new ServletException("no active session, cannot put, use /&establish-session");
+            }
+
+            if (key == null) {
+                throw new ServletException("null key, use /put?key=...&value=...");
+            }
+
+            if (value == null) {
+                throw new ServletException("null value, use /put?key=...&value=...");
+            }
+
+            session.setAttribute(key, value);
+
+            return "\"" + key + "\"=\"" + value + "\" stored in session " + session.getId();
+        }
+        else if ("/get".equals(path)) {
+
+            if (session == null) {
+                throw new ServletException("no active session, cannot get, use /&establish-session");
+            }
+
+            if (key == null) {
+                throw new ServletException("null key, use /get?key=...");
+            }
+
+            Object v = session.getAttribute(key);
+
+            return "\"" + key + "\"=\"" + v + "\" retrieved from session " + session.getId();
         }
 
-        return false;
+        return null;
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

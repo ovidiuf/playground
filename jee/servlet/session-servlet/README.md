@@ -32,7 +32,9 @@ If you wish it to establish a session, call it with "establish-session" paramete
 
 Example: http://locahost:8080/session-servlet?establish-session
 
-After the first request, obviously there's no need for "establish-session" anymore, the browser/server ensemble maintain the one that was established. The current implementation will throw an exception if it sees "establish-session=true" again.
+After the first request, obviously there's no need for "establish-session" anymore, the browser/server ensemble maintain the one that was established. The current implementation will throw an exception if it sees "?establish-session" again.
+
+In order to store a key/value pair into the session, use http://locahost:8080/session-servlet/put?key=something&value=somethingelse. In order to retrieve a key/value pair from the session, use http://locahost:8080/session-servlet/get?key=something 
 
 ### Enable HTTP Session Replication
 

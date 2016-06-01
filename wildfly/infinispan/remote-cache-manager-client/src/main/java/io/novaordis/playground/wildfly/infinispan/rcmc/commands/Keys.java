@@ -17,7 +17,6 @@
 package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
 
 import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
 import org.infinispan.client.hotrod.RemoteCache;
 
 import java.util.Set;
@@ -42,10 +41,10 @@ public class Keys extends CacheCommand {
     @Override
     public void execute(String restOfTheLine) throws Exception {
 
-        RemoteCache defaultCache = insureConnected();
+        RemoteCache cache = insureConnected();
 
         //noinspection unchecked
-        Set<Object> keys = defaultCache.keySet();
+        Set<Object> keys = cache.keySet();
 
         for(Object k: keys) {
             Console.info(k == null ? "null" : k.toString());

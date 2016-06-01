@@ -20,4 +20,8 @@ Commands:
 
     keys
 
+    size - Returns the number of keys.
+
+    values
+
     exit
