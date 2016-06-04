@@ -3,7 +3,7 @@
 #Overview
 
 A project that builds a simple WAR dependent on a custom WildFly module. In order 
-to work, it needs access to https://github.com/NovaOrdis/playground/tree/master/wildfly/custom-module
+to work, it needs access to https://github.com/NovaOrdis/playground/tree/master/jboss/wildfly/custom-module
 artifacts and it also needs the custom module deployed in the target WildFly instance.
 
 #Related
