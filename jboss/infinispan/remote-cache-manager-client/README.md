@@ -43,8 +43,3 @@ In order to use the example, you will need to build it first, see above.
     test-value
     > exit
     
-    
-    
-
-
-
