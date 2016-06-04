@@ -63,4 +63,5 @@ security settings.
 
 #Also See
 
-https://github.com/NovaOrdis/playground/tree/master/wildfly/hornetq/failover-testing-framework
+https://github.com/NovaOrdis/playground/tree/master/jboss/hornetq/failover-testing-framework
+

@@ -26,7 +26,7 @@ support multiple connections, because we want to experiment with connection fail
 
 Also see:
 
-https://github.com/NovaOrdis/playground/tree/master/wildfly/hornetq/simplest-client
+https://github.com/NovaOrdis/playground/tree/master/jboss/hornetq/simplest-client
 
 Note that the client can also be used to receive messages. 
 
