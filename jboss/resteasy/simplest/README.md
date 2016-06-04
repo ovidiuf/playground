@@ -32,9 +32,15 @@ JAX-RS compliant.
 
     cp ./target/simplest-rest.war $JBOSS_HOME/standalone/deployments
 
+Tested with EAP 6.4.
+
 ##To Execute
 
 http://localhost:8080/simplest-rest/simplest-resource?key=A
+
+##NOKB
+
+https://kb.novaordis.com/index.php/RestEasy
 
 
 

@@ -4,6 +4,7 @@ import io.novaordis.playground.jboss.resteasy.simplest.resource.SimplestResource
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.Collections;
 import java.util.HashSet;
