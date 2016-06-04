@@ -42,4 +42,8 @@ In order to use the example, you will need to build it first, see above.
     > get test-key
     test-value
     > exit
-    
+   
+##See Also
+
+https://kb.novaordis.com/index.php/Infinispan_Tools#Tools
+ 
