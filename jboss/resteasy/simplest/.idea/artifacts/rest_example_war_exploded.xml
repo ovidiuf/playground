@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="rest-example:war exploded">
+    <output-path>$PROJECT_DIR$/target/simplest-rest</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="rest-example" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.12" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/simplest-rest/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="rest-example/web/Web" />
+    </root>
+  </artifact>
+</component>
