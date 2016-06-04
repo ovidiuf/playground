@@ -1,0 +1,17 @@
+#!/bin/bash
+
+artifact=$(dirname $0)/../target/session-servlet.war
+
+[ ! -f ${artifact} ] && { echo "${artifact} not found" 1>&2; exit 1; }
+
+if [ -n "$1" ]; then
+    hosts="$1"
+else
+    hosts="eap-a-1 eap-a-2 eap-a-3 eap-a-4"
+fi
+
+for host in ${hosts}; do
+    scp ${artifact} ec2-user@${host}:/opt/jboss/standalone/deployments && echo "${host} deployment ok"
+done
+
+
