@@ -1,0 +1,53 @@
+#!/bin/bash
+
+jgroups_module_path=system/layers/base/org/jgroups/main
+jar=$(dirname $0)/../target/jgroups-custom-protocol.jar
+
+function deploy() {
+
+    local jboss_home=$1
+    [ -z "${jboss_home}" ] && { echo "'jboss_home' not provided" 1>&2; exit 1; }
+    [ -d "${jboss_home}" ] || { echo "'jboss_home' ${jboss_home}  not a directory" 1>&2; exit 1; }
+
+    if [ ! -f ${jboss_home}/modules/${jgroups_module_path}/$(basename ${jar}) ] || ! diff -q ${jboss_home}/modules/${jgroups_module_path}/$(basename ${jar}) ${jar} > /dev/null; then
+
+        #
+        # JAR not deployed or it differs from what we have built, deploy
+        #
+
+        cp ${jar} ${jboss_home}/modules/${jgroups_module_path} && echo "$(basename ${jar}) deployed in ${jboss_home}/modules/${jgroups_module_path}" || exit 1
+
+    fi
+
+
+
+    if ! grep -q "<resource-root path=\"jgroups-custom-protocol.jar\"/>" ${jboss_home}/modules/${jgroups_module_path}/module.xml; then
+
+        #
+        # resource not declared, declare it now
+        #
+
+        sed -e '/Insert resources here/i\
+ <resource-root path=\"jgroups-custom-protocol.jar\"/>' ${jboss_home}/modules/${jgroups_module_path}/module.xml > /tmp/sed.tmp
+
+        if diff -q /tmp/sed.tmp ${jboss_home}/modules/${jgroups_module_path}/module.xml > /dev/null; then
+            # identical
+            echo "no insertion was made in ${jboss_home}/modules/${jgroups_module_path}/module.xml" 1>&2; exit 1
+        fi
+
+        mv /tmp/sed.tmp ${jboss_home}/modules/${jgroups_module_path}/module.xml && echo "${jboss_home}/modules/${jgroups_module_path}/module.xml updated" || exit 1
+    fi
+
+}
+
+function main() {
+
+    local jboss_home=$1
+
+    [ -z "${jboss_home}" ] && { echo "'jboss_home' not provided" 1>&2; exit 1; }
+    [ -d "${jboss_home}" ] || { echo "'jboss_home' ${jboss_home}  not a directory" 1>&2; exit 1; }
+
+    deploy ${jboss_home}
+}
+
+main $@

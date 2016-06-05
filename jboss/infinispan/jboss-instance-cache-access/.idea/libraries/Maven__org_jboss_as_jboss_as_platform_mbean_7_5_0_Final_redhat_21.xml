@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.as:jboss-as-platform-mbean:7.5.0.Final-redhat-21">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/as/jboss-as-platform-mbean/7.5.0.Final-redhat-21/jboss-as-platform-mbean-7.5.0.Final-redhat-21.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/as/jboss-as-platform-mbean/7.5.0.Final-redhat-21/jboss-as-platform-mbean-7.5.0.Final-redhat-21-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/as/jboss-as-platform-mbean/7.5.0.Final-redhat-21/jboss-as-platform-mbean-7.5.0.Final-redhat-21-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

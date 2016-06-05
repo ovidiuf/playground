@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jboss-as-clustering-jgroups-7.5.0.Final-redhat-21">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.0.GA-maven-repository/org/jboss/as/jboss-as-clustering-jgroups/7.5.0.Final-redhat-21/jboss-as-clustering-jgroups-7.5.0.Final-redhat-21.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.0.GA-maven-repository/org/jboss/as/jboss-as-clustering-jgroups/7.5.0.Final-redhat-21/jboss-as-clustering-jgroups-7.5.0.Final-redhat-21-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

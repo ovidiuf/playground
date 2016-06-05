@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jacorb:jacorb:2.3.2.redhat-6">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jacorb/jacorb/2.3.2.redhat-6/jacorb-2.3.2.redhat-6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jacorb/jacorb/2.3.2.redhat-6/jacorb-2.3.2.redhat-6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jacorb/jacorb/2.3.2.redhat-6/jacorb-2.3.2.redhat-6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

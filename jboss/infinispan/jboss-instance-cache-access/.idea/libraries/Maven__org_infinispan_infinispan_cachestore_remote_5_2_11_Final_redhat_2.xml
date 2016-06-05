@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.infinispan:infinispan-cachestore-remote:5.2.11.Final-redhat-2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/infinispan/infinispan-cachestore-remote/5.2.11.Final-redhat-2/infinispan-cachestore-remote-5.2.11.Final-redhat-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/infinispan/infinispan-cachestore-remote/5.2.11.Final-redhat-2/infinispan-cachestore-remote-5.2.11.Final-redhat-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/infinispan/infinispan-cachestore-remote/5.2.11.Final-redhat-2/infinispan-cachestore-remote-5.2.11.Final-redhat-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
