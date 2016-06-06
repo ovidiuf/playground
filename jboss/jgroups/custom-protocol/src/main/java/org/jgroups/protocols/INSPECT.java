@@ -35,6 +35,10 @@ public class INSPECT extends Protocol {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private boolean displayUpMessages = false;
+    private boolean displayDownMessages = false;
+
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Protocol overrides ----------------------------------------------------------------------------------------------
@@ -68,20 +72,22 @@ public class INSPECT extends Protocol {
 
         int type = event.getType();
 
-        if (type == Event.MSG) {
+        if (displayUpMessages) {
 
-            Message msg = (Message)event.getArg();
+            if (type == Event.MSG) {
 
-            if (msg != null) {
+                Message msg = (Message) event.getArg();
 
-                byte[] buffer = msg.getBuffer();
+                if (msg != null) {
 
-                if (buffer != null) {
-                    log.info(">>>" + new String(buffer));
+                    byte[] buffer = msg.getBuffer();
+
+                    if (buffer != null) {
+                        log.info(">>>" + new String(buffer));
+                    }
                 }
             }
         }
-
         return up_prot.up(event);
     }
 
@@ -90,20 +96,23 @@ public class INSPECT extends Protocol {
 
         int type = event.getType();
 
-        if (type == Event.MSG) {
+        if (displayDownMessages) {
 
-            Message msg = (Message)event.getArg();
+            if (type == Event.MSG) {
 
-            if (msg != null) {
+                Message msg = (Message) event.getArg();
 
-                byte[] buffer = msg.getBuffer();
+                if (msg != null) {
 
-                if (buffer != null) {
-                    log.info(">>>" + new String(buffer));
+                    byte[] buffer = msg.getBuffer();
+
+                    if (buffer != null) {
+                        log.info(">>>" + new String(buffer));
+                    }
                 }
             }
         }
-
+        
         return down_prot.down(event);
     }
 
