@@ -36,8 +36,7 @@ public class INSPECT extends Protocol {
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private boolean displayUpMessages = false;
-    private boolean displayDownMessages = false;
-
+    private boolean displayDownMessages = true;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -112,7 +111,7 @@ public class INSPECT extends Protocol {
                 }
             }
         }
-        
+
         return down_prot.down(event);
     }
 

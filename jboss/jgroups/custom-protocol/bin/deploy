@@ -1,7 +1,7 @@
 #!/bin/bash
 
 jgroups_module_path=system/layers/base/org/jgroups/main
-jar=$(dirname $0)/../target/jgroups-custom-protocol.jar
+jar=$(dirname $0)/../target/jgroups-inspect-protocol.jar
 
 function deploy() {
 
@@ -21,14 +21,14 @@ function deploy() {
 
 
 
-    if ! grep -q "<resource-root path=\"jgroups-custom-protocol.jar\"/>" ${jboss_home}/modules/${jgroups_module_path}/module.xml; then
+    if ! grep -q "<resource-root path=\"jgroups-inspect-protocol.jar\"/>" ${jboss_home}/modules/${jgroups_module_path}/module.xml; then
 
         #
         # resource not declared, declare it now
         #
 
         sed -e '/Insert resources here/i\
- <resource-root path=\"jgroups-custom-protocol.jar\"/>' ${jboss_home}/modules/${jgroups_module_path}/module.xml > /tmp/sed.tmp
+ <resource-root path=\"jgroups-inspect-protocol.jar\"/>' ${jboss_home}/modules/${jgroups_module_path}/module.xml > /tmp/sed.tmp
 
         if diff -q /tmp/sed.tmp ${jboss_home}/modules/${jgroups_module_path}/module.xml > /dev/null; then
             # identical

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.novaordis.playground.jboss.jgroups.custom-protocol</groupId>
-    <artifactId>jgroups-custom-protocol</artifactId>
+    <artifactId>jgroups-inspect-protocol</artifactId>
     <packaging>jar</packaging>
 
     <version>1</version>
@@ -32,7 +32,7 @@
 
     <build>
 
-        <finalName>jgroups-custom-protocol</finalName>
+        <finalName>jgroups-inspect-protocol</finalName>
 
         <plugins>
             <plugin>
