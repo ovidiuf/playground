@@ -16,6 +16,17 @@
 
 package io.novaordis.playground.jboss.infinispan.jbca;
 
+import org.infinispan.Cache;
+import org.jboss.as.clustering.infinispan.DefaultCacheContainer;
+import org.jboss.as.clustering.infinispan.subsystem.CacheService;
+import org.jboss.as.clustering.msc.AsynchronousService;
+import org.jboss.as.clustering.msc.ServiceContainerHelper;
+import org.jboss.as.server.CurrentServiceContainer;
+import org.jboss.msc.service.Service;
+import org.jboss.msc.service.ServiceContainer;
+import org.jboss.msc.service.ServiceController;
+import org.jboss.msc.service.ServiceName;
+import org.jboss.msc.service.StartException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,36 +70,44 @@ public class AccessServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
     {
-        log.info(this + " handling GET");
+
+        ServiceContainer sc = CurrentServiceContainer.getServiceContainer();
+
+//        for(ServiceName sn: sc.getServiceNames()) {
+//            log.info("" + sn);
+//        }
+
+        ServiceName sn = ServiceName.of("jboss", "infinispan", "web", "repl");
+        ServiceController scon = sc.getService(sn);
+        Cache cache = (Cache)scon.getValue();
+        log.info("" + cache);
+
+
+        String path = req.getPathInfo();
+
+        Object o = null;
+
+        if ("/put".equals(path)) {
+            cache.put("test", "blah");
+        }
+        else if ("/get".equals(path)) {
+
+            o = cache.get("test");
+        }
 
         res.setContentType("text/html");
-
         PrintWriter out = res.getWriter();
 
-        out.println("<html>");
-        out.println("GET handled by " + getHostName());
-        out.println("</html>");
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res)  throws ServletException, IOException {
-
-        log.info(this + " handling POST");
-
-        res.setContentType("text/html");
-
-        PrintWriter out = res.getWriter();
-
-        out.println("<html>");
-        out.println("POST handled by " + getHostName());
-        out.println("</html>");
+        if (o != null) {
+            out.println(o);
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
     @Override
     public String toString() {
-        return "ServletExample[" + Integer.toHexString(System.identityHashCode(this)) + "]";
+        return "AccessServlet[" + Integer.toHexString(System.identityHashCode(this)) + "]";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
@@ -96,56 +115,6 @@ public class AccessServlet extends HttpServlet {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-    /**
-     * May return null.
-     */
-    private String getHostName() {
-
-        log.info("getHostName()");
-
-        String hostName = System.getenv("HOSTNAME");
-
-        if (hostName == null || hostName.length() == 0) {
-
-            String command = "/bin/hostname";
-
-            Process p = null;
-            StringBuilder sb = null;
-
-            try {
-
-                p = Runtime.getRuntime().exec(new String[]{command});
-
-                log.info(p + " created");
-
-                InputStream is = p.getInputStream();
-                sb = new StringBuilder();
-                int i;
-                while ((i = is.read()) != -1) {
-                    sb.append((char)i);
-                }
-            }
-            catch (Exception e) {
-
-                log.error("failed to execute \"" + command + "\"");
-            }
-            finally {
-
-                if (p != null) {
-                    p.destroy();
-                }
-            }
-
-            log.info("sb: " + sb);
-
-            if (sb != null) {
-                hostName = sb.toString();
-            }
-        }
-
-        return hostName;
-    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

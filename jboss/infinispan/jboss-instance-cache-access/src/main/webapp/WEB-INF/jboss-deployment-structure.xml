@@ -4,11 +4,11 @@
     <!--
         Use this in case we need to declare dependency on external modules.
     -->
-    <!--
     <deployment>
         <dependencies>
-            <module name="com.novaordis.playground.wildfly.custommodule" slot="1.0"/>
+            <module name="org.jboss.as.server" slot="main"/>
+            <module name="org.infinispan" slot="main"/>
         </dependencies>
     </deployment>
-    -->
+
 </jboss-deployment-structure>
