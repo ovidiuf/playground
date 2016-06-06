@@ -66,15 +66,21 @@ public class INSPECT extends Protocol {
     @Override
     public Object up(Event event) {
 
-//        int type = event.getType();
-//
-//        if (type == Event.MSG) {
-//
-//            Message msg = (Message)event.getArg();
-//            byte[] buffer = msg.getBuffer();
-//
-//            log.info(">>>" + new String(buffer));
-//        }
+        int type = event.getType();
+
+        if (type == Event.MSG) {
+
+            Message msg = (Message)event.getArg();
+
+            if (msg != null) {
+
+                byte[] buffer = msg.getBuffer();
+
+                if (buffer != null) {
+                    log.info(">>>" + new String(buffer));
+                }
+            }
+        }
 
         return up_prot.up(event);
     }
@@ -82,17 +88,23 @@ public class INSPECT extends Protocol {
     @Override
     public Object down(Event event) {
 
-//        int type = event.getType();
-//
-//        if (type == Event.MSG) {
-//
-//            Message msg = (Message)event.getArg();
-//            byte[] buffer = msg.getBuffer();
-//
-//            log.info(">>>" + new String(buffer));
-//        }
+        int type = event.getType();
 
-        return down_prot.up(event);
+        if (type == Event.MSG) {
+
+            Message msg = (Message)event.getArg();
+
+            if (msg != null) {
+
+                byte[] buffer = msg.getBuffer();
+
+                if (buffer != null) {
+                    log.info(">>>" + new String(buffer));
+                }
+            }
+        }
+
+        return down_prot.down(event);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
