@@ -22,11 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Map;
-import java.util.Set;
+import java.util.Enumeration;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -81,6 +78,14 @@ public class DescribeSession extends CommandBase {
             table.put("session creation time", new Date(session.getCreationTime()).toString());
             table.put("session last access time", new Date(session.getLastAccessedTime()).toString());
             table.put("max inactive interval", session.getMaxInactiveInterval() + " seconds");
+
+            int attributeCount = 0;
+            for(Enumeration<String> e = session.getAttributeNames(); e.hasMoreElements(); ) {
+                e.nextElement();
+                attributeCount++;
+            }
+
+            table.put("attribute count", "" + attributeCount);
 
             console.info(table);
         }

@@ -53,9 +53,14 @@ public class CommandFactory {
             return new DescribeSession(context, path.substring("/describe-session".length()));
         }
         else if (path.startsWith("/invalidate-session")) {
-            return new InvalidateSession(context, path.substring("/destroy-session".length()));
+            return new InvalidateSession(context, path.substring("/invalidate-session".length()));
         }
-
+        else if (path.startsWith("/write")) {
+            return new Write(context, path.substring("/write".length()));
+        }
+        else if (path.startsWith("/read")) {
+            return new Read(context, path.substring("/read".length()));
+        }
 
         throw new HttpException(404, "no known command can be inferred from " + path);
 

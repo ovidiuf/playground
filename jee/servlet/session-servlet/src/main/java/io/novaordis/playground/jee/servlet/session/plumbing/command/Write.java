@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
-public class Read extends CommandBase {
+public class Write extends CommandBase {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -36,16 +36,17 @@ public class Read extends CommandBase {
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private String attributeName;
+    private String attributeValue;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
-     * @param argumentPath the path that follows after the "/read"
+     * @param argumentPath the path that follows after the "/write"
      */
-    public Read(Context context, String argumentPath) throws HttpException {
+    public Write(Context context, String argumentPath) throws HttpException {
 
         super(context);
-        extractAttributeName(argumentPath);
+        extractAttributeNameValue(argumentPath);
     }
 
     // Command implementation ------------------------------------------------------------------------------------------
@@ -58,15 +59,14 @@ public class Read extends CommandBase {
 
         if (session == null) {
 
-            console.warn("no active session, can't read");
+            console.warn("no active session, can't write");
             return;
+
         }
 
-        Object value = session.getAttribute(attributeName);
+        session.setAttribute(attributeName, attributeValue);
 
-        String msg = "" + value;
-
-        console.info(msg);
+        console.info(attributeName + "=" + attributeValue + " written into session " + session.getId());
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -77,16 +77,21 @@ public class Read extends CommandBase {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
-    private void extractAttributeName(String path) throws HttpException {
+    private void extractAttributeNameValue(String path) throws HttpException {
 
         StringTokenizer st = new StringTokenizer(path, "/");
 
         if (!st.hasMoreTokens()) {
-            throw new HttpException(400, "invalid read URL: the name of the session attribute must follow /read/");
+            throw new HttpException(400, "invalid write URL: the name of the attribute to be written into the session must follow /write/");
         }
 
         this.attributeName = st.nextToken();
 
+        if (!st.hasMoreTokens()) {
+            throw new HttpException(400, "invalid write URL: the value of the attribute to be written into the session must follow /write/" + attributeName + "/");
+        }
+
+        this.attributeValue = st.nextToken();
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
