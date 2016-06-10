@@ -16,6 +16,8 @@
 
 package io.novaordis.playground.jee.servlet.session.plumbing.command;
 
+import io.novaordis.playground.jee.servlet.session.plumbing.Context;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
@@ -29,5 +31,7 @@ public interface Command {
     // Public ----------------------------------------------------------------------------------------------------------
 
     void execute() throws Exception;
+
+    Context getContext();
 
 }

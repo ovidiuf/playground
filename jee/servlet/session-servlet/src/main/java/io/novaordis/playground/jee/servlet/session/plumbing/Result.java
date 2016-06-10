@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * The class knows how to render the result of the command (or an exception) to HTML and send it to the client.
@@ -85,7 +86,7 @@ public class Result {
     /**
      * @param requestHeadersToDisplay if null or empty list, display all headers in the request header list
      */
-    private static String requestHeadersToHtml(List<Header> requestHeaders, String[] requestHeadersToDisplay) {
+    private static String headersToHtml(List<Header> requestHeaders, String... requestHeadersToDisplay) {
 
         String s = "<table>\n";
 
@@ -158,16 +159,24 @@ public class Result {
 
             if (exception != null) {
 
+                //
+                // report error
+                //
+
                 out.println("<head><title>Session Servlet Failure</title></head>");
                 out.println("<body>");
 
-                String message = "F3285yg23";
+                String message;
 
                 if (exception instanceof HttpException) {
 
                     HttpException he = (HttpException)exception;
 
                     message = "HTTP status code " + he.getStatusCode() + ": " + he.getMessage();
+                }
+                else {
+
+                    message = "HTTP status code 500: "+ exception.getClass().getName() + ": " + exception.getMessage();
                 }
 
                 out.println(message + "\n");
@@ -176,10 +185,15 @@ public class Result {
             }
             else {
 
+                //
+                // report successful execution (even if the command has a domain-specific error to report)
+                //
+
                 out.println("<head><title>Session Servlet Response</title></head>");
                 out.println("<body>");
 
                 renderInfo(out);
+                renderConsoleContent(context.getConsole(), out);
 
                 out.println("</body>");
             }
@@ -209,9 +223,42 @@ public class Result {
         s += "<tr><td align='right' valign='top'>remote address:</td><td>" + context.getRemoteAddress() + "</td></tr>\n";
         s += "<tr><td align='right' valign='top'>remote host:</td><td>" + context.getRemoteHost() + "</td></tr>\n";
         s += "<tr><td align='right' valign='top'>request headers:</td><td>" +
-                requestHeadersToHtml(context.getRequestHeaders(), REQUEST_HEADERS_TO_DISPLAY) + "</td></tr>\n";
+                headersToHtml(context.getRequestHeaders(), REQUEST_HEADERS_TO_DISPLAY) + "</td></tr>\n";
         s += "<tr><td align='right' valign='top'>cookies:</td><td>" + cookiesToHtml(context.getCookies()) + "</td></tr>\n";
         s += "</table>\n";
+
+        out.println(s);
+    }
+
+    private void renderConsoleContent(Console console, PrintWriter out) throws Exception {
+
+        String s = "<br><hr size='1' width='97%'><br>\n";
+
+        List<String> content = console.getContent();
+
+        String[] backgroundColor = {
+                "#FFA07A", // Light salmon
+                "#FFD700", // Gold
+                "#E0FFFF" // LightCyan
+                };
+
+        int i = 0;
+
+        for(String c: content) {
+
+            if (c == null || c.length() == 0) {
+                continue;
+            }
+
+            s += "<table style='width:99%;align=center;background-color:" + backgroundColor[i ++] + "'>\n";
+
+            for(StringTokenizer st = new StringTokenizer(c, "\n"); st.hasMoreTokens(); ) {
+                s += "<tr><td align='left'>" + st.nextToken() + "</td></tr>\n";
+            }
+
+            s += "</table>\n";
+            s += "<br>\n";
+        }
 
         out.println(s);
     }

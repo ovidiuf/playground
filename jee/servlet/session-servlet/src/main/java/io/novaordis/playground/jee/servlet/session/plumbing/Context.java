@@ -25,6 +25,7 @@ import javax.management.ObjectName;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,12 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
+ * The central point of contact for a request/response exchange context. Contains the references for the request and
+ * response themselves, the session, if it exists, and exposes accessors for various environment elements.
+ *
+ * It performs basic verifications on initialization. The constructor may throw HttpException if it finds
+ * irregularities. Those will be communicated to the client.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
@@ -48,17 +55,38 @@ public class Context {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
+    private HttpSession session;
+    private Console console;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    /**
+     * Simply assigns references, must not throw exception. The initialization work that may throw exceptions must
+     * be performed in init():
+     */
     public Context(HttpServletRequest request, HttpServletResponse response) {
 
         this.request = request;
         this.response = response;
-
+        this.console = new Console();
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public void init() throws HttpException {
+
+        lookUpSession();
+    }
+
+    /**
+     * An instance to use to send info/warn/error messages to the client. They will be rendered appropriately in
+     * HTML, and also logged into the server log. The messages should be readable text to be displayed on the client to
+     * inform the user on the outcome of a command or other events.
+     */
+    public Console getConsole() {
+
+        return console;
+    }
 
     public HttpServletRequest getRequest() {
         return request;
@@ -66,6 +94,17 @@ public class Context {
 
     public HttpServletResponse getResponse() {
         return response;
+    }
+
+    /**
+     * May return null, if no HTTP session was found.
+     */
+    public HttpSession getSession() {
+        return session;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
     }
 
     /**
@@ -189,6 +228,26 @@ public class Context {
     }
 
     /**
+     * @return null if no such cookie exists
+     */
+    public String getCookieValue(String name) {
+
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies == null || cookies.length == 0) {
+            return null;
+        }
+
+        for(Cookie c: cookies) {
+            if (c.getName().equals(name)) {
+                return c.getValue();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return all request headers present in the request. May return an empty list but never null.
      */
     public List<Header> getRequestHeaders() {
@@ -203,11 +262,48 @@ public class Context {
         return result;
     }
 
+    /**
+     * @return all response headers present in the request. May return an empty list but never null.
+     */
+    public List<Header> getResponseHeaders() {
+
+        List<Header> result = new ArrayList<>();
+
+        for(String headerName: response.getHeaderNames()) {
+            result.add(new Header(headerName, request.getHeader(headerName)));
+        }
+
+        return result;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private void lookUpSession() throws HttpException {
+
+        String jsessionId = getCookieValue("JSESSIONID");
+
+        session = request.getSession(false);
+
+        if (jsessionId != null && session == null) {
+            throw new HttpException(400, "the browser sends an obsolete JSESSIONID: " + jsessionId + ", try clearing the cookies");
+        }
+
+        if (session != null) {
+
+            if (jsessionId == null) {
+                //
+                // this shouldn't happen, we can't look up a session with a null session ID
+                //
+                throw new IllegalStateException("got a non-null session for a null JSESSIONID");
+            }
+
+            log.info("existing session acquired");
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

@@ -17,66 +17,33 @@
 package io.novaordis.playground.jee.servlet.session.plumbing.command;
 
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
-import io.novaordis.playground.jee.servlet.session.plumbing.HttpException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
-public class CommandFactory {
+public abstract class CommandBase implements Command {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(CommandFactory.class);
-
     // Static ----------------------------------------------------------------------------------------------------------
-
-    public static Command build(Context context) throws Exception {
-
-        String path = context.getRequest().getPathInfo();
-
-        log.debug("path: " + path);
-
-        if ("/".equals(path)) {
-
-            return new Info(context);
-        }
-        else if (path.startsWith("/test")) {
-            return new Test(context);
-        }
-        else if (path.startsWith("/establish-session")) {
-            return new EstablishSession(context, path.substring("/establish-session".length()));
-        }
-
-        throw new HttpException(404, "no known command can be inferred from " + path);
-
-
-//        log.info("GET " + path);
-//
-//        //
-//        // session handling
-//        //
-//
-//        dumpHeaders(req);
-//
-//        String operationLog = interactWithCache(session, req);
-//
-//
-//        sendResponse(, , , user, remoteAddress, remoteHost, cookies, operationLog);
-
-    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Context context;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    private CommandFactory() {
+    protected CommandBase(Context context) {
+        this.context = context;
+    }
+
+    // Command implementation ------------------------------------------------------------------------------------------
+
+    @Override
+    public Context getContext() {
+
+        return context;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

@@ -16,15 +16,16 @@
 
 package io.novaordis.playground.jee.servlet.session.plumbing.command;
 
+import io.novaordis.playground.jee.servlet.session.plumbing.Console;
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
 
 /**
- * Displays state information on the application, session, host running it, etc.
+ * Test command, displays some test text
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
-public class Info extends CommandBase {
+public class Test extends CommandBase {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -34,7 +35,7 @@ public class Info extends CommandBase {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Info(Context context) {
+    public Test(Context context) {
 
         super(context);
     }
@@ -44,16 +45,18 @@ public class Info extends CommandBase {
     @Override
     public void execute() throws Exception {
 
-        //
-        // noop
-        //
+        Console console = getContext().getConsole();
+
+        console.info("this is some info text");
+        console.warn("this is some warning text");
+        console.error("this is some error text");
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
     @Override
     public String toString() {
-        return "info";
+        return "test";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
