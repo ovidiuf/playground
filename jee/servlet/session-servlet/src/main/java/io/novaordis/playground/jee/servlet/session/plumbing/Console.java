@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -34,6 +36,22 @@ public class Console {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * @return a HTML table rendered on the single line of text (no \n).
+     */
+    public String sortedMapToHtmlTable(SortedMap<String, String> table) {
+
+        String htmlTable = "<table>";
+
+        for(String key: table.keySet()) {
+            String value = table.get(key);
+            htmlTable += "<tr><td align='right'>" + key + ":</td><td align='left'>" + value + "</td></tr>";
+        }
+
+        htmlTable += "</table>";
+        return htmlTable;
+    }
+
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private String errors;
@@ -46,6 +64,14 @@ public class Console {
 
     public void info(String msg) {
 
+        info(msg, true);
+    }
+
+    /**
+     * @param doLog whether to log in the server's log or not.
+     */
+    public void info(String msg, boolean doLog) {
+
         if (msg == null || msg.length() == 0) {
             return;
         }
@@ -57,7 +83,22 @@ public class Console {
             infos += msg + "\n";
         }
 
-        log.info(msg);
+        if (doLog) {
+            log.info(msg);
+        }
+    }
+
+    /**
+     * This will be displayed as a HTML table at the console. The keys will be displayed in order.
+     * @param table
+     */
+    public void info(SortedMap<String, String> table) {
+
+        //
+        // add a HTML table to the "info" content
+        //
+        String htmlTable = sortedMapToHtmlTable(table);
+        info(htmlTable, false);
     }
 
     public void warn(String msg) {

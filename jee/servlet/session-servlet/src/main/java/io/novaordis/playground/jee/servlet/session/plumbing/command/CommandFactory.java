@@ -21,10 +21,6 @@ import io.novaordis.playground.jee.servlet.session.plumbing.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
@@ -53,6 +49,13 @@ public class CommandFactory {
         else if (path.startsWith("/establish-session")) {
             return new EstablishSession(context, path.substring("/establish-session".length()));
         }
+        else if (path.startsWith("/describe-session")) {
+            return new DescribeSession(context, path.substring("/describe-session".length()));
+        }
+        else if (path.startsWith("/invalidate-session")) {
+            return new InvalidateSession(context, path.substring("/destroy-session".length()));
+        }
+
 
         throw new HttpException(404, "no known command can be inferred from " + path);
 

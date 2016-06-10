@@ -34,8 +34,6 @@ public class Read extends CommandBase {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private String argumentPath;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -43,9 +41,7 @@ public class Read extends CommandBase {
      */
     public Read(Context context, String argumentPath) {
 
-        super(context);
-
-        this.argumentPath = argumentPath;
+        super(context, argumentPath);
     }
 
     // Command implementation ------------------------------------------------------------------------------------------

@@ -230,7 +230,7 @@ public class Context {
     /**
      * @return null if no such cookie exists
      */
-    public String getCookieValue(String name) {
+    public Cookie getCookie(String name) {
 
         Cookie[] cookies = request.getCookies();
 
@@ -240,11 +240,25 @@ public class Context {
 
         for(Cookie c: cookies) {
             if (c.getName().equals(name)) {
-                return c.getValue();
+                return c;
             }
         }
 
         return null;
+    }
+
+    /**
+     * @return null if no such cookie exists
+     */
+    public String getCookieValue(String name) {
+
+        Cookie c = getCookie(name);
+
+        if (c == null) {
+            return null;
+        }
+
+        return c.getValue();
     }
 
     /**

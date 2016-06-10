@@ -39,8 +39,6 @@ public class EstablishSession extends CommandBase {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private String argumentPath;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -48,8 +46,7 @@ public class EstablishSession extends CommandBase {
      */
     public EstablishSession(Context context, String argumentPath) {
 
-        super(context);
-        this.argumentPath = argumentPath;
+        super(context, argumentPath);
     }
 
     // Command implementation ------------------------------------------------------------------------------------------

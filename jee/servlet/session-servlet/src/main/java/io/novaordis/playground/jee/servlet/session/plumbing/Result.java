@@ -242,15 +242,17 @@ public class Result {
                 "#E0FFFF" // LightCyan
                 };
 
-        int i = 0;
+        int i = -1;
 
         for(String c: content) {
+
+            i++;
 
             if (c == null || c.length() == 0) {
                 continue;
             }
 
-            s += "<table style='width:99%;align=center;background-color:" + backgroundColor[i ++] + "'>\n";
+            s += "<table style='width:99%;align=center;background-color:" + backgroundColor[i] + "'>\n";
 
             for(StringTokenizer st = new StringTokenizer(c, "\n"); st.hasMoreTokens(); ) {
                 s += "<tr><td align='left'>" + st.nextToken() + "</td></tr>\n";

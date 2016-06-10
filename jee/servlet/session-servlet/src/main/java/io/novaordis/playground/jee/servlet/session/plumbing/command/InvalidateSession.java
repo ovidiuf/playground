@@ -16,44 +16,81 @@
 
 package io.novaordis.playground.jee.servlet.session.plumbing.command;
 
+import io.novaordis.playground.jee.servlet.session.plumbing.Console;
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
-public abstract class CommandBase implements Command {
+public class InvalidateSession extends CommandBase {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(InvalidateSession.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Context context;
-    private String argumentPath;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    protected CommandBase(Context context) {
+    /**
+     * @param argumentPath the path that follows after the "/establish-session"
+     */
+    public InvalidateSession(Context context, String argumentPath) {
 
-        this(context, null);
-    }
-
-    protected CommandBase(Context context, String argumentPath) {
-        this.context = context;
-        this.argumentPath = argumentPath;
+        super(context, argumentPath);
     }
 
     // Command implementation ------------------------------------------------------------------------------------------
 
     @Override
-    public Context getContext() {
+    public void execute() throws Exception {
 
-        return context;
+        //
+        // if an existing session was identified, it was injected in the context already
+        //
+
+        Context context = getContext();
+        Console console = context.getConsole();
+        HttpSession session = context.getSession();
+
+        if (session == null) {
+
+            console.warn("no active session, nothing to invalidate");
+        }
+        else {
+
+            session.invalidate();
+
+            //
+            // remove JSESSIONID from browser
+            //
+
+            Cookie oldJSessionIdCookie = context.getCookie("JSESSIONID");
+            Cookie cookie = new Cookie(oldJSessionIdCookie.getName(), null);
+            cookie.setPath(oldJSessionIdCookie.getPath());
+            cookie.setMaxAge(0);
+            HttpServletResponse response = context.getResponse();
+            response.addCookie(cookie);
+
+            console.info("session " + session.getId() + " invalidated");
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    @Override
+    public String toString() {
+        return "invalidate-session";
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
