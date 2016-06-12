@@ -16,6 +16,8 @@
 
 package io.novaordis.playground.jee.servlet.session.plumbing.command;
 
+import io.novaordis.playground.jee.servlet.session.Constants;
+import io.novaordis.playground.jee.servlet.session.applicaton.ApplicationType;
 import io.novaordis.playground.jee.servlet.session.plumbing.Console;
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
 import io.novaordis.playground.jee.servlet.session.plumbing.HttpException;
@@ -24,6 +26,10 @@ import javax.servlet.http.HttpSession;
 import java.util.StringTokenizer;
 
 /**
+ * Reads the given session attribute, which is considered to be a String, unless the attribute name is APPTYPE. If the
+ * attribute name is APPTYPE, read expects an application type ApplicationType and attempts a typed read invocation
+ * into it.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
@@ -58,15 +64,31 @@ public class Read extends CommandBase {
 
         if (session == null) {
 
-            console.warn("no active session, can't read");
+            console.warn("no active session, can't read. Try establishing a session with /establish-session");
             return;
         }
 
-        Object value = session.getAttribute(attributeName);
+        String value;
 
-        String msg = "" + value;
+        if (Constants.APP_TYPE_ATTRIBUTE_NAME.equals(attributeName)) {
 
-        console.info(msg);
+            //
+            // typed access
+            //
+
+            value = typedRead(Constants.APP_TYPE_ATTRIBUTE_NAME, session);
+        }
+        else {
+
+            //
+            // String attribute value
+            //
+
+            value = (String)session.getAttribute(attributeName);
+
+        }
+
+        console.info(value);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -82,11 +104,25 @@ public class Read extends CommandBase {
         StringTokenizer st = new StringTokenizer(path, "/");
 
         if (!st.hasMoreTokens()) {
-            throw new HttpException(400, "invalid read URL: the name of the session attribute must follow /read/");
+            throw new HttpException(400,
+                    "invalid read URL: the name of the String session attribute or 'APPTYPE' must follow /read/");
         }
 
         this.attributeName = st.nextToken();
 
+    }
+
+    private String typedRead(String attributeName, HttpSession session) throws HttpException {
+
+        Object o = session.getAttribute(attributeName);
+
+        if (o == null) {
+
+            throw new HttpException(400, "session does not contain typed state, try /write/" + Constants.APP_TYPE_ATTRIBUTE_NAME + "/&lt;state>");
+        }
+
+        ApplicationType at = (ApplicationType)o;
+        return at.read_Version1();
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

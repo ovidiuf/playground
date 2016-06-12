@@ -77,7 +77,7 @@ public class EstablishSession extends CommandBase {
                 throw new IllegalStateException("null session after getSession(true)");
             }
 
-            console.info("new HTTP session created");
+            console.info("new HTTP session created, session ID " + session.getId());
 
             context.setSession(session);
         }

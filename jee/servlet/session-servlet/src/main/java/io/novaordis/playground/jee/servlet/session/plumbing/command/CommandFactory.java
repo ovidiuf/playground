@@ -63,21 +63,6 @@ public class CommandFactory {
         }
 
         throw new HttpException(404, "no known command can be inferred from " + path);
-
-
-//        log.info("GET " + path);
-//
-//        //
-//        // session handling
-//        //
-//
-//        dumpHeaders(req);
-//
-//        String operationLog = interactWithCache(session, req);
-//
-//
-//        sendResponse(, , , user, remoteAddress, remoteHost, cookies, operationLog);
-
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

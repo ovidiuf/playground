@@ -16,6 +16,8 @@
 
 package io.novaordis.playground.jee.servlet.session.plumbing.command;
 
+import io.novaordis.playground.jee.servlet.session.Constants;
+import io.novaordis.playground.jee.servlet.session.applicaton.ApplicationType;
 import io.novaordis.playground.jee.servlet.session.plumbing.Console;
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
 import io.novaordis.playground.jee.servlet.session.plumbing.HttpException;
@@ -59,14 +61,28 @@ public class Write extends CommandBase {
 
         if (session == null) {
 
-            console.warn("no active session, can't write");
+            console.warn("no active session, can't write. Try establishing a session with /establish-session");
             return;
 
         }
 
-        session.setAttribute(attributeName, attributeValue);
+        if (Constants.APP_TYPE_ATTRIBUTE_NAME.equals(attributeName)) {
 
-        console.info(attributeName + "=" + attributeValue + " written into session " + session.getId());
+            //
+            // typed access
+            //
+
+            typedWrite(Constants.APP_TYPE_ATTRIBUTE_NAME, attributeValue, session, console);
+        }
+        else {
+
+            //
+            // String attribute value
+            //
+
+            session.setAttribute(attributeName, attributeValue);
+            console.info(attributeName + "=" + attributeValue + " written into session " + session.getId());
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -93,6 +109,24 @@ public class Write extends CommandBase {
 
         this.attributeValue = st.nextToken();
     }
+
+    private void typedWrite(String attributeName, String attributeValue, HttpSession session, Console console)
+            throws HttpException {
+
+        ApplicationType at = (ApplicationType)session.getAttribute(attributeName);
+
+        if (at == null) {
+
+            at = new ApplicationType();
+            session.setAttribute(attributeName, at);
+            console.info("created new " + at + " and placed it into the session");
+        }
+
+        at.write_Version1(attributeValue);
+
+        console.info("typed-wrote \"" + attributeValue + "\" into " + at);
+    }
+
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

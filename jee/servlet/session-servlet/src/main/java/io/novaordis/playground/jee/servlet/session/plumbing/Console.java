@@ -72,12 +72,12 @@ public class Console {
      */
     public void info(String msg, boolean doLog) {
 
-        if (msg == null || msg.length() == 0) {
-            return;
-        }
+//        if (msg == null || msg.length() == 0) {
+//            return;
+//        }
 
         if (infos == null) {
-            infos = msg;
+            infos = msg + "\n";
         }
         else {
             infos += msg + "\n";
