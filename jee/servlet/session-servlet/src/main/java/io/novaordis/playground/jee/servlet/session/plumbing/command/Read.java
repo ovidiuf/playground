@@ -21,6 +21,8 @@ import io.novaordis.playground.jee.servlet.session.applicaton.ApplicationType;
 import io.novaordis.playground.jee.servlet.session.plumbing.Console;
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
 import io.novaordis.playground.jee.servlet.session.plumbing.HttpException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
 import java.util.StringTokenizer;
@@ -36,6 +38,8 @@ import java.util.StringTokenizer;
 public class Read extends CommandBase {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(Read.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -93,6 +97,12 @@ public class Read extends CommandBase {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public String toString() {
+
+        return "read " + attributeName;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
@@ -122,7 +132,10 @@ public class Read extends CommandBase {
         }
 
         ApplicationType at = (ApplicationType)o;
-        return at.read_Version1();
+
+        log.info(at + " acquired from session");
+
+        return at.read();
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

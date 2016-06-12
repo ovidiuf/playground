@@ -4,15 +4,11 @@
     <security-domain>java:/jaas/jmx-console</security-domain>
     -->
 
-    <!--
-
     <replication-config>
         <cache-name>jdg-remote.default</cache-name>
         <replication-trigger>SET</replication-trigger>
         <replication-granularity>SESSION</replication-granularity>
     </replication-config>
-
-    -->
 
     <!--
 

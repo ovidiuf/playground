@@ -87,6 +87,13 @@ public class Write extends CommandBase {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public String toString() {
+
+        return "write " + attributeName + " " + attributeValue;
+
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
@@ -122,7 +129,7 @@ public class Write extends CommandBase {
             console.info("created new " + at + " and placed it into the session");
         }
 
-        at.write_Version1(attributeValue);
+        at.write(attributeValue);
 
         console.info("typed-wrote \"" + attributeValue + "\" into " + at);
     }

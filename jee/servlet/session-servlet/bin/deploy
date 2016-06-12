@@ -1,17 +1,49 @@
 #!/bin/bash
 
+#
+# a simple deployment utility that knows to deploy to logically identified EAP nodes (1, 2, 3 ...)
+#
+# Usage:
+#
+#       deploy 1 2 ...
+#
+
 artifact=$(dirname $0)/../target/session-servlet.war
 
-[ ! -f ${artifact} ] && { echo "${artifact} not found" 1>&2; exit 1; }
+function logical-id-to-target-dir() {
 
-if [ -n "$1" ]; then
-    hosts="$1"
-else
-    hosts="eap-a-1 eap-a-2 eap-a-3 eap-a-4"
-fi
+    [ -z "${RUNTIME_DIR}" ] && { echo "RUNTIME_DIR not defined, set it and try again" 1>&2; exit 1; }
 
-for host in ${hosts}; do
-    scp ${artifact} ec2-user@${host}:/opt/jboss/standalone/deployments && echo "${host} deployment ok"
-done
+    local td="${RUNTIME_DIR}/jboss-eap-6.4.6/profiles/eap-$1-reference/deployments"
 
+    [ -d ${td} ] || { echo "${td} not a valid directory, logical target $1 cannot be mapped to a local directory" 1>&2; exit 1; }
 
+    echo ${td}
+
+    #scp ${artifact} ec2-user@${host}:/opt/jboss/standalone/deployments && echo "${host} deployment ok"
+}
+
+function target-dir-to-target-name() {
+
+    local target_name=${1#*profiles/}
+    target_name=${target_name%%/*}
+    echo "${target_name}"
+}
+
+function main() {
+
+    [ ! -f ${artifact} ] && { echo "${artifact} not found, maybe you need to build it ..." 1>&2; exit 1; }
+
+    local target_dirs=""
+
+    for i do
+        target_dirs="${target_dirs} $(logical-id-to-target-dir ${i})" || exit 1
+    done
+
+    for td in ${target_dirs}; do
+        target_name=$(target-dir-to-target-name ${td}) || exit 1
+        cp ${artifact} ${td} && echo "${target_name} deployment ok"
+    done
+}
+
+main $@

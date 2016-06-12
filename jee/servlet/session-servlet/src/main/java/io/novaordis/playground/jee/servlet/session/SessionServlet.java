@@ -52,7 +52,18 @@ public class SessionServlet extends HttpServlet
         }
         catch(Exception e) {
 
-            int statusCode = e instanceof HttpException ? ((HttpException)e).getStatusCode(): 500;
+            int statusCode;
+
+            if (e instanceof HttpException) {
+
+                statusCode = ((HttpException)e).getStatusCode();
+
+            }
+            else {
+
+                statusCode = 500;
+                log.error("unexpected exception", e);
+            }
 
             response.setStatus(statusCode);
 

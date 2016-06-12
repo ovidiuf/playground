@@ -315,7 +315,7 @@ public class Context {
                 throw new IllegalStateException("got a non-null session for a null JSESSIONID");
             }
 
-            log.info("existing session acquired");
+            log.info("existing session " + session.getId() + " acquired");
         }
     }
 

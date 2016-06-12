@@ -16,15 +16,27 @@
 
 package io.novaordis.playground.jee.servlet.session.applicaton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+
 /**
  * An "application type" to experiment with.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/12/16
  */
-public class ApplicationType {
+public class ApplicationType implements Serializable {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(ApplicationType.class);
+
+    //
+    // this is the type's version. For more details @see Serializable
+    //
+    private static final long serialVersionUID = 1L;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -36,18 +48,32 @@ public class ApplicationType {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public void write_Version1(String s) {
+    /**
+     * Typed write.
+     */
+    public void write(String s) {
+
+        log.info("write(" + s + ")");
+
         this.state = s;
     }
 
-    public String read_Version1() {
+    /**
+     * Typed read.
+     */
+    public String read() {
+
+        log.info("read()");
+
         return state;
     }
 
     @Override
     public String toString() {
 
-        return "ApplicationType[" + Integer.toHexString(System.identityHashCode(this)) + "][" + state + "]";
+        return
+                "ApplicationType[id=" + Integer.toHexString(System.identityHashCode(this)) +
+                        "][version=" + serialVersionUID + "][state4=" + state + "]";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
