@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * An "application type" to experiment with.
@@ -36,13 +38,14 @@ public class ApplicationType implements Serializable {
     //
     // this is the type's version. For more details @see Serializable
     //
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private String state;
+    private String state2;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -71,9 +74,42 @@ public class ApplicationType implements Serializable {
     @Override
     public String toString() {
 
-        return
-                "ApplicationType[id=" + Integer.toHexString(System.identityHashCode(this)) +
-                        "][version=" + serialVersionUID + "][state4=" + state + "]";
+        String s = "";
+        s += "ApplicationType[id=" + Integer.toHexString(System.identityHashCode(this)) + "]";
+        s += "[version=" + serialVersionUID + "]";
+
+        // state
+
+        s += "[";
+
+        boolean first = true;
+
+        for(Field f: this.getClass().getDeclaredFields()) {
+
+            if (Modifier.isStatic(f.getModifiers())) {
+                continue;
+            }
+
+            if (first) {
+                first = false;
+            }
+            else {
+                s += ", ";
+            }
+
+            s += f.getName() + "=";
+
+            try {
+                s += f.get(this);
+            }
+            catch (Exception e) {
+
+                s += "FAILURE";
+            }
+        }
+        s += "]";
+
+        return s;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
