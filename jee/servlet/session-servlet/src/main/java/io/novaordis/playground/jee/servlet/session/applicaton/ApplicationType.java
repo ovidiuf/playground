@@ -38,14 +38,13 @@ public class ApplicationType implements Serializable {
     //
     // this is the type's version. For more details @see Serializable
     //
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 1L;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private String state;
-    private String state2;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
