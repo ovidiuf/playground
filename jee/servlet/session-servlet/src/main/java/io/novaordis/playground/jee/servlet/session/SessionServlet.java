@@ -67,7 +67,19 @@ public class SessionServlet extends HttpServlet
 
             response.setStatus(statusCode);
 
-            new Result(context, e).render();
+            try {
+
+                new Result(context, e).render();
+            }
+            catch(Exception e2) {
+
+                //
+                // this is when result rendering malfunctions on error, do it manually
+                //
+
+                log.error("error rendering failed because of exception", e2);
+                response.setStatus(500);
+            }
         }
     }
 

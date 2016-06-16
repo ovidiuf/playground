@@ -61,6 +61,9 @@ public class CommandFactory {
         else if (path.startsWith("/read")) {
             return new Read(context, path.substring("/read".length()));
         }
+        else if (path.startsWith("/attributes")) {
+            return new Attributes(context);
+        }
 
         throw new HttpException(404, "no known command can be inferred from " + path);
     }

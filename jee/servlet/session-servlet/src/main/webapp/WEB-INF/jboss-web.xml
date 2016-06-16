@@ -4,13 +4,13 @@
     <security-domain>java:/jaas/jmx-console</security-domain>
     -->
 
+    <!--
     <replication-config>
-        <!-- <cache-name>jdg-remote.default</cache-name> -->
-        <!-- <cache-name>web.repl</cache-name> -->
-        <cache-name>${app.cache.container.name:dg-remote}.${app.cache.name:default}</cache-name>
+        <cache-name>${app.cache.container.name:web}.${app.cache.name:repl}</cache-name>
         <replication-trigger>SET</replication-trigger>
         <replication-granularity>SESSION</replication-granularity>
     </replication-config>
+    -->
 
     <!--
     <passivation-config>

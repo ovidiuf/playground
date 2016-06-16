@@ -28,8 +28,8 @@ import javax.servlet.http.HttpSession;
 import java.util.StringTokenizer;
 
 /**
- * Reads the given session attribute, which is considered to be a String, unless the attribute name is APPTYPE. If the
- * attribute name is APPTYPE, read expects an application type ApplicationType and attempts a typed read invocation
+ * Reads the given session attribute, which is considered to be a String, unless the attribute name is apptype. If the
+ * attribute name is apptype, read expects an application type ApplicationType and attempts a typed read invocation
  * into it.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -74,7 +74,7 @@ public class Read extends CommandBase {
 
         String value;
 
-        if (Constants.APP_TYPE_ATTRIBUTE_NAME.equals(attributeName)) {
+        if (Constants.APP_TYPE_ATTRIBUTE_NAME.equals(attributeName.toLowerCase())) {
 
             //
             // typed access
@@ -115,7 +115,7 @@ public class Read extends CommandBase {
 
         if (!st.hasMoreTokens()) {
             throw new HttpException(400,
-                    "invalid read URL: the name of the String session attribute or 'APPTYPE' must follow /read/");
+                    "invalid read URL: the name of the String session attribute or 'apptype' must follow /read/");
         }
 
         this.attributeName = st.nextToken();

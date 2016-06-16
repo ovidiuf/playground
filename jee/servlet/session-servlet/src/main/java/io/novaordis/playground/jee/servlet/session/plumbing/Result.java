@@ -147,63 +147,61 @@ public class Result {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public void render() {
+    /**
+     * @throws Exception any unexpected Exception bubbles up and it will be 500-ed and rendered by the upper
+     * layer.
+     */
+    public void render() throws Exception {
 
-        try {
+        response.setContentType("text/html");
 
-            response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
 
-            PrintWriter out = response.getWriter();
+        out.println("<html>");
 
-            out.println("<html>");
+        if (exception != null) {
 
-            if (exception != null) {
+            //
+            // report error
+            //
 
-                //
-                // report error
-                //
+            out.println("<head><title>Session Servlet Failure</title></head>");
+            out.println("<body>");
 
-                out.println("<head><title>Session Servlet Failure</title></head>");
-                out.println("<body>");
+            String message;
 
-                String message;
+            if (exception instanceof HttpException) {
 
-                if (exception instanceof HttpException) {
+                HttpException he = (HttpException)exception;
 
-                    HttpException he = (HttpException)exception;
-
-                    message = "HTTP status code " + he.getStatusCode() + ": " + he.getMessage();
-                }
-                else {
-
-                    message = "HTTP status code 500: "+ exception.getClass().getName() + ": " + exception.getMessage();
-                }
-
-                out.println(message + "\n");
-
-                out.println("</body>");
+                message = "HTTP status code " + he.getStatusCode() + ": " + he.getMessage();
             }
             else {
 
-                //
-                // report successful execution (even if the command has a domain-specific error to report)
-                //
-
-                out.println("<head><title>Session Servlet Response</title></head>");
-                out.println("<body>");
-
-                renderInfo(out);
-                renderConsoleContent(context.getConsole(), out);
-
-                out.println("</body>");
+                message = "HTTP status code 500: "+ exception.getClass().getName() + ": " + exception.getMessage();
             }
 
-            out.println("</html>");
-        }
-        catch(Exception e) {
+            out.println(message + "\n");
 
-            throw new RuntimeException("NOT YET IMPLEMENTED");
+            out.println("</body>");
         }
+        else {
+
+            //
+            // report successful execution (even if the command has a domain-specific error to report)
+            //
+
+            out.println("<head><title>Session Servlet Response</title></head>");
+            out.println("<body>");
+
+            renderInfo(out);
+            renderConsoleContent(context.getConsole(), out);
+
+            out.println("</body>");
+        }
+
+        out.println("</html>");
+
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
@@ -225,6 +223,8 @@ public class Result {
         s += "<tr><td align='right' valign='top'>request headers:</td><td>" +
                 headersToHtml(context.getRequestHeaders(), REQUEST_HEADERS_TO_DISPLAY) + "</td></tr>\n";
         s += "<tr><td align='right' valign='top'>cookies:</td><td>" + cookiesToHtml(context.getCookies()) + "</td></tr>\n";
+        s += "<tr><td align='right' valign='top'>HTTP Session ID:</td><td>" +
+                (context.getSession() == null ? "N/A" : context.getSession().getId()) + "</td></tr>\n";
         s += "</table>\n";
 
         out.println(s);
@@ -240,7 +240,7 @@ public class Result {
                 "#FFA07A", // Light salmon
                 "#FFD700", // Gold
                 "#E0FFFF" // LightCyan
-                };
+        };
 
         int i = -1;
 

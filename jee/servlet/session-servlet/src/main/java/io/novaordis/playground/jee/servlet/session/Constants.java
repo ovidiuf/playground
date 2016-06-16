@@ -28,7 +28,7 @@ public class Constants {
     // the session attribute name that indicates the session holds an application type
     //
 
-    public static final String APP_TYPE_ATTRIBUTE_NAME = "APPTYPE";
+    public static final String APP_TYPE_ATTRIBUTE_NAME = "apptype";
 
     // Static ----------------------------------------------------------------------------------------------------------
 

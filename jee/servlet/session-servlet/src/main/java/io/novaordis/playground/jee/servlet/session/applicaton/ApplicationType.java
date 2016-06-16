@@ -70,6 +70,11 @@ public class ApplicationType implements Serializable {
         return state;
     }
 
+    public String getVersion() {
+
+        return Long.toString(serialVersionUID);
+    }
+
     @Override
     public String toString() {
 

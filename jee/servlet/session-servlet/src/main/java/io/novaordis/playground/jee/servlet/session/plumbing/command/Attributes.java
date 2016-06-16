@@ -21,34 +21,34 @@ import io.novaordis.playground.jee.servlet.session.applicaton.ApplicationType;
 import io.novaordis.playground.jee.servlet.session.plumbing.Console;
 import io.novaordis.playground.jee.servlet.session.plumbing.Context;
 import io.novaordis.playground.jee.servlet.session.plumbing.HttpException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 /**
+ * Displays the names of the attributes maintained by the session.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 6/9/16
  */
-public class Write extends CommandBase {
+public class Attributes extends CommandBase {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(Attributes.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private String attributeName;
-    private String attributeValue;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    /**
-     * @param argumentPath the path that follows after the "/write"
-     */
-    public Write(Context context, String argumentPath) throws HttpException {
+    public Attributes(Context context) throws HttpException {
 
         super(context);
-        extractAttributeNameValue(argumentPath);
     }
 
     // Command implementation ------------------------------------------------------------------------------------------
@@ -61,27 +61,26 @@ public class Write extends CommandBase {
 
         if (session == null) {
 
-            console.warn("no active session, can't write. Try establishing a session with /establish-session");
+            console.warn("no active session, there are no attributes. Try establishing a session with /establish-session");
             return;
-
         }
 
-        if (Constants.APP_TYPE_ATTRIBUTE_NAME.equals(attributeName.toLowerCase())) {
+        Enumeration<String> ne = session.getAttributeNames();
 
-            //
-            // typed access
-            //
-
-            typedWrite(Constants.APP_TYPE_ATTRIBUTE_NAME, attributeValue, session, console);
+        if (!ne.hasMoreElements()) {
+            console.warn("no attributes in session");
         }
         else {
 
-            //
-            // String attribute value
-            //
+            String names = "";
 
-            session.setAttribute(attributeName, attributeValue);
-            console.info(attributeName + "=" + attributeValue + " written into session " + session.getId());
+            while (ne.hasMoreElements()) {
+
+                String n = ne.nextElement();
+                names += n + "\n";
+            }
+
+            console.info(names);
         }
     }
 
@@ -90,8 +89,7 @@ public class Write extends CommandBase {
     @Override
     public String toString() {
 
-        return "write " + attributeName + " " + attributeValue;
-
+        return "attributes";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
@@ -99,41 +97,6 @@ public class Write extends CommandBase {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-    private void extractAttributeNameValue(String path) throws HttpException {
-
-        StringTokenizer st = new StringTokenizer(path, "/");
-
-        if (!st.hasMoreTokens()) {
-            throw new HttpException(400, "invalid write URL: the name of the attribute to be written into the session must follow /write/");
-        }
-
-        this.attributeName = st.nextToken();
-
-        if (!st.hasMoreTokens()) {
-            throw new HttpException(400, "invalid write URL: the value of the attribute to be written into the session must follow /write/" + attributeName + "/");
-        }
-
-        this.attributeValue = st.nextToken();
-    }
-
-    private void typedWrite(String attributeName, String attributeValue, HttpSession session, Console console)
-            throws HttpException {
-
-        ApplicationType at = (ApplicationType)session.getAttribute(attributeName);
-
-        if (at == null) {
-
-            at = new ApplicationType();
-            session.setAttribute(attributeName, at);
-            console.info("created new " + at + " and placed it into the session");
-        }
-
-        at.write(attributeValue);
-
-        console.info("typed-wrote \"" + attributeValue + "\" into " + at);
-    }
-
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

@@ -40,6 +40,14 @@
     </security-role>
     -->
 
+    <!--
+        In order to enable session replication, uncomment this and configure the correct
+        Infinispan cache container/cache name in jboss-web.xml - or in the server configuration.
+        More details here:
+        https://kb.novaordis.com/index.php/HTTP_Session_Replication#WildFly-Specific_Configuration
+    -->
+    <!--
     <distributable/>
+    -->
 
 </web-app>
