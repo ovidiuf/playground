@@ -20,4 +20,8 @@
     </passivation-config>
     -->
 
+    <!--
+    <context-root>other-context</context-root>
+    -->
+
 </jboss-web>
