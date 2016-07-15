@@ -1,5 +1,11 @@
 <jboss-web>
 
+
+    <!--
+        For more details see:
+        https://kb.novaordis.com/index.php/HTTP_Session_Replication#Configuration_Elements
+    -->
+
     <!--
     <security-domain>java:/jaas/jmx-console</security-domain>
     -->
