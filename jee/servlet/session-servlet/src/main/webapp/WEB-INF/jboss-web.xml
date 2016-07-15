@@ -10,13 +10,17 @@
     <security-domain>java:/jaas/jmx-console</security-domain>
     -->
 
-    <!--
     <replication-config>
+
+        <!--
         <cache-name>${app.cache.container.name:web}.${app.cache.name:repl}</cache-name>
         <replication-trigger>SET</replication-trigger>
         <replication-granularity>SESSION</replication-granularity>
+        <replication-mode>ASYNCHRONOUS</replication-mode>
+        -->
+        <replication-mode>SYNCHRONOUS</replication-mode>
+
     </replication-config>
-    -->
 
     <!--
     <passivation-config>
