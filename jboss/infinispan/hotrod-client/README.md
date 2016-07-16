@@ -36,7 +36,7 @@ The ./bin/hotrod-client wrapper must also be updated to point to the same JDG se
 In order to use the example, you will need to build it first, see above.
 
     cd .../hotrod-client
-    ./bin/ihotrod-client
+    ./bin/hotrod-client
     > connect localhost:11222
     > put test-key test-value
     > get test-key
