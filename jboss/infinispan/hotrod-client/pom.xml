@@ -21,7 +21,9 @@
 
     <properties>
 
+        <!--
         <jboss.home>${user.home}/runtime/jboss-datagrid-6.6.0-server</jboss.home>
+        -->
         <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +32,13 @@
         <junit-version>4.12</junit-version>
 
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jboss-datagrid-6.6.0-maven-repository</id>
+            <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
+        </repository>
+    </repositories>
 
     <build>
 
@@ -57,6 +66,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -80,6 +91,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
 
@@ -100,17 +112,20 @@
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-commons</artifactId>
             <version>${infinispan-version}</version>
-            <scope>system</scope>
-            <systemPath>${jboss.home}/modules/system/layers/base/org/infinispan/commons/main/infinispan-commons-${infinispan-version}.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-client-hotrod</artifactId>
             <version>${infinispan-version}</version>
-            <scope>system</scope>
-            <systemPath>${jboss.home}/modules/system/layers/base/org/infinispan/client/hotrod/main/infinispan-client-hotrod-${infinispan-version}.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-core</artifactId>
+            <version>${infinispan-version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

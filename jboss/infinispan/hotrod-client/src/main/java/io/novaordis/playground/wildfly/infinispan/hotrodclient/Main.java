@@ -37,6 +37,7 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+        //noinspection TryFinallyCanBeTryWithResources
         try {
 
             while (true) {
@@ -53,6 +54,9 @@ public class Main {
                 }
                 catch(UserErrorException e) {
                     Console.error(e.getMessage());
+                }
+                catch(ExitException e) {
+                    System.exit(0);
                 }
             }
         }
@@ -76,7 +80,7 @@ public class Main {
     private static void execute(String line, Runtime runtime) throws Exception {
 
         if (line.toLowerCase().startsWith("exit")) {
-            System.exit(0);
+            throw new ExitException();
         }
 
         String commandName = line.replaceAll(" .*$", "").toLowerCase();

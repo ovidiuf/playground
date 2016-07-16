@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="infinispan-core-6.4.0.Final-redhat-4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/runtime/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-core/6.4.0.Final-redhat-4/infinispan-core-6.4.0.Final-redhat-4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/runtime/jboss-datagrid-6.6.0-maven-repository/org/infinispan/infinispan-core/6.4.0.Final-redhat-4/infinispan-core-6.4.0.Final-redhat-4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

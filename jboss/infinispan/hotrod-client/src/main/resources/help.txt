@@ -6,22 +6,20 @@ allows for simple cache operations, in a command line loop.
 
 Commands:
 
-    connect [initial-host:hotrod-port] [--cache=<cache-name>]
+    connect [initial-host:hotrod-port:[cache-name]]
 
-        Connects the client to a HotRod server, optionally specifying a cache name. If no
-        cache name is specified, the default cache is used. If a name of a cache that does
-        not exist is used, the client will display an error message.
+        Connects the client to a HotRod server, optionally specifying a cache name. For a JDG
+        server, the host:port pair is associated with a specific hotrod connector, and the hotrod
+        connector is associated with a specific cache container; it is that cache container the
+        client gets access to. This association is described in the JDG server's configuration file.
+
+        If no cache name is specified, the default cache of the cache container is used. If a name
+        of a cache that does not exist is used, the client will display an error message.
 
     status
-
     put <key> <value>
-
     get <key>
-
     keys
-
     size - Returns the number of keys.
-
     values
-
     exit

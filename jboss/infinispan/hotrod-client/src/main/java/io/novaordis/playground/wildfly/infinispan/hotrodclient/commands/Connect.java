@@ -62,9 +62,10 @@ public class Connect extends CommandBase {
 
         Runtime runtime = getRuntime();
 
-        RemoteCacheManager rcm = runtime.getRemoteCacheManager();
+        RemoteCacheManager remoteCacheManager = runtime.getRemoteCacheManager();
 
-        if (rcm != null) {
+        if (remoteCacheManager != null) {
+
             Console.info("already connected");
             return;
         }
@@ -75,17 +76,17 @@ public class Connect extends CommandBase {
 
         Configuration c = new ConfigurationBuilder().addServer().host(host).port(port).build();
 
-        rcm = new RemoteCacheManager(c);
+        remoteCacheManager = new RemoteCacheManager(c);
 
-        RemoteCache cache = null;
+        RemoteCache cache;
 
         if (cacheName == null) {
 
-            cache = rcm.getCache();
+            cache = remoteCacheManager.getCache();
         }
         else {
 
-            cache = rcm.getCache(cacheName);
+            cache = remoteCacheManager.getCache(cacheName);
         }
 
         if (cache == null) {
@@ -117,24 +118,28 @@ public class Connect extends CommandBase {
 
             String tok = st.nextToken();
 
-            if (tok.startsWith("--cache=")) {
+            //
+            // host:port[:cache-name]
+            //
 
-                cacheName = tok.substring("--cache=".length());
+            int i = tok.indexOf(':');
+            if (i == -1) {
+                host = tok;
             }
             else {
+                host = tok.substring(0, i);
+                tok = tok.substring(i + 1).trim();
 
-                //
-                // host:port
-                //
+                i = tok.indexOf(':');
 
-                int i = tok.indexOf(':');
                 if (i == -1) {
-                    host = tok;
+
+                    port = Integer.parseInt(tok);
                 }
                 else {
-                    host = tok.substring(0, i);
-                    String sport = tok.substring(i + 1);
-                    port = Integer.parseInt(sport);
+
+                    port = Integer.parseInt(tok.substring(0, i));
+                    cacheName = tok.substring(i + 1);
                 }
             }
         }
