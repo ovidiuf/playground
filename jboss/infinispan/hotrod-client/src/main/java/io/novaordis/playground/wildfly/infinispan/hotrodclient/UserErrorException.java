@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
-
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import org.infinispan.client.hotrod.RemoteCache;
-
-import java.util.Set;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 5/29/16
+ * @since 5/30/16
  */
-@SuppressWarnings("unused")
-public class Values extends CacheCommand {
+public class UserErrorException extends Exception {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -36,16 +30,20 @@ public class Values extends CacheCommand {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    // Command implementation ------------------------------------------------------------------------------------------
+    public UserErrorException() {
+        super();
+    }
 
-    @Override
-    public void execute(String restOfTheLine) throws Exception {
+    public UserErrorException(String message) {
+        super(message);
+    }
 
-        RemoteCache cache = insureConnected();
+    public UserErrorException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-        for(Object v: cache.values()) {
-            Console.info(v == null ? "null" : v.toString());
-        }
+    public UserErrorException(Throwable cause) {
+        super(cause);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

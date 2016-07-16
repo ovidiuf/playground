@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.configuration.ServerConfiguration;
-
-import java.util.Iterator;
-import java.util.List;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Runtime;
 
 /**
- * Displays the status of the runtime
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/29/16
  */
-@SuppressWarnings("unused")
-public class Status extends CommandBase {
+public abstract class CommandBase implements Command {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -40,49 +30,22 @@ public class Status extends CommandBase {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Runtime runtime;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Command implementation ------------------------------------------------------------------------------------------
 
     @Override
-    public void execute(String restOfTheLine) throws Exception {
-
-        Runtime runtime = getRuntime();
-        RemoteCache rc = runtime.getCache();
-
-        if (rc == null) {
-
-            Console.info("not connected");
-        }
-        else {
-
-            RemoteCacheManager rcm = rc.getRemoteCacheManager();
-
-            String msg = "connected\n";
-
-            msg += "  servers: ";
-
-            List<ServerConfiguration> serverConfigurations = rcm.getConfiguration().servers();
-
-            for (Iterator<ServerConfiguration> i = serverConfigurations.iterator(); i.hasNext(); ) {
-
-                ServerConfiguration sc = i.next();
-
-                msg += sc.host() + ":" + sc.port();
-
-                if (i.hasNext()) {
-                    msg += ", ";
-                }
-            }
-
-            msg += "\n";
-            msg += "  cache name: \"" + rc.getName() + "\"";
-
-            Console.info(msg);
-        }
+    public void setRuntime(Runtime runtime) {
+        this.runtime = runtime;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public Runtime getRuntime() {
+        return runtime;
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

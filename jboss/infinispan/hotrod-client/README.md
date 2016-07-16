@@ -1,4 +1,4 @@
-#Remote Cache Manager Client
+#Infinispan HotRod Client
 
 ##Overview
 
@@ -26,7 +26,7 @@ Then you can build:
     
     mvn clean package
 
-The ./bin/ic wrapper must also be updated to point to the same JDG server deployment:
+The ./bin/hotrod-client wrapper must also be updated to point to the same JDG server deployment:
 
     jboss_home=~/runtime/jboss-datagrid-6.6.0-server
     infinispan_version=6.4.0.Final-redhat-4
@@ -35,8 +35,8 @@ The ./bin/ic wrapper must also be updated to point to the same JDG server deploy
 
 In order to use the example, you will need to build it first, see above.
 
-    cd .../remote-cache-manager-client
-    ./bin/ic
+    cd .../hotrod-client
+    ./bin/ihotrod-client
     > connect localhost:11222
     > put test-key test-value
     > get test-key

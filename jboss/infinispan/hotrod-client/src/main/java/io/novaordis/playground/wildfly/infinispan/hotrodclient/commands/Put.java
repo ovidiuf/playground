@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.UserErrorException;
 import org.infinispan.client.hotrod.RemoteCache;
 
 /**
@@ -25,7 +24,7 @@ import org.infinispan.client.hotrod.RemoteCache;
  * @since 5/29/16
  */
 @SuppressWarnings("unused")
-public class Get extends CacheCommand {
+public class Put extends CacheCommand {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -45,13 +44,18 @@ public class Get extends CacheCommand {
             throw new UserErrorException("key name missing");
         }
 
-        String keyName = restOfTheLine.replaceAll(" .*$", "");
+        int i = restOfTheLine.indexOf(' ');
+        if (i == -1) {
+            throw new UserErrorException("key value pair missing");
+        }
+
+        String keyName = restOfTheLine.substring(0, i);
+        restOfTheLine = restOfTheLine.substring(i + 1);
+        String keyValue = restOfTheLine.replaceAll(" .*$", "");
 
         RemoteCache defaultCache = insureConnected();
 
-        Object o = defaultCache.get(keyName);
-
-        Console.info("" + o);
+        defaultCache.put(keyName, keyValue);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

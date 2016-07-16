@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import io.novaordis.playground.wildfly.infinispan.rcmc.InLineHelp;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Console;
+import org.infinispan.client.hotrod.RemoteCache;
+
+import java.util.Set;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/29/16
  */
 @SuppressWarnings("unused")
-public class Help extends CommandBase {
+public class Keys extends CacheCommand {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -39,7 +41,14 @@ public class Help extends CommandBase {
     @Override
     public void execute(String restOfTheLine) throws Exception {
 
-        Console.info(InLineHelp.get());
+        RemoteCache cache = insureConnected();
+
+        //noinspection unchecked
+        Set<Object> keys = cache.keySet();
+
+        for(Object k: keys) {
+            Console.info(k == null ? "null" : k.toString());
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

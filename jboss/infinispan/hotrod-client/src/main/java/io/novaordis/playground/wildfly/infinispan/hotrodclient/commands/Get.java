@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Console;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.UserErrorException;
+import org.infinispan.client.hotrod.RemoteCache;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/29/16
  */
-public abstract class CommandBase implements Command {
+@SuppressWarnings("unused")
+public class Get extends CacheCommand {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -30,22 +33,28 @@ public abstract class CommandBase implements Command {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Runtime runtime;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Command implementation ------------------------------------------------------------------------------------------
 
     @Override
-    public void setRuntime(Runtime runtime) {
-        this.runtime = runtime;
+    public void execute(String restOfTheLine) throws Exception {
+
+        if (restOfTheLine == null || restOfTheLine.trim().length() == 0) {
+
+            throw new UserErrorException("key name missing");
+        }
+
+        String keyName = restOfTheLine.replaceAll(" .*$", "");
+
+        RemoteCache defaultCache = insureConnected();
+
+        Object o = defaultCache.get(keyName);
+
+        Console.info("" + o);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public Runtime getRuntime() {
-        return runtime;
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

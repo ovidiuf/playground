@@ -13,8 +13,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground.wildfly.infinispan.remote-cache-manager-client</groupId>
-    <artifactId>ic</artifactId>
+    <groupId>io.novaordis.playground.wildfly.infinispan.hotrod-client</groupId>
+    <artifactId>hotrod-client</artifactId>
     <packaging>jar</packaging>
 
     <version>1</version>
@@ -33,7 +33,7 @@
 
     <build>
 
-        <finalName>ic</finalName>
+        <finalName>hotrod-client</finalName>
 
         <plugins>
             <plugin>

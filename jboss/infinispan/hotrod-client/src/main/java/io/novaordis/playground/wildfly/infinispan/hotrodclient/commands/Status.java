@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
+
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Console;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Runtime;
+import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.configuration.ServerConfiguration;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
+ * Displays the status of the runtime
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 5/30/16
+ * @since 5/29/16
  */
-public class UserErrorException extends Exception {
+@SuppressWarnings("unused")
+public class Status extends CommandBase {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -30,20 +42,44 @@ public class UserErrorException extends Exception {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public UserErrorException() {
-        super();
-    }
+    // Command implementation ------------------------------------------------------------------------------------------
 
-    public UserErrorException(String message) {
-        super(message);
-    }
+    @Override
+    public void execute(String restOfTheLine) throws Exception {
 
-    public UserErrorException(String message, Throwable cause) {
-        super(message, cause);
-    }
+        Runtime runtime = getRuntime();
+        RemoteCache rc = runtime.getCache();
 
-    public UserErrorException(Throwable cause) {
-        super(cause);
+        if (rc == null) {
+
+            Console.info("not connected");
+        }
+        else {
+
+            RemoteCacheManager rcm = rc.getRemoteCacheManager();
+
+            String msg = "connected\n";
+
+            msg += "  servers: ";
+
+            List<ServerConfiguration> serverConfigurations = rcm.getConfiguration().servers();
+
+            for (Iterator<ServerConfiguration> i = serverConfigurations.iterator(); i.hasNext(); ) {
+
+                ServerConfiguration sc = i.next();
+
+                msg += sc.host() + ":" + sc.port();
+
+                if (i.hasNext()) {
+                    msg += ", ";
+                }
+            }
+
+            msg += "\n";
+            msg += "  cache name: \"" + rc.getName() + "\"";
+
+            Console.info(msg);
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

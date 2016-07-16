@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.commands.Command;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.commands.Command;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

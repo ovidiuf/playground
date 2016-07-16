@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Console;
-import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
-import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Console;
 import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.configuration.Configuration;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/29/16
  */
 @SuppressWarnings("unused")
-public class Put extends CacheCommand {
+public class Values extends CacheCommand {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -44,23 +39,11 @@ public class Put extends CacheCommand {
     @Override
     public void execute(String restOfTheLine) throws Exception {
 
-        if (restOfTheLine == null || restOfTheLine.trim().length() == 0) {
+        RemoteCache cache = insureConnected();
 
-            throw new UserErrorException("key name missing");
+        for(Object v: cache.values()) {
+            Console.info(v == null ? "null" : v.toString());
         }
-
-        int i = restOfTheLine.indexOf(' ');
-        if (i == -1) {
-            throw new UserErrorException("key value pair missing");
-        }
-
-        String keyName = restOfTheLine.substring(0, i);
-        restOfTheLine = restOfTheLine.substring(i + 1);
-        String keyValue = restOfTheLine.replaceAll(" .*$", "");
-
-        RemoteCache defaultCache = insureConnected();
-
-        defaultCache.put(keyName, keyValue);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

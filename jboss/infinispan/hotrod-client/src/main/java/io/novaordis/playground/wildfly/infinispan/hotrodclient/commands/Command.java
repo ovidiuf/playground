@@ -14,37 +14,27 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
+
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Runtime;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 5/30/16
+ * @since 5/29/16
  */
-public class Console {
+public interface Command {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void info(String message) {
-        System.out.println(message);
-    }
-    public static void error(String message) {
-        System.err.println("error: " + message);
-    }
-
-    // Attributes ------------------------------------------------------------------------------------------------------
-
-    // Constructors ----------------------------------------------------------------------------------------------------
-
     // Public ----------------------------------------------------------------------------------------------------------
 
-    // Package protected -----------------------------------------------------------------------------------------------
+    void setRuntime(Runtime r);
 
-    // Protected -------------------------------------------------------------------------------------------------------
-
-    // Private ---------------------------------------------------------------------------------------------------------
-
-    // Inner classes ---------------------------------------------------------------------------------------------------
+    /**
+     * @param restOfTheLine null is acceptable (meaning there's nothing else on that line)
+     */
+    void execute(String restOfTheLine) throws Exception;
 
 }

@@ -14,57 +14,30 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc;
-
-import org.infinispan.client.hotrod.RemoteCache;
-import org.infinispan.client.hotrod.RemoteCacheManager;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient;
 
 /**
- * The container for the runtime state. Spans the life of th eclient.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 5/29/16
+ * @since 5/30/16
  */
-public class Runtime {
+public class Console {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    // Attributes ------------------------------------------------------------------------------------------------------
+    public static void info(String message) {
+        System.out.println(message);
+    }
+    public static void error(String message) {
+        System.err.println("error: " + message);
+    }
 
-    private RemoteCache currentCache;
+    // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public void setCache(RemoteCache rc) {
-
-        if (currentCache != null) {
-            throw new IllegalStateException("Default cache already set: " + currentCache);
-        }
-
-        currentCache = rc;
-    }
-
-    /**
-     * May be null if the "connect" command was not executed or it failed.
-     */
-    public RemoteCache getCache() {
-        return currentCache;
-    }
-
-    public RemoteCacheManager getRemoteCacheManager() {
-
-        RemoteCache dc = getCache();
-
-        if (dc == null) {
-            return null;
-        }
-
-        return dc.getRemoteCacheManager();
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

@@ -13,11 +13,11 @@ infinispan_version=6.4.0.Final-redhat-4
 
 function build-classpath() {
 
-    local ic_jar=$(dirname $0)/../target/ic.jar
+    local hotrod_client_jar=$(dirname $0)/../target/hotrod-client.jar
 
-    [ -f ${ic_jar} ] || { echo "${ic_jar} not found, build the project and try again" 1>&2; exit 1; }
+    [ -f ${hotrod_client_jar} ] || { echo "${hotrod_client_jar} not found, build the project and try again" 1>&2; exit 1; }
 
-    local cp=${ic_jar}
+    local cp=${hotrod_client_jar}
 
     [ -d ${jboss_home} ] || { echo "the location of the local JDG deployment is not a valid directory: ${jboss_home}" 1>&2; exit 1; }
 
@@ -52,7 +52,7 @@ function main() {
     local classpath
     classpath=$(build-classpath) || exit 1
 
-    java ${debug_args} -cp ${classpath} io.novaordis.playground.wildfly.infinispan.rcmc.Main
+    java ${debug_args} -cp ${classpath} io.novaordis.playground.wildfly.infinispan.hotrodclient.Main
 }
 
 main $@

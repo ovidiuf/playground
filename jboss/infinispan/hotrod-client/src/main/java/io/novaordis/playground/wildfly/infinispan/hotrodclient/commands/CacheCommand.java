@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.wildfly.infinispan.rcmc.commands;
+package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
-import io.novaordis.playground.wildfly.infinispan.rcmc.Runtime;
-import io.novaordis.playground.wildfly.infinispan.rcmc.UserErrorException;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.Runtime;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.UserErrorException;
 import org.infinispan.client.hotrod.RemoteCache;
 
 /**
