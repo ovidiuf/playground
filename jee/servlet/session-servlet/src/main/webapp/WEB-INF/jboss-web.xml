@@ -17,8 +17,14 @@
         <replication-trigger>SET</replication-trigger>
         <replication-granularity>SESSION</replication-granularity>
         <replication-mode>ASYNCHRONOUS</replication-mode>
+        <snapshot-mode>INTERVAL</snapshot-mode>
         -->
-        <replication-mode>SYNCHRONOUS</replication-mode>
+
+        <replication-trigger>SET</replication-trigger>
+        <replication-granularity>ATTRIBUTE</replication-granularity>
+        <snapshot-mode>INSTANT</snapshot-mode>
+        <replication-mode>ASYNCHRONOUS</replication-mode>
+
 
     </replication-config>
 
