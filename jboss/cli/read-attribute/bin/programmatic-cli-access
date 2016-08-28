@@ -1,0 +1,41 @@
+#!/bin/bash
+
+jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.6
+
+classpath="\
+$(dirname $0)/../target/programmatic-cli-attribute-access.jar:\
+${jboss_home}/jboss-modules.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/as/cli/main/jboss-as-cli-7.5.6.Final-redhat-2.jar:\
+${jboss_home}/modules/system/layers/base/org/slf4j/main/slf4j-api-1.7.2.redhat-3.jar:\
+${jboss_home}/modules/system/layers/base/org/slf4j/impl/main/slf4j-jboss-logmanager-1.0.3.GA-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/org/jboss/logmanager/main/jboss-logmanager-1.5.4.Final-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/org/jboss/logging/main/jboss-logging-3.1.4.GA-redhat-2.jar:\
+${jboss_home}/modules/system/layers/base/org/jboss/staxmapper/main/staxmapper-1.1.0.Final-redhat-3.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/as/protocol/main/jboss-as-protocol-7.5.6.Final-redhat-2.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/picketbox/main/picketbox-4.1.2.Final-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/as/controller-client/main/jboss-as-controller-client-7.5.6.Final-redhat-2.jar:\
+${jboss_home}/modules/system/layers/base/org/jboss/threads/main/jboss-threads-2.1.2.Final-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/remoting3/main/jboss-remoting-3.3.7.Final-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/xnio/main/xnio-api-3.0.15.GA-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/xnio/nio/main/xnio-nio-3.0.15.GA-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/org/jboss/dmr/main/jboss-dmr-1.2.2.Final-redhat-1.jar:\
+${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/aesh/main/aesh-0.33.16.redhat-1.jar:\
+"
+
+debug=false
+
+function main() {
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "--debug" ]; then
+            debug=true
+        fi
+        shift
+    done
+
+    ${debug} && debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5006"
+
+    java ${debug_args} -cp ${classpath} io.novaordis.playground.jboss.cli.readattr.Main
+}
+
+main $@
