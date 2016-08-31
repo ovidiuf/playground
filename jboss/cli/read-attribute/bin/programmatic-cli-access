@@ -5,6 +5,7 @@ jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.6
 classpath="\
 $(dirname $0)/../target/programmatic-cli-attribute-access.jar:\
 ${jboss_home}/jboss-modules.jar:\
+${jboss_home}/bin/client/jboss-cli-client.jar:\
 ${jboss_home}/modules/system/layers/base/.overlays/layer-base-jboss-eap-6.4.6.CP/org/jboss/as/cli/main/jboss-as-cli-7.5.6.Final-redhat-2.jar:\
 ${jboss_home}/modules/system/layers/base/org/slf4j/main/slf4j-api-1.7.2.redhat-3.jar:\
 ${jboss_home}/modules/system/layers/base/org/slf4j/impl/main/slf4j-jboss-logmanager-1.0.3.GA-redhat-1.jar:\

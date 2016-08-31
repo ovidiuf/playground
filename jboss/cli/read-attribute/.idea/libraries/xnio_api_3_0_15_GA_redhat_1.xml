@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="xnio-api-3.0.15.GA-redhat-1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.6-incremental-maven-repository/org/jboss/xnio/xnio-api/3.0.15.GA-redhat-1/xnio-api-3.0.15.GA-redhat-1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.6-incremental-maven-repository/org/jboss/xnio/xnio-api/3.0.15.GA-redhat-1/xnio-api-3.0.15.GA-redhat-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
