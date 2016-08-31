@@ -19,6 +19,12 @@ package io.novaordis.playground.jboss.cli.readattr;
 import org.jboss.as.cli.CommandContext;
 import org.jboss.as.cli.CommandContextFactory;
 import org.jboss.as.cli.CommandLineException;
+import org.jboss.as.cli.Util;
+import org.jboss.as.cli.operation.impl.DefaultCallbackHandler;
+import org.jboss.as.cli.parsing.ParserUtil;
+import org.jboss.as.cli.parsing.operation.OperationFormat;
+import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.dmr.ModelNode;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -40,6 +46,7 @@ public class Main {
         boolean initConsole = false;
         int connectionTimeout = -1;
 
+        //noinspection ConstantConditions
         CommandContext commandContext = CommandContextFactory.getInstance().newCommandContext(
                 controllerHost, controllerPort, username, password, disableLocalAuth, initConsole, connectionTimeout);
 
@@ -53,40 +60,15 @@ public class Main {
             return;
         }
 
+        String command = "/:read-attribute(name=release-version";
+
         //
-        // send a "read attribute" command
-        //
-        // /:read-attribute(name=release-version)
+        // two alternative ways of executing the command, see below for advantages and disadvantages:
         //
 
-        commandContext.handle(":read-attribute(name=release-version");
+        executeCommandWithContextHandle(commandContext, command);
 
-//        ModelNode request = new ModelNode();
-//
-//        //
-//        // set the adress
-//        //
-//
-//        ModelNode address = new ModelNode();
-//        address.setEmptyList();
-//
-//        //
-//        // set the operation
-//        //
-//
-//        String operationName = "read-attribute";
-//        request.get(Util.OPERATION).set(operationName);
-//
-//        //
-//        // set the operation arguments
-//        //
-//
-//        String propertyName = "name";
-//        String propertyValue = "release-version";
-//        final ModelNode propertyValueNode = ArgumentValueConverter.DEFAULT.fromString(commandContext, propertyValue);
-//        request.get(propertyName).set(propertyValueNode);
-//
-//        commandContext.set("OP_REQ", request);
+        executeCommandLowLevel(commandContext, command);
 
     }
 
@@ -101,6 +83,56 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Parses, executes and displays the command result at stdout. Does not give access to the result, it just renders
+     * it to stdout.
+     */
+    private static void executeCommandWithContextHandle(CommandContext commandContext, String command)
+            throws Exception {
+
+        commandContext.handle(command);
+    }
+
+    /**
+     * Better approach, builds the operation by parsing the command, executes the operation and exposes the result.
+     */
+    private static void executeCommandLowLevel(CommandContext commandContext, String command) throws Exception {
+
+        boolean validate = true;
+        //noinspection ConstantConditions
+        DefaultCallbackHandler parsedCommand = new DefaultCallbackHandler(validate);
+        ParserUtil.parse(command, parsedCommand);
+
+        if (parsedCommand.getFormat() != OperationFormat.INSTANCE ) {
+
+            //
+            // we got this from the CLI code, what is "INSTANCE"?
+            //
+
+            throw new RuntimeException("NOT YET IMPLEMENTED");
+        }
+
+        ModelNode request = parsedCommand.toOperationRequest(commandContext);
+
+        //
+        // set the address
+        //
+
+        ModelControllerClient client = commandContext.getModelControllerClient();
+
+        ModelNode result = client.execute(request);
+
+        if(Util.isSuccess(result)) {
+
+            System.out.println("success: " + result);
+
+        } else {
+
+            String failureDescription = Util.getFailureDescription(result);
+            System.out.println("failure: " + failureDescription);
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
