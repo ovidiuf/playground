@@ -6,7 +6,7 @@ An example of how to programmatically create a CLI remote client and read a CLI 
 
 #More Details
 
-https://kb.novaordis.com/index.php/?
+https://kb.novaordis.com/index.php/WildFly_CLI_Programmatic_Access
 
 #Build
 
