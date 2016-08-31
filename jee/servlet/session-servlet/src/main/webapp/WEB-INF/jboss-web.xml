@@ -40,4 +40,10 @@
     <context-root>other-context</context-root>
     -->
 
+    <!--
+    <session-config>
+        <session-timeout>1800</session-timeout>
+    </session-config>
+    -->
+
 </jboss-web>

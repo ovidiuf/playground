@@ -46,6 +46,13 @@
         More details here:
         https://kb.novaordis.com/index.php/HTTP_Session_Replication#WildFly-Specific_Configuration
     -->
+
+    <!--
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
+    -->
+
     <!-- -->
     <distributable/>
     <!-- -->
