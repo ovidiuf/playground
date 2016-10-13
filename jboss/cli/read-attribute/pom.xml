@@ -13,7 +13,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j-version>1.7.12</slf4j-version>
-        <undertow-core-version>1.3.12.Final</undertow-core-version>
     </properties>
 
     <repositories>
