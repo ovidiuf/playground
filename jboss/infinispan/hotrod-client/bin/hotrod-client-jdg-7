@@ -1,0 +1,59 @@
+#/bin/bash
+
+#
+# configuration
+#
+
+jdg_home=/opt/jdg
+
+#
+# end of configuration
+#
+
+function build-classpath() {
+
+    local hotrod_client_jar=$(dirname $0)/lib/hotrod-client.jar
+
+    [ -f ${hotrod_client_jar} ] || { echo "${hotrod_client_jar} not found, build the project and try again" 1>&2; exit 1; }
+
+    local cp=${hotrod_client_jar}
+
+    [ -d ${jdg_home} ] || { echo "the location of the local JDG deployment is not a valid directory: ${jdg_home}" 1>&2; exit 1; }
+
+    #
+    # compilation
+    #
+
+    cp="${cp}:${jdg_home}/modules/system/layers/base/org/infinispan/commons/main/infinispan-commons.jar"
+    cp="${cp}:${jdg_home}/modules/system/layers/base/org/infinispan/client/hotrod/main/infinispan-client-hotrod.jar"
+
+    #
+    # runtime
+    #
+
+    cp="${cp}:${jdg_home}/modules/system/layers/base/org/jboss/logging/main/jboss-logging-3.3.0.Final-redhat-1.jar"
+    cp="${cp}:${jdg_home}/modules/system/layers/base/org/apache/commons/pool/main/commons-pool-1.6.0.redhat-9.jar"
+    cp="${cp}:${jdg_home}/modules/system/layers/base/org/jboss/marshalling/main/jboss-marshalling-osgi-1.4.10.Final-redhat-3.jar"
+    cp="${cp}:${jdg_home}/modules/system/layers/base/org/jboss/marshalling/river/main/jboss-marshalling-river-1.4.10.Final-redhat-3.jar"
+
+    echo "${cp}"
+}
+
+
+function main() {
+
+    for arg do
+        if [ "${arg}" = "--debug" ]; then
+            debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+        fi
+    done
+
+    local classpath
+    classpath=$(build-classpath) || exit 1
+
+    java ${debug_args} -cp ${classpath} io.novaordis.playground.wildfly.infinispan.hotrodclient.Main
+}
+
+main $@
+
+
