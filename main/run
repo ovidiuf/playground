@@ -1,0 +1,3 @@
+#!/bin/bash
+
+java -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main $@
