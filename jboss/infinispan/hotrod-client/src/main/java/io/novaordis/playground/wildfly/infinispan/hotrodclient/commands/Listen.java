@@ -19,6 +19,7 @@ package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 import io.novaordis.playground.wildfly.infinispan.hotrodclient.Console;
 import io.novaordis.playground.wildfly.infinispan.hotrodclient.UserErrorException;
 import io.novaordis.playground.wildfly.infinispan.hotrodclient.util.CacheClientListener;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.util.StatisticsEnabledCacheClientListener;
 import org.infinispan.client.hotrod.RemoteCache;
 
 import java.util.Set;
@@ -52,7 +53,8 @@ public class Listen extends CacheCommand {
             throw new UserErrorException("a listener has been already registered");
         }
 
-        defaultCache.addClientListener(new CacheClientListener());
+        //defaultCache.addClientListener(new CacheClientListener());
+        defaultCache.addClientListener(new StatisticsEnabledCacheClientListener());
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
