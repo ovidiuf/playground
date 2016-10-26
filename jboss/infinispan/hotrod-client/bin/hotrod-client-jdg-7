@@ -4,7 +4,9 @@
 # configuration
 #
 
-jdg_home=/opt/jdg
+#jdg_home=/opt/jdg
+jdg_home=/Users/ovidiu/runtime/jboss-datagrid-7.0.0-server
+
 
 #
 # end of configuration
@@ -12,9 +14,13 @@ jdg_home=/opt/jdg
 
 function build-classpath() {
 
+    # first try in lib, then in target
+
     local hotrod_client_jar=$(dirname $0)/lib/hotrod-client.jar
 
-    [ -f ${hotrod_client_jar} ] || { echo "${hotrod_client_jar} not found, build the project and try again" 1>&2; exit 1; }
+    [ ! -f ${hotrod_client_jar} ] && hotrod_client_jar=$(dirname $0)/../target/hotrod-client.jar
+
+    [ -f ${hotrod_client_jar} ] || { echo "${hotrod_client_jar} not found in $(dirname $0)/lib or $(dirname $0)/../target" 1>&2; exit 1; }
 
     local cp=${hotrod_client_jar}
 

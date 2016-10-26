@@ -1,12 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <!--
-
-        This POM relies on access to a JBoss Data Grid 6.6.0 deployment.
-
-        We decided not to use the JDG Maven repository built for a specific JDG release, because some repositories
-        are missing some runtime dependencies.
-
+        Usage: https://github.com/NovaOrdis/playground/tree/master/jboss/infinispan/hotrod-client
     -->
 
     <name>remote-cache-manager-client</name>
@@ -20,25 +15,45 @@
     <version>1</version>
 
     <properties>
-
-        <!--
-        <jboss.home>${user.home}/runtime/jboss-datagrid-6.6.0-server</jboss.home>
-        -->
-        <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <slf4j-version>1.7.12</slf4j-version>
         <junit-version>4.12</junit-version>
-
+        <infinispan-version>8.2.4.Final</infinispan-version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jboss-datagrid-6.6.0-maven-repository</id>
-            <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
-        </repository>
-    </repositories>
+    <profiles>
+        <profile>
+            <id>jdg6</id>
+            <repositories>
+                <repository>
+                    <id>jboss-datagrid-6.6.0-maven-repository</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
+                </repository>
+            </repositories>
+            <properties>
+                <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdg7</id>
+            <repositories>
+                <!--
+                    Note that JDG repository should be used in conjunction with the EAP repository
+                -->
+                <repository>
+                    <id>jboss-eap-7.0.0.GA-maven</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-eap-7.0.0.GA-maven-repository/maven-repository</url>
+                </repository>
+                <repository>
+                    <id>jboss-datagrid-7.0-maven</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-datagrid-7.0.0-maven-repository/maven-repository</url>
+                </repository>
+            </repositories>
+            <properties>
+                <infinispan-version>8.3.0.Final-redhat-1</infinispan-version>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
 
@@ -46,6 +61,7 @@
 
         <plugins>
             <plugin>
+                <version>3.5.1</version>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -54,6 +70,7 @@
                 </configuration>
             </plugin>
             <plugin>
+                <version>3.0.1</version>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
@@ -66,32 +83,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-directroy-exists</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireFilesExist>
-                                    <message>The JBoss Home directory ${jboss.home} does not exist.</message>
-                                    <files>
-                                        <file>${jboss.home}</file>
-                                    </files>
-                                </requireFilesExist>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
         </plugins>
     </build>
 

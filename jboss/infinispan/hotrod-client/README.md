@@ -8,24 +8,47 @@ interactively read and write the cache.
 
 ##Build
 
-Access to a JDG server Maven repository is required. Update the details of the <repository> declaration to match your
-local environment. 
- 
+The client can be built against multiple versions of Infinispan and JDG. By default, if no profile is specified, 
+it is built against Infinispan 8.2.4.Final. 
+
+If you want to build the client against a specific JDG version, you will need to have access to the corresponding
+Maven repository, which will have to be specified in the appropriate profile. To add a new version, add a new profile
+and a corresponding <repository> declaration:
 
     ...
     
-    <repositories>
-        <repository>
-            <id>jboss-datagrid-6.6.0-maven-repository</id>
-            <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
-        </repository>
-    </repositories>
+    <profiles>
+        <profile>
+            <id>jdg6</id>
+            <repositories>
+                <repository>
+                    <id>jboss-datagrid-6.6.0-maven-repository</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
+                </repository>
+            </repositories>
+            <properties>
+                <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdg7</id>
+            <repositories>
+                <repository>
+                    <id>jboss-datagrid-7.0-maven</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-datagrid-7.0.0-maven-repository/maven-repository</url>
+                </repository>
+            </repositories>
+            <properties>
+                <infinispan-version>8.3.0.Final-redhat-1</infinispan-version>
+            </properties>
+        </profile>
+    </profiles>
     
     ...
     
 Then you can build:
     
-    mvn clean package
+    mvn clean package [-Pjdg6]
 
 The ./bin/hotrod-client wrapper must also be updated to point to the JDG server deployment we're going to connect
 to:
