@@ -17,9 +17,19 @@ Commands:
         of a cache that does not exist is used, the client will display an error message.
 
     status
+
     put <key> <value>
     get <key>
+    remove <key>
+
     keys
     size - Returns the number of keys.
     values
+
+    listen
+
+            Register a client listener that gets invoked when a cache event is fired. The current
+            implementation reacts when a cache entry is created, modified or removed. Only one listener
+            is allowed, the command will fail if a listener is already registered.
+
     exit

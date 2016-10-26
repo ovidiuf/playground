@@ -17,6 +17,7 @@
 package io.novaordis.playground.wildfly.infinispan.hotrodclient.commands;
 
 import io.novaordis.playground.wildfly.infinispan.hotrodclient.Runtime;
+import io.novaordis.playground.wildfly.infinispan.hotrodclient.UserErrorException;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -34,6 +35,9 @@ public interface Command {
 
     /**
      * @param restOfTheLine null is acceptable (meaning there's nothing else on that line)
+     *
+     * @exception UserErrorException when we need to signal a user error, that can be corrected by the user modifying
+     *      her input.
      */
     void execute(String restOfTheLine) throws Exception;
 

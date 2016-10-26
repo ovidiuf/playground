@@ -36,6 +36,9 @@
         </profile>
         <profile>
             <id>jdg7</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <repositories>
                 <!--
                     Note that JDG repository should be used in conjunction with the EAP repository
