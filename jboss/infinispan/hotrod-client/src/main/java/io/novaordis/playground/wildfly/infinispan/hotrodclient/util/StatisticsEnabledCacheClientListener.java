@@ -24,6 +24,10 @@ import org.infinispan.client.hotrod.event.ClientCacheEntryCreatedEvent;
 import org.infinispan.client.hotrod.event.ClientCacheEntryModifiedEvent;
 import org.infinispan.client.hotrod.event.ClientCacheEntryRemovedEvent;
 
+import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,21 +53,24 @@ public class StatisticsEnabledCacheClientListener {
 
     private Timer sampler;
 
+    private String targetFileName;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public StatisticsEnabledCacheClientListener() {
+    public StatisticsEnabledCacheClientListener() throws Exception {
 
         creationsInTheLastInterval = new AtomicLong();
         modificationsInTheLastInterval = new AtomicLong();
         removalsInTheLastInterval = new AtomicLong();
 
         samplingIntervalMs = 1000L;
+        targetFileName = "./jdg-listen-stats.csv";
 
         //
         // register the timer that reports stats
         //
         sampler = new Timer();
-        sampler.scheduleAtFixedRate(new Sampler(), samplingIntervalMs, samplingIntervalMs);
+        sampler.scheduleAtFixedRate(new Sampler(targetFileName), samplingIntervalMs, samplingIntervalMs);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -94,6 +101,18 @@ public class StatisticsEnabledCacheClientListener {
 
     private class Sampler extends TimerTask {
 
+        private FileWriter fw;
+
+        private DateFormat format = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
+
+        public Sampler(String targetFileName) throws Exception {
+
+            fw = new FileWriter(targetFileName);
+            String header = "timestamp, creations, modifications, removals";
+            fw.write(header + "\n");
+            fw.flush();
+        }
+
         @Override
         public void run() {
 
@@ -101,8 +120,18 @@ public class StatisticsEnabledCacheClientListener {
             long accumulatedModifications = modificationsInTheLastInterval.getAndSet(0L);
             long accumulatedRemovals = removalsInTheLastInterval.getAndSet(0L);
 
-            System.out.println(accumulatedCreations + ", " + accumulatedModifications + ", " + accumulatedRemovals);
+            String line =
+                    format.format(new Date()) + ", " +
+                            accumulatedCreations + ", " + accumulatedModifications + ", " + accumulatedRemovals;
 
+            try {
+
+                fw.write(line + "\n");
+                fw.flush();
+            }
+            catch(Exception e) {
+                System.err.println("failed to write, " + e);
+            }
         }
     }
 
