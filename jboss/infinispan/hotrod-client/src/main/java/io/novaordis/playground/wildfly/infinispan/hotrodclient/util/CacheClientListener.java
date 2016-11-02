@@ -45,21 +45,24 @@ public class CacheClientListener {
     @ClientCacheEntryModified
     public void entryModified(ClientCacheEntryModifiedEvent event) {
 
-        Console.info("" + event);
+        //Console.info("" + event);
+        System.out.println("ClientCacheEntryModified");
 
     }
 
     @ClientCacheEntryCreated
     public void entryCreated(ClientCacheEntryCreatedEvent event) {
 
-        Console.info("" + event);
+        //Console.info("" + event);
+        System.out.println("ClientCacheEntryCreated");
 
     }
 
     @ClientCacheEntryRemoved
     public void entryRemoved(ClientCacheEntryRemovedEvent event) {
 
-        Console.info("" + event);
+        //Console.info("" + event);
+        System.out.println("ClientCacheEntryRemoved");
 
     }
 

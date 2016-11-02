@@ -53,8 +53,8 @@ public class Listen extends CacheCommand {
             throw new UserErrorException("a listener has been already registered");
         }
 
-        //defaultCache.addClientListener(new CacheClientListener());
-        defaultCache.addClientListener(new StatisticsEnabledCacheClientListener());
+        defaultCache.addClientListener(new CacheClientListener());
+        //defaultCache.addClientListener(new StatisticsEnabledCacheClientListener());
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
