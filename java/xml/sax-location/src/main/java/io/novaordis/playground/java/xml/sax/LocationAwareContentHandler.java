@@ -25,13 +25,15 @@ import org.xml.sax.SAXException;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 11/9/16
  */
-public class ContentHandlerImpl implements ContentHandler {
+public class LocationAwareContentHandler implements ContentHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
+
+    private Locator locator;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -40,77 +42,49 @@ public class ContentHandlerImpl implements ContentHandler {
     @Override
     public void setDocumentLocator(Locator locator) {
 
-        System.out.println("set document locator: " + locator);
+        this.locator = locator;
     }
 
     @Override
     public void startDocument() throws SAXException {
-
-        System.out.println("start document");
-
     }
 
     @Override
     public void endDocument() throws SAXException {
-
-        System.out.println("end document");
-
     }
 
     @Override
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
-        throw new RuntimeException("startPrefixMapping() NOT YET IMPLEMENTED");
     }
 
     @Override
     public void endPrefixMapping(String prefix) throws SAXException {
-        throw new RuntimeException("endPrefixMapping() NOT YET IMPLEMENTED");
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
 
-        System.out.println("start element uri: " + uri + ", localName: " + localName + ", qName: " + qName);
-
+        System.out.println(localName + ": " + locator.getLineNumber() + ":" + locator.getColumnNumber());
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-
-        System.out.println("end element uri: " + uri + ", localName: " + localName + ", qName: " + qName);
     }
 
     @Override
-    public void characters(char ch[], int start, int length) throws SAXException {
-
-        System.out.print("characters: ");
-
-        for(int i = start; i < start + length; i ++) {
-
-            System.out.print(ch[i]);
-
-            if (i < start + length - 1) {
-
-                System.out.print(", ");
-            }
-        }
-
-        System.out.println();
+    public void characters(char[] ch, int start, int length) throws SAXException {
     }
 
     @Override
     public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
-        throw new RuntimeException("ignorableWhitespace() NOT YET IMPLEMENTED");
     }
 
     @Override
     public void processingInstruction(String target, String data) throws SAXException {
-        throw new RuntimeException("processingInstruction() NOT YET IMPLEMENTED");
     }
 
     @Override
     public void skippedEntity(String name) throws SAXException {
-        throw new RuntimeException("skippedEntity() NOT YET IMPLEMENTED");
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

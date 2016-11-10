@@ -20,6 +20,7 @@ import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 import java.io.File;
 
 /**
@@ -40,34 +41,18 @@ public class Main {
 
         File xmlFile = new File(args[0]);
 
-        //
-        // set up the parser
-        //
-
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
-        //
-        // instruct the parser to support XML namespaces
-        //
         factory.setNamespaceAware(true);
+        factory.setValidating(false);
 
         SAXParser parser = factory.newSAXParser();
         XMLReader reader = parser.getXMLReader();
 
-        //
-        // initialize the custom content handler
-        //
-
-        reader.setContentHandler(new ContentHandlerImpl());
-
-        //
-        // initialize the custom error handler
-        //
-
+        reader.setContentHandler(new LocationAwareContentHandler());
         reader.setErrorHandler(new ErrorHandlerImpl());
 
         reader.parse(xmlFile.toURI().toString());
-
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

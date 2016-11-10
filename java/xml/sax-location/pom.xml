@@ -15,7 +15,7 @@
 
     <build>
 
-        <finalName>sax-example</finalName>
+        <finalName>sax-location-example</finalName>
 
         <plugins>
             <plugin>
