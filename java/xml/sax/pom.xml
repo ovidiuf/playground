@@ -43,7 +43,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.novaordis.playground.Example</mainClass>
+                    <mainClass>io.novaordis.playground.java.xml.sax.Main</mainClass>
                     <commandlineArgs>-verbose true</commandlineArgs>
                 </configuration>
             </plugin>
