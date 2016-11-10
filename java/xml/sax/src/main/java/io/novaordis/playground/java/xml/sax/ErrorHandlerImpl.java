@@ -16,63 +16,40 @@
 
 package io.novaordis.playground.java.xml.sax;
 
-import org.xml.sax.XMLReader;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.File;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 11/9/16
  */
-public class Main {
+public class ErrorHandlerImpl implements ErrorHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
-
-        if (args.length == 0) {
-            throw new Exception("XML file name should be specified as the first command line argument");
-        }
-
-        File xmlFile = new File(args[0]);
-
-        //
-        // set up the parser
-        //
-
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-
-        //
-        // instruct the parser to support XML namespaces
-        //
-        factory.setNamespaceAware(true);
-
-        SAXParser parser = factory.newSAXParser();
-        XMLReader reader = parser.getXMLReader();
-
-        //
-        // initialize the custom content handler
-        //
-
-        reader.setContentHandler(new ContentHandlerImpl());
-
-        //
-        // initialize the custom error handler
-        //
-
-        reader.setErrorHandler(new ErrorHandlerImpl());
-
-        reader.parse(xmlFile.toURI().toString());
-
-    }
-
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    // ErrorHandler implementation -------------------------------------------------------------------------------------
+
+    @Override
+    public void warning(SAXParseException exception) throws SAXException {
+        throw new RuntimeException("warning() NOT YET IMPLEMENTED");
+    }
+
+    @Override
+    public void error(SAXParseException exception) throws SAXException {
+        throw new RuntimeException("error() NOT YET IMPLEMENTED");
+    }
+
+    @Override
+    public void fatalError(SAXParseException exception) throws SAXException {
+        throw new RuntimeException("fatalError() NOT YET IMPLEMENTED");
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
