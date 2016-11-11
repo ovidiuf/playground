@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+
+java ${debug_args} -cp $(dirname $0)/../target/stax-iterator.jar \
+    io.novaordis.playground.java.xml.stax.Main \
+    $(dirname $0)/../src/main/resources/example.xml
