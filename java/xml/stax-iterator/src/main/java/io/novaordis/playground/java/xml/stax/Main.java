@@ -58,7 +58,7 @@ public class Main {
         XMLEventReader reader = factory.createXMLEventReader(new FileReader(xmlFile));
 
         //
-        // iterate
+        // iterate, and also manage location
         //
 
         while(reader.hasNext()) {
