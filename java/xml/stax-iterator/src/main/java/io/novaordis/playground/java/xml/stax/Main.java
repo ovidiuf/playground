@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.java.xml.stax;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.XMLEvent;
@@ -63,7 +64,12 @@ public class Main {
         while(reader.hasNext()) {
 
             XMLEvent e = reader.nextEvent();
-            System.out.println(e.toString());
+
+            Location location = e.getLocation();
+
+            System.out.println(
+                    "[" + location.getLineNumber() + ":" + location.getColumnNumber() + "]: " +
+                            e.toString());
         }
     }
 
