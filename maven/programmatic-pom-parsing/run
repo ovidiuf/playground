@@ -1,0 +1,12 @@
+#!/bin/bash
+
+[ -z "${M2}" ] && { echo "we need access to the Maven repository, set M2 environment variable" 1>&2; exit 1; }
+
+classpath=\
+$(dirname $0)/target/programmatic-pom-parsing.jar:\
+${M2}/org/apache/maven/maven-model-builder/3.3.9/maven-model-builder-3.3.9.jar:\
+${M2}/org/apache/maven/maven-model/3.3.9/maven-model-3.3.9.jar:\
+${M2}/org/codehaus/plexus/plexus-utils/3.0.24/plexus-utils-3.0.24.jar
+
+
+java -cp ${classpath} io.novaordis.playground.maven.Main $(dirname $0)/pom.xml
