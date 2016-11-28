@@ -1,5 +1,5 @@
-#playground Project Template
+#java 8 Lambda Expression Example
 
-See https://kb.novaordis.com/index.php/Playground#New_Project
+https://kb.novaordis.com/index.php/Java_8_Lambda_Expressions
 
 
