@@ -16,6 +16,13 @@
 
 package io.novaordis.playground;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 10/5/16
@@ -28,26 +35,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        String regex = null;
-        if (args.length > 0) {
-            regex = args[0];
-        }
-
-        for (com.sun.tools.attach.VirtualMachineDescriptor vmd : com.sun.tools.attach.VirtualMachine.list()) {
-
-            String dn = vmd.displayName();
-            System.out.println(dn);
-
-            if (regex != null) {
-
-                if (dn.matches(regex)) {
-                    System.out.println(regex + " MATCHED " + dn);
-                }
-                else {
-                    System.out.println(regex + " DID NOT MATCH " + dn);
-                }
-            }
-        }
+        hist(args);
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -61,6 +49,50 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private static final DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("dd/MMM/yy:HH:mm:ss");
+    private static final DateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
+
+    private static void hist(String[] args) throws Exception {
+
+        String filename = args[0];
+
+        File f = new File(filename);
+
+
+        BufferedReader br = new BufferedReader(new FileReader(f));
+
+        String line;
+
+        Date current = null;
+        int count = 0;
+
+        while((line = br.readLine()) != null) {
+
+            Date d = INPUT_DATE_FORMAT.parse(line);
+
+            if (current == null) {
+
+                current = d;
+                count ++;
+            }
+            else if (current.equals(d)) {
+                count ++;
+            }
+            else if (current.compareTo(d) > 0) {
+
+                throw new Exception(current + " is after " + d);
+            }
+            else {
+
+                System.out.println(OUTPUT_DATE_FORMAT.format(current) + ", " + count);
+                current = d;
+                count = 1;
+            }
+        }
+
+        br.close();
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

@@ -16,74 +16,23 @@
 
 package io.novaordis.playground.java.java8.lambda;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 11/27/16
  */
-public class Main {
+public interface Closure {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
-
-    public static void main(String[] args) throws Exception {
-
-        //
-        // we declare state in the closure's context, so the closure can access it from wherever it is invoked
-        //
-
-        List<String> results = new ArrayList<>();
-
-        operateOnDataInAnotherScope((String s) -> {
-
-            //
-            // perform arbitrary processing on data ...
-            //
-
-            String result = Character.toUpperCase(s.charAt(0)) + s.substring(1);
-
-            //
-            // ... and collect it in the array from the closure's scope
-            //
-
-            results.add(result);
-        });
-
-        //
-        // display the results
-        //
-
-        //noinspection Convert2streamapi
-        for(String r: results) {
-
-            System.out.println(r);
-        }
-    }
-
-    private static void operateOnDataInAnotherScope(Closure closure) {
-
-        //
-        // this array in outside the scope of the closure
-        //
-
-        List<String> colors = new ArrayList<>(Arrays.asList("blue", "red", "green"));
-
-        //noinspection Convert2streamapi
-        for(String color: colors) {
-
-            closure.behavior(color);
-        }
-    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    void behavior(String s);
 
     // Package protected -----------------------------------------------------------------------------------------------
 
