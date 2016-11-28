@@ -1,1 +1,39 @@
-operations
+#!/bin/bash
+
+#
+# Figures out the class path and the main class and executes it.
+#
+
+function build-classpath() {
+
+    for i in $(find $(dirname $0)/../target -name *.jar); do
+        [[ "${i}" =~ -source ]] && continue;
+        echo ${i}
+    done
+}
+
+function locate-main-class() {
+
+    local mainClass
+    for i in $(find $(dirname $0)/../src -name *Main.java); do
+        mainClass=${i}
+        break;
+    done
+
+    mainClass=${mainClass##*src/main/java/}
+    mainClass=${mainClass%.java}
+    mainClass=${mainClass//\//.}
+    echo ${mainClass}
+}
+
+function main() {
+
+    local cp=$(build-classpath)
+    local main_class=$(locate-main-class)
+
+    java -cp ${cp} ${main_class}
+
+}
+
+main $@
+
