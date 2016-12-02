@@ -6,10 +6,14 @@
 
 function build-classpath() {
 
+    local found=false
     for i in $(find $(dirname $0)/../target -name *.jar); do
         [[ "${i}" =~ -source ]] && continue;
+        found=true
         echo ${i}
     done
+
+    ${found} || { echo "no *.jar file found in $(dirname $0)/../target" 1>&2; exit 1; }
 }
 
 function locate-main-class() {
@@ -28,8 +32,11 @@ function locate-main-class() {
 
 function main() {
 
-    local cp=$(build-classpath)
-    local main_class=$(locate-main-class)
+    local cp
+    local main_class
+
+    cp=$(build-classpath) || exit 1
+    main_class=$(locate-main-class) || exit 1
 
     java -cp ${cp} ${main_class}
 
