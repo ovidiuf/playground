@@ -1,5 +1,5 @@
-#snakeyaml Example
+#YamlBeans Example
 
-See https://kb.novaordis.com/index.php/Snakeyaml
+See https://kb.novaordis.com/index.php/YamlBeans#GitHub_Example
 
 
