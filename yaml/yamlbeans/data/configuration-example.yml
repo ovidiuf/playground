@@ -1,0 +1,5 @@
+service:
+  url: http://localhost:8080/
+load:
+  threads: 10
+  sleep-between-operations: 50
