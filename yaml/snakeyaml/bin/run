@@ -32,13 +32,26 @@ function locate-main-class() {
 
 function main() {
 
+    local args=""
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "-d" -o  "$1" = "--debug" ]; then
+            debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+        else
+            [ -z "${args}" ] && args=$1 || args="${args} $1"
+        fi
+        shift
+    done
+
     local cp
     local main_class
 
     cp=$(build-classpath) || exit 1
     main_class=$(locate-main-class) || exit 1
 
-    java -cp ${cp} ${main_class}
+    cp="${cp}:${M2}/org/yaml/snakeyaml/1.17/snakeyaml-1.17.jar"
+
+    java ${debug_args} -cp ${cp} ${main_class} ${args}
 
 }
 

@@ -2,7 +2,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground.yaml</groupId>
+    <groupId>io.novaordis.playground.yaml.snakeyaml</groupId>
     <artifactId>snakeyaml-example</artifactId>
     <packaging>jar</packaging>
 
@@ -61,6 +61,11 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.17</version>
         </dependency>
     </dependencies>
 
