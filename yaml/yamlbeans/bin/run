@@ -49,7 +49,7 @@ function main() {
     cp=$(build-classpath) || exit 1
     main_class=$(locate-main-class) || exit 1
 
-    cp="${cp}:${M2}/org/yaml/snakeyaml/1.17/snakeyaml-1.17.jar"
+    cp="${cp}:${M2}/com/esotericsoftware/yamlbeans/yamlbeans/1.09/yamlbeans-1.09.jar"
 
     java ${debug_args} -cp ${cp} ${main_class} ${args}
 

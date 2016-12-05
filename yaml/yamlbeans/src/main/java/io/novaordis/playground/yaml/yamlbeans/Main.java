@@ -16,8 +16,10 @@
 
 package io.novaordis.playground.yaml.yamlbeans;
 
+import com.esotericsoftware.yamlbeans.YamlReader;
+
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.Map;
 
 /**
@@ -33,30 +35,30 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         File file = parseCommandLine(args);
-        FileInputStream fis = null;
+        FileReader fr = null;
 
         try {
 
-            fis = new FileInputStream(file);
+            fr = new FileReader(file);
 
-            Yaml yaml = new Yaml();
+            YamlReader yamlReader = new YamlReader(new FileReader(file));
 
-            Object o = yaml.load(fis);
+            Object o = yamlReader.read();
 
             Map m = (Map)o;
 
             Map s = (Map)m.get("service");
             Map l = (Map)m.get("load");
 
-            Integer i = (Integer)l.get("threads");
+            Object threads = l.get("threads");
 
-            System.out.println("threads: " + i);
+            System.out.println("threads: " + threads);
 
         }
         finally {
 
-            if (fis != null) {
-                fis.close();
+            if (fr != null) {
+                fr.close();
             }
         }
     }
