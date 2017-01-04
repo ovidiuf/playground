@@ -40,8 +40,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * if the thread that started the server (presumably main) exists.
  *
  * The server can be shut down by invoking a shutdown URL (usually http://<host>:<port>/exit). The actual exit URL path
- * is declared as EXIT_URL_PATH
- *
+ * is declared as EXIT_URL_PATH.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
@@ -112,7 +111,7 @@ public class Server {
 
                     Socket s = serverSocket.accept();
 
-                    log.info("new connection accepted");
+                    log.debug("new connection accepted");
 
                     if (!listening) {
 
@@ -120,7 +119,7 @@ public class Server {
                         // ignore anything that came after the listening flag was flipped
                         //
 
-                        log.info("http server not listening anymore, exiting ...");
+                        log.debug("http server not listening anymore, exiting ...");
                         return;
                     }
 
@@ -175,7 +174,7 @@ public class Server {
      */
     void exit() {
 
-        log.info("http server requested to exit");
+        log.debug("http server requested to exit");
 
         listening = false;
 
@@ -191,14 +190,14 @@ public class Server {
 
                 try {
 
-                    log.info("shutdown task running ...");
+                    log.debug("shutdown task running ...");
                     Socket s = new Socket();
                     s.connect(serverSocket.getLocalSocketAddress());
                     s.close();
                 }
                 catch(Exception e) {
 
-                    log.error("failed to operate the exit socket", e);
+                    log.error("failed to operate the shutdown socket", e);
                 }
             }
         }, 100L);

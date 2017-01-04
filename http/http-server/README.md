@@ -1,6 +1,6 @@
 #Simple HTTP server
 
-A simple HTTP server that allows to observe the behavior of the clients that call into it.
+A simple HTTP server that can be used to investigate the behavior of HTTP clients.
 
 
 
