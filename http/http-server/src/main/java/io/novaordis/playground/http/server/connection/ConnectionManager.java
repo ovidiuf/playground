@@ -14,35 +14,80 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.connection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.net.Socket;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * The abstraction used to model a browser - server connection, including the socket and the underlying TCP/IP
- * connection.
- *
- * If the browser keeps the connections (and implicitly the underlying socket) alive, the server will keep re-using
- * the same Connection instance.
+ * The instance that manages connections - provides query functionality.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class Connection {
+public class ConnectionManager {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(ConnectionManager.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Socket socket;
+    private AtomicLong connectionIdGenerator;
+
+    // Connections keyed by ID
+    private Map<Long, Connection> connections;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    public ConnectionManager() {
+
+        connectionIdGenerator = new AtomicLong(-1);
+        connections = new ConcurrentHashMap<>();
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * Must be thread-safe.
+     *
+     * @exception java.io.IOException if we fail due to an I/O problem during the creation process.
+     */
+    public Connection buildConnection(Socket socket) throws IOException {
+
+        Connection c = new Connection(connectionIdGenerator.incrementAndGet(), socket, this);
+        connections.put(c.getId(), c);
+
+        log.info(c + " created and registered");
+
+        return c;
+    }
+
+    @SuppressWarnings("unused")
+    public int getConnectionCount() {
+
+        return connections.size();
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
+
+    void remove(Connection c) {
+
+        Connection c2 = connections.remove(c.getId());
+
+        if (c2 != null) {
+
+            log.info(c2 + " removed");
+        }
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

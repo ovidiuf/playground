@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.http;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class HttpRequest {
+public class InvalidHeaderException extends Exception {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -28,65 +28,9 @@ public class HttpRequest {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private byte[] content;
-    private String method;
-    private String path;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    /**
-     * The header content, as read from the socket. Does not include the blank line.
-     *
-     * @exception InvalidHeaderException on faulty content that cannot be translated into a valid HTTP header
-     */
-    public HttpRequest(byte[] content) throws InvalidHeaderException {
-
-        this.content = content;
-
-        //
-        // crude parsing, revisit
-        //
-
-        int pathIndex = -1;
-
-        for(int i = 0; i < content.length; i ++) {
-
-            if (content[i] == (byte)' ') {
-
-                if (pathIndex == -1) {
-
-                    method = new String(content, 0, i);
-                    pathIndex = i + 1;
-                    continue;
-                }
-
-                path = new String(content, pathIndex, i - pathIndex);
-                break;
-            }
-        }
-    }
-
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public String getMethod() {
-
-        return method;
-    }
-
-    public String getPath() {
-
-        return path;
-    }
-
-    @Override
-    public String toString() {
-
-        if (content == null) {
-            return "null content";
-        }
-
-        return new String(content);
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

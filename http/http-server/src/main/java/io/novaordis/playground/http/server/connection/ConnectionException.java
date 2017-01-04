@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package io.novaordis.playground.http.server.connection;
 
 /**
+ * An exception that indicates Connection bad quality or instability. Once a ConnectionException has been triggered by a
+ * Connection instance, the instance should be generally considered unreliable and closed as soon as possible.
+ * getCause() must return the underlying (usually IOException) cause.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class Main {
+public class ConnectionException extends Exception {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -35,16 +34,12 @@ public class Main {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    // Public ----------------------------------------------------------------------------------------------------------
+    public ConnectionException(Throwable cause) {
 
-    public static void main(String[] args) throws Exception {
-
-        Server server = new Server(8080);
-
-        server.listen();
-
-        log.info("http server ready to accept connections ...");
+        super(cause);
     }
+
+    // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 

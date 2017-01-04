@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.http;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>

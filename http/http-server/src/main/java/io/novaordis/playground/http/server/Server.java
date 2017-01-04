@@ -17,6 +17,8 @@
 package io.novaordis.playground.http.server;
 
 
+import io.novaordis.playground.http.server.connection.Connection;
+import io.novaordis.playground.http.server.connection.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +31,7 @@ import java.net.SocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -65,6 +68,10 @@ public class Server {
     private CountDownLatch listenLatch;
     private volatile boolean listening;
 
+    private ConnectionManager connectionManager;
+
+    private AtomicLong nextRequestId;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -83,8 +90,11 @@ public class Server {
         this.serverSocket = ServerSocketFactory.getDefault().createServerSocket();
         this.serverSocket.bind(endpoint, backlog);
 
-        final AtomicLong requestCounter = new AtomicLong(0);
+        this.nextRequestId = new AtomicLong(0);
+
         listenLatch = new CountDownLatch(1);
+
+        this.connectionManager = new ConnectionManager();
 
         String acceptorThreadName = "HTTP Server " + port + " Acceptor Thread";
 
@@ -123,10 +133,25 @@ public class Server {
                         return;
                     }
 
-                    new Thread(new RequestHandler(requestCounter.get(), this, s),
-                            "HTTP Request Handler Thread " + requestCounter.get()).start();
+                    //
+                    // build the connection that manages/monitors the socket, by delegating the build job to the
+                    // connection manager
+                    //
 
-                    requestCounter.incrementAndGet();
+                    Connection c = connectionManager.buildConnection(s);
+
+                    //
+                    // build the connection handler, essentially a specialized thread with logic to process
+                    // requests arriving on that connection and generate responses ...
+                    //
+
+                    ConnectionHandler ch = new ConnectionHandler(this, c);
+
+                    //
+                    // ... and initiate the request processing sequence, using the handler's own thread
+                    //
+
+                    ch.handleRequests();
                 }
                 catch (IOException e) {
 
@@ -158,6 +183,15 @@ public class Server {
     public int getBacklog() {
 
         return backlog;
+    }
+
+    /**
+     * Thread safe
+     * @return next request ID
+     */
+    public long getNextRequestId() {
+
+        return nextRequestId.getAndIncrement();
     }
 
     @Override

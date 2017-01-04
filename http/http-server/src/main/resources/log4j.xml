@@ -45,8 +45,8 @@
     </appender>
     -->
 
-    <category name="org.hibernate">
-        <priority value="WARN"/>
+    <category name="io.novaordis">
+        <priority value="DEBUG"/>
     </category>
 
     <root>
