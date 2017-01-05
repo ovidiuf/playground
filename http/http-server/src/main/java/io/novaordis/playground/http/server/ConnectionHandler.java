@@ -147,6 +147,8 @@ public class ConnectionHandler {
 
             if (Server.EXIT_URL_PATH.equals(request.getPath())) {
 
+                log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
+
                 active = false;
                 server.exit();
             }

@@ -26,7 +26,7 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler"/>
         <param name="Target" value="System.out"/>
-        <param name="Threshold" value="INFO"/>
+        <param name="Threshold" value="DEBUG"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="@%t %d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
         </layout>

@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * The local port to listen on must be specified as the first argument.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
@@ -39,7 +41,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Server server = new Server(8080);
+        int port = extractPort(args);
+
+        Server server = new Server(port);
 
         server.listen();
 
@@ -51,6 +55,25 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private static int extractPort(String[] args) throws Exception {
+
+        if (args.length == 0) {
+
+            throw new Exception("the value of the port to listen on must be specified as the first argument");
+        }
+
+        String s = args[0];
+
+        try {
+
+            return Integer.parseInt(s);
+        }
+        catch(Exception e) {
+
+            throw new Exception("\"" + s + "\" is not a valid port value");
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
