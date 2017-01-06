@@ -20,8 +20,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
+ * A mock connection that simulates various situations occurred in reading and writing.
+ *
+ * It can simulate blocking in reading after n-th character.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
@@ -43,9 +48,9 @@ public class MockConnection extends Connection {
         this.flushedOutputContent = new ArrayList<>();
     }
 
-    public MockConnection(long id, String requestContent) throws IOException {
+    public MockConnection(long id, String inputStreamContent) throws IOException {
 
-        super(id, new MockSocket(requestContent), null);
+        super(id, new MockSocket(inputStreamContent), null);
         this.flushedOutputContent = new ArrayList<>();
     }
 
@@ -76,12 +81,39 @@ public class MockConnection extends Connection {
     // Public ----------------------------------------------------------------------------------------------------------
 
     /**
+     * Configure this instance to block on readReleaseLatch after reading n characters and while "reading" the n + 1
+     * character. Right before blocking, the method releases readBlocked latch, if not null, to let the caller know that
+     * it is about to block.
+     *
+     * @param readWithoutBlocking the number of character to read without blocking. read() will block while "reading"
+     *                            the n + 1 character.
+     *
+     * @param readBlocked may be null, in which case the latch won't be released.
+     * @param readReleaseLatch can be used to release read(), cannot be null
+     */
+    public void blockInReadingAfterTheSpecifiedNumberOfCharacters(
+            int readWithoutBlocking, CountDownLatch readBlocked, CountDownLatch readReleaseLatch) {
+
+        ((MockSocket)getSocket()).blockInReadingAfterTheSpecifiedNumberOfCharacters(
+                readWithoutBlocking, readBlocked, readReleaseLatch);
+    }
+
+    /**
      * @return the chunks of content followed by flushes. close() count as a flush. However, if close() follows
      * immediately after a flush(), no byte[0] will be added to the list.
      */
-    public List<byte[]> getFlushedContent() {
+    public List<byte[]> getFlushedOutputContent() {
 
         return flushedOutputContent;
+    }
+
+    /**
+     * @return the number of bytes left to be read until EOS is reached. If we are at the EOS, the method returns 0.
+     */
+    public long bytesLeftToEOS() {
+
+        BlockableInputStream bis = ((MockSocket)getSocket()).getInputStream();
+        return bis.bytesLeftToEOS();
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

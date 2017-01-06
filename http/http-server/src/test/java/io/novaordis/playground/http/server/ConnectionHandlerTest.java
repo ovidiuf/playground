@@ -16,7 +16,6 @@
 
 package io.novaordis.playground.http.server;
 
-import io.novaordis.playground.http.server.connection.ConnectionException;
 import io.novaordis.playground.http.server.connection.MockConnection;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
@@ -25,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -51,6 +51,137 @@ public class ConnectionHandlerTest {
 
     // Tests -----------------------------------------------------------------------------------------------------------
 
+    // connection handling top level loop ------------------------------------------------------------------------------
+
+    @Test
+    public void connectionHandlingTopLevelLoop_ShouldExitImmediately() throws Exception {
+
+        MockServer ms = new MockServer();
+        MockConnection mc = new MockConnection(0, "   ");
+        MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+        ch.setRequestHandler(mh);
+
+        ch.run();
+
+        assertFalse(ch.isActive());
+
+        //
+        // make sure no response was written on the wire
+        //
+        assertTrue(mc.getFlushedOutputContent().isEmpty());
+
+        //
+        // the socket input stream reached EOS, nothing is going to come over that connection, make sure the connection
+        // is closed
+        //
+        assertTrue(mc.isClosed());
+    }
+
+    @Test
+    public void connectionHandlingTopLevelLoop_ShouldExitAfterARequestResponsePair() throws Exception {
+
+        MockServer ms = new MockServer();
+        MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r\n");
+        MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+        ch.setRequestHandler(mh);
+
+        ch.run();
+
+        assertFalse(ch.isActive());
+
+        //
+        // make sure the OK response was written on the wire (no body)
+        //
+        List<byte[]> content = mc.getFlushedOutputContent();
+        assertEquals(1, content.size()); // no body
+        String statusLineAndHeaders = new String(content.get(0));
+
+        log.info(statusLineAndHeaders);
+        assertTrue(statusLineAndHeaders.startsWith("HTTP/1.1 200 OK"));
+
+        //
+        // the socket input stream reached EOS, nothing is going to come over that connection, make sure the connection
+        // is closed
+        //
+        assertTrue(mc.isClosed());
+    }
+
+    @Test
+    public void connectionHandlingTopLevelLoop_ShouldBlock() throws Exception {
+
+        String inputStreamContent = "GET / HTTP/1.1\r\n\r\n";
+        MockServer ms = new MockServer();
+        MockConnection mc = new MockConnection(0, inputStreamContent);
+        //
+        // we block after inputStreamContent.length() characters are read, which is right after the first request
+        //
+        final CountDownLatch readBlocked = new CountDownLatch(1);
+        final CountDownLatch readReleaseLatch = new CountDownLatch(1);
+        mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
+                inputStreamContent.length(), readBlocked, readReleaseLatch);
+
+        MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+        ch.setRequestHandler(mh);
+
+        //
+        // perform reading from a separate thread
+        //
+
+        new Thread(() -> {
+
+            //noinspection Convert2MethodRef
+            ch.run();
+
+        }, "mock connection handling thread").start();
+
+        //
+        // wait for the read to block
+        //
+
+        readBlocked.await();
+
+        log.info("mock connection handling thread blocked in read()");
+
+        assertTrue(ch.isActive());
+
+        //
+        // make sure the OK response was written on the wire (no body)
+        //
+        List<byte[]> content = mc.getFlushedOutputContent();
+        assertEquals(1, content.size()); // no body
+        String statusLineAndHeaders = new String(content.get(0));
+
+        log.info("status line and headers of the response wrote to connection:\n" + statusLineAndHeaders);
+        assertTrue(statusLineAndHeaders.startsWith("HTTP/1.1 200 OK"));
+
+        //
+        // release the mock connection handling thread
+        //
+
+        readReleaseLatch.countDown();
+
+        //
+        // loop until the connection is closed
+        //
+        long t0 = System.currentTimeMillis();
+        long timeout = 1000L;
+        while(true) {
+
+            if (System.currentTimeMillis() - t0 > timeout) {
+                fail("connection was not closed after more than " + timeout + " ms");
+            }
+
+            if (mc.isClosed()) {
+                break;
+            }
+        }
+
+        assertTrue(mc.isClosed());
+    }
+
     // processRequestResponsePair() ------------------------------------------------------------------------------------
 
     @Test
@@ -62,18 +193,43 @@ public class ConnectionHandlerTest {
 
         ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
 
-        try {
-
-            h.processRequestResponsePair();
-            fail("should have thrown exception");
-        }
-        catch(ConnectionException e) {
-
-            String msg = e.getMessage();
-            log.info(msg);
-            assertEquals("socket input stream closed", msg);
-        }
+        boolean moreRequests = h.processRequestResponsePair();
+        assertFalse(moreRequests);
     }
+
+    @Test
+    public void processRequestResponsePair_InputStreamContainsDiscardables() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "      \r\n");
+
+        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+
+        boolean moreRequests = h.processRequestResponsePair();
+        assertFalse(moreRequests);
+    }
+
+    @Test
+    public void processRequestResponsePair_InvalidRequest() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "NO_SUCH_METHOD / HTTP/1.1\r\n\r\n");
+
+        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+
+        boolean moreRequests = h.processRequestResponsePair();
+        assertTrue(moreRequests);
+    }
+
+    @Test
+    public void processRequestResponsePair() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "HTTP/1.1 GET /\r\n\r\n");
+
+        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+
+        boolean moreRequests = h.processRequestResponsePair();
+        assertTrue(moreRequests);
+    }
+
 
     // sendResponse() --------------------------------------------------------------------------------------------------
 
@@ -83,7 +239,7 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection(0);
         ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
 
-        h.closeConnectionAfterResponse(true);
+        h.setCloseConnectionAfterResponse(true);
 
         HttpResponse r = new HttpResponse();
 
@@ -94,7 +250,7 @@ public class ConnectionHandlerTest {
 
         h.sendResponse(r);
 
-        List<byte[]> flushedContent = mc.getFlushedContent();
+        List<byte[]> flushedContent = mc.getFlushedOutputContent();
 
         // two flushes
         assertEquals(2, flushedContent.size());
@@ -109,7 +265,9 @@ public class ConnectionHandlerTest {
                         "Some-Header-2: some value 2\r\n" +
                         "\r\n";
 
-        assertEquals(expectedStatusLineAndHeaders, new String(statusLineAndHeaders));
+        String actual = new String(statusLineAndHeaders);
+        log.info(actual);
+        assertEquals(expectedStatusLineAndHeaders, actual);
 
         String expectedBody = "test\n";
 
@@ -124,7 +282,7 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection(0);
         ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
 
-        h.closeConnectionAfterResponse(false);
+        h.setCloseConnectionAfterResponse(false);
 
         HttpResponse r = new HttpResponse();
 
@@ -135,7 +293,7 @@ public class ConnectionHandlerTest {
 
         h.sendResponse(r);
 
-        List<byte[]> flushedContent = mc.getFlushedContent();
+        List<byte[]> flushedContent = mc.getFlushedOutputContent();
 
         // two flushes
         assertEquals(2, flushedContent.size());

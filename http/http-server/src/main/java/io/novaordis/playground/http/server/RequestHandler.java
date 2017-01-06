@@ -18,14 +18,6 @@ package io.novaordis.playground.http.server;
 
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
-import io.novaordis.playground.http.server.http.HttpStatusCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 /**
  * Handles a HttpRequest by turning it into a HttpResponse.
@@ -33,100 +25,20 @@ import java.io.IOException;
  * @see ConnectionHandler
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/5/17
+ * @since 1/6/17
  */
-public class RequestHandler {
+public interface RequestHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
-
     // Static ----------------------------------------------------------------------------------------------------------
-
-    // Attributes ------------------------------------------------------------------------------------------------------
-
-    private File documentRoot;
-
-    // Constructors ----------------------------------------------------------------------------------------------------
-
-    public RequestHandler(File documentRoot) {
-
-        if (documentRoot == null) {
-
-            throw new IllegalArgumentException("null document root");
-        }
-
-        this.documentRoot = documentRoot;
-    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public HttpResponse processRequest(HttpRequest request) {
+    /**
+     * Must not throw exceptions, but log and return appropriate 5XX HttpResponses
+     */
+    HttpResponse processRequest(HttpRequest request);
 
-        String path = request.getPath();
-
-        if (path.startsWith("/")) {
-
-            path = path.substring(1);
-        }
-
-        File file = new File(documentRoot, path);
-
-        if (!file.isFile() || !file.canRead()) {
-
-            return new HttpResponse(HttpStatusCode.NOT_FOUND);
-        }
-
-        HttpResponse response = new HttpResponse();
-
-        //
-        // read the content of the file and return it with a response. It only works with small files, of course
-        //
-
-        FileInputStream fis = null;
-
-        try {
-
-            fis = new FileInputStream(file);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            int r;
-            byte[] buffer = new byte[1024];
-            while((r = fis.read(buffer)) != -1) {
-
-                baos.write(buffer, 0, r);
-            }
-
-            response.setEntityBodyContent(baos.toByteArray()); // this will also set Content-Length
-            response.setStatusCode(HttpStatusCode.OK);
-            return response;
-        }
-        catch(Exception e) {
-
-            throw new RuntimeException("NOT YET IMPLEMENTED: we don't know to handle exception", e);
-        }
-        finally {
-
-            if (fis != null) {
-
-                try {
-
-                    fis.close();
-                }
-                catch(IOException e) {
-
-                    log.warn("failed to close file input stream corresponding to " + file, e);
-                }
-            }
-        }
-    }
-
-    // Package protected -----------------------------------------------------------------------------------------------
-
-    // Protected -------------------------------------------------------------------------------------------------------
-
-    // Private ---------------------------------------------------------------------------------------------------------
-
-    // Inner classes ---------------------------------------------------------------------------------------------------
 
 }

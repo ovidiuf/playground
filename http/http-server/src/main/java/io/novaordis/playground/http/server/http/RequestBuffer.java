@@ -14,17 +14,27 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.http;
+
+import java.io.ByteArrayOutputStream;
 
 /**
+ * A specialized ByteArrayOutputStream that gives access to the internal buffer. We need this for efficiency, as
+ * we don't what to copy the buffer content every time we want to inspect it.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-public abstract class RequestHandlerTest {
+public class RequestBuffer extends ByteArrayOutputStream {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
+
+    public static boolean isDiscardableChar(char b) {
+
+        return b == ' ' || b == '\n' || b == '\r' || b == '\t';
+    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
@@ -32,13 +42,32 @@ public abstract class RequestHandlerTest {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    // Tests -----------------------------------------------------------------------------------------------------------
+    /**
+     * @return true if the buffer is empty or contains only white space and CR/LF (discardable content)
+     */
+    public boolean allDiscardableContent() {
+
+        int size = size();
+
+        if (size == 0) {
+
+            return true;
+        }
+
+        for(int i = 0; i < size; i ++) {
+
+            if (!isDiscardableChar((char)buf[i])) {
+
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
-
-    protected abstract RequestHandler getRequestHandlerToTest() throws Exception;
 
     // Private ---------------------------------------------------------------------------------------------------------
 

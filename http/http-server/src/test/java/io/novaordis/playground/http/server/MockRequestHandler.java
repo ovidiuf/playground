@@ -16,11 +16,15 @@
 
 package io.novaordis.playground.http.server;
 
+import io.novaordis.playground.http.server.http.HttpRequest;
+import io.novaordis.playground.http.server.http.HttpResponse;
+import io.novaordis.playground.http.server.http.HttpStatusCode;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-public abstract class RequestHandlerTest {
+public class MockRequestHandler implements RequestHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -30,15 +34,19 @@ public abstract class RequestHandlerTest {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    // Public ----------------------------------------------------------------------------------------------------------
+    // RequestHandler implementation -----------------------------------------------------------------------------------
 
-    // Tests -----------------------------------------------------------------------------------------------------------
+    @Override
+    public HttpResponse processRequest(HttpRequest request) {
+
+        return new HttpResponse(HttpStatusCode.OK);
+    }
+
+    // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
-
-    protected abstract RequestHandler getRequestHandlerToTest() throws Exception;
 
     // Private ---------------------------------------------------------------------------------------------------------
 

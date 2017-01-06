@@ -14,17 +14,41 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.http;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-public abstract class RequestHandlerTest {
+public class HttpUtil {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
+
+    public static String toPrintableSymbol(int b) {
+
+        if (b == -1) {
+
+            return "EOS";
+        }
+        else if (b == '\n') {
+
+            return "LF";
+        }
+        else if (b == '\r') {
+
+            return "CR";
+        }
+        else if (b == '\t') {
+
+            return "TAB";
+        }
+        else {
+
+            return "" + (char)b;
+        }
+    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
@@ -32,13 +56,9 @@ public abstract class RequestHandlerTest {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    // Tests -----------------------------------------------------------------------------------------------------------
-
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
-
-    protected abstract RequestHandler getRequestHandlerToTest() throws Exception;
 
     // Private ---------------------------------------------------------------------------------------------------------
 

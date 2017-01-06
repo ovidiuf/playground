@@ -23,8 +23,6 @@ import io.novaordis.playground.http.server.http.header.InvalidHttpHeaderExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
@@ -56,13 +54,14 @@ public class HttpRequest extends HeadersImpl {
     public static HttpRequest readRequest(Connection connection)
             throws ConnectionException, InvalidHttpRequestException {
 
-        ByteArrayOutputStream header = new ByteArrayOutputStream();
+        RequestBuffer buffer = new RequestBuffer();
 
         //
         // read up to the blank line - this will include the request line and all headers
         //
 
         boolean newLine = false;
+        boolean lfExpected = false;
 
         while(true) {
 
@@ -71,17 +70,20 @@ public class HttpRequest extends HeadersImpl {
             if (i == -1) {
 
                 //
-                // we found the input stream closed on the first read, return null
+                // we found the input stream closed on the first read, or after some irrelevant content has
+                // accumulated in the buffer, return null to tell the upper layer that this connection has become
+                // useless; it will probably close it
                 //
 
-                if (header.size() == 0) {
+                if (buffer.allDiscardableContent()) {
 
                     return null;
                 }
 
                 //
-                // input stream closed, this is an interesting situation as it should not happen, but process it
-                // nonetheless, build the request and let the response logic deal with it
+                // input stream closed while reading a request from the socket, this is an interesting situation as it
+                // should not happen, but process it nonetheless, build the request and let the response logic deal with
+                // it
                 //
 
                 log.warn("connection closed while reading a request");
@@ -89,15 +91,26 @@ public class HttpRequest extends HeadersImpl {
                 break;
             }
 
+            if (lfExpected) {
+
+                if (i != '\n') {
+
+                    throw new InvalidHttpHeaderException("missing LF");
+                }
+
+                lfExpected = false;
+            }
+
+
             if ('\r' == (char)i) {
 
                 if (newLine) {
 
                     //
-                    // blank line encountered
+                    // blank line encountered, but loop one more time to consume the LF on the wire
                     //
 
-                    break;
+                    lfExpected = true;
                 }
 
                 //
@@ -130,10 +143,10 @@ public class HttpRequest extends HeadersImpl {
                 newLine = false;
             }
 
-            header.write(i);
+            buffer.write(i);
         }
 
-        return new HttpRequest(header.toByteArray());
+        return new HttpRequest(buffer.toByteArray());
     }
 
     public static String showRequest(HttpRequest r) {
@@ -149,6 +162,8 @@ public class HttpRequest extends HeadersImpl {
 
         return s;
     }
+
+    // Static package protected ----------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 

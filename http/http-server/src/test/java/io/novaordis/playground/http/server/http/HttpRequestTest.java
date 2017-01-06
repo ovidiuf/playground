@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -277,6 +278,8 @@ public class HttpRequestTest extends HeadersTest {
         MockConnection mc = new MockConnection(0, requestContent);
         HttpRequest r = HttpRequest.readRequest(mc);
 
+        assertNotNull(r);
+
         assertEquals(HttpMethod.GET, r.getMethod());
         assertEquals("/index.html", r.getPath());
         assertEquals("HTTP/1.1", r.getHttpVersion());
@@ -309,6 +312,8 @@ public class HttpRequestTest extends HeadersTest {
         MockConnection mc = new MockConnection(0, requestContent);
         HttpRequest r = HttpRequest.readRequest(mc);
 
+        assertNotNull(r);
+
         assertEquals(HttpMethod.POST, r.getMethod());
 
         fail("Return here");
@@ -317,7 +322,7 @@ public class HttpRequestTest extends HeadersTest {
     @Test
     public void readRequest_connectionClosedAbruptlyInMidstOfReadingARequest() throws Exception {
 
-        MockConnection mc = new MockConnection(0, "\n");
+        MockConnection mc = new MockConnection(0, "HTT");
 
         try {
             HttpRequest.readRequest(mc);
@@ -332,7 +337,24 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_connectionClosed() throws Exception {
+    public void readRequest_connectionClosedAbruptlyInMidstOfReadingARequest2() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "\nHTT");
+
+        try {
+            HttpRequest.readRequest(mc);
+            fail("should throw exception");
+        }
+        catch(InvalidHttpRequestException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("malformed request", msg);
+        }
+    }
+
+    @Test
+    public void readRequest_inputStreamAtEOSToStartWith() throws Exception {
 
         MockConnection mc = new MockConnection(0);
         mc.close();
@@ -340,6 +362,74 @@ public class HttpRequestTest extends HeadersTest {
 
         HttpRequest request = HttpRequest.readRequest(mc);
         assertNull(request);
+    }
+
+    @Test
+    public void readRequest_inputStreamContainsOnlyDiscardableCharacters() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "    \r\n");
+        HttpRequest request = HttpRequest.readRequest(mc);
+        assertNull(request);
+    }
+
+    @Test
+    public void readRequest_makeSureTheLastLFIsConsumed() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r\n");
+
+        HttpRequest r = HttpRequest.readRequest(mc);
+
+        assertNotNull(r);
+        assertEquals(HttpMethod.GET, r.getMethod());
+        assertEquals("/", r.getPath());
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+
+        //
+        // nothing should be left in the input stream
+        //
+        assertEquals(0, mc.bytesLeftToEOS());
+
+        HttpRequest r2 = HttpRequest.readRequest(mc);
+        assertNull(r2);
+    }
+
+    @Test
+    public void readRequest_missingLF() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r");
+
+        HttpRequest r = HttpRequest.readRequest(mc);
+
+        assertNotNull(r);
+        assertEquals(HttpMethod.GET, r.getMethod());
+        assertEquals("/", r.getPath());
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+
+        //
+        // nothing should be left in the input stream
+        //
+        assertEquals(0, mc.bytesLeftToEOS());
+
+        HttpRequest r2 = HttpRequest.readRequest(mc);
+        assertNull(r2);
+    }
+
+    @Test
+    public void readRequest_nonLFCharacterWhenLFIsExpected() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\rx");
+
+        try {
+
+            HttpRequest.readRequest(mc);
+            fail("should throw exception");
+        }
+        catch(InvalidHttpRequestException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("missing LF", msg);
+        }
     }
 
 

@@ -149,6 +149,12 @@ public class HttpResponse extends HeadersImpl {
         return baos.toByteArray();
     }
 
+    @Override
+    public String toString() {
+
+        return getHttpVersion() + " " + statusCode.getStatusCode() + " " + statusCode.getReasonPhrase();
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

@@ -26,8 +26,6 @@ import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
-
 /**
  * Handles a Connection (essentially the content arriving from the underlying socket) by extracting HTTP requests
  * and sending HTTP responses, on a dedicated thread. This way, each connection is handled by one, dedicated thread.
@@ -38,12 +36,12 @@ import java.util.concurrent.CountDownLatch;
  *
  * The handler is responsible for closing the connection, if appropriate.
  *
- * @see RequestHandler
+ * @see FileRequestHandler
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class ConnectionHandler {
+public class ConnectionHandler implements Runnable {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -56,8 +54,8 @@ public class ConnectionHandler {
 
     private final Server server;
     private final Connection connection;
-    private final CountDownLatch startHandlerLatch;
-    private final RequestHandler requestHandler;
+    private RequestHandler requestHandler;
+    private final Thread connectionHandlerThread;
 
     private boolean closeConnectionAfterResponse;
 
@@ -72,55 +70,48 @@ public class ConnectionHandler {
 
         this.server = server;
         this.connection = connection;
+        this.active = true;
         this.closeConnectionAfterResponse = false;
-        this.requestHandler = new RequestHandler(server.getDocumentRoot());
-
-        this.startHandlerLatch = new CountDownLatch(1);
 
         String threadName = connection.toString() + " Handling Thread";
-        Thread connectionHandlerThread = new Thread(() -> {
+        connectionHandlerThread = new Thread(this, threadName);
+        connectionHandlerThread.setDaemon(true);
 
-            //
-            // wait for the handleRequests() method to be called to actually start processing requests. If this thread
-            // is forcibly interrupted while waiting on latch, log the error and abort
-            //
-            try {
+        setRequestHandler(new FileRequestHandler(server.getDocumentRoot()));
+    }
 
-                startHandlerLatch.await();
-                active = true;
-            }
-            catch(InterruptedException e) {
+    // Runtime implementation ------------------------------------------------------------------------------------------
 
-                log.error(Thread.currentThread().getName() +
-                        " interrupted before it started handling requests, aborting ...");
-                return;
-            }
+    /**
+     * The top level connection handling loop. Declared as the Runnable.run() method and not as a closure in constructor
+     * for testing.
+     */
+    public void run() {
+
+        try {
 
             while(active) {
 
-                try {
-
-                    processRequestResponsePair();
-                }
-                catch(ConnectionException e) {
-
-                    //
-                    // this is where we handle connection problems and close the connection
-                    //
-
-                    String msg = e.getMessage();
-                    msg = msg == null ? "connection failure: " + e.toString() : "connection failure: " + msg;
-                    log.error(msg);
-                    log.debug(msg, e);
-
-                    active = false;
-                    connection.close();
-                }
+                active = processRequestResponsePair();
             }
+        }
+        catch(ConnectionException e) {
 
-        }, threadName);
-        connectionHandlerThread.setDaemon(true);
-        connectionHandlerThread.start();
+            //
+            // this is where we handle connection problems and close the connection
+            //
+
+            String msg = e.getMessage();
+            msg = msg == null ? "connection failure: " + e.toString() : "connection failure: " + msg;
+            log.error(msg);
+            log.debug(msg, e);
+            active = false;
+        }
+        finally {
+
+            connection.close();
+        }
+
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -130,7 +121,15 @@ public class ConnectionHandler {
      */
     public void handleRequests() {
 
-        startHandlerLatch.countDown();
+        connectionHandlerThread.start();
+    }
+
+    /**
+     * @return true if the main loop is active, processing request/responses or blocked in either read or write.
+     */
+    public boolean isActive() {
+
+        return active;
     }
 
     @Override
@@ -140,6 +139,67 @@ public class ConnectionHandler {
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
+
+    /**
+     * Processes a request/response sequence.
+     *
+     * @throws ConnectionException on connection troubles
+     *
+     * @return false if this was the last request on the input stream (and the input stream was consequently closed)
+     * or true if we should expect more requests on the same input stream.
+     */
+    boolean processRequestResponsePair() throws ConnectionException {
+
+        try {
+
+            HttpRequest request = HttpRequest.readRequest(connection);
+
+            if (request == null) {
+
+                return false;
+            }
+
+            if (debug) {
+
+                log.debug("request read from " + connection + " input stream:\n" + HttpRequest.showRequest(request));
+            }
+
+            HttpResponse response = requestHandler.processRequest(request);
+
+            //
+            // request independent-headers
+            //
+
+            response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
+
+            if (ServerImpl.EXIT_URL_PATH.equals(request.getPath())) {
+
+                log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
+
+                sendResponse(new HttpResponse(HttpStatusCode.OK));
+                active = false;
+                server.exit();
+                return false;
+            }
+            else {
+
+                sendResponse(response);
+                return true;
+            }
+        }
+        catch (InvalidHttpRequestException e) {
+
+            //
+            // failed because we were not able to parse the data came on the wire, do not close connection,
+            // most likely something is wrong with this request only.
+            //
+            String msg = e.getMessage();
+            log.error(msg);
+            log.debug("failed to parse HTTP request", e);
+            sendResponse(new HttpResponse(HttpStatusCode.BAD_REQUEST, msg.getBytes()));
+            return true;
+        }
+    }
 
     /**
      * The method does not close connection voluntarily, it lets the client enforce its own policy.
@@ -187,64 +247,14 @@ public class ConnectionHandler {
         }
     }
 
-    /**
-     * Processes a request/response sequence.
-     *
-     * @throws ConnectionException on connection troubles
-     */
-    void processRequestResponsePair() throws ConnectionException {
-
-        try {
-
-            HttpRequest request = HttpRequest.readRequest(connection);
-
-            if (request == null) {
-
-                throw new ConnectionException("socket input stream closed");
-            }
-
-            if (debug) {
-
-                log.debug("\n" + HttpRequest.showRequest(request));
-            }
-
-            HttpResponse response = requestHandler.processRequest(request);
-
-            //
-            // request independent-headers
-            //
-
-            response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
-
-            if (ServerImpl.EXIT_URL_PATH.equals(request.getPath())) {
-
-                log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
-
-                sendResponse(new HttpResponse(HttpStatusCode.OK));
-                active = false;
-                server.exit();
-            }
-            else {
-
-                sendResponse(response);
-            }
-        }
-        catch (InvalidHttpRequestException e) {
-
-            //
-            // failed because we were not able to parse the data came on the wire, do not close connection,
-            // most likely something is wrong with this request only.
-            //
-            String msg = e.getMessage();
-            log.error(msg);
-            log.debug("failed to parse HTTP request", e);
-            sendResponse(new HttpResponse(HttpStatusCode.BAD_REQUEST, msg.getBytes()));
-        }
-    }
-
-    void closeConnectionAfterResponse(boolean b) {
+    void setCloseConnectionAfterResponse(boolean b) {
 
         this.closeConnectionAfterResponse = b;
+    }
+
+    void setRequestHandler(RequestHandler requestHandler) {
+
+        this.requestHandler = requestHandler;
     }
 
     // Protected -------------------------------------------------------------------------------------------------------

@@ -16,10 +16,9 @@
 
 package io.novaordis.playground.http.server.connection;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.net.Socket;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -33,8 +32,8 @@ public class MockSocket extends Socket {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private InputStream is;
-    private ByteArrayOutputStream os;
+    private BlockableInputStream bis;
+    private ByteArrayOutputStream baos;
     private boolean closed;
 
     // Constructors ----------------------------------------------------------------------------------------------------
@@ -44,27 +43,27 @@ public class MockSocket extends Socket {
         this(null);
     }
 
-    public MockSocket(String requestContent) {
+    public MockSocket(String inputStreamContent) {
 
-        this.is = requestContent == null ?
-                new ByteArrayInputStream(new byte[0]) :
-                new ByteArrayInputStream(requestContent.getBytes());
+        this.bis = inputStreamContent == null ?
+                new BlockableInputStream(new byte[0]) :
+                new BlockableInputStream(inputStreamContent.getBytes());
 
-        this.os = new ByteArrayOutputStream();
+        this.baos = new ByteArrayOutputStream();
     }
 
     // Overrides -------------------------------------------------------------------------------------------------------
 
     @Override
-    public InputStream getInputStream() {
+    public BlockableInputStream getInputStream() {
 
-        return is;
+        return bis;
     }
 
     @Override
     public ByteArrayOutputStream getOutputStream() {
 
-        return os;
+        return baos;
     }
 
     @Override
@@ -83,7 +82,24 @@ public class MockSocket extends Socket {
 
     public void resetOutputStream() {
 
-        this.os = new ByteArrayOutputStream();
+        this.baos = new ByteArrayOutputStream();
+    }
+
+    /**
+     * Configure this instance to block on readReleaseLatch after reading n characters and while "reading" the n + 1
+     * character. Right before blocking, the method releases readBlocked latch, if not null, to let the caller know that
+     * it is about to block.
+     *
+     * @param readWithoutBlocking the number of character to read without blocking. read() will block while "reading"
+     *                            the n + 1 character.
+     *
+     * @param readBlocked may be null, in which case the latch won't be released.
+     * @param readReleaseLatch can be used to release read(), cannot be null
+     */
+    public void blockInReadingAfterTheSpecifiedNumberOfCharacters(
+            int readWithoutBlocking, CountDownLatch readBlocked, CountDownLatch readReleaseLatch) {
+
+        bis.blockInReadingAfterTheSpecifiedNumberOfCharacters(readWithoutBlocking, readBlocked, readReleaseLatch);
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
