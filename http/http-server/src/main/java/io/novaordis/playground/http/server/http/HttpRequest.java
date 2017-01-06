@@ -168,6 +168,7 @@ public class HttpRequest extends MessageImpl {
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private byte[] wireFormat;
+
     private HttpMethod method;
     private String path;
     private String version;

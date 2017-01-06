@@ -35,6 +35,10 @@ public interface Message {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    //
+    // Header management -----------------------------------------------------------------------------------------------
+    //
+
     /**
      * If a header with the same name exists, the second value will be simply added to the list. According to the
      * specification, multiple headers with the same field name may be present in a message. In this case, the entire
@@ -108,6 +112,30 @@ public interface Message {
      * @see Message#addHeader(HttpHeaderDefinition, String)
      */
     List<HttpHeader> getHeader(HttpHeaderDefinition headerDefinition);
+
+    //
+    // Body management -------------------------------------------------------------------------------------------------
+    //
+
+
+    /**
+     * May return null if the message has no body.
+     *
+     * @see Message#setBody(byte[])
+     */
+    byte[] getBody();
+
+    /**
+     * The body can be set to null - means "no body". In any situation, the implementation is responsible for keeping
+     * in sync the body and the Content-Length value. There should be no expectation that addHeader(Content-Length) must
+     * be called to synchronize state. The implementation must do it. If there is a previous Content-Length header, it
+     * will be <b>overwritten</b>.
+     *
+     * @param content may be null.
+     *
+     */
+    void setBody(byte[] content);
+
 
 
 }

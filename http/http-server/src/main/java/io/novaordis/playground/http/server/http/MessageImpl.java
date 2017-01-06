@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.http.server.http;
 
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
 
@@ -41,6 +42,13 @@ class MessageImpl implements Message {
     //
     private List<HttpHeader> headers;
 
+    //
+    // the entity body; may be null. If not null, the body length and the value of the Content-Length header must always
+    // be kept in in sync by the implementation
+    //
+    private byte[] body;
+
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     MessageImpl() {
@@ -48,7 +56,9 @@ class MessageImpl implements Message {
         this.headers = new ArrayList<>();
     }
 
-    // Headers implementation ------------------------------------------------------------------------------------------
+    //
+    // Header management -----------------------------------------------------------------------------------------------
+    //
 
     @Override
     public void addHeader(HttpHeaderDefinition d, String fieldBody) {
@@ -102,6 +112,29 @@ class MessageImpl implements Message {
 
         return getHeader(headerDefinition.getCanonicalFieldName());
     }
+
+    //
+    // Body management -------------------------------------------------------------------------------------------------
+    //
+
+    /**
+     * @return the actual storage, not a copy.
+     */
+    @Override
+    public byte[] getBody() {
+
+        return body;
+    }
+
+    @Override
+    public void setBody(byte[] b) {
+
+        this.body = b;
+
+        String lengthAsString = b == null ? "0" : Integer.toString(b.length);
+        overwriteHeader(new HttpHeader(HttpEntityHeader.CONTENT_LENGTH, lengthAsString));
+    }
+
 
     // Public ----------------------------------------------------------------------------------------------------------
 

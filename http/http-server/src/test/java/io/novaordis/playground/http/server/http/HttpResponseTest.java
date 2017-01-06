@@ -27,9 +27,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -66,7 +64,7 @@ public class HttpResponseTest extends MessageTest {
 
         assertEquals("HTTP/1.1", r.getHttpVersion());
         assertNull(r.getRequest());
-        assertNull(r.getEntityBodyContent());
+        assertNull(r.getBody());
     }
 
     @Test
@@ -85,7 +83,7 @@ public class HttpResponseTest extends MessageTest {
 
         assertEquals("HTTP/1.1", r.getHttpVersion());
         assertNull(r.getRequest());
-        assertNull(r.getEntityBodyContent());
+        assertNull(r.getBody());
     }
 
     @Test
@@ -107,9 +105,8 @@ public class HttpResponseTest extends MessageTest {
 
         assertEquals("HTTP/1.1", r.getHttpVersion());
         assertNull(r.getRequest());
-        assertEquals("test", new String(r.getEntityBodyContent()));
+        assertEquals("test", new String(r.getBody()));
     }
-
 
     // statusLineAndHeadersToWireFormat --------------------------------------------------------------------------------
 
@@ -136,99 +133,6 @@ public class HttpResponseTest extends MessageTest {
 
         assertEquals(expected, s);
     }
-
-    // setEntityBodyContent --------------------------------------------------------------------------------------------
-
-    @Test
-    public void setEntityBodyContent_InsureContentLengthIsSet() throws Exception {
-
-        HttpResponse r = new HttpResponse();
-
-        assertNotNull(r.getHeader(HttpEntityHeader.CONTENT_LENGTH));
-
-        r.setEntityBodyContent("test".getBytes());
-
-        //
-        // make sure the content is set and the Content-Length is set
-        //
-
-        byte[] content = r.getEntityBodyContent();
-
-        assertEquals("test", new String(content));
-
-        List<HttpHeader> hs  = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-
-        assertEquals("4", h.getFieldBody());
-    }
-
-    @Test
-    public void setEntityBodyContent_InsureContentLengthIsSet_NullBody() throws Exception {
-
-        HttpResponse r = new HttpResponse();
-
-        r.setEntityBodyContent(null);
-
-        //
-        // make sure the content is set and the Content-Length is set
-        //
-
-        byte[] content = r.getEntityBodyContent();
-
-        assertNull(content);
-
-        List<HttpHeader> hs  = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-
-        assertEquals("0", h.getFieldBody());
-    }
-
-    @Test
-    public void setEntityBodyContent_InsureContentLengthIsSet_EmptyBody() throws Exception {
-
-        HttpResponse r = new HttpResponse();
-
-        r.setEntityBodyContent("".getBytes());
-
-        //
-        // make sure the content is set and the Content-Length is set
-        //
-
-        byte[] content = r.getEntityBodyContent();
-
-        assertEquals("", new String(content));
-
-        List<HttpHeader> hs  = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-
-        assertEquals("0", h.getFieldBody());
-    }
-
-    @Test
-    public void setEntityBodyContent_InsureContentLengthIsSet_WhitespaceBody() throws Exception {
-
-        HttpResponse r = new HttpResponse();
-
-        r.setEntityBodyContent("  ".getBytes());
-
-        //
-        // make sure the content is set and the Content-Length is set
-        //
-
-        byte[] content = r.getEntityBodyContent();
-
-        assertEquals("  ", new String(content));
-
-        List<HttpHeader> hs  = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-
-        assertEquals("2", h.getFieldBody());
-    }
-
 
     // Tests -----------------------------------------------------------------------------------------------------------
 

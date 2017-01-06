@@ -16,7 +16,6 @@
 
 package io.novaordis.playground.http.server.http;
 
-import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
 
 import java.io.ByteArrayOutputStream;
@@ -42,7 +41,7 @@ public class HttpResponse extends MessageImpl {
 
         String s = new String(b);
 
-        byte[] bc = r.getEntityBodyContent();
+        byte[] bc = r.getBody();
 
         if (bc != null) {
 
@@ -55,9 +54,7 @@ public class HttpResponse extends MessageImpl {
     // Attributes ------------------------------------------------------------------------------------------------------
 
     private HttpStatusCode statusCode;
-    private byte[] entityBodyContent;
     private HttpRequest request;
-
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -77,7 +74,7 @@ public class HttpResponse extends MessageImpl {
     public HttpResponse(HttpStatusCode statusCode, byte[] entityBodyContent) {
 
         this.statusCode = statusCode;
-        setEntityBodyContent(entityBodyContent);
+        setBody(entityBodyContent);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -95,28 +92,6 @@ public class HttpResponse extends MessageImpl {
     public String getHttpVersion() {
 
         return "HTTP/1.1";
-    }
-
-    /**
-     * @return may return null if there is no content. Returns the actual storage, not a copy.
-     */
-    public byte[] getEntityBodyContent() {
-
-        return entityBodyContent;
-    }
-
-    /**
-     * @param b may be null.
-     *
-     * Automatically updates the Content-Length header with the appropriate value. If there is a previous
-     *          Content-Length header, it will be <b>overwritten</b>.
-     */
-    public void setEntityBodyContent(byte[] b) {
-
-        this.entityBodyContent = b;
-
-        String lengthAsString = b == null ? "0" : Integer.toString(b.length);
-        overwriteHeader(new HttpHeader(HttpEntityHeader.CONTENT_LENGTH, lengthAsString));
     }
 
     public void setRequest(HttpRequest r) {

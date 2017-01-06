@@ -245,7 +245,7 @@ public class ConnectionHandlerTest {
 
         r.setStatusCode(HttpStatusCode.OK);
         r.addHeader("Some-Header", "some value");
-        r.setEntityBodyContent("test\n".getBytes());
+        r.setBody("test\n".getBytes());
         r.addHeader("Some-Header-2", "some value 2");
 
         h.sendResponse(r);
@@ -288,7 +288,7 @@ public class ConnectionHandlerTest {
 
         r.setStatusCode(HttpStatusCode.OK);
         r.addHeader("Some-Header", "some value");
-        r.setEntityBodyContent("test\n".getBytes());
+        r.setBody("test\n".getBytes());
         r.addHeader("Some-Header-2", "some value 2");
 
         h.sendResponse(r);

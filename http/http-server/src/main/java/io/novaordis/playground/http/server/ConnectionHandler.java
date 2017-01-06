@@ -220,7 +220,7 @@ public class ConnectionHandler implements Runnable {
         // write the body
         //
 
-        byte[] body = response.getEntityBodyContent();
+        byte[] body = response.getBody();
 
         if (body != null && body.length > 0) {
 

@@ -98,7 +98,7 @@ public class FileRequestHandler implements RequestHandler {
                 baos.write(buffer, 0, r);
             }
 
-            response.setEntityBodyContent(baos.toByteArray()); // this will also set Content-Length
+            response.setBody(baos.toByteArray()); // this will also set Content-Length
             response.setStatusCode(HttpStatusCode.OK);
             return response;
         }

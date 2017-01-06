@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.http.server.http;
 
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -50,18 +52,20 @@ public abstract class MessageTest {
 
     // Tests -----------------------------------------------------------------------------------------------------------
 
-    // headers ---------------------------------------------------------------------------------------------------------
+    //
+    // Header management -----------------------------------------------------------------------------------------------
+    //
 
     @Test
     public void testHeaderNameCaseInsensitivity() throws Exception {
 
-        Message r = getMessageImplementationToTest();
+        Message m = getMessageImplementationToTest();
 
-        r.addHeader(HttpGeneralHeader.CACHE_CONTROL, "something");
+        m.addHeader(HttpGeneralHeader.CACHE_CONTROL, "something");
 
         assertNotEquals("cache-control", HttpGeneralHeader.CACHE_CONTROL.getCanonicalFieldName());
 
-        List<HttpHeader> headers = r.getHeader("cache-control");
+        List<HttpHeader> headers = m.getHeader("cache-control");
         assertEquals(1, headers.size());
 
         assertEquals(HttpGeneralHeader.CACHE_CONTROL, headers.get(0).getHeaderDefinition());
@@ -71,12 +75,12 @@ public abstract class MessageTest {
     @Test
     public void testDuplicateNames() throws Exception {
 
-        Message r = getMessageImplementationToTest();
+        Message m = getMessageImplementationToTest();
 
-        r.addHeader(HttpGeneralHeader.VIA, "1.1 host1:80");
-        r.addHeader(HttpGeneralHeader.VIA, "1.1 host2:80");
+        m.addHeader(HttpGeneralHeader.VIA, "1.1 host1:80");
+        m.addHeader(HttpGeneralHeader.VIA, "1.1 host2:80");
 
-        List<HttpHeader> headers = r.getHeader(HttpGeneralHeader.VIA);
+        List<HttpHeader> headers = m.getHeader(HttpGeneralHeader.VIA);
 
         assertEquals(2, headers.size());
 
@@ -92,38 +96,38 @@ public abstract class MessageTest {
     @Test
     public void lifecycle() throws Exception {
 
-        Message r = getMessageImplementationToTest();
+        Message m = getMessageImplementationToTest();
 
-        List<HttpHeader> headers = r.getHeader("something");
+        List<HttpHeader> headers = m.getHeader("something");
         assertTrue(headers.isEmpty());
 
-        headers = r.getHeader(HttpGeneralHeader.VIA);
+        headers = m.getHeader(HttpGeneralHeader.VIA);
         assertTrue(headers.isEmpty());
 
         //
         // standard header
         //
 
-        r.addHeader(HttpGeneralHeader.VIA, "HTTP/1.1 host1:80");
+        m.addHeader(HttpGeneralHeader.VIA, "HTTP/1.1 host1:80");
 
-        headers = r.getHeader("something");
+        headers = m.getHeader("something");
         assertTrue(headers.isEmpty());
 
-        headers = r.getHeader(HttpGeneralHeader.VIA);
+        headers = m.getHeader(HttpGeneralHeader.VIA);
         assertEquals(1, headers.size());
         HttpHeader h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
         assertEquals("Via", h.getFieldName());
         assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
 
-        headers = r.getHeader("Via");
+        headers = m.getHeader("Via");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
         assertEquals("Via", h.getFieldName());
         assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
 
-        headers = r.getHeader("via");
+        headers = m.getHeader("via");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
@@ -134,40 +138,40 @@ public abstract class MessageTest {
         // non-standard header
         //
 
-        r.addHeader("Some-Non-Standard-Header", "something");
+        m.addHeader("Some-Non-Standard-Header", "something");
 
-        headers = r.getHeader("something");
+        headers = m.getHeader("something");
         assertTrue(headers.isEmpty());
 
-        headers = r.getHeader(HttpGeneralHeader.VIA);
+        headers = m.getHeader(HttpGeneralHeader.VIA);
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
         assertEquals("Via", h.getFieldName());
         assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
 
-        headers = r.getHeader("Via");
+        headers = m.getHeader("Via");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
         assertEquals("Via", h.getFieldName());
         assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
 
-        headers = r.getHeader("via");
+        headers = m.getHeader("via");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
         assertEquals("Via", h.getFieldName());
         assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
 
-        headers = r.getHeader("Some-Non-Standard-Header");
+        headers = m.getHeader("Some-Non-Standard-Header");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertNull(h.getHeaderDefinition());
         assertEquals("Some-Non-Standard-Header", h.getFieldName());
         assertEquals("something", h.getFieldBody());
 
-        headers = r.getHeader("some-non-standard-header");
+        headers = m.getHeader("some-non-standard-header");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertNull(h.getHeaderDefinition());
@@ -178,16 +182,16 @@ public abstract class MessageTest {
         // the second non-standard header
         //
 
-        r.addHeader(new HttpHeader("Other-Header", "something else"));
+        m.addHeader(new HttpHeader("Other-Header", "something else"));
 
-        headers = r.getHeader("Other-Header");
+        headers = m.getHeader("Other-Header");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertNull(h.getHeaderDefinition());
         assertEquals("Other-Header", h.getFieldName());
         assertEquals("something else", h.getFieldBody());
 
-        headers = r.getHeader("other-header");
+        headers = m.getHeader("other-header");
         assertEquals(1, headers.size());
         h = headers.get(0);
         assertNull(h.getHeaderDefinition());
@@ -198,10 +202,11 @@ public abstract class MessageTest {
     @Test
     public void addNullHeader() throws Exception {
 
-        Message r = getMessageImplementationToTest();
+        Message m = getMessageImplementationToTest();
 
         try {
-            r.addHeader(null);
+
+            m.addHeader(null);
             fail("should have thrown exception");
         } catch (IllegalArgumentException e) {
 
@@ -216,14 +221,14 @@ public abstract class MessageTest {
     @Test
     public void overwriteHeader() throws Exception {
 
-        MessageImpl r = (MessageImpl) getMessageImplementationToTest();
+        MessageImpl m = (MessageImpl) getMessageImplementationToTest();
 
-        List<HttpHeader> hs = r.getHeader("Test-Header");
+        List<HttpHeader> hs = m.getHeader("Test-Header");
         assertTrue(hs.isEmpty());
 
-        r.overwriteHeader(new HttpHeader("Test-Header", "test value 1"));
+        m.overwriteHeader(new HttpHeader("Test-Header", "test value 1"));
 
-        hs = r.getHeader("Test-Header");
+        hs = m.getHeader("Test-Header");
         assertEquals(1, hs.size());
         HttpHeader h = hs.get(0);
 
@@ -234,9 +239,9 @@ public abstract class MessageTest {
         // overwrite
         //
 
-        r.overwriteHeader(new HttpHeader("Test-Header", "test value 2"));
+        m.overwriteHeader(new HttpHeader("Test-Header", "test value 2"));
 
-        hs = r.getHeader("Test-Header");
+        hs = m.getHeader("Test-Header");
         assertEquals(1, hs.size());
         h = hs.get(0);
 
@@ -247,14 +252,14 @@ public abstract class MessageTest {
     @Test
     public void overwriteHeader_CaseInsensitive() throws Exception {
 
-        MessageImpl r = (MessageImpl) getMessageImplementationToTest();
+        MessageImpl m = (MessageImpl) getMessageImplementationToTest();
 
-        List<HttpHeader> hs = r.getHeader("test-header");
+        List<HttpHeader> hs = m.getHeader("test-header");
         assertTrue(hs.isEmpty());
 
-        r.overwriteHeader(new HttpHeader("test-header", "test value 1"));
+        m.overwriteHeader(new HttpHeader("test-header", "test value 1"));
 
-        hs = r.getHeader("test-header");
+        hs = m.getHeader("test-header");
         assertEquals(1, hs.size());
         HttpHeader h = hs.get(0);
 
@@ -265,16 +270,16 @@ public abstract class MessageTest {
         // overwrite, case insensitive
         //
 
-        r.overwriteHeader(new HttpHeader("Test-Header", "test value 2"));
+        m.overwriteHeader(new HttpHeader("Test-Header", "test value 2"));
 
-        hs = r.getHeader("Test-Header");
+        hs = m.getHeader("Test-Header");
         assertEquals(1, hs.size());
         h = hs.get(0);
 
         assertEquals("Test-Header", h.getFieldName());
         assertEquals("test value 2", h.getFieldBody());
 
-        hs = r.getHeader("test-header");
+        hs = m.getHeader("test-header");
         assertEquals(1, hs.size());
         h = hs.get(0);
 
@@ -285,19 +290,19 @@ public abstract class MessageTest {
     @Test
     public void overwriteHeader_MoreThanOneInternalCopy() throws Exception {
 
-        MessageImpl r = (MessageImpl) getMessageImplementationToTest();
+        MessageImpl m = (MessageImpl) getMessageImplementationToTest();
 
-        List<HttpHeader> hs = r.getHeader("Test-Header");
+        List<HttpHeader> hs = m.getHeader("Test-Header");
         assertTrue(hs.isEmpty());
 
-        r.addHeader("Test-Header", "test value 1");
-        r.addHeader("Test-Header", "test value 2");
+        m.addHeader("Test-Header", "test value 1");
+        m.addHeader("Test-Header", "test value 2");
 
-        hs = r.getHeader("Test-Header");
+        hs = m.getHeader("Test-Header");
         assertEquals(2, hs.size());
 
         try {
-            r.overwriteHeader(new HttpHeader("Test-Header", "does not matter"));
+            m.overwriteHeader(new HttpHeader("Test-Header", "does not matter"));
             fail("should throw exception");
         }
         catch(IllegalArgumentException e) {
@@ -306,8 +311,103 @@ public abstract class MessageTest {
             log.info(msg);
             assertEquals("header \"Test-Header\" has more than one copy, cannot overwrite", msg);
         }
-
     }
+
+    //
+    // Body management -------------------------------------------------------------------------------------------------
+    //
+
+    // setEntityBodyContent --------------------------------------------------------------------------------------------
+
+    @Test
+    public void setBody_InsureContentLengthIsSet() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        assertNotNull(m.getHeader(HttpEntityHeader.CONTENT_LENGTH));
+
+        m.setBody("test".getBytes());
+
+        //
+        // make sure the content is set and the Content-Length is set
+        //
+
+        byte[] content = m.getBody();
+        assertEquals("test", new String(content));
+
+        List<HttpHeader> hs  = m.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+
+        assertEquals("4", h.getFieldBody());
+    }
+
+    @Test
+    public void setBody_InsureContentLengthIsSet_NullBody() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        m.setBody(null);
+
+        //
+        // make sure the content is set and the Content-Length is set
+        //
+
+        byte[] content = m.getBody();
+
+        assertNull(content);
+
+        List<HttpHeader> hs  = m.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+
+        assertEquals("0", h.getFieldBody());
+    }
+
+    @Test
+    public void setBody_InsureContentLengthIsSet_EmptyBody() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        m.setBody("".getBytes());
+
+        //
+        // make sure the content is set and the Content-Length is set
+        //
+
+        byte[] content = m.getBody();
+
+        assertEquals("", new String(content));
+
+        List<HttpHeader> hs  = m.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+
+        assertEquals("0", h.getFieldBody());
+    }
+
+    @Test
+    public void setBody_InsureContentLengthIsSet_WhitespaceBody() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        m.setBody("  ".getBytes());
+
+        //
+        // make sure the content is set and the Content-Length is set
+        //
+
+        byte[] content = m.getBody();
+
+        assertEquals("  ", new String(content));
+
+        List<HttpHeader> hs  = m.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+
+        assertEquals("2", h.getFieldBody());
+    }
+
 
     // Package protected -----------------------------------------------------------------------------------------------
 
