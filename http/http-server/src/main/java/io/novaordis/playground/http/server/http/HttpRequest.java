@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class HttpRequest extends HeadersImpl {
+public class HttpRequest extends MessageImpl {
 
     // Constants -------------------------------------------------------------------------------------------------------
 

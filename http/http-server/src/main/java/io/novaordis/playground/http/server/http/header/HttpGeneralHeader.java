@@ -22,6 +22,7 @@ package io.novaordis.playground.http.server.http.header;
  */
 public enum HttpGeneralHeader implements HttpHeaderDefinition {
 
+    CONNECTION("Connection"),
     CACHE_CONTROL("Cache-Control"),
     VIA("Via");
 

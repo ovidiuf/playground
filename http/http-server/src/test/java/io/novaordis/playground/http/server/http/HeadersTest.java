@@ -55,7 +55,7 @@ public abstract class HeadersTest {
     @Test
     public void testHeaderNameCaseInsensitivity() throws Exception {
 
-        Headers r = getHeadersImplementationToTest();
+        Message r = getHeadersImplementationToTest();
 
         r.addHeader(HttpGeneralHeader.CACHE_CONTROL, "something");
 
@@ -71,7 +71,7 @@ public abstract class HeadersTest {
     @Test
     public void testDuplicateNames() throws Exception {
 
-        Headers r = getHeadersImplementationToTest();
+        Message r = getHeadersImplementationToTest();
 
         r.addHeader(HttpGeneralHeader.VIA, "1.1 host1:80");
         r.addHeader(HttpGeneralHeader.VIA, "1.1 host2:80");
@@ -92,7 +92,7 @@ public abstract class HeadersTest {
     @Test
     public void lifecycle() throws Exception {
 
-        Headers r = getHeadersImplementationToTest();
+        Message r = getHeadersImplementationToTest();
 
         List<HttpHeader> headers = r.getHeader("something");
         assertTrue(headers.isEmpty());
@@ -198,7 +198,7 @@ public abstract class HeadersTest {
     @Test
     public void addNullHeader() throws Exception {
 
-        Headers r = getHeadersImplementationToTest();
+        Message r = getHeadersImplementationToTest();
 
         try {
             r.addHeader(null);
@@ -216,7 +216,7 @@ public abstract class HeadersTest {
     @Test
     public void overwriteHeader() throws Exception {
 
-        HeadersImpl r = (HeadersImpl)getHeadersImplementationToTest();
+        MessageImpl r = (MessageImpl)getHeadersImplementationToTest();
 
         List<HttpHeader> hs = r.getHeader("Test-Header");
         assertTrue(hs.isEmpty());
@@ -247,7 +247,7 @@ public abstract class HeadersTest {
     @Test
     public void overwriteHeader_CaseInsensitive() throws Exception {
 
-        HeadersImpl r = (HeadersImpl)getHeadersImplementationToTest();
+        MessageImpl r = (MessageImpl)getHeadersImplementationToTest();
 
         List<HttpHeader> hs = r.getHeader("test-header");
         assertTrue(hs.isEmpty());
@@ -285,7 +285,7 @@ public abstract class HeadersTest {
     @Test
     public void overwriteHeader_MoreThanOneInternalCopy() throws Exception {
 
-        HeadersImpl r = (HeadersImpl)getHeadersImplementationToTest();
+        MessageImpl r = (MessageImpl)getHeadersImplementationToTest();
 
         List<HttpHeader> hs = r.getHeader("Test-Header");
         assertTrue(hs.isEmpty());
@@ -313,7 +313,7 @@ public abstract class HeadersTest {
 
     // Protected -------------------------------------------------------------------------------------------------------
 
-    protected abstract Headers getHeadersImplementationToTest();
+    protected abstract Message getHeadersImplementationToTest();
 
     // Private ---------------------------------------------------------------------------------------------------------
 

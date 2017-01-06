@@ -22,10 +22,12 @@ import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
 import java.util.List;
 
 /**
+ * The base interface for HTTP requests and responses.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-public interface Headers {
+public interface Message {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -77,9 +79,9 @@ public interface Headers {
 
     /**
      * @return the headers in the order they were read from the socket. May return an empty list, but never null.
-     * Headers with the same names will be returned as distinct copies.
+     * eaders with the same names will be returned as distinct copies.
      *
-     * @see Headers#addHeader(HttpHeaderDefinition, String)
+     * @see Message#addHeader(HttpHeaderDefinition, String)
      */
     List<HttpHeader> getHeaders();
 
@@ -92,7 +94,7 @@ public interface Headers {
      * if there is a single header with the specified name. Will return distinct copies if headers with the same name
      * exist.
      *
-     * @see Headers#addHeader(HttpHeaderDefinition, String)
+     * @see Message#addHeader(HttpHeaderDefinition, String)
      */
     List<HttpHeader> getHeader(String fieldName);
 
@@ -103,7 +105,7 @@ public interface Headers {
      * if there is a single header with the specified name. Will return distinct copies if headers with the same name
      * exist.
      *
-     * @see Headers#addHeader(HttpHeaderDefinition, String)
+     * @see Message#addHeader(HttpHeaderDefinition, String)
      */
     List<HttpHeader> getHeader(HttpHeaderDefinition headerDefinition);
 

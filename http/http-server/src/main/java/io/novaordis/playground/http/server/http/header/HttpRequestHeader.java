@@ -16,15 +16,20 @@
 
 package io.novaordis.playground.http.server.http.header;
 
-import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
-
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
 public enum HttpRequestHeader implements HttpHeaderDefinition {
 
-    HOST("Host");
+    HOST("Host"),
+    USER_AGENT("User-Agent"),
+    REFERER("Referer"),
+    ACCEPT("Accept"),
+    ACCEPT_LANGUAGE("Accept-Language"),
+    ACCEPT_ENCODING("Accept-Encoding"),
+
+    ;
 
     private String fieldName;
 

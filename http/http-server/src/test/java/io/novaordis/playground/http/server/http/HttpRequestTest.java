@@ -17,7 +17,10 @@
 package io.novaordis.playground.http.server.http;
 
 import io.novaordis.playground.http.server.connection.MockConnection;
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
+import io.novaordis.playground.http.server.http.header.HttpRequestHeader;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,7 +189,7 @@ public class HttpRequestTest extends HeadersTest {
         assertEquals("keep-alive", headers.get(0).getFieldBody());
     }
 
-    // readRequest() ---------------------------------------------------------------------------------------------------
+    // readRequest() GET -----------------------------------------------------------------------------------------------
 
     @Test
     public void readRequest_missingHttpVersion() throws Exception {
@@ -242,7 +245,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_GET_InvalidMethod() throws Exception {
+    public void readRequest_InvalidMethod() throws Exception {
 
         String requestContent = "blah / HTTP/1.1\r\n";
 
@@ -296,31 +299,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_POST() throws Exception {
-
-        String requestContent =
-                "POST /index.html HTTP/1.1\r\n" +
-                        "Host: localhost:10000\r\n" +
-                        "Upgrade-Insecure-Requests: 1\r\n" +
-                        "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n" +
-                        "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12\r\n" +
-                        "Accept-Language: en-us\r\n" +
-                        "Accept-Encoding: gzip, deflate\r\n" +
-                        "Connection: keep-alive\r\n" +
-                        "\r\n";
-
-        MockConnection mc = new MockConnection(0, requestContent);
-        HttpRequest r = HttpRequest.readRequest(mc);
-
-        assertNotNull(r);
-
-        assertEquals(HttpMethod.POST, r.getMethod());
-
-        fail("Return here");
-    }
-
-    @Test
-    public void readRequest_connectionClosedAbruptlyInMidstOfReadingARequest() throws Exception {
+    public void readRequest_GET_connectionClosedAbruptlyInMidstOfReadingARequest() throws Exception {
 
         MockConnection mc = new MockConnection(0, "HTT");
 
@@ -337,7 +316,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_connectionClosedAbruptlyInMidstOfReadingARequest2() throws Exception {
+    public void readRequest_GET_connectionClosedAbruptlyInMidstOfReadingARequest2() throws Exception {
 
         MockConnection mc = new MockConnection(0, "\nHTT");
 
@@ -354,7 +333,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_inputStreamAtEOSToStartWith() throws Exception {
+    public void readRequest_GET_inputStreamAtEOSToStartWith() throws Exception {
 
         MockConnection mc = new MockConnection(0);
         mc.close();
@@ -365,7 +344,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_inputStreamContainsOnlyDiscardableCharacters() throws Exception {
+    public void readRequest_GET_inputStreamContainsOnlyDiscardableCharacters() throws Exception {
 
         MockConnection mc = new MockConnection(0, "    \r\n");
         HttpRequest request = HttpRequest.readRequest(mc);
@@ -373,7 +352,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_makeSureTheLastLFIsConsumed() throws Exception {
+    public void readRequest_GET_makeSureTheLastLFIsConsumed() throws Exception {
 
         MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r\n");
 
@@ -394,7 +373,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_missingLF() throws Exception {
+    public void readRequest_GET_missingLF() throws Exception {
 
         MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r");
 
@@ -415,7 +394,7 @@ public class HttpRequestTest extends HeadersTest {
     }
 
     @Test
-    public void readRequest_nonLFCharacterWhenLFIsExpected() throws Exception {
+    public void readRequest_GET_nonLFCharacterWhenLFIsExpected() throws Exception {
 
         MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\rx");
 
@@ -432,6 +411,94 @@ public class HttpRequestTest extends HeadersTest {
         }
     }
 
+    // readRequest() POST ----------------------------------------------------------------------------------------------
+
+    @Test
+    public void readRequest_POST() throws Exception {
+
+        String requestContent =
+                "POST /test HTTP/1.1\r\n" +
+                        "Host: localhost:10000\r\n" +
+                        "Content-Type: application/x-www-form-urlencoded\r\n" +
+                        "Origin: http://localhost:10000\r\n" +
+                        "Content-Length: 24\r\n" +
+                        "Connection: keep-alive\r\n" +
+                        "Upgrade-Insecure-Requests: 1\r\n" +
+                        "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n" +
+                        "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12\r\n" +
+                        "Referer: http://localhost:10000/form.html\r\n" +
+                        "Accept-Language: en-us\r\n" +
+                        "Accept-Encoding: gzip, deflate\r\n" +
+                        "\r\n" +
+                        "fname=Mickey&lname=Mouse";
+
+        MockConnection mc = new MockConnection(0, requestContent);
+
+        HttpRequest r = HttpRequest.readRequest(mc);
+
+        assertNotNull(r);
+
+        assertEquals(HttpMethod.POST, r.getMethod());
+        assertEquals("/test", r.getPath());
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+
+        List<HttpHeader> headers = r.getHeaders();
+        assertEquals(11, headers.size());
+
+        assertEquals(
+                "localhost:10000",
+                r.getHeader(HttpRequestHeader.HOST).get(0).getFieldBody());
+
+        assertEquals(
+                "application/x-www-form-urlencoded",
+                r.getHeader(HttpEntityHeader.CONTENT_TYPE).get(0).getFieldBody());
+
+        assertEquals(
+                "http://localhost:10000",
+                r.getHeader("Origin").get(0).getFieldBody());
+
+        assertEquals(
+                "24",
+                r.getHeader(HttpEntityHeader.CONTENT_LENGTH).get(0).getFieldBody());
+
+        assertEquals(
+                "keep-alive",
+                r.getHeader(HttpGeneralHeader.CONNECTION).get(0).getFieldBody());
+
+        assertEquals(
+                "1",
+                r.getHeader("Upgrade-Insecure-Requests").get(0).getFieldBody());
+
+        assertEquals(
+                "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                r.getHeader(HttpRequestHeader.ACCEPT).get(0).getFieldBody());
+
+        assertEquals(
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/602.3.12 (KHTML, like Gecko) Version/10.0.2 Safari/602.3.12",
+                r.getHeader(HttpRequestHeader.USER_AGENT).get(0).getFieldBody());
+
+        assertEquals(
+                "http://localhost:10000/form.html",
+                r.getHeader(HttpRequestHeader.REFERER).get(0).getFieldBody());
+
+        assertEquals(
+                "en-us",
+                r.getHeader(HttpRequestHeader.ACCEPT_LANGUAGE).get(0).getFieldBody());
+
+        assertEquals(
+                "gzip, deflate",
+                r.getHeader(HttpRequestHeader.ACCEPT_ENCODING).get(0).getFieldBody());
+
+        int contentLength = Integer.parseInt(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).get(0).getFieldBody());
+
+        assertEquals(24, contentLength);
+
+//        byte[] body = r.getEntityBody();
+//
+//        assertEquals(contentLength, body.length);
+//
+//        assertEquals("fname=Mickey&lname=Mouse", new String(body));
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

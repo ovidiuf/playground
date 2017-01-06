@@ -26,7 +26,7 @@ import java.util.List;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-class HeadersImpl implements Headers {
+class MessageImpl implements Message {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ class HeadersImpl implements Headers {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    HeadersImpl() {
+    MessageImpl() {
 
         this.headers = new ArrayList<>();
     }

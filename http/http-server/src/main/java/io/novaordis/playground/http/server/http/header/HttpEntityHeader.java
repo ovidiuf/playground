@@ -22,7 +22,8 @@ package io.novaordis.playground.http.server.http.header;
  */
 public enum HttpEntityHeader implements HttpHeaderDefinition {
 
-    CONTENT_LENGTH("Content-Length");
+    CONTENT_LENGTH("Content-Length"),
+    CONTENT_TYPE("Content-Type");
 
     private String fieldName;
 

@@ -26,7 +26,7 @@ import java.io.IOException;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
-public class HttpResponse extends HeadersImpl {
+public class HttpResponse extends MessageImpl {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
