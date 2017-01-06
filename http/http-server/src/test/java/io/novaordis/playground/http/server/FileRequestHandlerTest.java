@@ -81,6 +81,8 @@ public class FileRequestHandlerTest extends RequestHandlerTest {
         HttpResponse response = h.processRequest(request);
 
         assertEquals(HttpStatusCode.NOT_FOUND, response.getStatusCode());
+
+        assertEquals(request, response.getRequest());
     }
 
     @Test
@@ -102,6 +104,9 @@ public class FileRequestHandlerTest extends RequestHandlerTest {
         assertEquals(1, header.size());
         HttpHeader h = header.get(0);
         assertEquals("13", h.getFieldBody());
+
+        assertEquals(request, response.getRequest());
+
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

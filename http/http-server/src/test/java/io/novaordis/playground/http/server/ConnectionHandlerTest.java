@@ -260,8 +260,8 @@ public class ConnectionHandlerTest {
 
         String expectedStatusLineAndHeaders =
                 "HTTP/1.1 200 OK\r\n" +
-                        "Some-Header: some value\r\n" +
                         "Content-Length: 5\r\n" +
+                        "Some-Header: some value\r\n" +
                         "Some-Header-2: some value 2\r\n" +
                         "\r\n";
 
@@ -303,8 +303,8 @@ public class ConnectionHandlerTest {
 
         String expectedStatusLineAndHeaders =
                 "HTTP/1.1 200 OK\r\n" +
-                        "Some-Header: some value\r\n" +
                         "Content-Length: 5\r\n" +
+                        "Some-Header: some value\r\n" +
                         "Some-Header-2: some value 2\r\n" +
                         "\r\n";
 

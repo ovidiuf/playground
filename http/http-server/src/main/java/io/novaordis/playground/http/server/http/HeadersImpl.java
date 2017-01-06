@@ -105,6 +105,51 @@ class HeadersImpl implements Headers {
 
     // Package protected -----------------------------------------------------------------------------------------------
 
+    /**
+     * Overwrites the header, if exists. Only used internally, as this is not standard behavior, addHeader() adds
+     * headers, even if with the same name.
+     *
+     * @exception IllegalArgumentException if the header we're attempting to overwrite has more than one copies
+     * in storage.
+     */
+    void overwriteHeader(HttpHeader header) {
+
+        int index = -1;
+
+        for(int i = 0; i < headers.size(); i ++) {
+
+            HttpHeader h = headers.get(i);
+
+            if (h.getFieldName().equalsIgnoreCase(header.getFieldName())) {
+
+                if (index != -1) {
+
+                    throw new IllegalArgumentException(
+                            "header \"" + header.getFieldName() + "\" has more than one copy, cannot overwrite");
+                }
+
+                index = i;
+            }
+        }
+
+        if (index == -1) {
+
+            //
+            // not found, at at the end
+            //
+
+            headers.add(header);
+        }
+        else {
+
+            //
+            // replace
+            //
+
+            headers.set(index, header);
+        }
+    }
+
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------

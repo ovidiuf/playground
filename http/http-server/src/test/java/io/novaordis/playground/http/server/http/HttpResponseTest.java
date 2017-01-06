@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -47,12 +49,75 @@ public class HttpResponseTest extends HeadersTest {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    // constructor -----------------------------------------------------------------------------------------------------
+
+    @Test
+    public void constructor() throws Exception {
+
+        HttpResponse r = new HttpResponse();
+
+        assertNull(r.getStatusCode());
+
+        List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+        assertEquals(HttpEntityHeader.CONTENT_LENGTH, h.getHeaderDefinition());
+        assertEquals("0", h.getFieldBody());
+
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+        assertNull(r.getRequest());
+        assertNull(r.getEntityBodyContent());
+    }
+
+    @Test
+    public void constructor_StatusCode() throws Exception {
+
+        HttpResponse r = new HttpResponse(HttpStatusCode.NOT_FOUND);
+
+        assertEquals(HttpStatusCode.NOT_FOUND, r.getStatusCode());
+        assertFalse(r.getHeaders().isEmpty());
+
+        List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+        assertEquals(HttpEntityHeader.CONTENT_LENGTH, h.getHeaderDefinition());
+        assertEquals("0", h.getFieldBody());
+
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+        assertNull(r.getRequest());
+        assertNull(r.getEntityBodyContent());
+    }
+
+    @Test
+    public void constructor_StatusCode_Body() throws Exception {
+
+        HttpResponse r = new HttpResponse(HttpStatusCode.OK, "test".getBytes());
+
+        assertEquals(HttpStatusCode.OK, r.getStatusCode());
+        assertFalse(r.getHeaders().isEmpty());
+
+        List<HttpHeader> hs;
+        HttpHeader h;
+
+        hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        h = hs.get(0);
+        assertEquals(HttpEntityHeader.CONTENT_LENGTH, h.getHeaderDefinition());
+        assertEquals("4", h.getFieldBody());
+
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+        assertNull(r.getRequest());
+        assertEquals("test", new String(r.getEntityBodyContent()));
+    }
+
+
+    // statusLineAndHeadersToWireFormat --------------------------------------------------------------------------------
+
     @Test
     public void statusLineAndHeadersToWireFormat() throws Exception {
 
         HttpResponse r = new HttpResponse();
         r.setStatusCode(HttpStatusCode.OK);
-        r.addHeader(HttpEntityHeader.CONTENT_LENGTH, "10");
         r.addHeader(HttpResponseHeader.SERVER, "NovaOrdis http-server");
         r.addHeader("Some-Random-Header", "something");
 
@@ -64,7 +129,7 @@ public class HttpResponseTest extends HeadersTest {
 
         String expected =
                 "HTTP/1.1 200 OK\r\n" +
-                        "Content-Length: 10\r\n" +
+                        "Content-Length: 0\r\n" +
                         "Server: NovaOrdis http-server\r\n" +
                         "Some-Random-Header: something\r\n" +
                         "\r\n";
@@ -72,12 +137,14 @@ public class HttpResponseTest extends HeadersTest {
         assertEquals(expected, s);
     }
 
+    // setEntityBodyContent --------------------------------------------------------------------------------------------
+
     @Test
     public void setEntityBodyContent_InsureContentLengthIsSet() throws Exception {
 
         HttpResponse r = new HttpResponse();
 
-        assertTrue(r.getHeaders().isEmpty());
+        assertNotNull(r.getHeader(HttpEntityHeader.CONTENT_LENGTH));
 
         r.setEntityBodyContent("test".getBytes());
 
@@ -101,8 +168,6 @@ public class HttpResponseTest extends HeadersTest {
 
         HttpResponse r = new HttpResponse();
 
-        assertTrue(r.getHeaders().isEmpty());
-
         r.setEntityBodyContent(null);
 
         //
@@ -125,8 +190,6 @@ public class HttpResponseTest extends HeadersTest {
 
         HttpResponse r = new HttpResponse();
 
-        assertTrue(r.getHeaders().isEmpty());
-
         r.setEntityBodyContent("".getBytes());
 
         //
@@ -148,8 +211,6 @@ public class HttpResponseTest extends HeadersTest {
     public void setEntityBodyContent_InsureContentLengthIsSet_WhitespaceBody() throws Exception {
 
         HttpResponse r = new HttpResponse();
-
-        assertTrue(r.getHeaders().isEmpty());
 
         r.setEntityBodyContent("  ".getBytes());
 

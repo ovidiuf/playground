@@ -62,6 +62,9 @@ public class FileRequestHandler implements RequestHandler {
     @Override
     public HttpResponse processRequest(HttpRequest request) {
 
+        HttpResponse response = new HttpResponse();
+        response.setRequest(request);
+
         String path = request.getPath();
 
         if (path.startsWith("/")) {
@@ -73,10 +76,9 @@ public class FileRequestHandler implements RequestHandler {
 
         if (!file.isFile() || !file.canRead()) {
 
-            return new HttpResponse(HttpStatusCode.NOT_FOUND);
+            response.setStatusCode(HttpStatusCode.NOT_FOUND);
+            return response;
         }
-
-        HttpResponse response = new HttpResponse();
 
         //
         // read the content of the file and return it with a response. It only works with small files, of course

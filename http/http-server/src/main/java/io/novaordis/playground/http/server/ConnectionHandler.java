@@ -229,9 +229,7 @@ public class ConnectionHandler implements Runnable {
 
         connection.flush();
 
-        if (debug) {
-            log.debug("response wrote to " + connection + ":\n" + HttpResponse.showResponse(response));
-        }
+        logResponse(response);
 
         //
         // close or do not close the connection depending on the configuration.
@@ -260,6 +258,23 @@ public class ConnectionHandler implements Runnable {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private void logResponse(HttpResponse response) {
+
+        HttpRequest request = response.getRequest();
+
+        HttpStatusCode sc = response.getStatusCode();
+
+        String s = request == null ? "request" : request.getMethod() + " " + request.getPath();
+        s +=  " returned " + sc.getStatusCode() + " " + sc.getReasonPhrase() +
+                " over " + connection;
+
+        log.info(s);
+
+        if (debug) {
+            log.debug(s + ":\n" + HttpResponse.showResponse(response));
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

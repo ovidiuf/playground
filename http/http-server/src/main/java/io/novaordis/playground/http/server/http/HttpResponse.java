@@ -32,6 +32,10 @@ public class HttpResponse extends HeadersImpl {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * Renders the HttpResponse content as it will be sent over the wire, less the actual body. If there is a body
+     * it will show as ... (... bytes).
+     */
     public static String showResponse(HttpResponse r) {
 
         byte[] b = r.statusLineAndHeadersToWireFormat();
@@ -52,10 +56,14 @@ public class HttpResponse extends HeadersImpl {
 
     private HttpStatusCode statusCode;
     private byte[] entityBodyContent;
+    private HttpRequest request;
 
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    /**
+     * Use this only when planning to further update the state.
+     */
     public HttpResponse() {
 
         this(null);
@@ -69,7 +77,7 @@ public class HttpResponse extends HeadersImpl {
     public HttpResponse(HttpStatusCode statusCode, byte[] entityBodyContent) {
 
         this.statusCode = statusCode;
-        this.entityBodyContent = entityBodyContent;
+        setEntityBodyContent(entityBodyContent);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -100,14 +108,28 @@ public class HttpResponse extends HeadersImpl {
     /**
      * @param b may be null.
      *
-     * Automatically adds the appropriate Content-Length header.
+     * Automatically updates the Content-Length header with the appropriate value. If there is a previous
+     *          Content-Length header, it will be <b>overwritten</b>.
      */
     public void setEntityBodyContent(byte[] b) {
 
         this.entityBodyContent = b;
 
         String lengthAsString = b == null ? "0" : Integer.toString(b.length);
-        addHeader(HttpEntityHeader.CONTENT_LENGTH, lengthAsString);
+        overwriteHeader(new HttpHeader(HttpEntityHeader.CONTENT_LENGTH, lengthAsString));
+    }
+
+    public void setRequest(HttpRequest r) {
+
+        this.request = r;
+    }
+
+    /**
+     * @return the associated request.
+     */
+    public HttpRequest getRequest() {
+
+        return request;
     }
 
     /**
@@ -151,6 +173,11 @@ public class HttpResponse extends HeadersImpl {
 
     @Override
     public String toString() {
+
+        if (statusCode == null) {
+
+            return "uninitialized";
+        }
 
         return getHttpVersion() + " " + statusCode.getStatusCode() + " " + statusCode.getReasonPhrase();
     }

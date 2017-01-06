@@ -94,10 +94,7 @@ public abstract class HeadersTest {
 
         Headers r = getHeadersImplementationToTest();
 
-        List<HttpHeader> headers = r.getHeaders();
-        assertTrue(headers.isEmpty());
-
-        headers = r.getHeader("something");
+        List<HttpHeader> headers = r.getHeader("something");
         assertTrue(headers.isEmpty());
 
         headers = r.getHeader(HttpGeneralHeader.VIA);
@@ -109,19 +106,12 @@ public abstract class HeadersTest {
 
         r.addHeader(HttpGeneralHeader.VIA, "HTTP/1.1 host1:80");
 
-        headers = r.getHeaders();
-        assertEquals(1, headers.size());
-        HttpHeader h = headers.get(0);
-        assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
-        assertEquals("Via", h.getFieldName());
-        assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
-
         headers = r.getHeader("something");
         assertTrue(headers.isEmpty());
 
         headers = r.getHeader(HttpGeneralHeader.VIA);
         assertEquals(1, headers.size());
-        h = headers.get(0);
+        HttpHeader h = headers.get(0);
         assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
         assertEquals("Via", h.getFieldName());
         assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
@@ -145,17 +135,6 @@ public abstract class HeadersTest {
         //
 
         r.addHeader("Some-Non-Standard-Header", "something");
-
-        headers = r.getHeaders();
-        assertEquals(2, headers.size());
-        h = headers.get(0);
-        assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
-        assertEquals("Via", h.getFieldName());
-        assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
-        HttpHeader h2 = headers.get(1);
-        assertNull(h2.getHeaderDefinition());
-        assertEquals("Some-Non-Standard-Header", h2.getFieldName());
-        assertEquals("something", h2.getFieldBody());
 
         headers = r.getHeader("something");
         assertTrue(headers.isEmpty());
@@ -201,21 +180,6 @@ public abstract class HeadersTest {
 
         r.addHeader(new HttpHeader("Other-Header", "something else"));
 
-        headers = r.getHeaders();
-        assertEquals(3, headers.size());
-        h = headers.get(0);
-        assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
-        assertEquals("Via", h.getFieldName());
-        assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
-        h2 = headers.get(1);
-        assertNull(h2.getHeaderDefinition());
-        assertEquals("Some-Non-Standard-Header", h2.getFieldName());
-        assertEquals("something", h2.getFieldBody());
-        HttpHeader h3 = headers.get(2);
-        assertNull(h3.getHeaderDefinition());
-        assertEquals("Other-Header", h3.getFieldName());
-        assertEquals("something else", h3.getFieldBody());
-
         headers = r.getHeader("Other-Header");
         assertEquals(1, headers.size());
         h = headers.get(0);
@@ -245,6 +209,104 @@ public abstract class HeadersTest {
             log.info(msg);
             assertEquals("null header", msg);
         }
+    }
+
+    // overwriteHeader() -----------------------------------------------------------------------------------------------
+
+    @Test
+    public void overwriteHeader() throws Exception {
+
+        HeadersImpl r = (HeadersImpl)getHeadersImplementationToTest();
+
+        List<HttpHeader> hs = r.getHeader("Test-Header");
+        assertTrue(hs.isEmpty());
+
+        r.overwriteHeader(new HttpHeader("Test-Header", "test value 1"));
+
+        hs = r.getHeader("Test-Header");
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+
+        assertEquals("Test-Header", h.getFieldName());
+        assertEquals("test value 1", h.getFieldBody());
+
+        //
+        // overwrite
+        //
+
+        r.overwriteHeader(new HttpHeader("Test-Header", "test value 2"));
+
+        hs = r.getHeader("Test-Header");
+        assertEquals(1, hs.size());
+        h = hs.get(0);
+
+        assertEquals("Test-Header", h.getFieldName());
+        assertEquals("test value 2", h.getFieldBody());
+    }
+
+    @Test
+    public void overwriteHeader_CaseInsensitive() throws Exception {
+
+        HeadersImpl r = (HeadersImpl)getHeadersImplementationToTest();
+
+        List<HttpHeader> hs = r.getHeader("test-header");
+        assertTrue(hs.isEmpty());
+
+        r.overwriteHeader(new HttpHeader("test-header", "test value 1"));
+
+        hs = r.getHeader("test-header");
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+
+        assertEquals("test-header", h.getFieldName());
+        assertEquals("test value 1", h.getFieldBody());
+
+        //
+        // overwrite, case insensitive
+        //
+
+        r.overwriteHeader(new HttpHeader("Test-Header", "test value 2"));
+
+        hs = r.getHeader("Test-Header");
+        assertEquals(1, hs.size());
+        h = hs.get(0);
+
+        assertEquals("Test-Header", h.getFieldName());
+        assertEquals("test value 2", h.getFieldBody());
+
+        hs = r.getHeader("test-header");
+        assertEquals(1, hs.size());
+        h = hs.get(0);
+
+        assertEquals("Test-Header", h.getFieldName());
+        assertEquals("test value 2", h.getFieldBody());
+    }
+
+    @Test
+    public void overwriteHeader_MoreThanOneInternalCopy() throws Exception {
+
+        HeadersImpl r = (HeadersImpl)getHeadersImplementationToTest();
+
+        List<HttpHeader> hs = r.getHeader("Test-Header");
+        assertTrue(hs.isEmpty());
+
+        r.addHeader("Test-Header", "test value 1");
+        r.addHeader("Test-Header", "test value 2");
+
+        hs = r.getHeader("Test-Header");
+        assertEquals(2, hs.size());
+
+        try {
+            r.overwriteHeader(new HttpHeader("Test-Header", "does not matter"));
+            fail("should throw exception");
+        }
+        catch(IllegalArgumentException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("header \"Test-Header\" has more than one copy, cannot overwrite", msg);
+        }
+
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

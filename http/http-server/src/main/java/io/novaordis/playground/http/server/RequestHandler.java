@@ -36,7 +36,11 @@ public interface RequestHandler {
     // Public ----------------------------------------------------------------------------------------------------------
 
     /**
-     * Must not throw exceptions, but log and return appropriate 5XX HttpResponses
+     * Must not throw exceptions, but log and return appropriate 5XX HttpResponses.
+     *
+     * Must establish the response reference to request.
+     *
+     * @see HttpResponse#setRequest(HttpRequest)
      */
     HttpResponse processRequest(HttpRequest request);
 
