@@ -313,6 +313,44 @@ public abstract class MessageTest {
         }
     }
 
+    // removeHeader() --------------------------------------------------------------------------------------------------
+
+    @Test
+    public void removeHeader_NullName() throws Exception {
+
+        MessageImpl m = (MessageImpl) getMessageImplementationToTest();
+
+        assertTrue(m.getHeaders().isEmpty());
+
+        m.addHeader("Test", "test");
+
+        m.removeHeader(null);
+
+        assertEquals(1, m.getHeader("Test").size());
+    }
+
+    @Test
+    public void removeHeader_CaseInsensitive() throws Exception {
+
+        MessageImpl m = (MessageImpl) getMessageImplementationToTest();
+
+        assertTrue(m.getHeaders().isEmpty());
+
+        m.addHeader("Test", "value 1");
+        m.addHeader("A", "value A");
+        m.addHeader("test", "value 2");
+        m.addHeader("B", "value B");
+        m.addHeader("Test", "value 3");
+
+        assertEquals(5, m.getHeaders().size());
+
+        m.removeHeader("Test");
+
+        assertEquals(2, m.getHeaders().size());
+        assertEquals(1, m.getHeader("A").size());
+        assertEquals(1, m.getHeader("B").size());
+    }
+
     //
     // Body management -------------------------------------------------------------------------------------------------
     //
@@ -356,12 +394,8 @@ public abstract class MessageTest {
         byte[] content = m.getBody();
 
         assertNull(content);
-
         List<HttpHeader> hs  = m.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-
-        assertEquals("0", h.getFieldBody());
+        assertTrue(hs.isEmpty());
     }
 
     @Test
@@ -408,6 +442,93 @@ public abstract class MessageTest {
         assertEquals("2", h.getFieldBody());
     }
 
+    // getContentLength() ----------------------------------------------------------------------------------------------
+
+    @Test
+    public void getContentLength_Null() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        assertNull(m.getBody());
+        assertNull(m.getContentLength());
+    }
+
+    @Test
+    public void getContentLength_NullBody_SettingExternally() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        assertNull(m.getBody());
+        assertNull(m.getContentLength());
+
+        m.addHeader(HttpEntityHeader.CONTENT_LENGTH, "10");
+
+        assertNull(m.getBody());
+        assertEquals(10, m.getContentLength().intValue());
+    }
+
+    @Test
+    public void getContentLength_InstallBody() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        assertNull(m.getBody());
+        assertNull(m.getContentLength());
+
+        m.setBody("test".getBytes());
+
+        assertEquals("test", new String(m.getBody()));
+        assertEquals(4, m.getContentLength().intValue());
+    }
+
+    @Test
+    public void getContentLength_MultipleContentLengthInstances() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        assertNull(m.getBody());
+        assertNull(m.getContentLength());
+        assertTrue(m.getHeaders().isEmpty());
+
+        m.addHeader(HttpEntityHeader.CONTENT_LENGTH, "1");
+        m.addHeader(HttpEntityHeader.CONTENT_LENGTH, "2");
+
+        try {
+
+            m.getContentLength();
+            fail("should throw exception");
+        }
+        catch(IllegalStateException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("multiple Content-Length header instances found", msg);
+        }
+    }
+
+    @Test
+    public void getContentLength_NonIntegralContentLengthValue() throws Exception {
+
+        Message m = getMessageImplementationToTest();
+
+        assertNull(m.getBody());
+        assertNull(m.getContentLength());
+        assertTrue(m.getHeaders().isEmpty());
+
+        m.addHeader(HttpEntityHeader.CONTENT_LENGTH, "A");
+
+        try {
+
+            m.getContentLength();
+            fail("should throw exception");
+        }
+        catch(IllegalStateException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("Content-Length invalid value \"A\"", msg);
+        }
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

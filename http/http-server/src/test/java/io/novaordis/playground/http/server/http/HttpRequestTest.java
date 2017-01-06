@@ -414,6 +414,12 @@ public class HttpRequestTest extends MessageTest {
     // readRequest() POST ----------------------------------------------------------------------------------------------
 
     @Test
+    public void readRequest_POST_noContentLengthHeader() throws Exception {
+
+        fail("return here");
+    }
+
+    @Test
     public void readRequest_POST() throws Exception {
 
         String requestContent =

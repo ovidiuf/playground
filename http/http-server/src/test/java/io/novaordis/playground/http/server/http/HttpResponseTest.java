@@ -28,6 +28,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -57,11 +58,7 @@ public class HttpResponseTest extends MessageTest {
         assertNull(r.getStatusCode());
 
         List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-        assertEquals(HttpEntityHeader.CONTENT_LENGTH, h.getHeaderDefinition());
-        assertEquals("0", h.getFieldBody());
-
+        assertTrue(hs.isEmpty());
         assertEquals("HTTP/1.1", r.getHttpVersion());
         assertNull(r.getRequest());
         assertNull(r.getBody());
@@ -73,14 +70,10 @@ public class HttpResponseTest extends MessageTest {
         HttpResponse r = new HttpResponse(HttpStatusCode.NOT_FOUND);
 
         assertEquals(HttpStatusCode.NOT_FOUND, r.getStatusCode());
-        assertFalse(r.getHeaders().isEmpty());
+        assertTrue(r.getHeaders().isEmpty());
 
         List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
-        assertEquals(1, hs.size());
-        HttpHeader h = hs.get(0);
-        assertEquals(HttpEntityHeader.CONTENT_LENGTH, h.getHeaderDefinition());
-        assertEquals("0", h.getFieldBody());
-
+        assertTrue(hs.isEmpty());
         assertEquals("HTTP/1.1", r.getHttpVersion());
         assertNull(r.getRequest());
         assertNull(r.getBody());
@@ -126,7 +119,6 @@ public class HttpResponseTest extends MessageTest {
 
         String expected =
                 "HTTP/1.1 200 OK\r\n" +
-                        "Content-Length: 0\r\n" +
                         "Server: NovaOrdis http-server\r\n" +
                         "Some-Random-Header: something\r\n" +
                         "\r\n";

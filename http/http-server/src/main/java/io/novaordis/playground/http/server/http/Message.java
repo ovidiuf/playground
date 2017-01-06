@@ -117,7 +117,6 @@ public interface Message {
     // Body management -------------------------------------------------------------------------------------------------
     //
 
-
     /**
      * May return null if the message has no body.
      *
@@ -136,6 +135,15 @@ public interface Message {
      */
     void setBody(byte[] content);
 
+    //
+    // Convenience -----------------------------------------------------------------------------------------------------
+    //
 
+    /**
+     * @return the value of the Content-Length header. May return null if the header is not set.
+     *
+     * @exception IllegalStateException if it finds multiple Content-Length values.
+     */
+    Integer getContentLength();
 
 }

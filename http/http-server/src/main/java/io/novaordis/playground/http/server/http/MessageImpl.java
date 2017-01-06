@@ -21,6 +21,7 @@ import io.novaordis.playground.http.server.http.header.HttpHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -131,10 +132,51 @@ class MessageImpl implements Message {
 
         this.body = b;
 
-        String lengthAsString = b == null ? "0" : Integer.toString(b.length);
-        overwriteHeader(new HttpHeader(HttpEntityHeader.CONTENT_LENGTH, lengthAsString));
+        if (b == null) {
+
+            //
+            // also remove Content-Length headers, if any
+            //
+
+            removeHeader(HttpEntityHeader.CONTENT_LENGTH.getCanonicalFieldName());
+        }
+        else {
+
+            overwriteHeader(new HttpHeader(HttpEntityHeader.CONTENT_LENGTH, Integer.toString(b.length)));
+        }
     }
 
+    @Override
+    public Integer getContentLength() {
+
+        List<HttpHeader> headers = getHeader(HttpEntityHeader.CONTENT_LENGTH);
+
+        if (headers.isEmpty()) {
+            return null;
+        }
+        else if (headers.size() > 1) {
+
+            throw new IllegalStateException("multiple Content-Length header instances found");
+        }
+
+        String s = headers.get(0).getFieldBody();
+        Integer i;
+
+        try {
+
+            i = new Integer(s);
+        }
+        catch (Exception e) {
+
+            throw new IllegalStateException("Content-Length invalid value \"" + s + "\"");
+        }
+
+        return i;
+    }
+
+    //
+    // Convenience -----------------------------------------------------------------------------------------------------
+    //
 
     // Public ----------------------------------------------------------------------------------------------------------
 
@@ -182,6 +224,26 @@ class MessageImpl implements Message {
             //
 
             headers.set(index, header);
+        }
+    }
+
+    /**
+     * Remove the existing header (or headers) if found. The name comparison is case insensitive.
+     */
+    void removeHeader(String fieldName) {
+
+        if (fieldName == null) {
+
+            return;
+        }
+
+        for(Iterator<HttpHeader> i = headers.iterator(); i.hasNext(); ) {
+
+            HttpHeader h = i.next();
+            if (fieldName.equalsIgnoreCase(h.getFieldName())) {
+
+                i.remove();
+            }
         }
     }
 

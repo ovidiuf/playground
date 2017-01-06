@@ -61,7 +61,7 @@ public class HttpRequest extends MessageImpl {
         //
 
         boolean newLine = false;
-        boolean lfExpected = false;
+        boolean lineFeedExpected = false;
 
         while(true) {
 
@@ -91,14 +91,14 @@ public class HttpRequest extends MessageImpl {
                 break;
             }
 
-            if (lfExpected) {
+            if (lineFeedExpected) {
 
                 if (i != '\n') {
 
                     throw new InvalidHttpHeaderException("missing LF");
                 }
 
-                lfExpected = false;
+                lineFeedExpected = false;
             }
 
 
@@ -110,7 +110,7 @@ public class HttpRequest extends MessageImpl {
                     // blank line encountered, but loop one more time to consume the LF on the wire
                     //
 
-                    lfExpected = true;
+                    lineFeedExpected = true;
                 }
 
                 //
@@ -146,7 +146,68 @@ public class HttpRequest extends MessageImpl {
             buffer.write(i);
         }
 
-        return new HttpRequest(buffer.toByteArray());
+        //
+        // we identified the blank line - we can build the message headers and figure out whether there is follow-up
+        // content, based on Content-Length header value
+        //
+
+        HttpRequest request = new HttpRequest(buffer.toByteArray());
+        Integer contentLength = request.getContentLength();
+        HttpMethod method = request.getMethod();
+
+        if (contentLength == null) {
+
+            //
+            // no Content-Length, we should be OK if this is a GET, implicitly there is no body
+            //
+
+            if (HttpMethod.GET.equals(method)) {
+
+                //
+                // we're fine, we're done with the request
+                //
+                return request;
+            }
+            else if (HttpMethod.POST.equals(method)) {
+
+                throw new InvalidHttpRequestException("POST request with no Content-Length");
+            }
+            else {
+
+                throw new RuntimeException(
+                        "NOT YET IMPLEMENTED: We don't know how to handle " + method + " without Content-Length");
+            }
+        }
+        else {
+
+            //
+            // must read contentLength bytes
+            //
+
+            //
+            // TODO timeout ?
+            //
+
+            int index = 0;
+            byte[] body = new byte[contentLength];
+            while(index < body.length) {
+
+                int b = connection.read();
+
+                if (b == -1) {
+
+                    throw new RuntimeException("NOT YET IMPLEMENTED");
+                }
+                else {
+
+                    body[index ++] = (byte)b;
+                }
+            }
+
+            request.setBody(body);
+        }
+
+        return  request;
     }
 
     public static String showRequest(HttpRequest r) {
