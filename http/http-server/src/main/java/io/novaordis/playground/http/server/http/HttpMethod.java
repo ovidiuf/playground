@@ -18,37 +18,12 @@ package io.novaordis.playground.http.server.http;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/5/17
  */
-public enum HttpStatusCode {
+public enum HttpMethod {
 
-    OK(200, "OK"),
-    BAD_REQUEST(400, "Bad Request"),
-    NOT_FOUND(404, "Not Found");
-
-    private int statusCode;
-    private String reasonPhrase;
-
-    HttpStatusCode(int statusCode, String reasonPhrase) {
-
-        this.statusCode = statusCode;
-        this.reasonPhrase = reasonPhrase;
-    }
-
-    /**
-     * @return the numeric status code
-     */
-    public int getStatusCode() {
-
-        return statusCode;
-    }
-
-    /**
-     * @return the reason phrase, as it is supposed to be used in the status line.
-     */
-    public String getReasonPhrase() {
-
-        return reasonPhrase;
-    }
-
+    GET,
+    POST,
+    PUT,
+    DELETE,
 }

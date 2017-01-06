@@ -20,7 +20,7 @@ package io.novaordis.playground.http.server.http;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class InvalidHeaderException extends Exception {
+public class InvalidHttpRequestException extends Exception {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -31,6 +31,16 @@ public class InvalidHeaderException extends Exception {
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public InvalidHttpRequestException() {
+
+        super();
+    }
+
+    public InvalidHttpRequestException(String s) {
+
+        super(s);
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

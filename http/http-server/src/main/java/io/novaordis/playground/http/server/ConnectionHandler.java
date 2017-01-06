@@ -19,12 +19,12 @@ package io.novaordis.playground.http.server;
 import io.novaordis.playground.http.server.connection.Connection;
 import io.novaordis.playground.http.server.connection.ConnectionException;
 import io.novaordis.playground.http.server.http.HttpRequest;
+import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
-import io.novaordis.playground.http.server.http.InvalidHeaderException;
+import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -32,7 +32,12 @@ import java.util.concurrent.CountDownLatch;
  * and sending HTTP responses, on a dedicated thread. This way, each connection is handled by one, dedicated thread.
  * If connections are created and destroyed for each request, then each request such generated gets its own thread.
  *
- * The handler is responsible for closing the connection, if approriate.
+ * The connection handler's job is to turn request bytes into a HttpRequest instance and turn a HttpResponse into bytes
+ * and send it back over the connection. It does not handle the request. That is the RequestHandler's job.
+ *
+ * The handler is responsible for closing the connection, if appropriate.
+ *
+ * @see RequestHandler
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
@@ -47,12 +52,14 @@ public class ConnectionHandler {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Connection connection;
-    private Server server;
-    private CountDownLatch startHandlerLatch;
-    private volatile boolean active;
+    private final Server server;
+    private final Connection connection;
+    private final CountDownLatch startHandlerLatch;
+    private final RequestHandler requestHandler;
 
     private boolean closeConnectionAfterResponse;
+
+    private volatile boolean active;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -63,7 +70,8 @@ public class ConnectionHandler {
 
         this.server = server;
         this.connection = connection;
-        this.closeConnectionAfterResponse = true;
+        this.closeConnectionAfterResponse = false;
+        this.requestHandler = new RequestHandler();
 
         this.startHandlerLatch = new CountDownLatch(1);
 
@@ -126,101 +134,17 @@ public class ConnectionHandler {
 
     // Package protected -----------------------------------------------------------------------------------------------
 
-    // Protected -------------------------------------------------------------------------------------------------------
-
-    // Private ---------------------------------------------------------------------------------------------------------
-
     /**
-     * Processes a request response.
-     *
-     * @throws ConnectionException on connection troubles
-     */
-    private void processNextRequestResponsePair() throws ConnectionException {
-
-        try {
-
-            HttpRequest request = readRequest();
-
-            log.info(request.toString());
-
-            sendResponse(HttpStatusCode.OK);
-
-            if (Server.EXIT_URL_PATH.equals(request.getPath())) {
-
-                log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
-
-                active = false;
-                server.exit();
-            }
-        }
-        catch (InvalidHeaderException e) {
-
-            //
-            // failed because we were not able to parse the data came on the wire, do not close connection,
-            // most likely something is wrong with this request only.
-            //
-
-            log.error("failed to parse HTTP request", e);
-            sendResponse(HttpStatusCode.BAD_REQUEST);
-        }
-    }
-
-    /**
-     * Never returns null.
+     * The method does not close connection voluntarily, it lets the client enforce its own policy.
      *
      * @exception ConnectionException  if a connection-related failure occurs. ConnectionException are only used to
      * indicate Connection bad quality or instability. Once a ConnectionException has been triggered by a Connection
      * instance, the instance should be generally considered unreliable and closed as soon as possible.
-     *
-     * @exception InvalidHeaderException if we fail to parse the data arrived on the wire into a HttpRequest.
      */
-    private HttpRequest readRequest() throws ConnectionException, InvalidHeaderException {
+    void sendResponse(HttpResponse response) throws ConnectionException {
 
-        ByteArrayOutputStream header = new ByteArrayOutputStream();
-
-        //
-        // read up to the blank line
-        //
-
-        boolean cr = false;
-
-        while(true) {
-
-            int i = connection.read();
-
-            if (i == -1) {
-
-                //
-                // EOS encountered before fully reading the header
-                //
-
-                throw new RuntimeException("NOT YET IMPLEMENTED: EOS encountered before fully reading the header");
-            }
-
-            if ('\r' == (char)i) {
-
-                cr = true;
-                continue;
-            }
-
-            if ('\n' == (char)i) {
-
-                if (cr) {
-
-                    //
-                    // blank line encountered
-                    //
-
-                    break;
-                }
-
-                throw new RuntimeException("NOT YET IMPLEMENTED: LF received without a preceding CR");
-            }
-
-            header.write(i);
-        }
-
-        return new HttpRequest(header.toByteArray());
+        HttpStatusCode code = response.getStatusCode();
+        sendResponse(code);
     }
 
     /**
@@ -230,13 +154,15 @@ public class ConnectionHandler {
      * indicate Connection bad quality or instability. Once a ConnectionException has been triggered by a Connection
      * instance, the instance should be generally considered unreliable and closed as soon as possible.
      */
-    private void sendResponse(HttpStatusCode statusCode) throws ConnectionException {
+    void sendResponse(HttpStatusCode statusCode) throws ConnectionException {
 
         String statusLine = "HTTP/1.1 " + statusCode.getStatusCode() + " " + statusCode.getReasonPhrase();
         String response = statusLine + "\r\n" + "\r\n";
 
         connection.write(response.getBytes());
         connection.flush();
+
+        log.debug("response wrote on " + connection);
 
         //
         // close or do not close the connection depending on the configuration.
@@ -252,6 +178,49 @@ public class ConnectionHandler {
         }
     }
 
+    // Protected -------------------------------------------------------------------------------------------------------
+
+    // Private ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Processes a request response.
+     *
+     * @throws ConnectionException on connection troubles
+     */
+    private void processNextRequestResponsePair() throws ConnectionException {
+
+        try {
+
+            HttpRequest request = HttpRequest.readRequest(connection);
+
+            log.info("\n" + HttpRequest.showRequest(request));
+
+            HttpResponse response = requestHandler.processRequest(request);
+
+            if (Server.EXIT_URL_PATH.equals(request.getPath())) {
+
+                log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
+
+                sendResponse(HttpStatusCode.OK);
+                active = false;
+                server.exit();
+            }
+            else {
+
+                sendResponse(response);
+            }
+        }
+        catch (InvalidHttpRequestException e) {
+
+            //
+            // failed because we were not able to parse the data came on the wire, do not close connection,
+            // most likely something is wrong with this request only.
+            //
+
+            log.error("failed to parse HTTP request", e);
+            sendResponse(HttpStatusCode.BAD_REQUEST);
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

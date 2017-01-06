@@ -59,13 +59,13 @@ public class Connection {
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
-     * Instances built only by the ConnectionManager (or other classes of this package).
+     * Instances built only by the ConnectionManager (or subclasses or other classes of this package).
      *
      * @param socket the underlying socket
      *
      * @exception java.io.IOException if we fail due to an I/O problem during the creation process.
      */
-    Connection(long id, Socket socket, ConnectionManager manager) throws IOException {
+    protected Connection(long id, Socket socket, ConnectionManager manager) throws IOException {
 
         this.id = id;
         this.manager = manager;
