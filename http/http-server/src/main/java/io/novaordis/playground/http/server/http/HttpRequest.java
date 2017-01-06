@@ -18,22 +18,24 @@ package io.novaordis.playground.http.server.http;
 
 import io.novaordis.playground.http.server.connection.Connection;
 import io.novaordis.playground.http.server.connection.ConnectionException;
+import io.novaordis.playground.http.server.http.header.HttpHeader;
+import io.novaordis.playground.http.server.http.header.InvalidHttpHeaderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class HttpRequest {
+public class HttpRequest extends HeadersImpl {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
+
+    public static final String DEFAULT_HTTP_VERSION = "HTTP/1.1";
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -129,7 +131,7 @@ public class HttpRequest {
 
         for(HttpHeader h: r.getHeaders()) {
 
-            s += h.toString() + "\n";
+            s += new String(h.toWireFormat()) + "\n";
         }
 
         return s;
@@ -142,22 +144,34 @@ public class HttpRequest {
     private String path;
     private String version;
 
-    //
-    // maintains the headers in the order they were read from the socket
-    //
-    private List<HttpHeader> headers;
-
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    /**
+     * Initializes common data structures.
+     */
+    private HttpRequest() {
+
+        super();
+    }
+
+    public HttpRequest(HttpMethod method, String path) {
+
+        this();
+        this.method = method;
+        this.path = path;
+        this.version = DEFAULT_HTTP_VERSION;
+        this.content = (method + " " + path + " " + version).getBytes();
+    }
 
     /**
      * The header content, as read from the socket. Does not include the blank line.
      *
      * @exception InvalidHttpHeaderException on faulty content that cannot be translated into a valid HTTP header
      */
-    public HttpRequest(byte[] content) throws InvalidHttpRequestException {
+    HttpRequest(byte[] content) throws InvalidHttpRequestException {
 
+        this();
         this.content = content;
-        this.headers = new ArrayList<>();
 
         int from = 0;
 
@@ -177,7 +191,7 @@ public class HttpRequest {
                 else {
 
                     HttpHeader h = HttpHeader.parseHeader(content, from, i);
-                    headers.add(h);
+                    addHeader(h);
                 }
 
                 from = i + 1;
@@ -203,34 +217,6 @@ public class HttpRequest {
     public String getHttpVersion() {
 
         return version;
-    }
-
-    /**
-     *
-     * @return the headers in the order they were read from the socket. May return an empty list, but never null.
-     * Returns the internal storage.
-     */
-    public List<HttpHeader> getHeaders() {
-
-        return headers;
-    }
-
-    /**
-     * @param fieldName the header's field name.
-     *
-     * @return Will return null if there is not such a header.
-     */
-    public HttpHeader getHeader(String fieldName) {
-
-        for(HttpHeader h: headers) {
-
-            if (h.getFieldName().equals(fieldName)) {
-
-                return h;
-            }
-        }
-
-        return null;
     }
 
     @Override

@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server.http;
+package io.novaordis.playground.http.server.http.header.entity;
+
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinitionTest;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/6/17
  */
-public class InvalidHttpHeaderException extends InvalidHttpRequestException {
+public class CONTENT_LENGTH_Test extends HttpHeaderDefinitionTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,19 +36,17 @@ public class InvalidHttpHeaderException extends InvalidHttpRequestException {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public InvalidHttpHeaderException() {
-
-        super();
-    }
-
-    public InvalidHttpHeaderException(String s) {
-
-        super(s);
-    }
+    // Tests -----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    @Override
+    protected HttpHeaderDefinition getHttpHeaderDefinitionToTest() {
+
+        return HttpEntityHeader.CONTENT_LENGTH;
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

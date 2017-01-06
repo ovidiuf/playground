@@ -14,40 +14,76 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.connection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.Socket;
 
 /**
- * The local port to listen on must be specified as the first argument.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/5/17
  */
-public class Main {
+public class MockSocket extends Socket {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private InputStream is;
+    private ByteArrayOutputStream os;
+    private boolean closed;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public MockSocket() {
+
+        this(null);
+    }
+
+    public MockSocket(String requestContent) {
+
+        this.is = requestContent == null ?
+                new ByteArrayInputStream(new byte[0]) :
+                new ByteArrayInputStream(requestContent.getBytes());
+
+        this.os = new ByteArrayOutputStream();
+    }
+
+    // Overrides -------------------------------------------------------------------------------------------------------
+
+    @Override
+    public InputStream getInputStream() {
+
+        return is;
+    }
+
+    @Override
+    public ByteArrayOutputStream getOutputStream() {
+
+        return os;
+    }
+
+    @Override
+    public void close() {
+
+        this.closed = true;
+    }
+
+    @Override
+    public boolean isClosed() {
+
+        return closed;
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    public void resetOutputStream() {
 
-        Configuration c = new Configuration(args);
-
-        ServerImpl server = new ServerImpl(c);
-
-        server.listen();
-
-        log.info("http server ready to accept connections ...");
+        this.os = new ByteArrayOutputStream();
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.http.header.general;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinitionTest;
 
 /**
- * The local port to listen on must be specified as the first argument.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/6/17
  */
-public class Main {
+public class CACHE_CONTROL_Test extends HttpHeaderDefinitionTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -39,20 +36,17 @@ public class Main {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
-
-        Configuration c = new Configuration(args);
-
-        ServerImpl server = new ServerImpl(c);
-
-        server.listen();
-
-        log.info("http server ready to accept connections ...");
-    }
+    // Tests -----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    @Override
+    protected HttpHeaderDefinition getHttpHeaderDefinitionToTest() {
+
+        return HttpGeneralHeader.CACHE_CONTROL;
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

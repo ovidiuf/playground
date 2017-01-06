@@ -16,39 +16,73 @@
 
 package io.novaordis.playground.http.server;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.File;
 
 /**
- * The local port to listen on must be specified as the first argument.
+ * Server Configuration.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/6/17
  */
-public class Main {
+public class Configuration {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private int port;
+    private File documentRoot;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public Configuration(String[] args) throws Exception {
+
+        if (args.length == 0) {
+
+            throw new Exception("the value of the port to listen on must be specified as the first argument");
+        }
+
+        String s = args[0];
+
+        try {
+
+            port = Integer.parseInt(s);
+        }
+        catch(Exception e) {
+
+            throw new Exception("\"" + s + "\" is not a valid port value");
+        }
+
+        if (args.length >= 2) {
+
+            documentRoot = new File(args[1]);
+        }
+        else {
+
+            documentRoot = new File(".");
+        }
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    /**
+     * @return the local port to listen on for HTTP connections
+     */
+    public int getPort() {
 
-        Configuration c = new Configuration(args);
-
-        ServerImpl server = new ServerImpl(c);
-
-        server.listen();
-
-        log.info("http server ready to accept connections ...");
+        return port;
     }
+
+    /**
+     * Never return null.
+     */
+    public File getDocumentRoot() {
+
+        return documentRoot;
+    }
+
 
     // Package protected -----------------------------------------------------------------------------------------------
 

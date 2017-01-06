@@ -22,6 +22,7 @@ import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
+import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,7 @@ public class ConnectionHandler {
     // Constants -------------------------------------------------------------------------------------------------------
 
     private static final Logger log = LoggerFactory.getLogger(ConnectionHandler.class);
+    private static final boolean debug = log.isDebugEnabled();
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -71,7 +73,7 @@ public class ConnectionHandler {
         this.server = server;
         this.connection = connection;
         this.closeConnectionAfterResponse = false;
-        this.requestHandler = new RequestHandler();
+        this.requestHandler = new RequestHandler(server.getDocumentRoot());
 
         this.startHandlerLatch = new CountDownLatch(1);
 
@@ -143,26 +145,28 @@ public class ConnectionHandler {
      */
     void sendResponse(HttpResponse response) throws ConnectionException {
 
-        HttpStatusCode code = response.getStatusCode();
-        sendResponse(code);
-    }
+        // this includes the empty line and the appropriately set Connection-Length
+        byte[] b = response.statusLineAndHeadersToWireFormat();
 
-    /**
-     * The method does not close connection voluntarily, it lets the client enforce its own policy.
-     *
-     * @exception ConnectionException  if a connection-related failure occurs. ConnectionException are only used to
-     * indicate Connection bad quality or instability. Once a ConnectionException has been triggered by a Connection
-     * instance, the instance should be generally considered unreliable and closed as soon as possible.
-     */
-    void sendResponse(HttpStatusCode statusCode) throws ConnectionException {
-
-        String statusLine = "HTTP/1.1 " + statusCode.getStatusCode() + " " + statusCode.getReasonPhrase();
-        String response = statusLine + "\r\n" + "\r\n";
-
-        connection.write(response.getBytes());
+        connection.write(b);
         connection.flush();
 
-        log.debug("response wrote on " + connection);
+        //
+        // write the body
+        //
+
+        byte[] body = response.getEntityBodyContent();
+
+        if (body != null && body.length > 0) {
+
+            connection.write(body);
+        }
+
+        connection.flush();
+
+        if (debug) {
+            log.debug("response wrote to " + connection + ":\n" + HttpResponse.showResponse(response));
+        }
 
         //
         // close or do not close the connection depending on the configuration.
@@ -193,15 +197,23 @@ public class ConnectionHandler {
 
             HttpRequest request = HttpRequest.readRequest(connection);
 
-            log.info("\n" + HttpRequest.showRequest(request));
+            if (debug) {
+                log.debug("\n" + HttpRequest.showRequest(request));
+            }
 
             HttpResponse response = requestHandler.processRequest(request);
 
-            if (Server.EXIT_URL_PATH.equals(request.getPath())) {
+            //
+            // request independent-headers
+            //
+
+            response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
+
+            if (ServerImpl.EXIT_URL_PATH.equals(request.getPath())) {
 
                 log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
 
-                sendResponse(HttpStatusCode.OK);
+                sendResponse(new HttpResponse(HttpStatusCode.OK));
                 active = false;
                 server.exit();
             }
@@ -216,10 +228,15 @@ public class ConnectionHandler {
             // failed because we were not able to parse the data came on the wire, do not close connection,
             // most likely something is wrong with this request only.
             //
-
+            String msg = e.getMessage();
             log.error("failed to parse HTTP request", e);
-            sendResponse(HttpStatusCode.BAD_REQUEST);
+            sendResponse(new HttpResponse(HttpStatusCode.BAD_REQUEST, msg.getBytes()));
         }
+    }
+
+    void closeConnectionAfterResponse(boolean b) {
+
+        this.closeConnectionAfterResponse = b;
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server.http;
+package io.novaordis.playground.http.server.http.header;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -63,12 +63,19 @@ public class HttpHeader {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    // may be null if the header is non-standard
+    private HttpHeaderDefinition headerDefinition;
+
+    // the original field name read from the wire
     private String fieldName;
     private String fieldBody;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
+     * Use this for non-standard headers. However it will detet the standard headers and will update the internal
+     * state accordingly.
+     *
      * @param fieldName must be non-null
      * @param fieldBody may be null
      */
@@ -81,13 +88,39 @@ public class HttpHeader {
 
         this.fieldName = fieldName;
         this.fieldBody = fieldBody;
+        this.headerDefinition = HttpHeaderDefinition.fromString(fieldName);
+    }
+
+    /**
+     * Use this for standard headers.
+     *
+     * @param headerDefinition must be non-null
+     * @param fieldBody may be null
+     *
+     */
+    public HttpHeader(HttpHeaderDefinition headerDefinition, String fieldBody) {
+
+        this(headerDefinition.getCanonicalFieldName(), fieldBody);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * @return the original name the header was defined with. For the canonical name, use
+     * getHeaderDefinition().getCanonicalFieldName().
+     */
     public String getFieldName() {
 
         return fieldName;
+    }
+
+    /**
+     * @return one of the standard enums HttpRequestHeader, HttpResponseHeader, HttpGeneralHeader or HttpEntityHeader
+     * instances.
+     */
+    public HttpHeaderDefinition getHeaderDefinition() {
+
+        return headerDefinition;
     }
 
     /**
@@ -98,10 +131,31 @@ public class HttpHeader {
         return fieldBody;
     }
 
+    /**
+     * Does not include the CRLF.
+     */
+    public byte[] toWireFormat() {
+
+        int fieldBodyLength = fieldBody == null ? 0 : fieldBody.length();
+
+        int length = fieldName.length() + fieldBodyLength + 2;
+        byte[] bytes = new byte[length];
+        System.arraycopy(fieldName.getBytes(), 0, bytes, 0, fieldName.length());
+        bytes[fieldName.length()] = ':';
+        bytes[fieldName.length() + 1] = ' ';
+
+        if (fieldBody != null) {
+
+            System.arraycopy(fieldBody.getBytes(), 0, bytes, fieldName.length() + 2, fieldBodyLength);
+        }
+
+        return bytes;
+    }
+
     @Override
     public String toString() {
 
-        return fieldName + (fieldBody == null ? "" : ":" + fieldBody);
+        return fieldName + (fieldBody == null ? "" : ": " + fieldBody);
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

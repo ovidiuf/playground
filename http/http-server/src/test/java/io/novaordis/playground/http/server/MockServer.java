@@ -16,20 +16,17 @@
 
 package io.novaordis.playground.http.server;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.novaordis.utilities.NotYetImplementedException;
+
+import java.io.File;
 
 /**
- * The local port to listen on must be specified as the first argument.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/6/17
  */
-public class Main {
+public class MockServer implements Server {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -37,18 +34,26 @@ public class Main {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    // Public ----------------------------------------------------------------------------------------------------------
+    // Server implementation  ------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    @Override
+    public File getDocumentRoot() {
 
-        Configuration c = new Configuration(args);
-
-        ServerImpl server = new ServerImpl(c);
-
-        server.listen();
-
-        log.info("http server ready to accept connections ...");
+        return new File(".");
     }
+
+    @Override
+    public String getServerType() {
+
+        return "Mock";
+    }
+
+    @Override
+    public void exit() {
+        throw new NotYetImplementedException("exit() NOT YET IMPLEMENTED");
+    }
+
+    // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 

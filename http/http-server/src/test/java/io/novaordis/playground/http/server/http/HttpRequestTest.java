@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package io.novaordis.http.server.http;
+package io.novaordis.playground.http.server.http;
 
-import io.novaordis.http.server.connection.MockConnection;
-import io.novaordis.playground.http.server.http.HttpHeader;
-import io.novaordis.playground.http.server.http.HttpMethod;
-import io.novaordis.playground.http.server.http.HttpRequest;
-import io.novaordis.playground.http.server.http.InvalidHttpMethodException;
-import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
+import io.novaordis.playground.http.server.connection.MockConnection;
+import io.novaordis.playground.http.server.http.header.HttpHeader;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +31,7 @@ import static org.junit.Assert.fail;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
-public class HttpRequestTest {
+public class HttpRequestTest extends HeadersTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -133,10 +129,11 @@ public class HttpRequestTest {
 
         assertEquals(1, headers.size());
 
-        HttpHeader h = r.getHeader("Something");
+        headers = r.getHeader("Something");
+        assertEquals(1, headers.size());
 
-        assertEquals("Something", h.getFieldName());
-        assertEquals("SomethingElse", h.getFieldBody());
+        assertEquals("Something", headers.get(0).getFieldName());
+        assertEquals("SomethingElse", headers.get(0).getFieldBody());
     }
 
     @Test
@@ -163,10 +160,12 @@ public class HttpRequestTest {
 
         assertEquals(7, headers.size());
 
-        HttpHeader h = r.getHeader("Connection");
+        headers = r.getHeader("Connection");
 
-        assertEquals("Connection", h.getFieldName());
-        assertEquals("keep-alive", h.getFieldBody());
+        assertEquals(1, headers.size());
+
+        assertEquals("Connection", headers.get(0).getFieldName());
+        assertEquals("keep-alive", headers.get(0).getFieldBody());
     }
 
     // readRequest() ---------------------------------------------------------------------------------------------------
@@ -269,10 +268,11 @@ public class HttpRequestTest {
 
         assertEquals(7, headers.size());
 
-        HttpHeader h = r.getHeader("Connection");
+        headers = r.getHeader("Connection");
+        assertEquals(1, headers.size());
 
-        assertEquals("Connection", h.getFieldName());
-        assertEquals("keep-alive", h.getFieldBody());
+        assertEquals("Connection", headers.get(0).getFieldName());
+        assertEquals("keep-alive", headers.get(0).getFieldBody());
     }
 
     @Test
@@ -300,6 +300,12 @@ public class HttpRequestTest {
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    @Override
+    protected HttpRequest getHeadersImplementationToTest() {
+
+        return new HttpRequest(HttpMethod.GET, "/");
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

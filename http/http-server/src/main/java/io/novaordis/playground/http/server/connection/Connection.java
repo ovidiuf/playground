@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -53,8 +52,6 @@ public class Connection {
     private ConnectionManager manager;
 
     private Socket socket;
-    private InputStream is;
-    private OutputStream os;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -70,8 +67,6 @@ public class Connection {
         this.id = id;
         this.manager = manager;
         this.socket = socket;
-        this.is = socket.getInputStream();
-        this.os = socket.getOutputStream();
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -97,7 +92,7 @@ public class Connection {
 
         try {
 
-            return is.read();
+            return socket.getInputStream().read();
         }
         catch(IOException e) {
 
@@ -120,7 +115,7 @@ public class Connection {
 
         try {
 
-            os.write(b);
+            socket.getOutputStream().write(b);
         }
         catch(IOException e) {
 
@@ -142,7 +137,7 @@ public class Connection {
 
         try {
 
-            os.flush();
+            socket.getOutputStream().flush();
         }
         catch(IOException e) {
 
@@ -172,15 +167,18 @@ public class Connection {
             log.error("failed to close the underlying socket for " + this, e);
         }
 
-        os = null;
-        is = null;
-        socket = null;
-
         //
         // remove it from the connection manager anyway
         //
+        if (manager != null) {
 
-        manager.remove(this);
+            manager.remove(this);
+        }
+    }
+
+    public boolean isClosed() {
+
+        return socket.isClosed();
     }
 
     @Override
@@ -192,6 +190,11 @@ public class Connection {
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    protected Socket getSocket() {
+
+        return socket;
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

@@ -45,7 +45,19 @@ public class RequestHandler {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private File documentRoot;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public RequestHandler(File documentRoot) {
+
+        if (documentRoot == null) {
+
+            throw new IllegalArgumentException("null document root");
+        }
+
+        this.documentRoot = documentRoot;
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
@@ -58,7 +70,7 @@ public class RequestHandler {
             path = path.substring(1);
         }
 
-        File file = new File(path);
+        File file = new File(documentRoot, path);
 
         if (!file.isFile() || !file.canRead()) {
 
@@ -85,7 +97,7 @@ public class RequestHandler {
                 baos.write(buffer, 0, r);
             }
 
-            response.setEntityBodyContent(baos.toByteArray());
+            response.setEntityBodyContent(baos.toByteArray()); // this will also set Content-Length
             response.setStatusCode(HttpStatusCode.OK);
             return response;
         }

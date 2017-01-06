@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package io.novaordis.http.server.connection;
+package io.novaordis.playground.http.server.http.header.response;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinitionTest;
+import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/5/17
+ * @since 1/6/17
  */
-public class MockSocket extends Socket {
+public class SERVER_Test extends HttpHeaderDefinitionTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -34,44 +32,21 @@ public class MockSocket extends Socket {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private InputStream is;
-    private OutputStream os;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public MockSocket() {
-
-        this(null);
-    }
-
-    public MockSocket(String requestContent) {
-
-        this.is = requestContent == null ?
-                new ByteArrayInputStream(new byte[0]) :
-                new ByteArrayInputStream(requestContent.getBytes());
-
-        this.os = new ByteArrayOutputStream();
-    }
-
-    // Overrides -------------------------------------------------------------------------------------------------------
-
-    @Override
-    public InputStream getInputStream() {
-
-        return is;
-    }
-
-    @Override
-    public OutputStream getOutputStream() {
-
-        return os;
-    }
-
     // Public ----------------------------------------------------------------------------------------------------------
+
+    // Tests -----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    @Override
+    protected HttpHeaderDefinition getHttpHeaderDefinitionToTest() {
+
+        return HttpResponseHeader.SERVER;
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

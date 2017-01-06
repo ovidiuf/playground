@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package io.novaordis.http.server.http;
+package io.novaordis.playground.http.server.http.header;
 
-import io.novaordis.playground.http.server.http.HttpHeader;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -43,6 +43,81 @@ public class HttpHeaderTest {
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Tests -----------------------------------------------------------------------------------------------------------
+
+    // constructor -----------------------------------------------------------------------------------------------------
+
+    @Test
+    public void constructor_NullFieldName() throws Exception {
+
+        try {
+
+            new HttpHeader((String)null, "something");
+            fail("should throw exception");
+        }
+        catch(IllegalArgumentException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("null field name", msg);
+        }
+    }
+
+    @Test
+    public void constructor_NullHeaderDefinition() throws Exception {
+
+        try {
+
+            new HttpHeader((HttpGeneralHeader)null, "something");
+            fail("should throw exception");
+        }
+        catch(NullPointerException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+        }
+    }
+
+    @Test
+    public void constructor_StandardHeader_HeaderDefinition() throws Exception {
+
+        HttpHeader h = new HttpHeader(HttpGeneralHeader.VIA, "HTTP/1.1 host1:80");
+
+        assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
+        assertEquals("Via", h.getFieldName());
+        assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
+    }
+
+    @Test
+    public void constructor_StandardHeader_canonicalName() throws Exception {
+
+        HttpHeader h = new HttpHeader("Via", "HTTP/1.1 host1:80");
+
+        assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
+        assertEquals("Via", h.getFieldName());
+        assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
+    }
+
+    @Test
+    public void constructor_StandardHeader_nonCanonicalName() throws Exception {
+
+        HttpHeader h = new HttpHeader("via", "HTTP/1.1 host1:80");
+
+        assertEquals(HttpGeneralHeader.VIA, h.getHeaderDefinition());
+        assertEquals("via", h.getFieldName());
+        assertEquals("HTTP/1.1 host1:80", h.getFieldBody());
+    }
+
+    @Test
+    public void constructor_NonStandardHeader() throws Exception {
+
+        HttpHeader h = new HttpHeader("Some-Non-Standard-Header", "some value");
+
+        assertNull(h.getHeaderDefinition());
+        assertEquals("Some-Non-Standard-Header", h.getFieldName());
+        assertEquals("some value", h.getFieldBody());
+    }
+
+    // parseHeader() ---------------------------------------------------------------------------------------------------
 
     @Test
     public void parseHeader_BeyondBoundary() throws Exception {
@@ -124,6 +199,30 @@ public class HttpHeaderTest {
 
         assertEquals("A", h.getFieldName());
         assertEquals("B", h.getFieldBody());
+    }
+
+    // toWireFormat() --------------------------------------------------------------------------------------------------
+
+    @Test
+    public void toWireFormat() throws Exception {
+
+        HttpHeader h = new HttpHeader("Some-Field-Name", "some value");
+
+        byte[] b = h.toWireFormat();
+
+        String expected = "Some-Field-Name: some value";
+        assertEquals(expected, new String(b));
+    }
+
+    @Test
+    public void toWireFormat_NullBody() throws Exception {
+
+        HttpHeader h = new HttpHeader("Some-Field-Name", null);
+
+        byte[] b = h.toWireFormat();
+
+        String expected = "Some-Field-Name: ";
+        assertEquals(expected, new String(b));
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

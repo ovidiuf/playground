@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package io.novaordis.http.server.connection;
+package io.novaordis.playground.http.server.http.header.general;
 
-import io.novaordis.playground.http.server.connection.Connection;
-
-import java.io.IOException;
+import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinition;
+import io.novaordis.playground.http.server.http.header.HttpHeaderDefinitionTest;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/5/17
+ * @since 1/6/17
  */
-public class MockConnection extends Connection {
+public class VIA_Test extends HttpHeaderDefinitionTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -34,21 +34,19 @@ public class MockConnection extends Connection {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public MockConnection(long id) throws IOException {
-
-        super(id, new MockSocket(), null);
-    }
-
-    public MockConnection(long id, String requestContent) throws IOException {
-
-        super(id, new MockSocket(requestContent), null);
-    }
-
     // Public ----------------------------------------------------------------------------------------------------------
+
+    // Tests -----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    @Override
+    protected HttpHeaderDefinition getHttpHeaderDefinitionToTest() {
+
+        return HttpGeneralHeader.VIA;
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

@@ -16,231 +16,31 @@
 
 package io.novaordis.playground.http.server;
 
-
-import io.novaordis.playground.http.server.connection.Connection;
-import io.novaordis.playground.http.server.connection.ConnectionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ServerSocketFactory;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.io.File;
 
 /**
- * The top level server super-structure. This instance is responsible with the management of the main acceptor
- * thread, which should accept connections and hand them out as quickly as possible to other threads for processing.
- *
- * The server starts to listen as soon as the listen() method is invoked: the method releases the main acceptor thread,
- * which starts accepting HTTP connections. The acceptor thread is a non-daemon thread, so it will keep the JVM up even
- * if the thread that started the server (presumably main) exists.
- *
- * The server can be shut down by invoking a shutdown URL (usually http://<host>:<port>/exit). The actual exit URL path
- * is declared as EXIT_URL_PATH.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/6/17
  */
-public class Server {
+public interface Server {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Server.class);
-
-    public static final int DEFAULT_BACKLOG = 10;
-
-    public static final String EXIT_URL_PATH = "/exit";
-
     // Static ----------------------------------------------------------------------------------------------------------
-
-    // Attributes ------------------------------------------------------------------------------------------------------
-
-    private int port;
-    private int backlog;
-    private ServerSocket serverSocket;
-    private CountDownLatch listenLatch;
-    private volatile boolean listening;
-
-    private ConnectionManager connectionManager;
-
-    private AtomicLong nextRequestId;
-
-    // Constructors ----------------------------------------------------------------------------------------------------
-
-    /**
-     * Binds the server socket and performs all required steps to ready itself, short of actual accepting (listening).
-     *
-     * @param port the local port to listen on for HTTP connections
-     *
-     * @exception IOException on any problem related to server socket creation or binding.
-     */
-    public Server(int port) throws IOException, InterruptedException {
-
-        this.port = port;
-        this.backlog = DEFAULT_BACKLOG;
-
-        SocketAddress endpoint = new InetSocketAddress(port);
-        this.serverSocket = ServerSocketFactory.getDefault().createServerSocket();
-        this.serverSocket.bind(endpoint, backlog);
-
-        this.nextRequestId = new AtomicLong(0);
-
-        listenLatch = new CountDownLatch(1);
-
-        this.connectionManager = new ConnectionManager();
-
-        String acceptorThreadName = "HTTP Server " + port + " Acceptor Thread";
-
-        Thread acceptorThread = new Thread(() -> {
-
-            //
-            // wait for the listen() method to be called to actually start listening. If this thread is forcibly
-            // interrupted while waiting on latch, log the error and abort
-            //
-            try {
-
-                listenLatch.await();
-                listening = true;
-            }
-            catch(InterruptedException e) {
-
-                log.error(Thread.currentThread().getName() + " interrupted before it started listening, aborting ...");
-                return;
-            }
-
-            while(listening) {
-
-                try {
-
-                    Socket s = serverSocket.accept();
-
-                    log.debug("new connection accepted");
-
-                    if (!listening) {
-
-                        //
-                        // ignore anything that came after the listening flag was flipped
-                        //
-
-                        log.debug("http server not listening anymore, exiting ...");
-                        return;
-                    }
-
-                    //
-                    // build the connection that manages/monitors the socket, by delegating the build job to the
-                    // connection manager
-                    //
-
-                    Connection c = connectionManager.buildConnection(s);
-
-                    //
-                    // build the connection handler, essentially a specialized thread with logic to process
-                    // requests arriving on that connection and generate responses ...
-                    //
-
-                    ConnectionHandler ch = new ConnectionHandler(this, c);
-
-                    //
-                    // ... and initiate the request processing sequence, using the handler's own thread
-                    //
-
-                    ch.handleRequests();
-                }
-                catch (IOException e) {
-
-                    log.error("server socket accept failed", e);
-                }
-            }
-
-
-        }, acceptorThreadName);
-        acceptorThread.setDaemon(false);
-        acceptorThread.start();
-
-        log.info("http server bound to " + port);
-    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * The method releases the main acceptor thread, which starts listening (accepting) for HTTP connections. The
-     * acceptor thread is a non-daemon thread, so it will keep the JVM up even if the thread that started the server
-     * (presumably main) exists.
-     */
-    public void listen() {
-
-        listenLatch.countDown();
-    }
-
-    @SuppressWarnings("unused")
-    public int getBacklog() {
-
-        return backlog;
-    }
+    File getDocumentRoot();
 
     /**
-     * Thread safe
-     * @return next request ID
+     * The content of the Server response header, to be returned to client.
      */
-    public long getNextRequestId() {
-
-        return nextRequestId.getAndIncrement();
-    }
-
-    @Override
-    public String toString() {
-
-        return "http server " + port;
-    }
-
-    // Package protected -----------------------------------------------------------------------------------------------
+    String getServerType();
 
     /**
      * This method should be used by the request processing threads to message the server instance that they got the
      * exit request.
      */
-    void exit() {
-
-        log.debug("http server requested to exit");
-
-        listening = false;
-
-        //
-        // register a daemon timer that will open a connection to the server socket after a while, to un-block it in
-        // case it managed to get blocked in accept() before the flag flipped. It is important to declare the timer
-        // a daemon, because otherwise it'll hang the JVM
-        //
-
-        new Timer(true).schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                try {
-
-                    log.debug("shutdown task running ...");
-                    Socket s = new Socket();
-                    s.connect(serverSocket.getLocalSocketAddress());
-                    s.close();
-                }
-                catch(Exception e) {
-
-                    log.error("failed to operate the shutdown socket", e);
-                }
-            }
-        }, 100L);
-    }
-
-    // Protected -------------------------------------------------------------------------------------------------------
-
-    // Private ---------------------------------------------------------------------------------------------------------
-
-    // Inner classes ---------------------------------------------------------------------------------------------------
+    void exit();
 
 }

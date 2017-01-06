@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.http.header;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
- * The local port to listen on must be specified as the first argument.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/6/17
  */
-public class Main {
+public abstract class HttpHeaderDefinitionTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -39,20 +37,30 @@ public class Main {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void fromString_Null() throws Exception {
 
-        Configuration c = new Configuration(args);
-
-        ServerImpl server = new ServerImpl(c);
-
-        server.listen();
-
-        log.info("http server ready to accept connections ...");
+        assertNull(HttpHeaderDefinition.fromString(null));
     }
+
+    @Test
+    public void testCanonicalFieldNameCaseInsensitivity() throws Exception {
+
+        HttpHeaderDefinition d = getHttpHeaderDefinitionToTest();
+        String s = d.getCanonicalFieldName();
+
+        String lcs = s.toLowerCase();
+        HttpHeaderDefinition d2 = HttpHeaderDefinition.fromString(lcs);
+        assertEquals(d, d2);
+    }
+
+    // Tests -----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    protected abstract HttpHeaderDefinition getHttpHeaderDefinitionToTest();
 
     // Private ---------------------------------------------------------------------------------------------------------
 
