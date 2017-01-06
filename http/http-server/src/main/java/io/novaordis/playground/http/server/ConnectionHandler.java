@@ -166,12 +166,6 @@ public class ConnectionHandler implements Runnable {
 
             HttpResponse response = requestHandler.processRequest(request);
 
-            //
-            // request independent-headers
-            //
-
-            response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
-
             if (ServerImpl.EXIT_URL_PATH.equals(request.getPath())) {
 
                 log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
@@ -202,6 +196,8 @@ public class ConnectionHandler implements Runnable {
     }
 
     /**
+     * This is the method that actually writes the response on the wire.
+     *
      * The method does not close connection voluntarily, it lets the client enforce its own policy.
      *
      * @exception ConnectionException  if a connection-related failure occurs. ConnectionException are only used to
@@ -209,6 +205,20 @@ public class ConnectionHandler implements Runnable {
      * instance, the instance should be generally considered unreliable and closed as soon as possible.
      */
     void sendResponse(HttpResponse response) throws ConnectionException {
+
+
+        //
+        // TODO
+        //
+
+//        //
+//        // request independent-headers
+//        //
+//
+//        response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
+
+
+
 
         // this includes the empty line and the appropriately set Connection-Length
         byte[] b = response.statusLineAndHeadersToWireFormat();

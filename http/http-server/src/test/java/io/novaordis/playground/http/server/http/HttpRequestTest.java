@@ -495,15 +495,17 @@ public class HttpRequestTest extends MessageTest {
                 "gzip, deflate",
                 r.getHeader(HttpRequestHeader.ACCEPT_ENCODING).get(0).getFieldBody());
 
-        int contentLength = Integer.parseInt(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).get(0).getFieldBody());
+        int contentLength = r.getContentLength();
 
         assertEquals(24, contentLength);
 
-//        byte[] body = r.getEntityBody();
-//
-//        assertEquals(contentLength, body.length);
-//
-//        assertEquals("fname=Mickey&lname=Mouse", new String(body));
+        byte[] body = r.getBody();
+
+        assertNotNull(body);
+
+        assertEquals(contentLength, body.length);
+
+        assertEquals("fname=Mickey&lname=Mouse", new String(body));
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

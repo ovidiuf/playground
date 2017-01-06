@@ -19,6 +19,8 @@ package io.novaordis.playground.http.server;
 import io.novaordis.playground.http.server.connection.MockConnection;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -230,7 +232,6 @@ public class ConnectionHandlerTest {
         assertTrue(moreRequests);
     }
 
-
     // sendResponse() --------------------------------------------------------------------------------------------------
 
     @Test
@@ -315,6 +316,36 @@ public class ConnectionHandlerTest {
         assertEquals(expectedBody, new String(body));
 
         assertFalse(mc.isClosed());
+    }
+
+
+
+    //
+    // -----------------------------------------------------------------------------------------------------------------
+    //
+
+    @Test
+    public void toRelocate_TODO() throws Exception {
+
+        MockConnection mc = new MockConnection(0);
+        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+
+        HttpResponse r = new HttpResponse();
+
+        r.setStatusCode(HttpStatusCode.BAD_REQUEST);
+
+        assertTrue(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).isEmpty());
+        assertTrue(r.getHeader(HttpResponseHeader.SERVER).isEmpty());
+
+        h.sendResponse(r);
+
+        //
+        // we insure that before sending the request has been prepared for sending (SERVER, CONTENT_LENTH)
+        //
+
+        assertFalse(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).isEmpty());
+        assertFalse(r.getHeader(HttpResponseHeader.SERVER).isEmpty());
+
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
