@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -109,6 +111,21 @@ public class HttpRequestTest extends HeadersTest {
             String msg = e.getMessage();
             log.info(msg);
             assertEquals("unknown HTTP method: \"blah\"", msg);
+        }
+    }
+
+    @Test
+    public void constructor_CommunicationCutShort() throws Exception {
+
+        try {
+            new HttpRequest("\n".getBytes());
+            fail("should throw exception");
+        }
+        catch(InvalidHttpRequestException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("malformed request", msg);
         }
     }
 
@@ -296,6 +313,35 @@ public class HttpRequestTest extends HeadersTest {
 
         fail("Return here");
     }
+
+    @Test
+    public void readRequest_connectionClosedAbruptlyInMidstOfReadingARequest() throws Exception {
+
+        MockConnection mc = new MockConnection(0, "\n");
+
+        try {
+            HttpRequest.readRequest(mc);
+            fail("should throw exception");
+        }
+        catch(InvalidHttpRequestException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("malformed request", msg);
+        }
+    }
+
+    @Test
+    public void readRequest_connectionClosed() throws Exception {
+
+        MockConnection mc = new MockConnection(0);
+        mc.close();
+        assertTrue(mc.isClosed());
+
+        HttpRequest request = HttpRequest.readRequest(mc);
+        assertNull(request);
+    }
+
 
     // Package protected -----------------------------------------------------------------------------------------------
 

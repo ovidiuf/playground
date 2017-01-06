@@ -40,7 +40,11 @@ public class HttpRequest extends HeadersImpl {
     // Static ----------------------------------------------------------------------------------------------------------
 
     /**
-     * Read a request from the current position in the given connection. Never returns null.
+     * Read a request from the current position in the given connection.
+     *
+     * @return a valid request, or returns null if we find the socket's input stream closed. This does not necessarily
+     * mean the connection is closed, but once we detect this condition, the upper layer should close it and discard
+     * it.
      *
      * @exception ConnectionException  if a connection-related failure occurs. ConnectionException are only used to
      * indicate Connection bad quality or instability. Once a ConnectionException has been triggered by a Connection
@@ -67,11 +71,20 @@ public class HttpRequest extends HeadersImpl {
             if (i == -1) {
 
                 //
+                // we found the input stream closed on the first read, return null
+                //
+
+                if (header.size() == 0) {
+
+                    return null;
+                }
+
+                //
                 // input stream closed, this is an interesting situation as it should not happen, but process it
                 // nonetheless, build the request and let the response logic deal with it
                 //
 
-                log.warn("connection closed before encountering a blank line");
+                log.warn("connection closed while reading a request");
 
                 break;
             }
@@ -267,6 +280,10 @@ public class HttpRequest extends HeadersImpl {
         }
 
         if (path == null) {
+
+            if (pathIndex == -1) {
+                throw new InvalidHttpRequestException("malformed request");
+            }
 
             path = new String(content, pathIndex, content.length - pathIndex);
         }

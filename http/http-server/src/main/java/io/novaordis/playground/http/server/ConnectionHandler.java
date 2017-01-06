@@ -100,7 +100,7 @@ public class ConnectionHandler {
 
                 try {
 
-                    processNextRequestResponsePair();
+                    processRequestResponsePair();
                 }
                 catch(ConnectionException e) {
 
@@ -108,7 +108,12 @@ public class ConnectionHandler {
                     // this is where we handle connection problems and close the connection
                     //
 
-                    log.error("connection failure", e);
+                    String msg = e.getMessage();
+                    msg = msg == null ? "connection failure: " + e.toString() : "connection failure: " + msg;
+                    log.error(msg);
+                    log.debug(msg, e);
+
+                    active = false;
                     connection.close();
                 }
             }
@@ -182,22 +187,24 @@ public class ConnectionHandler {
         }
     }
 
-    // Protected -------------------------------------------------------------------------------------------------------
-
-    // Private ---------------------------------------------------------------------------------------------------------
-
     /**
-     * Processes a request response.
+     * Processes a request/response sequence.
      *
      * @throws ConnectionException on connection troubles
      */
-    private void processNextRequestResponsePair() throws ConnectionException {
+    void processRequestResponsePair() throws ConnectionException {
 
         try {
 
             HttpRequest request = HttpRequest.readRequest(connection);
 
+            if (request == null) {
+
+                throw new ConnectionException("socket input stream closed");
+            }
+
             if (debug) {
+
                 log.debug("\n" + HttpRequest.showRequest(request));
             }
 
@@ -229,7 +236,8 @@ public class ConnectionHandler {
             // most likely something is wrong with this request only.
             //
             String msg = e.getMessage();
-            log.error("failed to parse HTTP request", e);
+            log.error(msg);
+            log.debug("failed to parse HTTP request", e);
             sendResponse(new HttpResponse(HttpStatusCode.BAD_REQUEST, msg.getBytes()));
         }
     }
@@ -238,6 +246,10 @@ public class ConnectionHandler {
 
         this.closeConnectionAfterResponse = b;
     }
+
+    // Protected -------------------------------------------------------------------------------------------------------
+
+    // Private ---------------------------------------------------------------------------------------------------------
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

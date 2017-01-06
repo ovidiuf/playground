@@ -16,16 +16,20 @@
 
 package io.novaordis.playground.http.server;
 
+import io.novaordis.playground.http.server.connection.ConnectionException;
 import io.novaordis.playground.http.server.connection.MockConnection;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -34,6 +38,8 @@ import static org.junit.Assert.assertTrue;
 public class ConnectionHandlerTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(ConnectionHandlerTest.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -44,6 +50,32 @@ public class ConnectionHandlerTest {
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Tests -----------------------------------------------------------------------------------------------------------
+
+    // processRequestResponsePair() ------------------------------------------------------------------------------------
+
+    @Test
+    public void processRequestResponsePair_ConnectionClosed() throws Exception {
+
+        MockConnection mc = new MockConnection(0);
+        mc.close();
+        assertTrue(mc.isClosed());
+
+        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+
+        try {
+
+            h.processRequestResponsePair();
+            fail("should have thrown exception");
+        }
+        catch(ConnectionException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("socket input stream closed", msg);
+        }
+    }
+
+    // sendResponse() --------------------------------------------------------------------------------------------------
 
     @Test
     public void sendResponse_CloseAfterHandlingConnection() throws Exception {
