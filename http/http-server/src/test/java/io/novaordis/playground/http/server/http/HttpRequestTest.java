@@ -37,7 +37,7 @@ import static org.junit.Assert.fail;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
-public class HttpRequestTest extends HeadersTest {
+public class HttpRequestTest extends MessageTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -505,7 +505,7 @@ public class HttpRequestTest extends HeadersTest {
     // Protected -------------------------------------------------------------------------------------------------------
 
     @Override
-    protected HttpRequest getHeadersImplementationToTest() {
+    protected HttpRequest getMessageImplementationToTest() {
 
         return new HttpRequest(HttpMethod.GET, "/");
     }

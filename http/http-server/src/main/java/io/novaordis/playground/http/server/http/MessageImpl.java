@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The base implementation for HTTP Requests and Response.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */

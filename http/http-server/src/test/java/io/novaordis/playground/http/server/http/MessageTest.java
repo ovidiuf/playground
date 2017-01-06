@@ -34,11 +34,11 @@ import static org.junit.Assert.fail;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-public abstract class HeadersTest {
+public abstract class MessageTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(HeadersTest.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageTest.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ public abstract class HeadersTest {
     @Test
     public void testHeaderNameCaseInsensitivity() throws Exception {
 
-        Message r = getHeadersImplementationToTest();
+        Message r = getMessageImplementationToTest();
 
         r.addHeader(HttpGeneralHeader.CACHE_CONTROL, "something");
 
@@ -71,7 +71,7 @@ public abstract class HeadersTest {
     @Test
     public void testDuplicateNames() throws Exception {
 
-        Message r = getHeadersImplementationToTest();
+        Message r = getMessageImplementationToTest();
 
         r.addHeader(HttpGeneralHeader.VIA, "1.1 host1:80");
         r.addHeader(HttpGeneralHeader.VIA, "1.1 host2:80");
@@ -92,7 +92,7 @@ public abstract class HeadersTest {
     @Test
     public void lifecycle() throws Exception {
 
-        Message r = getHeadersImplementationToTest();
+        Message r = getMessageImplementationToTest();
 
         List<HttpHeader> headers = r.getHeader("something");
         assertTrue(headers.isEmpty());
@@ -198,7 +198,7 @@ public abstract class HeadersTest {
     @Test
     public void addNullHeader() throws Exception {
 
-        Message r = getHeadersImplementationToTest();
+        Message r = getMessageImplementationToTest();
 
         try {
             r.addHeader(null);
@@ -216,7 +216,7 @@ public abstract class HeadersTest {
     @Test
     public void overwriteHeader() throws Exception {
 
-        MessageImpl r = (MessageImpl)getHeadersImplementationToTest();
+        MessageImpl r = (MessageImpl) getMessageImplementationToTest();
 
         List<HttpHeader> hs = r.getHeader("Test-Header");
         assertTrue(hs.isEmpty());
@@ -247,7 +247,7 @@ public abstract class HeadersTest {
     @Test
     public void overwriteHeader_CaseInsensitive() throws Exception {
 
-        MessageImpl r = (MessageImpl)getHeadersImplementationToTest();
+        MessageImpl r = (MessageImpl) getMessageImplementationToTest();
 
         List<HttpHeader> hs = r.getHeader("test-header");
         assertTrue(hs.isEmpty());
@@ -285,7 +285,7 @@ public abstract class HeadersTest {
     @Test
     public void overwriteHeader_MoreThanOneInternalCopy() throws Exception {
 
-        MessageImpl r = (MessageImpl)getHeadersImplementationToTest();
+        MessageImpl r = (MessageImpl) getMessageImplementationToTest();
 
         List<HttpHeader> hs = r.getHeader("Test-Header");
         assertTrue(hs.isEmpty());
@@ -313,7 +313,7 @@ public abstract class HeadersTest {
 
     // Protected -------------------------------------------------------------------------------------------------------
 
-    protected abstract Message getHeadersImplementationToTest();
+    protected abstract Message getMessageImplementationToTest();
 
     // Private ---------------------------------------------------------------------------------------------------------
 

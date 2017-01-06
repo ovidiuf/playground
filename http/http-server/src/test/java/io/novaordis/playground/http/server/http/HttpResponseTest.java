@@ -35,7 +35,7 @@ import static org.junit.Assert.assertTrue;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
-public class HttpResponseTest extends HeadersTest {
+public class HttpResponseTest extends MessageTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -239,7 +239,7 @@ public class HttpResponseTest extends HeadersTest {
     // Protected -------------------------------------------------------------------------------------------------------
 
     @Override
-    protected HttpResponse getHeadersImplementationToTest() {
+    protected HttpResponse getMessageImplementationToTest() {
 
         return new HttpResponse();
     }
