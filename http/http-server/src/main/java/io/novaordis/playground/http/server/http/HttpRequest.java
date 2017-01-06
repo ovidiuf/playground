@@ -167,7 +167,7 @@ public class HttpRequest extends MessageImpl {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private byte[] content;
+    private byte[] wireFormat;
     private HttpMethod method;
     private String path;
     private String version;
@@ -188,7 +188,7 @@ public class HttpRequest extends MessageImpl {
         this.method = method;
         this.path = path;
         this.version = DEFAULT_HTTP_VERSION;
-        this.content = (method + " " + path + " " + version).getBytes();
+        this.wireFormat = (method + " " + path + " " + version).getBytes();
     }
 
     /**
@@ -196,29 +196,29 @@ public class HttpRequest extends MessageImpl {
      *
      * @exception InvalidHttpHeaderException on faulty content that cannot be translated into a valid HTTP header
      */
-    HttpRequest(byte[] content) throws InvalidHttpRequestException {
+    HttpRequest(byte[] wireFormat) throws InvalidHttpRequestException {
 
         this();
-        this.content = content;
+        this.wireFormat = wireFormat;
 
         int from = 0;
 
-        for(int i = 0; i < content.length; i ++) {
+        for(int i = 0; i < wireFormat.length; i ++) {
 
-            if (content[i] == '\n' || i == content.length - 1) {
+            if (wireFormat[i] == '\n' || i == wireFormat.length - 1) {
 
                 //
                 // correction for the last element
                 //
-                i = i == content.length - 1 && content[i] != '\n' ? i + 1 : i;
+                i = i == wireFormat.length - 1 && wireFormat[i] != '\n' ? i + 1 : i;
 
                 if (from == 0) {
 
-                    parseFirstLine(content, from, i);
+                    parseFirstLine(wireFormat, from, i);
                 }
                 else {
 
-                    HttpHeader h = HttpHeader.parseHeader(content, from, i);
+                    HttpHeader h = HttpHeader.parseHeader(wireFormat, from, i);
                     addHeader(h);
                 }
 
@@ -250,8 +250,8 @@ public class HttpRequest extends MessageImpl {
     @Override
     public String toString() {
 
-        if (content == null) {
-            return "null content";
+        if (wireFormat == null) {
+            return "null wire format";
         }
 
         return getMethod() + " " + getPath() + " " + getHttpVersion();
@@ -263,19 +263,19 @@ public class HttpRequest extends MessageImpl {
      * @param to the index of the first element <b>to ignore</b>. It may extend beyond the array boundary and the
      *           method implementation should be prepared to deal with this.
      */
-    void parseFirstLine(byte[] content, int from, int to) throws InvalidHttpRequestException {
+    void parseFirstLine(byte[] wireFormat, int from, int to) throws InvalidHttpRequestException {
 
         int pathIndex = -1;
         int versionIndex = -1;
-        int rightLimit = to >= content.length ? content.length : to;
+        int rightLimit = to >= wireFormat.length ? wireFormat.length : to;
 
         for(int i = from; i < rightLimit; i ++) {
 
-            if (content[i] == ' ') {
+            if (wireFormat[i] == ' ') {
 
                 if (pathIndex == -1) {
 
-                    String methodString = new String(content, 0, i);
+                    String methodString = new String(wireFormat, 0, i);
 
                     try {
 
@@ -288,7 +288,7 @@ public class HttpRequest extends MessageImpl {
                     continue;
                 }
 
-                path = new String(content, pathIndex, i - pathIndex);
+                path = new String(wireFormat, pathIndex, i - pathIndex);
                 versionIndex = i + 1;
                 break;
             }
@@ -300,15 +300,15 @@ public class HttpRequest extends MessageImpl {
                 throw new InvalidHttpRequestException("malformed request");
             }
 
-            path = new String(content, pathIndex, content.length - pathIndex);
+            path = new String(wireFormat, pathIndex, wireFormat.length - pathIndex);
         }
 
-        if (versionIndex == -1 || versionIndex >= content.length) {
+        if (versionIndex == -1 || versionIndex >= wireFormat.length) {
 
             throw new InvalidHttpRequestException("missing HTTP version");
         }
 
-        this.version = new String(content, versionIndex, rightLimit - versionIndex);
+        this.version = new String(wireFormat, versionIndex, rightLimit - versionIndex);
 
         if (version.trim().isEmpty()) {
 
