@@ -48,7 +48,7 @@ public class Main {
 
         Configuration c = new Configuration(args);
 
-        Server server = new Server(c);
+        ServerImpl server = new ServerImpl(c);
 
         registerWithMBeanServer(server.getManagementConsole());
 

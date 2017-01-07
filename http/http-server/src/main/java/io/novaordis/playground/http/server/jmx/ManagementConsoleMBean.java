@@ -30,6 +30,11 @@ public interface ManagementConsoleMBean {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    void listConnections();
+    int getConnectionCount();
+
+    /**
+     * Lists connections both by logging the connection list and returning it as the result of this method.
+     */
+    String listConnections();
 
 }

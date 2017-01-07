@@ -21,12 +21,16 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The instance that manages connections - provides query functionality.
+ *
+ * Must be thread safe.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
@@ -71,10 +75,17 @@ public class ConnectionManager {
         return c;
     }
 
-    @SuppressWarnings("unused")
     public int getConnectionCount() {
 
         return connections.size();
+    }
+
+    /**
+     * @return a copy of the snapshot of the connection map.
+     */
+    public Collection<Connection> getConnections() {
+
+        return new HashSet<>(connections.values());
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

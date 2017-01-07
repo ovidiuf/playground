@@ -53,11 +53,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class Server implements HttpServer {
+public class ServerImpl implements HttpServer {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Server.class);
+    private static final Logger log = LoggerFactory.getLogger(ServerImpl.class);
 
     public static final int DEFAULT_BACKLOG = 10;
 
@@ -90,7 +90,7 @@ public class Server implements HttpServer {
      *
      * @exception IOException on any problem related to server socket creation or binding.
      */
-    public Server(Configuration configuration) throws IOException, InterruptedException {
+    public ServerImpl(Configuration configuration) throws IOException, InterruptedException {
 
         this.port = configuration.getPort();
         this.documentRoot = configuration.getDocumentRoot();
@@ -109,7 +109,7 @@ public class Server implements HttpServer {
         // must be invoked after documentRoot and other state required by handlers had been installed
         initializeHandlers();
 
-        jmxManagementConsole = new ManagementConsole();
+        jmxManagementConsole = new ManagementConsole(this);
 
         String acceptorThreadName = "HTTP Server " + port + " Acceptor Thread";
 
@@ -274,6 +274,10 @@ public class Server implements HttpServer {
         return jmxManagementConsole;
     }
 
+    public ConnectionManager getConnectionManager() {
+
+        return connectionManager;
+    }
 
     @Override
     public String toString() {
