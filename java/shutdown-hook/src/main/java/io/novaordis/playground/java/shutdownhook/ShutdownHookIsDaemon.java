@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Nova Ordis LLC
+ * Copyright (c) 2017 Nova Ordis LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package io.novaordis.playground.java.shutdownhook;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 10/5/16
+ * @since 1/7/17
  */
-public class Main {
+public class ShutdownHookIsDaemon {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -28,14 +28,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("hello, I am " + Main.class + " and I am installing the shutdown hook");
+        ShutdownHook h = new ShutdownHook();
+        h.setDaemon(true);
 
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
-
-        System.out.println("shutdown hook installed");
-
+        Runtime.getRuntime().addShutdownHook(h);
+        System.out.println("initiating shutdown");
         System.exit(0);
     }
+
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
@@ -48,10 +48,11 @@ public class Main {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
+    // Inner classes ---------------------------------------------------------------------------------------------------
+
     private static class ShutdownHook extends Thread {
 
         public ShutdownHook() {
-
             super("Playground Shutdown Hook Thread");
         }
 
@@ -70,13 +71,10 @@ public class Main {
 
             }
             catch(Exception e) {
-
                 e.printStackTrace();
             }
 
         }
     }
-
-    // Inner classes ---------------------------------------------------------------------------------------------------
 
 }
