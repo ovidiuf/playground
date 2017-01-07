@@ -22,9 +22,12 @@ import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
-import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
+import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
+import io.novaordis.playground.http.server.rhandler.RequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Handles a Connection (essentially the content arriving from the underlying socket) by extracting HTTP requests
@@ -52,14 +55,15 @@ public class ConnectionHandler implements Runnable {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private final Server server;
     private final Connection connection;
-    private RequestHandler requestHandler;
     private final Thread connectionHandlerThread;
 
     private boolean closeConnectionAfterResponse;
 
     private volatile boolean active;
+
+    // registered in the descending order of their priority
+    private List<RequestHandler> handlers;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -68,7 +72,7 @@ public class ConnectionHandler implements Runnable {
      */
     public ConnectionHandler(Server server, Connection connection) {
 
-        this.server = server;
+        this.handlers = server.getHandlers();
         this.connection = connection;
         this.active = true;
         this.closeConnectionAfterResponse = false;
@@ -76,8 +80,6 @@ public class ConnectionHandler implements Runnable {
         String threadName = connection.toString() + " Handling Thread";
         connectionHandlerThread = new Thread(this, threadName);
         connectionHandlerThread.setDaemon(true);
-
-        setRequestHandler(new FileRequestHandler(server.getDocumentRoot()));
     }
 
     // Runtime implementation ------------------------------------------------------------------------------------------
@@ -159,27 +161,11 @@ public class ConnectionHandler implements Runnable {
                 return false;
             }
 
-            if (debug) {
+            logRequest(request);
 
-                log.debug("request read from " + connection + " input stream:\n" + HttpRequest.showRequest(request));
-            }
+            HttpResponse response = passToHandler(request);
 
-            HttpResponse response = requestHandler.processRequest(request);
-
-            if (ServerImpl.EXIT_URL_PATH.equals(request.getPath())) {
-
-                log.info("\"" + request.getPath() + "\" special URL identified, initiating server shutdown ...");
-
-                sendResponse(new HttpResponse(HttpStatusCode.OK));
-                active = false;
-                server.exit();
-                return false;
-            }
-            else {
-
-                sendResponse(response);
-                return true;
-            }
+            sendResponse(response);
         }
         catch (InvalidHttpRequestException e) {
 
@@ -191,8 +177,9 @@ public class ConnectionHandler implements Runnable {
             log.error(msg);
             log.debug("failed to parse HTTP request", e);
             sendResponse(new HttpResponse(HttpStatusCode.BAD_REQUEST, msg.getBytes()));
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -260,11 +247,6 @@ public class ConnectionHandler implements Runnable {
         this.closeConnectionAfterResponse = b;
     }
 
-    void setRequestHandler(RequestHandler requestHandler) {
-
-        this.requestHandler = requestHandler;
-    }
-
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
@@ -284,6 +266,37 @@ public class ConnectionHandler implements Runnable {
         if (debug) {
             log.debug(s + ":\n" + HttpResponse.showResponse(response));
         }
+    }
+
+    /**
+     * Iterates over the list of handlers and passes the request for processing to the first handler that accepts
+     * it.
+     */
+    private HttpResponse passToHandler(HttpRequest request) {
+
+        for (RequestHandler h : handlers) {
+
+            if (h.accepts(request)) {
+
+                return h.processRequest(request);
+            }
+        }
+
+        //
+        // no known handler, send a 422 Unprocessable Entity
+        //
+
+        return new HttpResponse(HttpStatusCode.UNPROCESSABLE_ENTITY);
+    }
+
+    private void logRequest(HttpRequest request) {
+
+        if (!debug) {
+
+            return;
+        }
+
+        log.debug("request read from " + connection + " input stream:\n" + HttpRequest.showRequest(request));
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

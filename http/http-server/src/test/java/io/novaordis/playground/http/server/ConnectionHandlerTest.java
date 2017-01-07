@@ -61,8 +61,9 @@ public class ConnectionHandlerTest {
         MockServer ms = new MockServer();
         MockConnection mc = new MockConnection(0, "   ");
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
+        ms.addHandler(mh);
+
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
-        ch.setRequestHandler(mh);
 
         ch.run();
 
@@ -86,8 +87,10 @@ public class ConnectionHandlerTest {
         MockServer ms = new MockServer();
         MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r\n");
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
+        ms.addHandler(mh);
+
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
-        ch.setRequestHandler(mh);
+
 
         ch.run();
 
@@ -125,8 +128,9 @@ public class ConnectionHandlerTest {
                 inputStreamContent.length(), readBlocked, readReleaseLatch);
 
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
+        ms.addHandler(mh);
+
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
-        ch.setRequestHandler(mh);
 
         //
         // perform reading from a separate thread

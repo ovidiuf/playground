@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.rhandler;
 
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
@@ -74,7 +74,7 @@ public class FileRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void processRequest_GET_NoSuchFile() throws Exception {
 
-        FileRequestHandler h = new FileRequestHandler(new File("."));
+        FileRequestHandler h = getRequestHandlerToTest();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "/I/am/sure/there/is/no/such/file.txt");
 

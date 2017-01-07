@@ -14,37 +14,61 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.rhandler;
 
+import io.novaordis.playground.http.server.Server;
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
-import io.novaordis.playground.http.server.rhandler.RequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/6/17
+ * @since 1/7/17
  */
-public class MockRequestHandler implements RequestHandler {
+public class ServerExitRequestHandler implements RequestHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(ServerExitRequestHandler.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Server server;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public ServerExitRequestHandler(Server server) {
+
+        this.server = server;
+    }
 
     // RequestHandler implementation -----------------------------------------------------------------------------------
 
     @Override
     public boolean accepts(HttpRequest request) {
 
-        return true;
+        String path = request.getPath();
+        return Server.EXIT_URL.equals(path);
     }
 
     @Override
     public HttpResponse processRequest(HttpRequest request) {
+
+        String path = request.getPath();
+        if (!Server.EXIT_URL.equals(path)) {
+
+            log.error(this + " cannot handle " + request);
+            return new HttpResponse(HttpStatusCode.INTERNAL_SERVER_ERROR);
+        }
+
+        log.info("\"" + Server.EXIT_URL + "\" special URL identified, initiating server shutdown ...");
+
+        // this will shutdown asynchronously, allowing us to send the response
+        server.exit(500L);
 
         return new HttpResponse(HttpStatusCode.OK);
     }
@@ -60,4 +84,3 @@ public class MockRequestHandler implements RequestHandler {
     // Inner classes ---------------------------------------------------------------------------------------------------
 
 }
-

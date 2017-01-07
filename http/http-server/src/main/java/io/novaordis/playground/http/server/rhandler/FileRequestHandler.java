@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.rhandler;
 
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
@@ -28,7 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * Handles requests by attempting to find the correpsonding files in root and resolve them.
+ * Handles requests by attempting to find the corresponding files in root and resolve them.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
@@ -60,6 +60,12 @@ public class FileRequestHandler implements RequestHandler {
     // RequestHandler implementation -----------------------------------------------------------------------------------
 
     @Override
+    public boolean accepts(HttpRequest request) {
+
+        return true;
+    }
+
+    @Override
     public HttpResponse processRequest(HttpRequest request) {
 
         HttpResponse response = new HttpResponse();
@@ -67,14 +73,9 @@ public class FileRequestHandler implements RequestHandler {
 
         String path = request.getPath();
 
-        if (path.startsWith("/")) {
+        File file = resolveFile(path);
 
-            path = path.substring(1);
-        }
-
-        File file = new File(documentRoot, path);
-
-        if (!file.isFile() || !file.canRead()) {
+        if (file == null) {
 
             response.setStatusCode(HttpStatusCode.NOT_FOUND);
             return response;
@@ -83,6 +84,18 @@ public class FileRequestHandler implements RequestHandler {
         //
         // read the content of the file and return it with a response. It only works with small files, of course
         //
+
+        byte[] content = readContentFromFile(file);
+        response.setBody(content); // this will also set Content-Length
+        response.setStatusCode(HttpStatusCode.OK);
+        return response;
+    }
+
+    // Public ----------------------------------------------------------------------------------------------------------
+
+    // Package protected -----------------------------------------------------------------------------------------------
+
+    byte[] readContentFromFile(File file) {
 
         FileInputStream fis = null;
 
@@ -98,9 +111,7 @@ public class FileRequestHandler implements RequestHandler {
                 baos.write(buffer, 0, r);
             }
 
-            response.setBody(baos.toByteArray()); // this will also set Content-Length
-            response.setStatusCode(HttpStatusCode.OK);
-            return response;
+            return baos.toByteArray();
         }
         catch(Exception e) {
 
@@ -122,9 +133,25 @@ public class FileRequestHandler implements RequestHandler {
         }
     }
 
-    // Public ----------------------------------------------------------------------------------------------------------
+    /**
+     * @return null if the file does not exist, is not a file or cannot be read.
+     */
+    File resolveFile(String path) {
 
-    // Package protected -----------------------------------------------------------------------------------------------
+        if (path.startsWith("/")) {
+
+            path = path.substring(1);
+        }
+
+        File file = new File(documentRoot, path);
+
+        if (!file.isFile() || !file.canRead()) {
+
+            return null;
+        }
+
+        return file;
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

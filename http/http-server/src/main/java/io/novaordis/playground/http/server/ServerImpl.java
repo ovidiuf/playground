@@ -19,6 +19,9 @@ package io.novaordis.playground.http.server;
 
 import io.novaordis.playground.http.server.connection.Connection;
 import io.novaordis.playground.http.server.connection.ConnectionManager;
+import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
+import io.novaordis.playground.http.server.rhandler.RequestHandler;
+import io.novaordis.playground.http.server.rhandler.ServerExitRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +32,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
@@ -56,8 +61,6 @@ public class ServerImpl implements Server {
 
     public static final int DEFAULT_BACKLOG = 10;
 
-    public static final String EXIT_URL_PATH = "/exit";
-
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -73,6 +76,10 @@ public class ServerImpl implements Server {
     private AtomicLong nextRequestId;
 
     private File documentRoot;
+
+    // registered in the descending order of the priority. The handlers at the top of the list will be consulted
+    // first and if they can't handle the message, it will be passed downstream
+    private List<RequestHandler> handlers;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -96,6 +103,9 @@ public class ServerImpl implements Server {
         listenLatch = new CountDownLatch(1);
 
         this.connectionManager = new ConnectionManager();
+
+        // must be invoked after documentRoot and other state required by handlers had been installed
+        initializeHandlers();
 
         String acceptorThreadName = "HTTP Server " + port + " Acceptor Thread";
 
@@ -182,8 +192,12 @@ public class ServerImpl implements Server {
         return "NovaOrdis http-server";
     }
 
+    /**
+     * This will <b>asynchronously</b> initiate the shutdown by closing the main listener socket which makes
+     * the topmost loop exit.
+     */
     @Override
-    public void exit() {
+    public void exit(long initiateShutdownDelayMs) {
 
         log.debug("http server requested to exit");
 
@@ -211,9 +225,14 @@ public class ServerImpl implements Server {
                     log.error("failed to operate the shutdown socket", e);
                 }
             }
-        }, 100L);
+        }, initiateShutdownDelayMs);
     }
 
+    @Override
+    public List<RequestHandler> getHandlers() {
+
+        return handlers;
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
@@ -255,6 +274,17 @@ public class ServerImpl implements Server {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Must be invoked after documentRoot and other state required by handlers had been installed
+     */
+    private void initializeHandlers() {
+
+        this.handlers = new ArrayList<>();
+
+        handlers.add(new ServerExitRequestHandler(this));
+        handlers.add(new FileRequestHandler(documentRoot));
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

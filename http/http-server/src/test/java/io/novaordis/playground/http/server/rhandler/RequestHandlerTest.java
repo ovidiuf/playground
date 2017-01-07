@@ -14,35 +14,34 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
-
-import io.novaordis.playground.http.server.http.HttpRequest;
-import io.novaordis.playground.http.server.http.HttpResponse;
+package io.novaordis.playground.http.server.rhandler;
 
 /**
- * Handles a HttpRequest by turning it into a HttpResponse.
- *
- * @see ConnectionHandler
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/6/17
+ * @since 1/7/17
  */
-public interface RequestHandler {
+public abstract class RequestHandlerTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    // Attributes ------------------------------------------------------------------------------------------------------
+
+    // Constructors ----------------------------------------------------------------------------------------------------
+
     // Public ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Must not throw exceptions, but log and return appropriate 5XX HttpResponses.
-     *
-     * Must establish the response reference to request.
-     *
-     * @see HttpResponse#setRequest(HttpRequest)
-     */
-    HttpResponse processRequest(HttpRequest request);
+    // Tests -----------------------------------------------------------------------------------------------------------
 
+    // Package protected -----------------------------------------------------------------------------------------------
+
+    // Protected -------------------------------------------------------------------------------------------------------
+
+    protected abstract RequestHandler getRequestHandlerToTest();
+
+    // Private ---------------------------------------------------------------------------------------------------------
+
+    // Inner classes ---------------------------------------------------------------------------------------------------
 
 }

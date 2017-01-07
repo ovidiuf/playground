@@ -16,9 +16,12 @@
 
 package io.novaordis.playground.http.server;
 
+import io.novaordis.playground.http.server.rhandler.RequestHandler;
 import io.novaordis.utilities.NotYetImplementedException;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -32,7 +35,14 @@ public class MockServer implements Server {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private List<RequestHandler> handlers;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public MockServer() {
+
+        this.handlers = new ArrayList<>();
+    }
 
     // Server implementation  ------------------------------------------------------------------------------------------
 
@@ -49,11 +59,22 @@ public class MockServer implements Server {
     }
 
     @Override
-    public void exit() {
+    public void exit(long initiateShutdownDelayMs) {
         throw new NotYetImplementedException("exit() NOT YET IMPLEMENTED");
     }
 
+    @Override
+    public List<RequestHandler> getHandlers() {
+
+        return handlers;
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public void addHandler(RequestHandler handler) {
+
+        handlers.add(handler);
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

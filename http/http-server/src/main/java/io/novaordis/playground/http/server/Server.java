@@ -16,7 +16,10 @@
 
 package io.novaordis.playground.http.server;
 
+import io.novaordis.playground.http.server.rhandler.RequestHandler;
+
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -25,6 +28,9 @@ import java.io.File;
 public interface Server {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    // the path to be send into the server to shut it down
+    static String EXIT_URL = "/exit";
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -41,6 +47,13 @@ public interface Server {
      * This method should be used by the request processing threads to message the server instance that they got the
      * exit request.
      */
-    void exit();
+    void exit(long initiateShutdownDelayMs);
+
+    /**
+     * @return the list of request handlers, in the descending order of their priority. The handlers at the top of the
+     * list will have priority in declaring that they want to handle the request. The request handlers must be thread
+     * safe, there is only one instance of a specific request handler per server.
+     */
+    List<RequestHandler> getHandlers();
 
 }

@@ -23,8 +23,13 @@ package io.novaordis.playground.http.server.http;
 public enum HttpStatusCode {
 
     OK(200, "OK"),
+
     BAD_REQUEST(400, "Bad Request"),
-    NOT_FOUND(404, "Not Found");
+    NOT_FOUND(404, "Not Found"),
+    UNPROCESSABLE_ENTITY(422, "Unprocessable Entity"),
+
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
+    ;
 
     private int statusCode;
     private String reasonPhrase;

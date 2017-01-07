@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server;
+package io.novaordis.playground.http.server.rhandler;
+
+import io.novaordis.playground.http.server.MockServer;
+import io.novaordis.playground.http.server.Server;
+import io.novaordis.playground.http.server.http.HttpMethod;
+import io.novaordis.playground.http.server.http.HttpRequest;
+import io.novaordis.playground.http.server.http.HttpResponse;
+import io.novaordis.playground.http.server.http.HttpStatusCode;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/6/17
+ * @since 1/5/17
  */
-public abstract class RequestHandlerTest {
+public class ServerExitRequestHandlerTest extends RequestHandlerTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -34,11 +45,37 @@ public abstract class RequestHandlerTest {
 
     // Tests -----------------------------------------------------------------------------------------------------------
 
+    @Test
+    public void exitUrl() throws Exception {
+
+        ServerExitRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest r = new HttpRequest(HttpMethod.GET, Server.EXIT_URL);
+
+        assertTrue(h.accepts(r));
+    }
+
+    @Test
+    public void inappropriateUrl() throws Exception {
+
+        ServerExitRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest r = new HttpRequest(HttpMethod.GET, "/something");
+
+        HttpResponse resp = h.processRequest(r);
+
+        assertEquals(HttpStatusCode.INTERNAL_SERVER_ERROR, resp.getStatusCode());
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
 
-    protected abstract RequestHandler getRequestHandlerToTest() throws Exception;
+    @Override
+    protected ServerExitRequestHandler getRequestHandlerToTest() {
+
+        return new ServerExitRequestHandler(new MockServer());
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 
