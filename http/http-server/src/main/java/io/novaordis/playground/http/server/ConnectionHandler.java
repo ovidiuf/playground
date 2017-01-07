@@ -62,14 +62,14 @@ public class ConnectionHandler implements Runnable {
 
     private volatile boolean active;
 
-    private Server server;
+    private HttpServer server;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
      * @param server reference to use to invoke the exit() method on, in case the exit request was sent into the server.
      */
-    public ConnectionHandler(Server server, Connection connection) {
+    public ConnectionHandler(HttpServer server, Connection connection) {
 
         this.server = server;
         this.connection = connection;

@@ -316,7 +316,7 @@ public class HttpRequest extends MessageImpl {
     public String toString() {
 
         if (wireFormat == null) {
-            
+
             return "null wire format";
         }
 

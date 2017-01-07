@@ -59,7 +59,7 @@ public class ConnectionHandlerTest {
     @Test
     public void connectionHandlingTopLevelLoop_ShouldExitImmediately() throws Exception {
 
-        MockServer ms = new MockServer();
+        MockHttpServer ms = new MockHttpServer();
         MockConnection mc = new MockConnection(0, "   ");
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
         ms.addHandler(mh);
@@ -85,7 +85,7 @@ public class ConnectionHandlerTest {
     @Test
     public void connectionHandlingTopLevelLoop_ShouldExitAfterARequestResponsePair() throws Exception {
 
-        MockServer ms = new MockServer();
+        MockHttpServer ms = new MockHttpServer();
         MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r\n");
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
         ms.addHandler(mh);
@@ -118,7 +118,7 @@ public class ConnectionHandlerTest {
     public void connectionHandlingTopLevelLoop_ShouldBlock() throws Exception {
 
         String inputStreamContent = "GET / HTTP/1.1\r\n\r\n";
-        MockServer ms = new MockServer();
+        MockHttpServer ms = new MockHttpServer();
         MockConnection mc = new MockConnection(0, inputStreamContent);
         //
         // we block after inputStreamContent.length() characters are read, which is right after the first request
@@ -198,7 +198,7 @@ public class ConnectionHandlerTest {
         mc.close();
         assertTrue(mc.isClosed());
 
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+        ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
         boolean moreRequests = h.processRequestResponsePair();
         assertFalse(moreRequests);
@@ -209,7 +209,7 @@ public class ConnectionHandlerTest {
 
         MockConnection mc = new MockConnection(0, "      \r\n");
 
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+        ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
         boolean moreRequests = h.processRequestResponsePair();
         assertFalse(moreRequests);
@@ -220,7 +220,7 @@ public class ConnectionHandlerTest {
 
         MockConnection mc = new MockConnection(0, "NO_SUCH_METHOD / HTTP/1.1\r\n\r\n");
 
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+        ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
         boolean moreRequests = h.processRequestResponsePair();
         assertTrue(moreRequests);
@@ -231,7 +231,7 @@ public class ConnectionHandlerTest {
 
         MockConnection mc = new MockConnection(0, "HTTP/1.1 GET /\r\n\r\n");
 
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+        ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
         boolean moreRequests = h.processRequestResponsePair();
         assertTrue(moreRequests);
@@ -242,7 +242,7 @@ public class ConnectionHandlerTest {
     @Test
     public void prepareResponseForSending() throws Exception {
 
-        ConnectionHandler ch = new ConnectionHandler(new MockServer(), new MockConnection());
+        ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), new MockConnection());
 
         HttpResponse r = new HttpResponse();
 
@@ -274,7 +274,7 @@ public class ConnectionHandlerTest {
     public void sendResponse_CloseAfterHandlingConnection() throws Exception {
 
         MockConnection mc = new MockConnection(0);
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+        ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
         h.setCloseConnectionAfterResponse(true);
 
@@ -317,7 +317,7 @@ public class ConnectionHandlerTest {
     public void sendResponse_DoNotCloseAfterHandlingConnection() throws Exception {
 
         MockConnection mc = new MockConnection(0);
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
+        ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
         h.setCloseConnectionAfterResponse(false);
 

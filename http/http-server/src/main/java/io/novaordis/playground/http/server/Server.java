@@ -16,44 +16,288 @@
 
 package io.novaordis.playground.http.server;
 
+import io.novaordis.playground.http.server.connection.Connection;
+import io.novaordis.playground.http.server.connection.ConnectionManager;
+import io.novaordis.playground.http.server.jmx.ManagementConsole;
+import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
 import io.novaordis.playground.http.server.rhandler.RequestHandler;
+import io.novaordis.playground.http.server.rhandler.ServerExitRequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.net.ServerSocketFactory;
 import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
+ * The top level server super-structure. This instance is responsible with the management of the main acceptor
+ * thread, which should accept connections and hand them out as quickly as possible to other threads for processing.
+ *
+ * The server starts to listen as soon as the listen() method is invoked: the method releases the main acceptor thread,
+ * which starts accepting HTTP connections. The acceptor thread is a non-daemon thread, so it will keep the JVM up even
+ * if the thread that started the server (presumably main) exists.
+ *
+ * The server can be shut down by invoking a shutdown URL (usually http://<host>:<port>/exit). The actual exit URL path
+ * is declared as EXIT_URL_PATH.
+ *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/6/17
+ * @since 1/4/17
  */
-public interface Server {
+public class Server implements HttpServer {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    // the path to be send into the server to shut it down
-    static String EXIT_URL = "/exit";
+    private static final Logger log = LoggerFactory.getLogger(Server.class);
+
+    public static final int DEFAULT_BACKLOG = 10;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    // Attributes ------------------------------------------------------------------------------------------------------
+
+    private int port;
+    private int backlog;
+    private ServerSocket serverSocket;
+    private CountDownLatch listenLatch;
+    private volatile boolean listening;
+
+    private ConnectionManager connectionManager;
+
+    private AtomicLong nextRequestId;
+
+    private File documentRoot;
+
+    // registered in the descending order of the priority. The handlers at the top of the list will be consulted
+    // first and if they can't handle the message, it will be passed downstream
+    private List<RequestHandler> handlers;
+
+    private ManagementConsole jmxManagementConsole;
+
+    // Constructors ----------------------------------------------------------------------------------------------------
+
+    /**
+     * Binds the server socket and performs all required steps to ready itself, short of actual accepting (listening).
+     *
+     * @exception IOException on any problem related to server socket creation or binding.
+     */
+    public Server(Configuration configuration) throws IOException, InterruptedException {
+
+        this.port = configuration.getPort();
+        this.documentRoot = configuration.getDocumentRoot();
+        this.backlog = DEFAULT_BACKLOG;
+
+        SocketAddress endpoint = new InetSocketAddress(port);
+        this.serverSocket = ServerSocketFactory.getDefault().createServerSocket();
+        this.serverSocket.bind(endpoint, backlog);
+
+        this.nextRequestId = new AtomicLong(0);
+
+        listenLatch = new CountDownLatch(1);
+
+        this.connectionManager = new ConnectionManager();
+
+        // must be invoked after documentRoot and other state required by handlers had been installed
+        initializeHandlers();
+
+        jmxManagementConsole = new ManagementConsole();
+
+        String acceptorThreadName = "HTTP Server " + port + " Acceptor Thread";
+
+        Thread acceptorThread = new Thread(() -> {
+
+            //
+            // wait for the listen() method to be called to actually start listening. If this thread is forcibly
+            // interrupted while waiting on latch, log the error and abort
+            //
+            try {
+
+                listenLatch.await();
+                listening = true;
+            }
+            catch(InterruptedException e) {
+
+                log.error(Thread.currentThread().getName() + " interrupted before it started listening, aborting ...");
+                return;
+            }
+
+            while(listening) {
+
+                try {
+
+                    Socket s = serverSocket.accept();
+
+                    log.debug("new connection accepted");
+
+                    if (!listening) {
+
+                        //
+                        // ignore anything that came after the listening flag was flipped
+                        //
+
+                        log.debug("http server not listening anymore, exiting ...");
+                        return;
+                    }
+
+                    //
+                    // build the connection that manages/monitors the socket, by delegating the build job to the
+                    // connection manager
+                    //
+
+                    Connection c = connectionManager.buildConnection(s);
+
+                    //
+                    // build the connection handler, essentially a specialized thread with logic to process
+                    // requests arriving on that connection and generate responses ...
+                    //
+
+                    ConnectionHandler ch = new ConnectionHandler(this, c);
+
+                    //
+                    // ... and initiate the request processing sequence, using the handler's own thread
+                    //
+
+                    ch.handleRequests();
+                }
+                catch (IOException e) {
+
+                    log.error("server socket accept failed", e);
+                }
+            }
+
+
+        }, acceptorThreadName);
+        acceptorThread.setDaemon(false);
+        acceptorThread.start();
+
+        log.info("http server bound to " + port);
+    }
+
+    // Server implementation -------------------------------------------------------------------------------------------
+
+    @Override
+    public File getDocumentRoot() {
+
+        return documentRoot;
+    }
+
+    @Override
+    public String getServerType() {
+
+        return "NovaOrdis http-server";
+    }
+
+    /**
+     * This will <b>asynchronously</b> initiate the shutdown by closing the main listener socket which makes
+     * the topmost loop exit.
+     */
+    @Override
+    public void exit(long initiateShutdownDelayMs) {
+
+        log.debug("http server requested to exit");
+
+        listening = false;
+
+        //
+        // register a daemon timer that will open a connection to the server socket after a while, to un-block it in
+        // case it managed to get blocked in accept() before the flag flipped. It is important to declare the timer
+        // a daemon, because otherwise it'll hang the JVM
+        //
+
+        new Timer(true).schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                try {
+
+                    log.debug("shutdown task running ...");
+                    Socket s = new Socket();
+                    s.connect(serverSocket.getLocalSocketAddress());
+                    s.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to operate the shutdown socket", e);
+                }
+            }
+        }, initiateShutdownDelayMs);
+    }
+
+    @Override
+    public List<RequestHandler> getHandlers() {
+
+        return handlers;
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
-    File getDocumentRoot();
+    /**
+     * The method releases the main acceptor thread, which starts listening (accepting) for HTTP connections. The
+     * acceptor thread is a non-daemon thread, so it will keep the JVM up even if the thread that started the server
+     * (presumably main) exists.
+     */
+    public void listen() {
+
+        listenLatch.countDown();
+    }
+
+    @SuppressWarnings("unused")
+    public int getBacklog() {
+
+        return backlog;
+    }
 
     /**
-     * The content of the Server response header, to be returned to client.
+     * Thread safe
+     * @return next request ID
      */
-    String getServerType();
+    @SuppressWarnings("unused")
+    public long getNextRequestId() {
+
+        return nextRequestId.getAndIncrement();
+    }
 
     /**
-     * This method should be used by the request processing threads to message the server instance that they got the
-     * exit request.
+     * @return the MBean to be registered with the platform MBeanServer to be used to manage this server.
      */
-    void exit(long initiateShutdownDelayMs);
+    public ManagementConsole getManagementConsole() {
+
+        return jmxManagementConsole;
+    }
+
+
+    @Override
+    public String toString() {
+
+        return "http server " + port;
+    }
+
+    // Package protected -----------------------------------------------------------------------------------------------
+
+    // Protected -------------------------------------------------------------------------------------------------------
+
+    // Private ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return the list of request handlers, in the descending order of their priority. The handlers at the top of the
-     * list will have priority in declaring that they want to handle the request. The request handlers must be thread
-     * safe, there is only one instance of a specific request handler per server.
+     * Must be invoked after documentRoot and other state required by handlers had been installed
      */
-    List<RequestHandler> getHandlers();
+    private void initializeHandlers() {
+
+        this.handlers = new ArrayList<>();
+
+        handlers.add(new ServerExitRequestHandler(this));
+        handlers.add(new FileRequestHandler(documentRoot));
+    }
+
+    // Inner classes ---------------------------------------------------------------------------------------------------
 
 }

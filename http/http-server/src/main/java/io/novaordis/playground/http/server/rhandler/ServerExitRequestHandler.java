@@ -16,7 +16,7 @@
 
 package io.novaordis.playground.http.server.rhandler;
 
-import io.novaordis.playground.http.server.Server;
+import io.novaordis.playground.http.server.HttpServer;
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
@@ -37,11 +37,11 @@ public class ServerExitRequestHandler implements RequestHandler {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Server server;
+    private HttpServer server;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public ServerExitRequestHandler(Server server) {
+    public ServerExitRequestHandler(HttpServer server) {
 
         this.server = server;
     }
@@ -52,20 +52,20 @@ public class ServerExitRequestHandler implements RequestHandler {
     public boolean accepts(HttpRequest request) {
 
         String path = request.getPath();
-        return Server.EXIT_URL.equals(path);
+        return HttpServer.EXIT_URL.equals(path);
     }
 
     @Override
     public HttpResponse processRequest(HttpRequest request) {
 
         String path = request.getPath();
-        if (!Server.EXIT_URL.equals(path)) {
+        if (!HttpServer.EXIT_URL.equals(path)) {
 
             log.error(this + " cannot handle " + request);
             return new HttpResponse(HttpStatusCode.INTERNAL_SERVER_ERROR);
         }
 
-        log.info("\"" + Server.EXIT_URL + "\" special URL identified, initiating server shutdown ...");
+        log.info("\"" + HttpServer.EXIT_URL + "\" special URL identified, initiating server shutdown ...");
 
         // this will shutdown asynchronously, allowing us to send the response
         server.exit(500L);

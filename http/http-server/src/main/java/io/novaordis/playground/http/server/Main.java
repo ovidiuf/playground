@@ -16,8 +16,13 @@
 
 package io.novaordis.playground.http.server;
 
+import io.novaordis.playground.http.server.jmx.ManagementConsole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 
 /**
  * The local port to listen on must be specified as the first argument.
@@ -43,7 +48,9 @@ public class Main {
 
         Configuration c = new Configuration(args);
 
-        ServerImpl server = new ServerImpl(c);
+        Server server = new Server(c);
+
+        registerWithMBeanServer(server.getManagementConsole());
 
         server.listen();
 
@@ -51,6 +58,16 @@ public class Main {
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
+
+    static void registerWithMBeanServer(ManagementConsole mc) throws Exception {
+
+        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+
+        ObjectName n = new ObjectName("novaordis:service=http-server");
+        mBeanServer.registerMBean(mc, n);
+
+        log.debug("server registered with the JVM MBean server as " + n);
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

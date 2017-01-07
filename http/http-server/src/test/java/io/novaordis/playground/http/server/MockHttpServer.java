@@ -27,7 +27,7 @@ import java.util.List;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/6/17
  */
-public class MockServer implements Server {
+public class MockHttpServer implements HttpServer {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ public class MockServer implements Server {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public MockServer() {
+    public MockHttpServer() {
 
         this.handlers = new ArrayList<>();
     }

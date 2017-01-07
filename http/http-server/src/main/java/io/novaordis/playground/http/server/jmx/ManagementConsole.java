@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server.rhandler;
-
-import io.novaordis.playground.http.server.MockHttpServer;
-import io.novaordis.playground.http.server.HttpServer;
-import io.novaordis.playground.http.server.http.HttpMethod;
-import io.novaordis.playground.http.server.http.HttpRequest;
-import io.novaordis.playground.http.server.http.HttpResponse;
-import io.novaordis.playground.http.server.http.HttpStatusCode;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+package io.novaordis.playground.http.server.jmx;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/5/17
+ * @since 1/7/17
  */
-public class ServerExitRequestHandlerTest extends RequestHandlerTest {
+public class ManagementConsole implements ManagementConsoleMBean {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -41,41 +30,19 @@ public class ServerExitRequestHandlerTest extends RequestHandlerTest {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    // ManagementConsoleMBean implementation ---------------------------------------------------------------------------
+
+    @Override
+    public void listConnections() {
+
+        System.out.println("a");
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
-
-    // Tests -----------------------------------------------------------------------------------------------------------
-
-    @Test
-    public void exitUrl() throws Exception {
-
-        ServerExitRequestHandler h = getRequestHandlerToTest();
-
-        HttpRequest r = new HttpRequest(HttpMethod.GET, HttpServer.EXIT_URL);
-
-        assertTrue(h.accepts(r));
-    }
-
-    @Test
-    public void inappropriateUrl() throws Exception {
-
-        ServerExitRequestHandler h = getRequestHandlerToTest();
-
-        HttpRequest r = new HttpRequest(HttpMethod.GET, "/something");
-
-        HttpResponse resp = h.processRequest(r);
-
-        assertEquals(HttpStatusCode.INTERNAL_SERVER_ERROR, resp.getStatusCode());
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
-
-    @Override
-    protected ServerExitRequestHandler getRequestHandlerToTest() {
-
-        return new ServerExitRequestHandler(new MockHttpServer());
-    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 
