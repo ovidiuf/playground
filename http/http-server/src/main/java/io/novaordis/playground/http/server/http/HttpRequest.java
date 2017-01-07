@@ -75,7 +75,10 @@ public class HttpRequest extends MessageImpl {
                 // useless; it will probably close it
                 //
 
+                log.debug("reached client connection's EOS");
+
                 if (buffer.allDiscardableContent()) {
+
 
                     return null;
                 }
@@ -207,7 +210,7 @@ public class HttpRequest extends MessageImpl {
             request.setBody(body);
         }
 
-        return  request;
+        return request;
     }
 
     public static String showRequest(HttpRequest r) {
@@ -313,6 +316,7 @@ public class HttpRequest extends MessageImpl {
     public String toString() {
 
         if (wireFormat == null) {
+            
             return "null wire format";
         }
 

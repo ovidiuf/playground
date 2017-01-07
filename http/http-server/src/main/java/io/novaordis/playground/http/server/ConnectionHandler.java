@@ -106,11 +106,15 @@ public class ConnectionHandler implements Runnable {
             msg = msg == null ? "connection failure: " + e.toString() : "connection failure: " + msg;
             log.error(msg);
             log.debug(msg, e);
-            active = false;
         }
         finally {
 
             connection.close();
+
+            //
+            // leave the handler in a tidy state
+            //
+            active = false;
         }
 
     }
@@ -171,8 +175,8 @@ public class ConnectionHandler implements Runnable {
         catch (InvalidHttpRequestException e) {
 
             //
-            // failed because we were not able to parse the data came on the wire, do not close connection,
-            // most likely something is wrong with this request only.
+            // failed because we were not able to parse the data came on the wire, do not exit from the request
+            // handling loop, most likely something is wrong with this request only.
             //
             String msg = e.getMessage();
             log.error(msg);
@@ -256,6 +260,8 @@ public class ConnectionHandler implements Runnable {
             // close our connection and stop our thread
             //
             active = false;
+
+            log.debug("closing connection because " + this + " was configured to close the connection after a response");
             connection.close();
         }
     }
