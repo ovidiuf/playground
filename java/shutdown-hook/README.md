@@ -1,1 +1,1 @@
-A simple Main class, ready to use right away.
+NOKB https://kb.novaordis.com/index.php/Java_Shutdown#Playground_Example
