@@ -48,6 +48,11 @@ public class MockConnection extends Connection {
         this.flushedOutputContent = new ArrayList<>();
     }
 
+    public MockConnection(String inputStreamContent) throws IOException {
+
+        this(0, inputStreamContent);
+    }
+
     public MockConnection(long id, String inputStreamContent) throws IOException {
 
         super(id, new MockSocket(inputStreamContent), null);

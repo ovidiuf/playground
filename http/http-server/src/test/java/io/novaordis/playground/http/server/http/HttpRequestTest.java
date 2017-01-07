@@ -416,7 +416,25 @@ public class HttpRequestTest extends MessageTest {
     @Test
     public void readRequest_POST_noContentLengthHeader() throws Exception {
 
-        fail("return here");
+        String requestContent =
+                "POST /test HTTP/1.1\r\n" +
+                        "Host: localhost:10000\r\n" +
+                        "\r\n" +
+                        "something without a content length";
+
+        MockConnection mc = new MockConnection(requestContent);
+
+        try {
+
+            HttpRequest.readRequest(mc);
+            fail("should throw exception");
+        }
+        catch(InvalidHttpRequestException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("POST request with no Content-Length", msg);
+        }
     }
 
     @Test
@@ -438,7 +456,7 @@ public class HttpRequestTest extends MessageTest {
                         "\r\n" +
                         "fname=Mickey&lname=Mouse";
 
-        MockConnection mc = new MockConnection(0, requestContent);
+        MockConnection mc = new MockConnection(requestContent);
 
         HttpRequest r = HttpRequest.readRequest(mc);
 
