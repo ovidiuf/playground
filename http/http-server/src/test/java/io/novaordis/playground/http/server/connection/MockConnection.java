@@ -42,6 +42,11 @@ public class MockConnection extends Connection {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    public MockConnection() throws IOException {
+
+        this(null);
+    }
+
     public MockConnection(long id) throws IOException {
 
         super(id, new MockSocket(), null);

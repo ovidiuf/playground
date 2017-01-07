@@ -22,12 +22,12 @@ import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
 import io.novaordis.playground.http.server.rhandler.RequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * Handles a Connection (essentially the content arriving from the underlying socket) by extracting HTTP requests
@@ -62,8 +62,7 @@ public class ConnectionHandler implements Runnable {
 
     private volatile boolean active;
 
-    // registered in the descending order of their priority
-    private List<RequestHandler> handlers;
+    private Server server;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -72,7 +71,7 @@ public class ConnectionHandler implements Runnable {
      */
     public ConnectionHandler(Server server, Connection connection) {
 
-        this.handlers = server.getHandlers();
+        this.server = server;
         this.connection = connection;
         this.active = true;
         this.closeConnectionAfterResponse = false;
@@ -165,6 +164,8 @@ public class ConnectionHandler implements Runnable {
 
             HttpResponse response = passToHandler(request);
 
+            response = prepareResponseForSending(response);
+
             sendResponse(response);
         }
         catch (InvalidHttpRequestException e) {
@@ -180,6 +181,37 @@ public class ConnectionHandler implements Runnable {
         }
 
         return true;
+    }
+
+    /**
+     * The method applies verifications and state updates required by a response before being sent to the client.
+     *
+     * Example:
+     *
+     * * Make sure Content-Length is set, and if no, set it to zero.
+     * * Add the Server header.
+     *
+     * etc.
+     *
+     */
+    HttpResponse prepareResponseForSending(HttpResponse response) {
+
+        //
+        // Content-Length
+        //
+
+        if (response.getHeader(HttpEntityHeader.CONTENT_LENGTH).isEmpty()) {
+
+            response.addHeader(HttpEntityHeader.CONTENT_LENGTH, "0");
+        }
+
+        if (response.getHeader(HttpResponseHeader.SERVER).isEmpty()) {
+
+            response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
+        }
+
+
+        return response;
     }
 
     /**
@@ -274,7 +306,7 @@ public class ConnectionHandler implements Runnable {
      */
     private HttpResponse passToHandler(HttpRequest request) {
 
-        for (RequestHandler h : handlers) {
+        for (RequestHandler h : server.getHandlers()) {
 
             if (h.accepts(request)) {
 

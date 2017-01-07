@@ -20,6 +20,7 @@ import io.novaordis.playground.http.server.connection.MockConnection;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpHeader;
 import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -236,6 +237,37 @@ public class ConnectionHandlerTest {
         assertTrue(moreRequests);
     }
 
+    // prepareResponseForSending() -------------------------------------------------------------------------------------
+
+    @Test
+    public void prepareResponseForSending() throws Exception {
+
+        ConnectionHandler ch = new ConnectionHandler(new MockServer(), new MockConnection());
+
+        HttpResponse r = new HttpResponse();
+
+        assertTrue(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).isEmpty());
+        assertTrue(r.getHeader(HttpResponseHeader.SERVER).isEmpty());
+
+        HttpResponse r2 = ch.prepareResponseForSending(r);
+
+        assertTrue(r2 == r);
+
+        //
+        // we insure that before sending the request has been prepared for sending (SERVER, CONTENT_LENGTH)
+        //
+
+        List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+        assertEquals("0", h.getFieldBody());
+
+        hs = r.getHeader(HttpResponseHeader.SERVER);
+        assertEquals(1, hs.size());
+        h = hs.get(0);
+        assertEquals("Mock", h.getFieldBody());
+    }
+
     // sendResponse() --------------------------------------------------------------------------------------------------
 
     @Test
@@ -322,35 +354,6 @@ public class ConnectionHandlerTest {
         assertFalse(mc.isClosed());
     }
 
-
-
-    //
-    // -----------------------------------------------------------------------------------------------------------------
-    //
-
-    @Test
-    public void toRelocate_TODO() throws Exception {
-
-        MockConnection mc = new MockConnection(0);
-        ConnectionHandler h = new ConnectionHandler(new MockServer(), mc);
-
-        HttpResponse r = new HttpResponse();
-
-        r.setStatusCode(HttpStatusCode.BAD_REQUEST);
-
-        assertTrue(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).isEmpty());
-        assertTrue(r.getHeader(HttpResponseHeader.SERVER).isEmpty());
-
-        h.sendResponse(r);
-
-        //
-        // we insure that before sending the request has been prepared for sending (SERVER, CONTENT_LENTH)
-        //
-
-        assertFalse(r.getHeader(HttpEntityHeader.CONTENT_LENGTH).isEmpty());
-        assertFalse(r.getHeader(HttpResponseHeader.SERVER).isEmpty());
-
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
