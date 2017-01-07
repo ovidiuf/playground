@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+
+#java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main $@
+java -cp $(dirname $0)/target/shutdown-hook-1.jar io.novaordis.playground.java.shutdownhook.Main $@
