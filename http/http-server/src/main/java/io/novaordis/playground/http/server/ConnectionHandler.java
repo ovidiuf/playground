@@ -225,20 +225,6 @@ public class ConnectionHandler implements Runnable {
      */
     void sendResponse(HttpResponse response) throws ConnectionException {
 
-
-        //
-        // TODO
-        //
-
-//        //
-//        // request independent-headers
-//        //
-//
-//        response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
-
-
-
-
         // this includes the empty line and the appropriately set Connection-Length
         byte[] b = response.statusLineAndHeadersToWireFormat();
 
@@ -293,10 +279,11 @@ public class ConnectionHandler implements Runnable {
         s +=  " returned " + sc.getStatusCode() + " " + sc.getReasonPhrase() +
                 " over " + connection;
 
-        log.info(s);
-
         if (debug) {
             log.debug(s + ":\n" + HttpResponse.showResponse(response));
+        }
+        else {
+            log.info(s);
         }
     }
 
