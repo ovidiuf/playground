@@ -17,6 +17,8 @@
 package io.novaordis.playground.http.server;
 
 import io.novaordis.playground.http.server.connection.MockConnection;
+import io.novaordis.playground.http.server.http.HttpMethod;
+import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
@@ -238,12 +240,33 @@ public class ConnectionHandlerTest {
         assertTrue(moreRequests);
     }
 
+    // preProcessRequest() ---------------------------------------------------------------------------------------------
+
+    @Test
+    public void preProcessRequest_ConnectionClose() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        MockConnection mc = new MockConnection();
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        assertTrue(ch.isPersistentConnection());
+
+        HttpRequest r = new HttpRequest(HttpMethod.GET, "/test");
+        r.addHeader(HttpGeneralHeader.CONNECTION, "close");
+
+        ch.preProcessRequest(r);
+
+        assertFalse(ch.isPersistentConnection());
+    }
+
     // prepareResponseForSending() -------------------------------------------------------------------------------------
 
     @Test
     public void prepareResponseForSending() throws Exception {
 
         ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), new MockConnection());
+
+        assertTrue(ch.isPersistentConnection());
 
         HttpResponse r = new HttpResponse();
 
@@ -267,6 +290,34 @@ public class ConnectionHandlerTest {
         assertEquals(1, hs.size());
         h = hs.get(0);
         assertEquals("Mock", h.getFieldBody());
+
+        //
+        // no Connection header
+        //
+
+        assertTrue(r.getHeader(HttpGeneralHeader.CONNECTION).isEmpty());
+    }
+
+    @Test
+    public void prepareResponseForSending_NonPersistentConnection() throws Exception {
+
+        ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), new MockConnection());
+
+        ch.setPersistentConnection(false);
+        assertFalse(ch.isPersistentConnection());
+
+        HttpResponse r = new HttpResponse();
+
+        HttpResponse r2 = ch.prepareResponseForSending(r);
+
+        //
+        // Connection: close
+        //
+
+        List<HttpHeader> hs = r2.getHeader(HttpGeneralHeader.CONNECTION);
+        assertEquals(1, hs.size());
+        HttpHeader h = hs.get(0);
+        assertEquals("close", h.getFieldBody());
     }
 
     // sendResponse() --------------------------------------------------------------------------------------------------
@@ -277,7 +328,7 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection(0);
         ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
-        h.setCloseConnectionAfterResponse(true);
+        h.setPersistentConnection(false);
 
         HttpResponse r = new HttpResponse();
 
@@ -285,6 +336,7 @@ public class ConnectionHandlerTest {
         r.addHeader("Some-Header", "some value");
         r.setBody("test\n".getBytes());
         r.addHeader("Some-Header-2", "some value 2");
+
 
         h.sendResponse(r);
 
@@ -304,14 +356,17 @@ public class ConnectionHandlerTest {
                         "\r\n";
 
         String actual = new String(statusLineAndHeaders);
-        log.info(actual);
+        log.info("\n" + actual);
         assertEquals(expectedStatusLineAndHeaders, actual);
 
         String expectedBody = "test\n";
 
         assertEquals(expectedBody, new String(body));
 
-        assertTrue(mc.isClosed());
+        //
+        // sendResponse() does mess with connection
+        //
+        assertFalse(mc.isClosed());
     }
 
     @Test
@@ -320,7 +375,7 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection(0);
         ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
-        h.setCloseConnectionAfterResponse(false);
+        h.setPersistentConnection(true);
 
         HttpResponse r = new HttpResponse();
 
@@ -362,13 +417,28 @@ public class ConnectionHandlerTest {
 
         MockHttpServer ms = new MockHttpServer();
         ms.addHandler(new MockRequestHandler());
-        MockConnection mc = new MockConnection("GET /test HTTP/1.1\r\n\r\n");
+
+        //
+        // the connection should block in "reading" after providing the first request
+        //
+        String content = "GET /test HTTP/1.1\r\n\r\n";
+        MockConnection mc = new MockConnection(content);
+        final CountDownLatch readReleaseLatch = new CountDownLatch(1);
+        final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
+        mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
+                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
         assertTrue(!mc.isClosed());
 
-        ch.run();
+        new Thread(ch::run, "connection handling thread").start();
+
+        //
+        // wait until the request is processed
+        //
+
+        connectionHandlerAboutToBlock.await();
 
         //
         // "Connection: close" should NOT be present in the response
@@ -383,6 +453,12 @@ public class ConnectionHandlerTest {
         //
 
         assertTrue(!mc.isClosed());
+
+        //
+        // release the "blocked" thread
+        //
+
+        readReleaseLatch.countDown();
     }
 
     @Test
@@ -390,15 +466,31 @@ public class ConnectionHandlerTest {
 
         MockHttpServer ms = new MockHttpServer();
         ms.addHandler(new MockRequestHandler());
-        MockConnection mc = new MockConnection(
+
+        //
+        // the connection should block in "reading" after providing the first request
+        //
+        String content =
                 "GET /test HTTP/1.1\r\n" +
-                        "Connection: close\r\n\r\n");
+                "Connection: close\r\n\r\n";
+        MockConnection mc = new MockConnection(content);
+        final CountDownLatch readReleaseLatch = new CountDownLatch(1);
+        final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
+        mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
+                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
         assertTrue(!mc.isClosed());
 
-        ch.run();
+        new Thread(ch::run, "connection handling thread").start();
+
+        //
+        // wait until the request is processed
+        //
+
+        connectionHandlerAboutToBlock.await();
+
 
         //
         // "Connection: close" should be present in the response
@@ -414,6 +506,12 @@ public class ConnectionHandlerTest {
         //
 
         assertTrue(mc.isClosed());
+
+        //
+        // release the "blocked" thread
+        //
+
+        readReleaseLatch.countDown();
     }
 
     @Test
@@ -421,13 +519,35 @@ public class ConnectionHandlerTest {
 
         MockHttpServer ms = new MockHttpServer();
         ms.addHandler(new MockRequestHandler());
-        MockConnection mc = new MockConnection("GET /test HTTP/1.1\r\n\r\n");
+
+        //
+        // the connection should block in "reading" after providing the first request
+        //
+        String content = "GET /test HTTP/1.1\r\n\r\n";
+        MockConnection mc = new MockConnection(content);
+        final CountDownLatch readReleaseLatch = new CountDownLatch(1);
+        final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
+        mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
+                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
+        //
+        // disable persistent connection
+        //
+
+        ch.setPersistentConnection(false);
+
         assertTrue(!mc.isClosed());
 
-        ch.run();
+        new Thread(ch::run, "connection handling thread").start();
+
+        //
+        // wait until the request is processed
+        //
+
+        connectionHandlerAboutToBlock.await();
+
 
         //
         // "Connection: close" should be present in the response
@@ -443,6 +563,12 @@ public class ConnectionHandlerTest {
         //
 
         assertTrue(mc.isClosed());
+
+        //
+        // release the "blocked" thread
+        //
+
+        readReleaseLatch.countDown();
     }
 
     @Test
@@ -450,15 +576,31 @@ public class ConnectionHandlerTest {
 
         MockHttpServer ms = new MockHttpServer();
         ms.addHandler(new MockRequestHandler());
-        MockConnection mc = new MockConnection(
+
+        //
+        // the connection should block in "reading" after providing the first request
+        //
+        String content =
                 "GET /test HTTP/1.1\r\n" +
-                        "Connection: close\r\n\r\n");
+                "Connection: close\r\n\r\n";
+        MockConnection mc = new MockConnection(content);
+        final CountDownLatch readReleaseLatch = new CountDownLatch(1);
+        final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
+        mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
+                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
         assertTrue(!mc.isClosed());
 
-        ch.run();
+        new Thread(ch::run, "connection handling thread").start();
+
+        //
+        // wait until the request is processed
+        //
+
+        connectionHandlerAboutToBlock.await();
+
 
         //
         // "Connection: close" should be present in the response
@@ -474,6 +616,12 @@ public class ConnectionHandlerTest {
         //
 
         assertTrue(mc.isClosed());
+
+        //
+        // release the "blocked" thread
+        //
+
+        readReleaseLatch.countDown();
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

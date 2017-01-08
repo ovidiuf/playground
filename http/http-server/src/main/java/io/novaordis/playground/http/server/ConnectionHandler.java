@@ -23,11 +23,15 @@ import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
+import io.novaordis.playground.http.server.http.header.HttpHeader;
 import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
 import io.novaordis.playground.http.server.rhandler.RequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Handles a Connection (essentially the content arriving from the underlying socket) by extracting HTTP requests
@@ -58,7 +62,7 @@ public class ConnectionHandler implements Runnable {
     private final Connection connection;
     private final Thread connectionHandlerThread;
 
-    private boolean closeConnectionAfterResponse;
+    private boolean persistentConnection;
 
     private volatile boolean active;
 
@@ -74,7 +78,7 @@ public class ConnectionHandler implements Runnable {
         this.server = server;
         this.connection = connection;
         this.active = true;
-        this.closeConnectionAfterResponse = false;
+        this.persistentConnection = true;
 
         String threadName = connection.toString() + " Handling Thread";
         connectionHandlerThread = new Thread(this, threadName);
@@ -122,6 +126,14 @@ public class ConnectionHandler implements Runnable {
     // Public ----------------------------------------------------------------------------------------------------------
 
     /**
+     * @return true if the connection handler enforces persistent connections. This is the default in HTTP/1.1
+     */
+    boolean isPersistentConnection() {
+
+        return persistentConnection;
+    }
+
+    /**
      * Initiate request processing on the handler's own thread
      */
     public void handleRequests() {
@@ -166,11 +178,15 @@ public class ConnectionHandler implements Runnable {
 
             logRequest(request);
 
+            preProcessRequest(request);
+
             HttpResponse response = passToHandler(request);
 
             response = prepareResponseForSending(response);
 
             sendResponse(response);
+
+            manageConnection();
         }
         catch (InvalidHttpMessageException e) {
 
@@ -185,6 +201,24 @@ public class ConnectionHandler implements Runnable {
         }
 
         return true;
+    }
+
+    /**
+     * This is invoked before the request is sent to the handler, and it's here to inspect the request and update
+     * the connection handler state based on various request headers (Connection, etc.)
+     */
+    void preProcessRequest(HttpRequest request) {
+
+        List<HttpHeader> hs = request.getHeader(HttpGeneralHeader.CONNECTION);
+        if (!hs.isEmpty()) {
+            HttpHeader h = hs.get(0);
+            String s = h.getFieldBody();
+            if ("close".equalsIgnoreCase(s)) {
+
+                log.debug("turning connection persistence off for " + connection);
+                persistentConnection = false;
+            }
+        }
     }
 
     /**
@@ -214,6 +248,13 @@ public class ConnectionHandler implements Runnable {
             response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
         }
 
+        if (!persistentConnection) {
+
+            //
+            // let the client know we're going to close the connection
+            //
+            response.addHeader(HttpGeneralHeader.CONNECTION, "close");
+        }
 
         return response;
     }
@@ -249,26 +290,31 @@ public class ConnectionHandler implements Runnable {
         connection.flush();
 
         logResponse(response);
+    }
+
+    void manageConnection() {
 
         //
         // close or do not close the connection depending on the configuration.
         //
 
-        if (closeConnectionAfterResponse) {
+        if (persistentConnection) {
 
-            //
-            // close our connection and stop our thread
-            //
-            active = false;
-
-            log.debug("closing connection because " + this + " was configured to close the connection after a response");
-            connection.close();
+            return;
         }
+
+        //
+        // close our connection and stop our thread
+        //
+
+        active = false;
+        log.debug("closing connection because " + this + " was configured to close the connection after a response");
+        connection.close();
     }
 
-    void setCloseConnectionAfterResponse(boolean b) {
+    void setPersistentConnection(boolean b) {
 
-        this.closeConnectionAfterResponse = b;
+        this.persistentConnection = b;
     }
 
     // Protected -------------------------------------------------------------------------------------------------------
