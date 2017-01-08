@@ -89,7 +89,7 @@ public class Connection implements Comparable<Connection> {
         this.socket = socket;
         this.persistent = persistent;
         setCreationTimestamp(System.currentTimeMillis());
-        this.creationTimestamp = -1L;
+        this.closingTimestamp = -1L;
     }
 
     // Comparable implementation ---------------------------------------------------------------------------------------
@@ -235,12 +235,11 @@ public class Connection implements Comparable<Connection> {
 
         isClosing = true;
 
+        setClosingTimestamp(System.currentTimeMillis());
+
         try {
 
             socket.close();
-
-            setClosingTimestamp(System.currentTimeMillis());
-
             log.info(this + " closed");
         }
         catch (IOException e) {
