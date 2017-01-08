@@ -84,7 +84,7 @@ public class ManagementConsole implements ManagementConsoleMBean {
 
             Connection c = i.next();
 
-            s += c.getId() + ": " + c;
+            s += "connection " + c.getId() + " " + c.getConnectionInfo();
 
             if (i.hasNext()) {
 

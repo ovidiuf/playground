@@ -58,6 +58,8 @@ public class Connection {
 
     private volatile boolean isClosing;
 
+    private String userAgent;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -223,6 +225,60 @@ public class Connection {
     public boolean isClosed() {
 
         return socket.isClosed();
+    }
+
+    /**
+     * @return a string containing additional connection information, such as socket remote address and port, local
+     * address and port, User-Agent content etc..
+     */
+    public String getConnectionInfo() {
+
+        String socketInfo;
+
+        if (socket == null) {
+
+            socketInfo = "null socket";
+        }
+        else {
+
+            socketInfo =
+                    socket.getRemoteSocketAddress() + " -> " + socket.getLocalAddress() + ":" + socket.getLocalPort();
+
+        }
+
+        return socketInfo;
+    }
+
+    /**
+     * @return the content of the User-Agent headers for the requests processed by this connection. Normally, there
+     * should be only one value. If more than one value is detected, the setUserAgent() implementation will warn, but
+     * it will record the history. May return null if no User-Agent was seen so far.
+     */
+    public String getUserAgent() {
+
+        return userAgent;
+    }
+
+    /**
+     * The User-Agent is not supposed to change for subsequent requests on the connection. If it does, we warn and
+     * we record the history.
+     */
+    public void setUserAgent(String s) {
+
+        if (userAgent == null) {
+
+            userAgent = s;
+            return;
+        }
+
+        if (userAgent.equals(s)) {
+
+            return;
+        }
+
+        log.warn("different User-Agent value detected on " + this);
+
+        userAgent += ", " + s;
     }
 
     @Override
