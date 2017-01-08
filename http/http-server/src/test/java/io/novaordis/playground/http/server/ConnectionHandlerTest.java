@@ -21,6 +21,7 @@ import io.novaordis.playground.http.server.http.HttpMethod;
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
+import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
@@ -90,13 +91,14 @@ public class ConnectionHandlerTest {
     @Test
     public void connectionHandlingTopLevelLoop_ShouldExitAfterARequestResponsePair() throws Exception {
 
+        String request = "GET / HTTP/1.1\r\nHost: test\r\n\r\n";
+
         MockHttpServer ms = new MockHttpServer();
-        MockConnection mc = new MockConnection(0, "GET / HTTP/1.1\r\n\r\n");
+        MockConnection mc = new MockConnection(request);
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
         ms.addHandler(mh);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
-
 
         ch.run();
 
@@ -122,16 +124,16 @@ public class ConnectionHandlerTest {
     @Test
     public void connectionHandlingTopLevelLoop_ShouldBlock() throws Exception {
 
-        String inputStreamContent = "GET / HTTP/1.1\r\n\r\n";
+        String request = "GET / HTTP/1.1\r\nHost: test\r\n\r\n";
         MockHttpServer ms = new MockHttpServer();
-        MockConnection mc = new MockConnection(0, inputStreamContent);
+        MockConnection mc = new MockConnection(0, request);
         //
         // we block after inputStreamContent.length() characters are read, which is right after the first request
         //
         final CountDownLatch readBlocked = new CountDownLatch(1);
         final CountDownLatch readReleaseLatch = new CountDownLatch(1);
         mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
-                inputStreamContent.length(), readBlocked, readReleaseLatch);
+                request.length(), readBlocked, readReleaseLatch);
 
         MockRequestHandler mh = new MockRequestHandler(); // returns a 200 OK for any request
         ms.addHandler(mh);
@@ -258,6 +260,7 @@ public class ConnectionHandlerTest {
         assertNull(mc.getUserAgent());
 
         HttpRequest r = new HttpRequest(HttpMethod.GET, "/test");
+        r.addHeader(HttpRequestHeader.HOST, "test");
         r.addHeader(HttpRequestHeader.USER_AGENT, "test user agent");
 
         ch.preProcessRequest(r);
@@ -276,11 +279,34 @@ public class ConnectionHandlerTest {
         assertTrue(mc.isPersistent());
 
         HttpRequest r = new HttpRequest(HttpMethod.GET, "/test");
+        r.addHeader(HttpRequestHeader.HOST, "test");
         r.addHeader(HttpGeneralHeader.CONNECTION, "close");
 
         ch.preProcessRequest(r);
 
         assertFalse(mc.isPersistent());
+    }
+
+    @Test
+    public void preProcessRequest_RFC2616_14_23_400IfNoHost() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        MockConnection mc = new MockConnection();
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        HttpRequest r = new HttpRequest(HttpMethod.GET, "/test");
+
+        try {
+
+            ch.preProcessRequest(r);
+            fail("should throw exception");
+        }
+        catch(InvalidHttpRequestException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("client sent HTTP/1.1 request without hostname (see RFC2616 section 14.23)", msg);
+        }
     }
 
     // prepareResponseForSending() -------------------------------------------------------------------------------------
@@ -446,12 +472,15 @@ public class ConnectionHandlerTest {
         //
         // the connection should block in "reading" after providing the first request
         //
-        String content = "GET /test HTTP/1.1\r\n\r\n";
-        MockConnection mc = new MockConnection(content);
+        String request =
+                "GET /test HTTP/1.1\r\n" +
+                        "Host: test\r\n" +
+                        "\r\n";
+        MockConnection mc = new MockConnection(request);
         final CountDownLatch readReleaseLatch = new CountDownLatch(1);
         final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
         mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
-                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
+                request.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
@@ -495,14 +524,15 @@ public class ConnectionHandlerTest {
         //
         // the connection should block in "reading" after providing the first request
         //
-        String content =
+        String request =
                 "GET /test HTTP/1.1\r\n" +
-                "Connection: close\r\n\r\n";
-        MockConnection mc = new MockConnection(content);
+                        "Host: test\r\n" +
+                        "Connection: close\r\n\r\n";
+        MockConnection mc = new MockConnection(request);
         final CountDownLatch readReleaseLatch = new CountDownLatch(1);
         final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
         mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
-                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
+                request.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
@@ -548,12 +578,15 @@ public class ConnectionHandlerTest {
         //
         // the connection should block in "reading" after providing the first request
         //
-        String content = "GET /test HTTP/1.1\r\n\r\n";
-        MockConnection mc = new MockConnection(content);
+        String request =
+                "GET /test HTTP/1.1\r\n" +
+                        "Host: test\r\n" +
+                        "\r\n";
+        MockConnection mc = new MockConnection(request);
         final CountDownLatch readReleaseLatch = new CountDownLatch(1);
         final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
         mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
-                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
+                request.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
@@ -605,14 +638,15 @@ public class ConnectionHandlerTest {
         //
         // the connection should block in "reading" after providing the first request
         //
-        String content =
+        String request =
                 "GET /test HTTP/1.1\r\n" +
-                "Connection: close\r\n\r\n";
-        MockConnection mc = new MockConnection(content);
+                        "Host: test\r\n" +
+                        "Connection: close\r\n\r\n";
+        MockConnection mc = new MockConnection(request);
         final CountDownLatch readReleaseLatch = new CountDownLatch(1);
         final CountDownLatch connectionHandlerAboutToBlock = new CountDownLatch(1);
         mc.blockInReadingAfterTheSpecifiedNumberOfCharacters(
-                content.length(), connectionHandlerAboutToBlock, readReleaseLatch);
+                request.length(), connectionHandlerAboutToBlock, readReleaseLatch);
 
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 

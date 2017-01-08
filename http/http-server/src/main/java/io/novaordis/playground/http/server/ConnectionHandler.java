@@ -22,6 +22,7 @@ import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
+import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
@@ -186,7 +187,7 @@ public class ConnectionHandler implements Runnable {
             //
             String msg = e.getMessage();
             log.error(msg);
-            log.debug("failed to parse HTTP request", e);
+            log.debug("invalid HTTP request", e);
             sendResponse(new HttpResponse(HttpStatusCode.BAD_REQUEST, msg.getBytes()));
         }
 
@@ -195,11 +196,18 @@ public class ConnectionHandler implements Runnable {
 
     /**
      * This is invoked before the request is sent to the handler, and it's here to inspect the request and update
-     * the connection handler state based on various request headers (Connection, etc.)
+     * the connection handler state based on various request headers (Connection, Host, etc.)
      */
-    void preProcessRequest(HttpRequest request) {
+    void preProcessRequest(HttpRequest request) throws InvalidHttpRequestException {
 
-        List<HttpHeader> hs = request.getHeader(HttpGeneralHeader.CONNECTION);
+        List<HttpHeader> hs = request.getHeader(HttpRequestHeader.HOST);
+        if (hs.isEmpty()) {
+
+            throw new InvalidHttpRequestException(
+                    "client sent HTTP/1.1 request without hostname (see RFC2616 section 14.23)");
+        }
+
+        hs = request.getHeader(HttpGeneralHeader.CONNECTION);
         if (!hs.isEmpty()) {
             HttpHeader h = hs.get(0);
             String s = h.getFieldBody();
