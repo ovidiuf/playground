@@ -17,6 +17,10 @@
 package io.novaordis.playground.http.server;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Server Configuration.
@@ -34,10 +38,12 @@ public class Configuration {
 
     private int port;
     private File documentRoot;
+    private Boolean persistentConnection;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public Configuration(String[] args) throws Exception {
+
 
         if (args.length == 0) {
 
@@ -55,13 +61,56 @@ public class Configuration {
             throw new Exception("\"" + s + "\" is not a valid port value");
         }
 
-        if (args.length >= 2) {
+        List<String> argList = new ArrayList<>();
+        argList.addAll(Arrays.asList(args).subList(1, args.length));
 
-            documentRoot = new File(args[1]);
+        for(Iterator<String> ai = argList.iterator(); ai.hasNext(); ) {
+
+            String crt = ai.next();
+            if (crt.startsWith("persistent-connections=")) {
+
+                crt = crt.substring("persistent-connections=".length());
+
+                if ("false".equalsIgnoreCase(crt)) {
+
+                    persistentConnection = false;
+                }
+                else if (!"true".equalsIgnoreCase(crt)) {
+
+                    throw new Exception("invalid persistent-connections value: " + crt);
+                }
+
+                ai.remove();
+            }
+            else if (documentRoot == null) {
+
+                documentRoot = new File(crt);
+                ai.remove();
+            }
         }
-        else {
+
+        if (!argList.isEmpty()) {
+
+            s = "";
+            for(String a: argList) {
+                s += a + " ";
+            }
+
+            throw new Exception("unknown arguments: " + s);
+        }
+
+        //
+        // defaults
+        //
+
+        if (documentRoot == null) {
 
             documentRoot = new File(".");
+        }
+
+        if (persistentConnection == null) {
+
+            persistentConnection = true;
         }
     }
 
@@ -83,6 +132,13 @@ public class Configuration {
         return documentRoot;
     }
 
+    /**
+     * @{linktourl https://kb.novaordis.com/index.php/HTTP_Persistent_Connections}
+     */
+    public boolean isPersistentConnections() {
+
+        return persistentConnection;
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
