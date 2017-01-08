@@ -21,8 +21,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -48,9 +50,15 @@ public class ConnectionManager {
     private AtomicLong connectionIdGenerator;
 
     // Connections keyed by ID
-    private Map<Long, Connection> connections;
+    private Map<Long, Connection> aliveConnections;
 
     private boolean persistentConnections;
+
+    //
+    // maintained in the order in which they were closed - for reporting purposes. Note that this may grow large
+    // after a while TODO find a solution to the memory problem
+    //
+    final private List<Connection> closedConnections;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -61,7 +69,8 @@ public class ConnectionManager {
 
         this.persistentConnections = persistentConnections;
         connectionIdGenerator = new AtomicLong(-1);
-        connections = new ConcurrentHashMap<>();
+        aliveConnections = new ConcurrentHashMap<>();
+        closedConnections = new ArrayList<>();
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -74,7 +83,7 @@ public class ConnectionManager {
     public Connection buildConnection(Socket socket) throws IOException {
 
         Connection c = new Connection(connectionIdGenerator.incrementAndGet(), socket, persistentConnections, this);
-        connections.put(c.getId(), c);
+        aliveConnections.put(c.getId(), c);
 
         log.info(c + " created and registered");
 
@@ -83,26 +92,42 @@ public class ConnectionManager {
 
     public int getConnectionCount() {
 
-        return connections.size();
+        return aliveConnections.size();
     }
 
     /**
-     * @return a copy of the snapshot of the connection map.
+     * @return a copy of the snapshot of the alive connection map.
      */
     public Collection<Connection> getConnections() {
 
-        return new HashSet<>(connections.values());
+        return new HashSet<>(aliveConnections.values());
+    }
+
+    /**
+     * @return a copy fo the list of closed connection, in the order in which they were closed.
+     */
+    public List<Connection> getClosedConnections() {
+
+        synchronized (closedConnections) {
+
+            return new ArrayList<>(closedConnections);
+        }
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
     void remove(Connection c) {
 
-        Connection c2 = connections.remove(c.getId());
+        Connection c2 = aliveConnections.remove(c.getId());
 
         if (c2 != null) {
 
             log.info(c2 + " removed");
+
+            synchronized (closedConnections) {
+
+                closedConnections.add(c2);
+            }
         }
     }
 

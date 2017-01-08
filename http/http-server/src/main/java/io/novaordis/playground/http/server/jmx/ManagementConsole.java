@@ -67,24 +67,51 @@ public class ManagementConsole implements ManagementConsoleMBean {
     // Methods ---------------------------------------------------------------------------------------------------------
 
     @Override
-    public String listConnections() {
+    public void listConnections() {
 
         ConnectionManager cm = server.getConnectionManager();
 
+        //
+        // live connections
+        //
+
         List<Connection> ageOrderedConnections = new ArrayList<>(cm.getConnections());
+        Collections.sort(ageOrderedConnections);
+        String s = connectionListToString(true, ageOrderedConnections);
+        log.info(s);
+    }
 
-        String s = "";
+    @Override
+    public void listClosedConnections() {
 
-        if (ageOrderedConnections.isEmpty()) {
+        ConnectionManager cm = server.getConnectionManager();
 
-            s = "no connections";
-            log.info(s);
-            return s;
+        //
+        // closed connections; the method returns an already ordered copy
+        //
+
+        List<Connection> closedConnections = cm.getClosedConnections();
+        String s = connectionListToString(false, closedConnections);
+        log.info(s);
+    }
+
+    // Public ----------------------------------------------------------------------------------------------------------
+
+    // Package protected -----------------------------------------------------------------------------------------------
+
+    /**
+     * @param alive true if the connections in the list are live connections, false if they are closed connections.
+     */
+    String connectionListToString(boolean alive, List<Connection> connections) {
+
+        if (connections.isEmpty()) {
+
+            return "no " + (alive ? "live" : "closed") + " connections";
         }
 
-        Collections.sort(ageOrderedConnections);
+        String s = (alive ? "live" : "closed") + " connections:\n";
 
-        for(Iterator<Connection> i = ageOrderedConnections.iterator(); i.hasNext(); ) {
+        for(Iterator<Connection> i = connections.iterator(); i.hasNext(); ) {
 
             Connection c = i.next();
 
@@ -96,14 +123,8 @@ public class ManagementConsole implements ManagementConsoleMBean {
             }
         }
 
-        log.info("connections:\n" + s);
-
         return s;
     }
-
-    // Public ----------------------------------------------------------------------------------------------------------
-
-    // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
 

@@ -66,6 +66,11 @@ public class Connection implements Comparable<Connection> {
 
     private long creationTimestamp;
 
+    //
+    // -1 if the connection is still alive
+    //
+    private long closingTimestamp;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -84,6 +89,7 @@ public class Connection implements Comparable<Connection> {
         this.socket = socket;
         this.persistent = persistent;
         setCreationTimestamp(System.currentTimeMillis());
+        this.creationTimestamp = -1L;
     }
 
     // Comparable implementation ---------------------------------------------------------------------------------------
@@ -233,6 +239,8 @@ public class Connection implements Comparable<Connection> {
 
             socket.close();
 
+            setClosingTimestamp(System.currentTimeMillis());
+
             log.info(this + " closed");
         }
         catch (IOException e) {
@@ -262,6 +270,22 @@ public class Connection implements Comparable<Connection> {
 
         String creationInfo = TIMESTAMP_FORMAT.format(getCreationTimestamp());
 
+        String timeAlive;
+
+        if (closingTimestamp == -1L) {
+
+            //
+            // connection is still alive
+            //
+
+            timeAlive = "alive for " + ((System.currentTimeMillis() - creationTimestamp) / 1000)  + " secs";
+
+        }
+        else {
+
+            timeAlive = "lived for " + ((closingTimestamp - creationTimestamp) / 1000)  + " secs";
+        }
+
         String socketInfo;
 
         if (socket == null) {
@@ -277,7 +301,7 @@ public class Connection implements Comparable<Connection> {
 
         String userAgentInfo = userAgent == null ? "no User-Agent info" : userAgent;
 
-        return creationInfo + " " + socketInfo + " " + userAgentInfo;
+        return creationInfo + " " + timeAlive + " " + socketInfo + " " + userAgentInfo;
     }
 
     /**
@@ -330,6 +354,10 @@ public class Connection implements Comparable<Connection> {
         this.creationTimestamp = t;
     }
 
+    void setClosingTimestamp(long t) {
+
+        this.closingTimestamp = t;
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

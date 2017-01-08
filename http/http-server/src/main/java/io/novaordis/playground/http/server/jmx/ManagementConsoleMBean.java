@@ -33,8 +33,14 @@ public interface ManagementConsoleMBean {
     int getConnectionCount();
 
     /**
-     * Lists connections both by logging the connection list and returning it as the result of this method.
+     * Lists alive connections by logging the connection list as INFO.
      */
-    String listConnections();
+    void listConnections();
+
+    /**
+     * Lists the connections that have been closed since the server was started, by logging the connection list as INFO.
+     */
+    void listClosedConnections();
+
 
 }
