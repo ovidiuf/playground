@@ -22,8 +22,10 @@ import io.novaordis.playground.http.server.connection.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -69,18 +71,20 @@ public class ManagementConsole implements ManagementConsoleMBean {
 
         ConnectionManager cm = server.getConnectionManager();
 
-        Collection<Connection> connections = cm.getConnections();
+        List<Connection> ageOrderedConnections = new ArrayList<>(cm.getConnections());
 
         String s = "";
 
-        if (connections.isEmpty()) {
+        if (ageOrderedConnections.isEmpty()) {
 
             s = "no connections";
             log.info(s);
             return s;
         }
 
-        for(Iterator<Connection> i = connections.iterator(); i.hasNext(); ) {
+        Collections.sort(ageOrderedConnections);
+
+        for(Iterator<Connection> i = ageOrderedConnections.iterator(); i.hasNext(); ) {
 
             Connection c = i.next();
 

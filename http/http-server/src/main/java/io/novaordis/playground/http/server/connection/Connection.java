@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * The abstraction used to model a browser - server connection, including the socket and the underlying TCP/IP
@@ -37,11 +39,13 @@ import java.net.SocketException;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class Connection {
+public class Connection implements Comparable<Connection> {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     private static final Logger log = LoggerFactory.getLogger(Connection.class);
+
+    public static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS");
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -60,6 +64,8 @@ public class Connection {
 
     private String userAgent;
 
+    private long creationTimestamp;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -77,6 +83,27 @@ public class Connection {
         this.manager = manager;
         this.socket = socket;
         this.persistent = persistent;
+        setCreationTimestamp(System.currentTimeMillis());
+    }
+
+    // Comparable implementation ---------------------------------------------------------------------------------------
+
+    /**
+     * Compares connections based on creation timestamp.
+     * @return a negative integer if this connection is "older" than that connection, 0 if they were created in the
+     * same millisecond and a positive integer if this connection is "younger" than that connection.
+     */
+    @Override
+    public int compareTo(@SuppressWarnings("NullableProblems") Connection that) {
+
+        if (that == null) {
+            //
+            // as per javadoc
+            //
+            throw new NullPointerException("null connection to compare to");
+        }
+
+        return (int)(getCreationTimestamp() - that.getCreationTimestamp());
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -233,6 +260,8 @@ public class Connection {
      */
     public String getConnectionInfo() {
 
+        String creationInfo = TIMESTAMP_FORMAT.format(getCreationTimestamp());
+
         String socketInfo;
 
         if (socket == null) {
@@ -248,7 +277,7 @@ public class Connection {
 
         String userAgentInfo = userAgent == null ? "no User-Agent info" : userAgent;
 
-        return socketInfo + " " + userAgentInfo;
+        return creationInfo + " " + socketInfo + " " + userAgentInfo;
     }
 
     /**
@@ -283,6 +312,11 @@ public class Connection {
         userAgent += ", " + s;
     }
 
+    public long getCreationTimestamp() {
+
+        return creationTimestamp;
+    }
+
     @Override
     public String toString() {
 
@@ -291,12 +325,19 @@ public class Connection {
 
     // Package protected -----------------------------------------------------------------------------------------------
 
+    void setCreationTimestamp(long t) {
+
+        this.creationTimestamp = t;
+    }
+
+
     // Protected -------------------------------------------------------------------------------------------------------
 
     protected Socket getSocket() {
 
         return socket;
     }
+
 
     // Private ---------------------------------------------------------------------------------------------------------
 

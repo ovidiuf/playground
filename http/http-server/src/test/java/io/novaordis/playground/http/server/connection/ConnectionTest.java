@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -69,6 +70,32 @@ public class ConnectionTest {
         c.setUserAgent("something else");
 
         assertEquals("something, something else", c.getUserAgent());
+    }
+
+    // comparable ------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void comparable_NotSameAge() throws Exception {
+
+        Connection c = new Connection(0, new MockSocket(), false, null);
+        c.setCreationTimestamp(10L);
+        Connection c2 = new Connection(0, new MockSocket(), false, null);
+        c2.setCreationTimestamp(20L);
+
+        assertTrue(c.compareTo(c2) < 0);
+        assertTrue(c2.compareTo(c) > 0);
+    }
+
+    @Test
+    public void comparable_SameAge() throws Exception {
+
+        Connection c = new Connection(0, new MockSocket(), false, null);
+        c.setCreationTimestamp(10L);
+        Connection c2 = new Connection(0, new MockSocket(), false, null);
+        c2.setCreationTimestamp(10L);
+
+        assertTrue(c.compareTo(c2) == 0);
+        assertTrue(c2.compareTo(c) == 0);
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
