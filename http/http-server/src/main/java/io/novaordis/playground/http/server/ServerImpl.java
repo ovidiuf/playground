@@ -179,7 +179,7 @@ public class ServerImpl implements HttpServer {
         acceptorThread.setDaemon(false);
         acceptorThread.start();
 
-        log.info("http server bound to " + port);
+        log.info("http server bound to " + port + ", document root " + documentRoot.getAbsolutePath());
     }
 
     // Server implementation -------------------------------------------------------------------------------------------
