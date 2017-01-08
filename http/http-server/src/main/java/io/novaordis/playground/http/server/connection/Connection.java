@@ -246,7 +246,9 @@ public class Connection {
 
         }
 
-        return socketInfo;
+        String userAgentInfo = userAgent == null ? "no User-Agent info" : userAgent;
+
+        return socketInfo + " " + userAgentInfo;
     }
 
     /**

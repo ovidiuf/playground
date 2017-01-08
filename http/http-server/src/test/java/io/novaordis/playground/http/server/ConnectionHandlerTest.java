@@ -24,6 +24,7 @@ import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
+import io.novaordis.playground.http.server.http.header.HttpRequestHeader;
 import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -241,6 +243,28 @@ public class ConnectionHandlerTest {
     }
 
     // preProcessRequest() ---------------------------------------------------------------------------------------------
+
+    /**
+     * Default operations that have to be performed on each request.
+     */
+    @Test
+    public void preProcessRequest() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        MockConnection mc = new MockConnection();
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        assertTrue(mc.isPersistent());
+        assertNull(mc.getUserAgent());
+
+        HttpRequest r = new HttpRequest(HttpMethod.GET, "/test");
+        r.addHeader(HttpRequestHeader.USER_AGENT, "test user agent");
+
+        ch.preProcessRequest(r);
+
+        assertTrue(mc.isPersistent());
+        assertEquals("test user agent", mc.getUserAgent());
+    }
 
     @Test
     public void preProcessRequest_ConnectionClose() throws Exception {

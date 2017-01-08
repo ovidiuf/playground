@@ -25,6 +25,7 @@ import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
+import io.novaordis.playground.http.server.http.header.HttpRequestHeader;
 import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
 import io.novaordis.playground.http.server.rhandler.RequestHandler;
@@ -207,6 +208,16 @@ public class ConnectionHandler implements Runnable {
                 log.debug("turning connection persistence off for " + connection);
                 connection.setPersistent(false);
             }
+        }
+
+        hs = request.getHeader(HttpRequestHeader.USER_AGENT);
+        if (!hs.isEmpty()) {
+            HttpHeader h = hs.get(0);
+            //
+            // TODO what if we have more User-Agent headers?
+            //
+            String s = h.getFieldBody();
+            connection.setUserAgent(s);
         }
     }
 
