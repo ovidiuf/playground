@@ -104,7 +104,7 @@ public class ServerImpl implements HttpServer {
 
         listenLatch = new CountDownLatch(1);
 
-        this.connectionManager = new ConnectionManager();
+        this.connectionManager = new ConnectionManager(configuration.isPersistentConnections());
 
         // must be invoked after documentRoot and other state required by handlers had been installed
         initializeHandlers();

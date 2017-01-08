@@ -50,10 +50,16 @@ public class ConnectionManager {
     // Connections keyed by ID
     private Map<Long, Connection> connections;
 
+    private boolean persistentConnections;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public ConnectionManager() {
+    /**
+     * @param persistentConnections says whether this manager builds persistent connections or not
+     */
+    public ConnectionManager(boolean persistentConnections) {
 
+        this.persistentConnections = persistentConnections;
         connectionIdGenerator = new AtomicLong(-1);
         connections = new ConcurrentHashMap<>();
     }
@@ -67,7 +73,7 @@ public class ConnectionManager {
      */
     public Connection buildConnection(Socket socket) throws IOException {
 
-        Connection c = new Connection(connectionIdGenerator.incrementAndGet(), socket, this);
+        Connection c = new Connection(connectionIdGenerator.incrementAndGet(), socket, persistentConnections, this);
         connections.put(c.getId(), c);
 
         log.info(c + " created and registered");

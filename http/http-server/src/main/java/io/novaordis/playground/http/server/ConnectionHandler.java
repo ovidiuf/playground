@@ -62,8 +62,6 @@ public class ConnectionHandler implements Runnable {
     private final Connection connection;
     private final Thread connectionHandlerThread;
 
-    private boolean persistentConnection;
-
     private volatile boolean active;
 
     private HttpServer server;
@@ -78,7 +76,6 @@ public class ConnectionHandler implements Runnable {
         this.server = server;
         this.connection = connection;
         this.active = true;
-        this.persistentConnection = true;
 
         String threadName = connection.toString() + " Handling Thread";
         connectionHandlerThread = new Thread(this, threadName);
@@ -128,9 +125,9 @@ public class ConnectionHandler implements Runnable {
     /**
      * @return true if the connection handler enforces persistent connections. This is the default in HTTP/1.1
      */
-    boolean isPersistentConnection() {
+    boolean isConnectionPersistent() {
 
-        return persistentConnection;
+        return connection.isPersistent();
     }
 
     /**
@@ -216,7 +213,7 @@ public class ConnectionHandler implements Runnable {
             if ("close".equalsIgnoreCase(s)) {
 
                 log.debug("turning connection persistence off for " + connection);
-                persistentConnection = false;
+                connection.setPersistent(false);
             }
         }
     }
@@ -248,7 +245,7 @@ public class ConnectionHandler implements Runnable {
             response.addHeader(HttpResponseHeader.SERVER, server.getServerType());
         }
 
-        if (!persistentConnection) {
+        if (!connection.isPersistent()) {
 
             //
             // let the client know we're going to close the connection
@@ -298,7 +295,7 @@ public class ConnectionHandler implements Runnable {
         // close or do not close the connection depending on the configuration.
         //
 
-        if (persistentConnection) {
+        if (connection.isPersistent()) {
 
             return;
         }
@@ -314,7 +311,7 @@ public class ConnectionHandler implements Runnable {
 
     void setPersistentConnection(boolean b) {
 
-        this.persistentConnection = b;
+        connection.setPersistent(b);
     }
 
     // Protected -------------------------------------------------------------------------------------------------------

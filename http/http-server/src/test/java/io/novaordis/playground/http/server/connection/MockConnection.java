@@ -52,7 +52,7 @@ public class MockConnection extends Connection {
 
     public MockConnection(long id) throws IOException {
 
-        super(id, new MockSocket(), null);
+        super(id, new MockSocket(), true, null);
         this.flushedOutputContent = new ArrayList<>();
     }
 
@@ -63,7 +63,7 @@ public class MockConnection extends Connection {
 
     public MockConnection(long id, String inputStreamContent) throws IOException {
 
-        super(id, new MockSocket(inputStreamContent), null);
+        super(id, new MockSocket(inputStreamContent), true, null);
         this.flushedOutputContent = new ArrayList<>();
     }
 

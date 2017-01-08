@@ -53,20 +53,25 @@ public class Connection {
 
     private Socket socket;
 
+    private boolean persistent;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
      * Instances built only by the ConnectionManager (or subclasses or other classes of this package).
      *
      * @param socket the underlying socket
+     * @param persistent says whether this connection is persistent or not
      *
      * @exception java.io.IOException if we fail due to an I/O problem during the creation process.
      */
-    protected Connection(long id, Socket socket, ConnectionManager manager) throws IOException {
+    protected Connection(long id, Socket socket, boolean persistent, ConnectionManager manager)
+            throws IOException {
 
         this.id = id;
         this.manager = manager;
         this.socket = socket;
+        this.persistent = persistent;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -74,6 +79,16 @@ public class Connection {
     public long getId() {
 
         return id;
+    }
+
+    public boolean isPersistent() {
+
+        return persistent;
+    }
+
+    public void setPersistent(boolean b) {
+
+        this.persistent = b;
     }
 
     /**
