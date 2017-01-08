@@ -123,14 +123,6 @@ public class ConnectionHandler implements Runnable {
     // Public ----------------------------------------------------------------------------------------------------------
 
     /**
-     * @return true if the connection handler enforces persistent connections. This is the default in HTTP/1.1
-     */
-    boolean isConnectionPersistent() {
-
-        return connection.isPersistent();
-    }
-
-    /**
      * Initiate request processing on the handler's own thread
      */
     public void handleRequests() {
@@ -307,11 +299,6 @@ public class ConnectionHandler implements Runnable {
         active = false;
         log.debug("closing connection because " + this + " was configured to close the connection after a response");
         connection.close();
-    }
-
-    void setPersistentConnection(boolean b) {
-
-        connection.setPersistent(b);
     }
 
     // Protected -------------------------------------------------------------------------------------------------------

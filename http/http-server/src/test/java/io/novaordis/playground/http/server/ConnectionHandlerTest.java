@@ -249,14 +249,14 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection();
         ConnectionHandler ch = new ConnectionHandler(ms, mc);
 
-        assertTrue(ch.isConnectionPersistent());
+        assertTrue(mc.isPersistent());
 
         HttpRequest r = new HttpRequest(HttpMethod.GET, "/test");
         r.addHeader(HttpGeneralHeader.CONNECTION, "close");
 
         ch.preProcessRequest(r);
 
-        assertFalse(ch.isConnectionPersistent());
+        assertFalse(mc.isPersistent());
     }
 
     // prepareResponseForSending() -------------------------------------------------------------------------------------
@@ -264,9 +264,10 @@ public class ConnectionHandlerTest {
     @Test
     public void prepareResponseForSending() throws Exception {
 
-        ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), new MockConnection());
+        MockConnection mc = new MockConnection();
+        ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), mc);
 
-        assertTrue(ch.isConnectionPersistent());
+        assertTrue(mc.isPersistent());
 
         HttpResponse r = new HttpResponse();
 
@@ -301,10 +302,10 @@ public class ConnectionHandlerTest {
     @Test
     public void prepareResponseForSending_NonPersistentConnection() throws Exception {
 
-        ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), new MockConnection());
+        MockConnection mc = new MockConnection();
+        ConnectionHandler ch = new ConnectionHandler(new MockHttpServer(), mc);
 
-        ch.setPersistentConnection(false);
-        assertFalse(ch.isConnectionPersistent());
+        mc.setPersistent(false);
 
         HttpResponse r = new HttpResponse();
 
@@ -328,7 +329,7 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection(0);
         ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
-        h.setPersistentConnection(false);
+        mc.setPersistent(false);
 
         HttpResponse r = new HttpResponse();
 
@@ -375,7 +376,7 @@ public class ConnectionHandlerTest {
         MockConnection mc = new MockConnection(0);
         ConnectionHandler h = new ConnectionHandler(new MockHttpServer(), mc);
 
-        h.setPersistentConnection(true);
+        mc.setPersistent(true);
 
         HttpResponse r = new HttpResponse();
 
@@ -536,7 +537,7 @@ public class ConnectionHandlerTest {
         // disable persistent connection
         //
 
-        ch.setPersistentConnection(false);
+        mc.setPersistent(false);
 
         assertTrue(!mc.isClosed());
 

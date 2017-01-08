@@ -81,6 +81,9 @@ public class Connection {
         return id;
     }
 
+    /**
+    * @return true if the connection handler enforces persistent connections. This is the default in HTTP/1.1
+    */
     public boolean isPersistent() {
 
         return persistent;
