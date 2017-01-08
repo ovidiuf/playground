@@ -39,8 +39,15 @@ public interface ManagementConsoleMBean {
 
     /**
      * Lists the connections that have been closed since the server was started, by logging the connection list as INFO.
+     *
+     * @see ManagementConsoleMBean#clearClosedConnectionHistory()
      */
     void listClosedConnections();
+
+    /**
+     * @see ManagementConsoleMBean#listClosedConnections()
+     */
+    void clearClosedConnectionHistory();
 
 
 }

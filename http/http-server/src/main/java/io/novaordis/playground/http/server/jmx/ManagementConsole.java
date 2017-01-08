@@ -95,6 +95,13 @@ public class ManagementConsole implements ManagementConsoleMBean {
         log.info(s);
     }
 
+    @Override
+    public void clearClosedConnectionHistory() {
+
+        ConnectionManager cm = server.getConnectionManager();
+        cm.clearClosedConnectionHistory();
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------

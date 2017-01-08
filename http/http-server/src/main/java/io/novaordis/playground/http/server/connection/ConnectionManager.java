@@ -114,6 +114,16 @@ public class ConnectionManager {
         }
     }
 
+    public void clearClosedConnectionHistory() {
+
+        synchronized (closedConnections) {
+
+            closedConnections.clear();
+
+            log.info("closed connection history cleared");
+        }
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     void remove(Connection c) {
