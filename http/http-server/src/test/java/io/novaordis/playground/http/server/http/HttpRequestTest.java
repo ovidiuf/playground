@@ -21,6 +21,7 @@ import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
 import io.novaordis.playground.http.server.http.header.HttpRequestHeader;
+import io.novaordis.playground.http.server.http.header.InvalidHttpHeaderException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -403,7 +404,7 @@ public class HttpRequestTest extends MessageTest {
             HttpRequest.readRequest(mc);
             fail("should throw exception");
         }
-        catch(InvalidHttpRequestException e) {
+        catch(InvalidHttpHeaderException e) {
 
             String msg = e.getMessage();
             log.info(msg);

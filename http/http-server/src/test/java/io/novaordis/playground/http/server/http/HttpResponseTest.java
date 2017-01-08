@@ -101,6 +101,79 @@ public class HttpResponseTest extends MessageTest {
         assertEquals("test", new String(r.getBody()));
     }
 
+    @Test
+    public void constructor_WireContent_NoBody() throws Exception {
+
+        String wireContent =
+                "HTTP/1.1 200 OK\r\n" +
+                        "Content-Length: 0\r\n" +
+                        "Server: Mock\r\n" +
+                        "\r\n";
+
+        HttpResponse r = new HttpResponse(wireContent.getBytes());
+
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+        assertEquals(HttpStatusCode.OK, r.getStatusCode());
+
+        List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals("0", hs.get(0).getFieldBody());
+
+        hs = r.getHeader(HttpResponseHeader.SERVER);
+        assertEquals("Mock", hs.get(0).getFieldBody());
+
+        assertNull(r.getRequest());
+        assertNull(r.getBody());
+    }
+
+    @Test
+    public void constructor_WireContent_Body() throws Exception {
+
+        String wireContent =
+                "HTTP/1.1 200 OK\r\n" +
+                        "Content-Length: 9\r\n" +
+                        "Server: Mock\r\n" +
+                        "\r\n" +
+                        "some body";
+
+        HttpResponse r = new HttpResponse(wireContent.getBytes());
+
+        assertEquals("HTTP/1.1", r.getHttpVersion());
+        assertEquals(HttpStatusCode.OK, r.getStatusCode());
+
+        List<HttpHeader> hs = r.getHeader(HttpEntityHeader.CONTENT_LENGTH);
+        assertEquals("9", hs.get(0).getFieldBody());
+
+        hs = r.getHeader(HttpResponseHeader.SERVER);
+        assertEquals("Mock", hs.get(0).getFieldBody());
+
+        byte[] b = r.getBody();
+        assertEquals("some body", new String(b));
+
+        assertNull(r.getRequest());
+    }
+
+    @Test
+    public void constructor_WireContent_Body_LengthMismatch() throws Exception {
+
+        String wireContent =
+                "HTTP/1.1 200 OK\r\n" +
+                        "Content-Length: 100\r\n" +
+                        "Server: Mock\r\n" +
+                        "\r\n" +
+                        "some body";
+
+        try {
+
+            new HttpResponse(wireContent.getBytes());
+        }
+        catch(InvalidHttpMessageException e) {
+
+            String msg = e.getMessage();
+            log.info(msg);
+            assertEquals("Content-Length/body length mismatch", msg);
+        }
+    }
+
     // statusLineAndHeadersToWireFormat --------------------------------------------------------------------------------
 
     @Test

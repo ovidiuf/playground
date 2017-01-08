@@ -16,6 +16,9 @@
 
 package io.novaordis.playground.http.server.connection;
 
+import io.novaordis.playground.http.server.http.HttpResponse;
+import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -124,6 +127,17 @@ public class MockConnection extends Connection {
 
         BlockableInputStream bis = ((MockSocket)getSocket()).getInputStream();
         return bis.bytesLeftToEOS();
+    }
+
+    public HttpResponse getLastResponse() throws InvalidHttpMessageException {
+
+        List<byte[]> c = getFlushedOutputContent();
+
+        if (c.size() > 1) {
+            throw new RuntimeException("NOT YET IMPLEMENTED: don't know how to handle more than one flushed chunk");
+        }
+
+        return new HttpResponse(c.get(0));
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

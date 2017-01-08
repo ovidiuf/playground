@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server.http.header;
-
-import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
+package io.novaordis.playground.http.server.http;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
  */
-public class InvalidHttpHeaderException extends InvalidHttpMessageException {
+public class InvalidHttpMessageException extends Exception {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -34,12 +32,12 @@ public class InvalidHttpHeaderException extends InvalidHttpMessageException {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public InvalidHttpHeaderException() {
+    public InvalidHttpMessageException() {
 
         super();
     }
 
-    public InvalidHttpHeaderException(String s) {
+    public InvalidHttpMessageException(String s) {
 
         super(s);
     }

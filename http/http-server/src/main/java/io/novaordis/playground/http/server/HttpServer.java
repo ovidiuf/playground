@@ -29,8 +29,10 @@ public interface HttpServer {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
+    String SUPPORTED_HTTP_VERSION = "HTTP/1.1";
+
     // the path to be send into the server to shut it down
-    static String EXIT_URL = "/exit";
+    String EXIT_URL = "/exit";
 
     // Static ----------------------------------------------------------------------------------------------------------
 

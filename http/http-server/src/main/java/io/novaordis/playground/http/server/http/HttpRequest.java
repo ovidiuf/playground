@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.http.server.http;
 
+import io.novaordis.playground.http.server.HttpServer;
 import io.novaordis.playground.http.server.connection.Connection;
 import io.novaordis.playground.http.server.connection.ConnectionException;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
@@ -32,8 +33,6 @@ public class HttpRequest extends MessageImpl {
     // Constants -------------------------------------------------------------------------------------------------------
 
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
-
-    public static final String DEFAULT_HTTP_VERSION = "HTTP/1.1";
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -52,7 +51,7 @@ public class HttpRequest extends MessageImpl {
      * @exception InvalidHttpRequestException if we fail to parse the data arrived on the wire into a HttpRequest.
      */
     public static HttpRequest readRequest(Connection connection)
-            throws ConnectionException, InvalidHttpRequestException {
+            throws ConnectionException, InvalidHttpMessageException {
 
         RequestBuffer buffer = new RequestBuffer();
 
@@ -252,16 +251,16 @@ public class HttpRequest extends MessageImpl {
         this();
         this.method = method;
         this.path = path;
-        this.version = DEFAULT_HTTP_VERSION;
+        this.version = HttpServer.SUPPORTED_HTTP_VERSION;
         this.wireFormat = (method + " " + path + " " + version).getBytes();
     }
 
     /**
      * The header content, as read from the socket. Does not include the blank line.
      *
-     * @exception InvalidHttpHeaderException on faulty content that cannot be translated into a valid HTTP header
+     * @exception InvalidHttpMessageException on faulty content that cannot be translated into a valid HTTP header
      */
-    HttpRequest(byte[] wireFormat) throws InvalidHttpRequestException {
+    HttpRequest(byte[] wireFormat) throws InvalidHttpMessageException {
 
         this();
         this.wireFormat = wireFormat;

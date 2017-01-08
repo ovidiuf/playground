@@ -16,15 +16,21 @@
 
 package io.novaordis.playground.http.server.http.header;
 
-import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
+import io.novaordis.playground.http.server.http.HttpStatusCode;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/4/17
+ * @since 1/8/17
  */
-public class InvalidHttpHeaderException extends InvalidHttpMessageException {
+public class HttpStatusCodeTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    //private static final Logger log = LoggerFactory.getLogger(HttpStatusCodeTest.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -34,14 +40,27 @@ public class InvalidHttpHeaderException extends InvalidHttpMessageException {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public InvalidHttpHeaderException() {
+    // Tests -----------------------------------------------------------------------------------------------------------
 
-        super();
+    @Test
+    public void fromStatusLine_InvalidProtocolVersion() throws Exception {
+
+        HttpStatusCode c = HttpStatusCode.fromStatusLine("HTTP/1.0 200 OK");
+        assertNull(c);
     }
 
-    public InvalidHttpHeaderException(String s) {
+    @Test
+    public void fromStatusLine_InvalidStatusCode() throws Exception {
 
-        super(s);
+        HttpStatusCode c = HttpStatusCode.fromStatusLine("HTTP/1.1 600 Something");
+        assertNull(c);
+    }
+
+    @Test
+    public void fromStatusLine() throws Exception {
+
+        HttpStatusCode sc = HttpStatusCode.fromStatusLine("HTTP/1.1 200 OK");
+        assertEquals(HttpStatusCode.OK, sc);
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

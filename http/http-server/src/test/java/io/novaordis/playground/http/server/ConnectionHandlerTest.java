@@ -20,6 +20,7 @@ import io.novaordis.playground.http.server.connection.MockConnection;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
+import io.novaordis.playground.http.server.http.header.HttpGeneralHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
 import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import org.junit.Test;
@@ -354,6 +355,126 @@ public class ConnectionHandlerTest {
         assertFalse(mc.isClosed());
     }
 
+    // persistent connection behavior ----------------------------------------------------------------------------------
+
+    @Test
+    public void defaultPersistentConnections_ClientDoesNotRequestClosing() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        ms.addHandler(new MockRequestHandler());
+        MockConnection mc = new MockConnection("GET /test HTTP/1.1\r\n\r\n");
+
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        assertTrue(!mc.isClosed());
+
+        ch.run();
+
+        //
+        // "Connection: close" should NOT be present in the response
+        //
+
+        HttpResponse r = mc.getLastResponse();
+
+        assertTrue(r.getHeader(HttpGeneralHeader.CONNECTION).isEmpty());
+
+        //
+        // the connection should stay open
+        //
+
+        assertTrue(!mc.isClosed());
+    }
+
+    @Test
+    public void defaultPersistentConnections_ClientDoesRequestClosing() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        ms.addHandler(new MockRequestHandler());
+        MockConnection mc = new MockConnection(
+                "GET /test HTTP/1.1\r\n" +
+                        "Connection: close\r\n\r\n");
+
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        assertTrue(!mc.isClosed());
+
+        ch.run();
+
+        //
+        // "Connection: close" should be present in the response
+        //
+
+        HttpResponse r = mc.getLastResponse();
+
+        String s = r.getHeader(HttpGeneralHeader.CONNECTION).get(0).getFieldBody();
+        assertEquals("close", s);
+
+        //
+        // the connection should be closed
+        //
+
+        assertTrue(mc.isClosed());
+    }
+
+    @Test
+    public void persistentConnectionsDisabled_ClientDoesNotRequestClosing() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        ms.addHandler(new MockRequestHandler());
+        MockConnection mc = new MockConnection("GET /test HTTP/1.1\r\n\r\n");
+
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        assertTrue(!mc.isClosed());
+
+        ch.run();
+
+        //
+        // "Connection: close" should be present in the response
+        //
+
+        HttpResponse r = mc.getLastResponse();
+
+        String s = r.getHeader(HttpGeneralHeader.CONNECTION).get(0).getFieldBody();
+        assertEquals("close", s);
+
+        //
+        // the connection should be closed
+        //
+
+        assertTrue(mc.isClosed());
+    }
+
+    @Test
+    public void persistentConnectionsDisabled_ClientDoesRequestClosing() throws Exception {
+
+        MockHttpServer ms = new MockHttpServer();
+        ms.addHandler(new MockRequestHandler());
+        MockConnection mc = new MockConnection(
+                "GET /test HTTP/1.1\r\n" +
+                        "Connection: close\r\n\r\n");
+
+        ConnectionHandler ch = new ConnectionHandler(ms, mc);
+
+        assertTrue(!mc.isClosed());
+
+        ch.run();
+
+        //
+        // "Connection: close" should be present in the response
+        //
+
+        HttpResponse r = mc.getLastResponse();
+
+        String s = r.getHeader(HttpGeneralHeader.CONNECTION).get(0).getFieldBody();
+        assertEquals("close", s);
+
+        //
+        // the connection should be closed
+        //
+
+        assertTrue(mc.isClosed());
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

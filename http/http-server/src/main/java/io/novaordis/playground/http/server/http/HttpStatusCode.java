@@ -16,6 +16,10 @@
 
 package io.novaordis.playground.http.server.http;
 
+import io.novaordis.playground.http.server.HttpServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/4/17
@@ -30,6 +34,55 @@ public enum HttpStatusCode {
 
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     ;
+
+    private static final Logger log = LoggerFactory.getLogger(HttpStatusCode.class);
+
+    /**
+     * Parses a status line and extracts the corresponding status code.
+     *
+     * @return null if no status code is identified or an inconsistency, such as invalid HTTP version, occurs.
+     */
+    public static HttpStatusCode fromStatusLine(String statusLine) throws InvalidHttpResponseException {
+
+        if (!statusLine.startsWith(HttpServer.SUPPORTED_HTTP_VERSION)) {
+
+            return null;
+        }
+
+        statusLine = statusLine.substring(HttpServer.SUPPORTED_HTTP_VERSION.length()).trim();
+
+        int i = statusLine.indexOf(' ');
+        i = i == -1 ? statusLine.length() : i;
+
+        String sc = statusLine.substring(0, i);
+
+        int sci;
+
+        try {
+
+            sci = Integer.parseInt(sc);
+        }
+        catch(Exception e ) {
+
+            return null;
+        }
+
+        for(HttpStatusCode c: values()) {
+
+            if (c.getStatusCode() == sci) {
+
+                return c;
+            }
+        }
+
+        if (sci < 100 || sci >= 600) {
+
+            return null;
+        }
+
+        log.debug(sci + " not found among declared StatusCodes");
+        return null;
+    }
 
     private int statusCode;
     private String reasonPhrase;

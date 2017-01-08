@@ -21,7 +21,7 @@ import io.novaordis.playground.http.server.connection.ConnectionException;
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
-import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
+import io.novaordis.playground.http.server.http.InvalidHttpMessageException;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpResponseHeader;
 import io.novaordis.playground.http.server.rhandler.FileRequestHandler;
@@ -172,7 +172,7 @@ public class ConnectionHandler implements Runnable {
 
             sendResponse(response);
         }
-        catch (InvalidHttpRequestException e) {
+        catch (InvalidHttpMessageException e) {
 
             //
             // failed because we were not able to parse the data came on the wire, do not exit from the request

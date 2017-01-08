@@ -16,10 +16,14 @@
 
 package io.novaordis.playground.http.server.http;
 
+import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import io.novaordis.playground.http.server.http.header.HttpHeader;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -63,7 +67,7 @@ public class HttpResponse extends MessageImpl {
      */
     public HttpResponse() {
 
-        this(null);
+        this((HttpStatusCode)null);
     }
 
     public HttpResponse(HttpStatusCode statusCode) {
@@ -75,6 +79,91 @@ public class HttpResponse extends MessageImpl {
 
         this.statusCode = statusCode;
         setBody(entityBodyContent);
+    }
+
+    /**
+     * Reconstructs a HttpResponse from the wire content.
+     */
+    public HttpResponse(byte[] wireContent) throws InvalidHttpMessageException {
+
+        BufferedReader r = new BufferedReader(new StringReader(new String(wireContent)));
+
+        try {
+
+            String line;
+            boolean blankLineSeen = false;
+            ByteArrayOutputStream baos = null;
+
+            while ((line = r.readLine()) != null) {
+
+                if (statusCode == null) {
+
+                    //
+                    // first line, status line
+                    //
+
+                    this.statusCode = HttpStatusCode.fromStatusLine(line);
+                }
+                else if (!blankLineSeen) {
+
+                    if (line.trim().isEmpty()) {
+
+                        blankLineSeen = true;
+                    }
+                    else {
+
+                        //
+                        // a header line
+                        //
+                        HttpHeader h = HttpHeader.parseHeader(line.getBytes(), 0, line.length());
+                        addHeader(h);
+                    }
+                }
+                else {
+
+                    //
+                    // body line
+                    //
+
+                    if (baos == null) {
+
+                        baos = new ByteArrayOutputStream();
+                    }
+
+                    baos.write(line.getBytes());
+                }
+            }
+
+            if (baos != null) {
+
+                byte[] b = baos.toByteArray();
+
+                //
+                // check if the body length matches Content-Length
+                //
+
+                List<HttpHeader> hs = getHeader(HttpEntityHeader.CONTENT_LENGTH);
+                if (!hs.isEmpty()) {
+                    HttpHeader h = hs.get(0);
+                    if (b.length != Integer.parseInt(h.getFieldBody())) {
+                        throw new InvalidHttpMessageException("Content-Length/body length mismatch");
+                    }
+                }
+
+                //
+                // TODO what to do if Content-Length is not present
+                //
+
+                setBody(b);
+            }
+        }
+        catch(IOException e) {
+
+            //
+            // should not happen with an in-memory reader
+            //
+            throw new IllegalStateException("unexpected failure on an in-memory reader", e);
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
