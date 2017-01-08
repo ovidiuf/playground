@@ -297,7 +297,7 @@ public class ConnectionHandler implements Runnable {
         //
 
         active = false;
-        log.debug("closing connection because " + this + " was configured to close the connection after a response");
+        log.debug("closing connection because " + connection + " was configured to close the connection after a response");
         connection.close();
     }
 

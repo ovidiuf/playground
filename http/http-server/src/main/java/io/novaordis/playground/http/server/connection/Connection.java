@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * The abstraction used to model a browser - server connection, including the socket and the underlying TCP/IP
@@ -54,6 +55,8 @@ public class Connection {
     private Socket socket;
 
     private boolean persistent;
+
+    private volatile boolean isClosing;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -111,6 +114,27 @@ public class Connection {
         try {
 
             return socket.getInputStream().read();
+        }
+        catch(SocketException e) {
+
+            if (isClosing) {
+
+                //
+                // when we're blocked in read, and the client has requested to close the connection (or we're
+                // configured to close the connection) after a request, and socket.close() was called, we'll get a
+                // "java.net.SocketException: Socket is closed" or similar here. We should not bubble this up, because
+                // it is unnecessary alarming, we'll just debug log it.
+                //
+
+                log.debug(this + " threw " + e.getClass().getSimpleName() + ": \"" + e.getMessage() +
+                        "\" but the connection is in process of being closed, so that is expected");
+
+                return -1;
+            }
+            else {
+
+                throw new ConnectionException(e);
+            }
         }
         catch(IOException e) {
 
@@ -173,6 +197,8 @@ public class Connection {
         //
         // attempt to close the underlying socket, do not throw Exception, just log on failure
         //
+
+        isClosing = true;
 
         try {
 

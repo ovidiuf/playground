@@ -55,7 +55,7 @@ public class ConfigurationTest {
     @Test
     public void persistentConnections() throws Exception {
 
-        Configuration c = new Configuration(new String[] { "1", "persistent-connections=false"});
+        Configuration c = new Configuration(new String[] { "1", "persistent-connection=false"});
 
         assertFalse(c.isPersistentConnections());
     }
@@ -63,7 +63,7 @@ public class ConfigurationTest {
     @Test
     public void persistentConnections2() throws Exception {
 
-        Configuration c = new Configuration(new String[] { "1", "/tmp", "persistent-connections=false"});
+        Configuration c = new Configuration(new String[] { "1", "/tmp", "persistent-connection=false"});
 
         assertFalse(c.isPersistentConnections());
     }

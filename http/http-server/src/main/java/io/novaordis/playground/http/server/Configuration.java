@@ -67,9 +67,9 @@ public class Configuration {
         for(Iterator<String> ai = argList.iterator(); ai.hasNext(); ) {
 
             String crt = ai.next();
-            if (crt.startsWith("persistent-connections=")) {
+            if (crt.startsWith("persistent-connection=")) {
 
-                crt = crt.substring("persistent-connections=".length());
+                crt = crt.substring("persistent-connection=".length());
 
                 if ("false".equalsIgnoreCase(crt)) {
 
@@ -77,7 +77,7 @@ public class Configuration {
                 }
                 else if (!"true".equalsIgnoreCase(crt)) {
 
-                    throw new Exception("invalid persistent-connections value: " + crt);
+                    throw new Exception("invalid persistent-connection value: " + crt);
                 }
 
                 ai.remove();
