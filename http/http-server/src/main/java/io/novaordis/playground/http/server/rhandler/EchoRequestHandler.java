@@ -89,6 +89,8 @@ public class EchoRequestHandler implements RequestHandler {
         response.setStatusCode(code);
         response.setBody(("SYNTHETIC " + code + "\n").getBytes()); // this will also set Content-Length
 
+        log.info(this + " responded with synthetic " + response.getStatusCode());
+
         try {
 
             delayIfNecessary(request.getQueryParameter("delay"));
