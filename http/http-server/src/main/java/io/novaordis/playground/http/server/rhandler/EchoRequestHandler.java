@@ -31,11 +31,11 @@ import org.slf4j.LoggerFactory;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
-public class OKRequestHandler implements RequestHandler {
+public class EchoRequestHandler implements RequestHandler {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(OKRequestHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(EchoRequestHandler.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ public class OKRequestHandler implements RequestHandler {
     /**
      * By default no delay.
      */
-    public OKRequestHandler() {
+    public EchoRequestHandler() {
 
         this(null);
     }
@@ -56,7 +56,7 @@ public class OKRequestHandler implements RequestHandler {
     /**
      * @param serverWideDelayMs null is acceptable, means no delay.
      */
-    public OKRequestHandler(Long serverWideDelayMs) {
+    public EchoRequestHandler(Long serverWideDelayMs) {
 
         this.serverWideDelayMs = serverWideDelayMs;
     }

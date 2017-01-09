@@ -33,11 +33,11 @@ import static org.junit.Assert.assertTrue;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/5/17
  */
-public class OKRequestHandlerTest extends RequestHandlerTest {
+public class EchoRequestHandlerTest extends RequestHandlerTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(OKRequestHandlerTest.class);
+    private static final Logger log = LoggerFactory.getLogger(EchoRequestHandlerTest.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void constructor() throws Exception {
 
-        OKRequestHandler h = new OKRequestHandler(50L);
+        EchoRequestHandler h = new EchoRequestHandler(50L);
         assertEquals(50L, h.getDelay().longValue());
     }
 
@@ -61,7 +61,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void defaultBehavior() throws Exception {
 
-        OKRequestHandler h = getRequestHandlerToTest();
+        EchoRequestHandler h = getRequestHandlerToTest();
 
         assertNull(h.getDelay());
 
@@ -80,7 +80,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void delay_DefaultValue_RequestDoesNotContainOverride() throws Exception {
 
-        OKRequestHandler h = getRequestHandlerToTest();
+        EchoRequestHandler h = getRequestHandlerToTest();
 
         long delayMs = 200L;
 
@@ -101,7 +101,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void delay_DefaultValue_RequestContainsOverride() throws Exception {
 
-        OKRequestHandler h = getRequestHandlerToTest();
+        EchoRequestHandler h = getRequestHandlerToTest();
 
         log.info("#");
         log.info("# OKRequestHandlerTest.delay_DefaultValue_RequestContainsOverride() will block the test suite if not overridden by the request");
@@ -127,7 +127,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void delay_NoDefaultValue_RequestContainsDelay() throws Exception {
 
-        OKRequestHandler h = getRequestHandlerToTest();
+        EchoRequestHandler h = getRequestHandlerToTest();
 
         assertNull(h.getDelay());
 
@@ -147,7 +147,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     @Test
     public void delay_RequestContainsDelayInvalidDelayValue() throws Exception {
 
-        OKRequestHandler h = getRequestHandlerToTest();
+        EchoRequestHandler h = getRequestHandlerToTest();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?delay=blah");
 
@@ -165,9 +165,9 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     // Protected -------------------------------------------------------------------------------------------------------
 
     @Override
-    protected OKRequestHandler getRequestHandlerToTest() {
+    protected EchoRequestHandler getRequestHandlerToTest() {
 
-        return new OKRequestHandler();
+        return new EchoRequestHandler();
     }
 
     // Private ---------------------------------------------------------------------------------------------------------

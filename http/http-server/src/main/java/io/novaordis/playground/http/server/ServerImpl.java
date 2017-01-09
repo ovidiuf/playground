@@ -19,7 +19,7 @@ package io.novaordis.playground.http.server;
 import io.novaordis.playground.http.server.connection.Connection;
 import io.novaordis.playground.http.server.connection.ConnectionManager;
 import io.novaordis.playground.http.server.jmx.ManagementConsole;
-import io.novaordis.playground.http.server.rhandler.OKRequestHandler;
+import io.novaordis.playground.http.server.rhandler.EchoRequestHandler;
 import io.novaordis.playground.http.server.rhandler.RequestHandler;
 import io.novaordis.playground.http.server.rhandler.ServerExitRequestHandler;
 import org.slf4j.Logger;
@@ -301,7 +301,7 @@ public class ServerImpl implements HttpServer {
 
         handlers.add(new ServerExitRequestHandler(this));
         //handlers.add(new FileRequestHandler(documentRoot));
-        handlers.add(new OKRequestHandler(configuration.getDelay()));
+        handlers.add(new EchoRequestHandler(configuration.getDelay()));
     }
 
     private void displayServerInfo() {
