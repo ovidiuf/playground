@@ -43,6 +43,17 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    // constructor -----------------------------------------------------------------------------------------------------
+
+    @Test
+    public void constructor() throws Exception {
+
+        OKRequestHandler h = new OKRequestHandler(50L);
+        assertEquals(50L, h.getDelay().longValue());
+    }
+
+    // end-to-end ------------------------------------------------------------------------------------------------------
+
     @Test
     public void defaultBehavior() throws Exception {
 
@@ -66,7 +77,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
 
         OKRequestHandler h = getRequestHandlerToTest();
 
-        long delayMs = 500L;
+        long delayMs = 200L;
 
         h.setDelay(delayMs);
 

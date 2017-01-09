@@ -22,6 +22,7 @@ import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -50,6 +51,7 @@ public class ConfigurationTest {
         assertEquals(1, c.getPort());
         assertEquals(new File("."), c.getDocumentRoot());
         assertTrue(c.isPersistentConnections());
+        assertNull(c.getDelay());
     }
 
     @Test
@@ -68,6 +70,13 @@ public class ConfigurationTest {
         assertFalse(c.isPersistentConnections());
     }
 
+    @Test
+    public void delay() throws Exception {
+
+        Configuration c = new Configuration(new String[] { "1", "delay=1000"});
+
+        assertEquals(1000L, c.getDelay().longValue());
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

@@ -44,10 +44,20 @@ public class OKRequestHandler implements RequestHandler {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    /**
+     * By default no delay.
+     */
     public OKRequestHandler() {
 
-        // by default no delay
-        this.delayMs = null;
+        this(null);
+    }
+
+    /**
+     * @param delay null is acceptable, means no delay.
+     */
+    public OKRequestHandler(Long delay) {
+
+        this.delayMs = delay;
     }
 
     // RequestHandler implementation -----------------------------------------------------------------------------------

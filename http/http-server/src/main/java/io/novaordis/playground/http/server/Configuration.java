@@ -39,6 +39,7 @@ public class Configuration {
     private int port;
     private File documentRoot;
     private Boolean persistentConnection;
+    private Long delayMs;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -78,6 +79,21 @@ public class Configuration {
                 else if (!"true".equalsIgnoreCase(crt)) {
 
                     throw new Exception("invalid persistent-connection value: " + crt);
+                }
+
+                ai.remove();
+            }
+            else if (crt.startsWith("delay=")) {
+
+                crt = crt.substring("delay=".length());
+
+                try {
+
+                    delayMs = Long.parseLong(crt);
+                }
+                catch(Exception e) {
+
+                    throw new Exception("invalid delay value: " + crt);
                 }
 
                 ai.remove();
@@ -138,6 +154,14 @@ public class Configuration {
     public boolean isPersistentConnections() {
 
         return persistentConnection;
+    }
+
+    /**
+     * @return the artificial delay in processing of a request, in milliseconds. null means "no delay"
+     */
+    public Long getDelay() {
+
+        return delayMs;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
