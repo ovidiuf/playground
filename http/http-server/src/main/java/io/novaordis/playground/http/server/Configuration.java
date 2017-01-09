@@ -45,7 +45,6 @@ public class Configuration {
 
     public Configuration(String[] args) throws Exception {
 
-
         if (args.length == 0) {
 
             throw new Exception("the value of the port to listen on must be specified as the first argument");
