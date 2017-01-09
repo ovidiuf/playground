@@ -530,6 +530,16 @@ public class HttpRequestTest extends MessageTest {
     // query parameters ------------------------------------------------------------------------------------------------
 
     @Test
+    public void constructorWithQueryElements() throws Exception {
+
+        HttpRequest r = new HttpRequest(HttpMethod.GET, "/something/?a=b&c=d");
+
+        assertEquals("b", r.getQueryParameter("a"));
+        assertEquals("d", r.getQueryParameter("c"));
+        assertEquals("/something/", r.getPath());
+    }
+
+    @Test
     public void getQueryParameter_NoSuchParameter() throws Exception {
 
         HttpRequest r = new HttpRequest("GET /something/?a=b&c=d HTTP/1.1\n".getBytes());

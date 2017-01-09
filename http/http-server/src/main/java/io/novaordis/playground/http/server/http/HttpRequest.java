@@ -248,21 +248,17 @@ public class HttpRequest extends MessageImpl {
     }
 
     /**
-     * @param path (no query elements)
+     * @param pathWithQuery (possibly with query elements)
      */
-    public HttpRequest(HttpMethod method, String path) throws InvalidHttpRequestException {
+    public HttpRequest(HttpMethod method, String pathWithQuery) throws InvalidHttpRequestException {
 
         this();
         this.method = method;
 
-        if (path.contains("?")) {
-            throw new IllegalArgumentException("the path contains a query section, which is not supported");
-        }
+        parsePathWithQuery(pathWithQuery);
 
-        this.path = path;
         this.version = HttpServer.SUPPORTED_HTTP_VERSION;
-        this.wireFormat = (method + " " + path + " " + version).getBytes();
-        this.query = new Query();
+        this.wireFormat = (method + " " + pathWithQuery + " " + version).getBytes();
     }
 
     /**
@@ -343,7 +339,7 @@ public class HttpRequest extends MessageImpl {
             return "null wire format";
         }
 
-        return getMethod() + " " + getPath() + " " + getHttpVersion();
+        return getMethod() + " " + getPath() + query.toString() + " " + getHttpVersion();
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

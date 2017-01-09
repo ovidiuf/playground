@@ -22,6 +22,8 @@ import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
 import io.novaordis.playground.http.server.http.header.HttpEntityHeader;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -34,6 +36,8 @@ import static org.junit.Assert.assertTrue;
 public class OKRequestHandlerTest extends RequestHandlerTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(OKRequestHandlerTest.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -62,6 +66,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
         assertNull(h.getDelay());
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "/something");
+        assertNull(request.getQueryParameter("delay"));
 
         assertTrue(h.accepts(request));
 
@@ -73,7 +78,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
     }
 
     @Test
-    public void delay() throws Exception {
+    public void delay_DefaultValue_RequestDoesNotContainOverride() throws Exception {
 
         OKRequestHandler h = getRequestHandlerToTest();
 
@@ -82,6 +87,7 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
         h.setDelay(delayMs);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "/something");
+        assertNull(request.getQueryParameter("delay"));
 
         long t0 = System.currentTimeMillis();
         HttpResponse response = h.processRequest(request);
@@ -90,6 +96,66 @@ public class OKRequestHandlerTest extends RequestHandlerTest {
         assertTrue(t1 - t0 >= delayMs);
 
         assertEquals(HttpStatusCode.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void delay_DefaultValue_RequestContainsOverride() throws Exception {
+
+        OKRequestHandler h = getRequestHandlerToTest();
+
+        log.info("#");
+        log.info("# OKRequestHandlerTest.delay_DefaultValue_RequestContainsOverride() will block the test suite if not overridden by the request");
+        log.info("#");
+
+        long defaultDelayMs = 1000000L;
+        h.setDelay(defaultDelayMs);
+        assertEquals(defaultDelayMs, h.getDelay().longValue());
+
+        long delayMs = 200;
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?delay=" + delayMs);
+        assertEquals("200", request.getQueryParameter("delay"));
+
+        long t0 = System.currentTimeMillis();
+        HttpResponse response = h.processRequest(request);
+        long t1 = System.currentTimeMillis();
+
+        assertTrue(t1 - t0 >= delayMs);
+
+        assertEquals(HttpStatusCode.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void delay_NoDefaultValue_RequestContainsDelay() throws Exception {
+
+        OKRequestHandler h = getRequestHandlerToTest();
+
+        assertNull(h.getDelay());
+
+        long delayMs = 200L;
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?delay=" + delayMs);
+
+        long t0 = System.currentTimeMillis();
+        HttpResponse response = h.processRequest(request);
+        long t1 = System.currentTimeMillis();
+
+        assertTrue(t1 - t0 >= delayMs);
+
+        assertEquals(HttpStatusCode.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void delay_RequestContainsDelayInvalidDelayValue() throws Exception {
+
+        OKRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?delay=blah");
+
+        HttpResponse response = h.processRequest(request);
+
+        assertEquals(HttpStatusCode.BAD_REQUEST, response.getStatusCode());
+        String body = new String(response.getBody());
+        assertEquals("invalid delay parameter value \"blah\"", body);
     }
 
     // Tests -----------------------------------------------------------------------------------------------------------

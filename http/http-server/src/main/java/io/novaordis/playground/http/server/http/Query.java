@@ -17,6 +17,7 @@
 package io.novaordis.playground.http.server.http;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -66,6 +67,28 @@ public class Query {
     public String getParameter(String parameterName) {
 
         return parameters.get(parameterName);
+    }
+
+    @Override
+    public String toString() {
+
+        if (parameters.isEmpty()) {
+
+            return "";
+        }
+
+        String s = "?";
+
+        for(Iterator<String> i = parameters.keySet().iterator(); i.hasNext(); ) {
+
+            String name = i.next();
+            s += name + "=" + parameters.get(name);
+            if (i.hasNext()) {
+                s += "&";
+            }
+        }
+
+        return s;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

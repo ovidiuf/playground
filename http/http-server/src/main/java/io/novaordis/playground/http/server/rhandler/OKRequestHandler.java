@@ -19,6 +19,7 @@ package io.novaordis.playground.http.server.rhandler;
 import io.novaordis.playground.http.server.http.HttpRequest;
 import io.novaordis.playground.http.server.http.HttpResponse;
 import io.novaordis.playground.http.server.http.HttpStatusCode;
+import io.novaordis.playground.http.server.http.InvalidHttpRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,7 @@ public class OKRequestHandler implements RequestHandler {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Long delayMs;
+    private Long serverWideDelayMs;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -53,11 +54,11 @@ public class OKRequestHandler implements RequestHandler {
     }
 
     /**
-     * @param delay null is acceptable, means no delay.
+     * @param serverWideDelayMs null is acceptable, means no delay.
      */
-    public OKRequestHandler(Long delay) {
+    public OKRequestHandler(Long serverWideDelayMs) {
 
-        this.delayMs = delay;
+        this.serverWideDelayMs = serverWideDelayMs;
     }
 
     // RequestHandler implementation -----------------------------------------------------------------------------------
@@ -75,17 +76,85 @@ public class OKRequestHandler implements RequestHandler {
         response.setRequest(request);
         response.setBody("OK\n".getBytes()); // this will also set Content-Length
 
-        //
-        // delay response for a certain number of milliseconds if configured so
-        //
+        try {
+            delayIfNecessary(request.getQueryParameter("delay"));
+        }
+        catch(InvalidHttpRequestException e) {
 
-        if (delayMs != null) {
+            return new HttpResponse(HttpStatusCode.BAD_REQUEST, e.getMessage().getBytes());
+        }
 
-            log.info(this + " delaying response for " + delayMs + " ms ...");
+        return response;
+    }
+
+    // Public ----------------------------------------------------------------------------------------------------------
+
+    public void setDelay(long serverWideDelayMs) {
+
+        this.serverWideDelayMs = serverWideDelayMs;
+    }
+
+    /**
+     * @return the server-wide delay in ms. null if there is no delay.
+     */
+    public Long getDelay() {
+
+        return serverWideDelayMs;
+    }
+
+    @Override
+    public String toString() {
+
+        Long d = getDelay();
+        String ds = d == null ? "0" : Long.toString(d);
+        return "OKRequestHandler[delay=" + ds + "ms]";
+    }
+
+    // Package protected -----------------------------------------------------------------------------------------------
+
+    // Protected -------------------------------------------------------------------------------------------------------
+
+    // Private ---------------------------------------------------------------------------------------------------------
+
+    /**
+     *  Delay response for a certain number of milliseconds if the server or the request were configured to do so.
+     *  The request delay value, if present, takes precedence over the server-wide value.
+     *
+     *  @param requestDelay the value carried by the request "delay=" query parameter. May be null.
+     *
+     *  @exception InvalidHttpRequestException if the delay query parameter carries an illegal value
+     */
+    private void delayIfNecessary(String requestDelay) throws InvalidHttpRequestException {
+
+        Long effectiveDelay = null;
+
+        if (requestDelay != null) {
 
             try {
 
-                Thread.sleep(delayMs);
+                effectiveDelay = Long.parseLong(requestDelay);
+
+            } catch (Exception e) {
+
+                throw new InvalidHttpRequestException("invalid delay parameter value \"" + requestDelay + "\"");
+            }
+        }
+
+        if (effectiveDelay == null) {
+
+            //
+            // fall back to server-wide value
+            //
+            effectiveDelay = serverWideDelayMs;
+        }
+
+        if (effectiveDelay != null) {
+
+            log.info(this + " delaying response for " + effectiveDelay + " ms ...");
+
+            try {
+
+                Thread.sleep(effectiveDelay);
             }
             catch(InterruptedException e) {
 
@@ -96,36 +165,7 @@ public class OKRequestHandler implements RequestHandler {
                 throw new IllegalStateException("the thread was unexpectedly interrupted", e);
             }
         }
-
-        return response;
     }
-
-    // Public ----------------------------------------------------------------------------------------------------------
-
-    public void setDelay(long delayMs) {
-
-        this.delayMs = delayMs;
-    }
-
-    /**
-     * @return the delay in ms. null if there is no delay.
-     */
-    public Long getDelay() {
-
-        return delayMs;
-    }
-
-    @Override
-    public String toString() {
-
-        return "OKRequestHandler[delay=" + getDelay() + "ms]";
-    }
-
-    // Package protected -----------------------------------------------------------------------------------------------
-
-    // Protected -------------------------------------------------------------------------------------------------------
-
-    // Private ---------------------------------------------------------------------------------------------------------
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
