@@ -75,6 +75,12 @@ public class ServerExitRequestHandler implements RequestHandler {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public String toString() {
+
+        return "ServerExitRequestHandler";
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

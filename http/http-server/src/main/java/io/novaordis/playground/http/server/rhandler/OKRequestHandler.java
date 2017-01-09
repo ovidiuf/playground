@@ -115,6 +115,12 @@ public class OKRequestHandler implements RequestHandler {
         return delayMs;
     }
 
+    @Override
+    public String toString() {
+
+        return "OKRequestHandler[delay=" + getDelay() + "ms]";
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

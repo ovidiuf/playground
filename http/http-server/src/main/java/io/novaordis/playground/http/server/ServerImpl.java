@@ -306,14 +306,11 @@ public class ServerImpl implements HttpServer {
 
     private void displayServerInfo() {
 
-        String serverInfo =
-                "http server bound to " + port + ", " +
-                        "document root " + documentRoot.getAbsolutePath() + ", " +
-                        "handlers: ";
+        String serverInfo = "http server bound to " + port + ", handlers: ";
 
         for(Iterator<RequestHandler> hi = handlers.iterator(); hi.hasNext(); ) {
 
-            serverInfo += hi.next().getClass().getSimpleName();
+            serverInfo += hi.next().toString();
 
             if (hi.hasNext()) {
 

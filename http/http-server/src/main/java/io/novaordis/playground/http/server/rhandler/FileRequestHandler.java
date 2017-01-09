@@ -93,6 +93,12 @@ public class FileRequestHandler implements RequestHandler {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public String toString() {
+
+        return "FileRequestHandler[root=" + documentRoot.getAbsolutePath() + "]";
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     byte[] readContentFromFile(File file) {
