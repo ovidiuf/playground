@@ -118,7 +118,9 @@ public class ManagementConsole implements ManagementConsoleMBean {
             return "no " + (alive ? "live" : "closed") + " connections";
         }
 
-        String s = (alive ? "live" : "closed") + " connections:\n";
+        int count = connections.size();
+
+        String s = count + (alive ? " live" : " closed") + " connections:\n";
 
         for(Iterator<Connection> i = connections.iterator(); i.hasNext(); ) {
 
