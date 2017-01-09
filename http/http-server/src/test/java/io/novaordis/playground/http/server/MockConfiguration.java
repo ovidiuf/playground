@@ -14,47 +14,34 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.http.server.jmx;
+package io.novaordis.playground.http.server;
 
 /**
- * The http-server JMX management interface.
- *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 1/7/17
+ * @since 1/9/17
  */
-public interface ManagementConsoleMBean {
+public class MockConfiguration extends Configuration {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    // Attributes ------------------------------------------------------------------------------------------------------
+
+    // Constructors ----------------------------------------------------------------------------------------------------
+
+    public MockConfiguration() throws Exception {
+        super(new String[] {"0"});
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
-    int getConnectionCount();
+    // Package protected -----------------------------------------------------------------------------------------------
 
-    /**
-     * Lists alive connections by logging the connection list as INFO, and also returns the string as result.
-     */
-    String listConnections();
+    // Protected -------------------------------------------------------------------------------------------------------
 
-    /**
-     * Lists the connections that have been closed since the server was started, by logging the connection list as
-     * INFO, and also returns the string as result.
-     *
-     * @see ManagementConsoleMBean#clearClosedConnectionHistory()
-     */
-    String listClosedConnections();
+    // Private ---------------------------------------------------------------------------------------------------------
 
-    /**
-     * @see ManagementConsoleMBean#listClosedConnections()
-     */
-    void clearClosedConnectionHistory();
-
-    /**
-     * If the request being handled by the specified connection is being "delayed", release the request.
-     * A noop if request in that situation exists.
-     */
-    void releaseDelayedRequest(long connectionId);
-
+    // Inner classes ---------------------------------------------------------------------------------------------------
 
 }

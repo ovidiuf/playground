@@ -104,6 +104,14 @@ public class ConnectionManager {
     }
 
     /**
+     * @return the corresponding Connection or null if there is no Connection with such ID.
+     */
+    public Connection getConnection(long connectionId) {
+
+        return aliveConnections.get(connectionId);
+    }
+
+    /**
      * @return a copy fo the list of closed connection, in the order in which they were closed.
      */
     public List<Connection> getClosedConnections() {

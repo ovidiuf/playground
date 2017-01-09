@@ -104,6 +104,22 @@ public class ManagementConsole implements ManagementConsoleMBean {
         cm.clearClosedConnectionHistory();
     }
 
+    @Override
+    public void releaseDelayedRequest(long connectionId) {
+
+        ConnectionManager cm = server.getConnectionManager();
+
+        Connection c = cm.getConnection(connectionId);
+
+        if (c == null) {
+
+            log.warn("no such connection " + connectionId);
+            return;
+        }
+
+        throw new RuntimeException("NOT YET IMPLEMENTED: releasing delaying request on " + c);
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
