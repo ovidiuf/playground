@@ -108,7 +108,7 @@ public class ServerImpl implements HttpServer {
         this.connectionManager = new ConnectionManager(configuration.isPersistentConnections());
 
         // must be invoked after documentRoot and other state required by handlers had been installed
-        initializeHandlers();
+        initializeHandlers(configuration);
 
         jmxManagementConsole = new ManagementConsole(this);
 
@@ -295,13 +295,13 @@ public class ServerImpl implements HttpServer {
     /**
      * Must be invoked after documentRoot and other state required by handlers had been installed
      */
-    private void initializeHandlers() {
+    private void initializeHandlers(Configuration configuration) {
 
         this.handlers = new ArrayList<>();
 
         handlers.add(new ServerExitRequestHandler(this));
         //handlers.add(new FileRequestHandler(documentRoot));
-        handlers.add(new OKRequestHandler());
+        handlers.add(new OKRequestHandler(configuration.getDelay()));
     }
 
     private void displayServerInfo() {
@@ -309,7 +309,7 @@ public class ServerImpl implements HttpServer {
         String serverInfo =
                 "http server bound to " + port + ", " +
                         "document root " + documentRoot.getAbsolutePath() + ", " +
-                        "handlers :";
+                        "handlers: ";
 
         for(Iterator<RequestHandler> hi = handlers.iterator(); hi.hasNext(); ) {
 
