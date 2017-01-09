@@ -161,7 +161,6 @@ public class EchoRequestHandlerTest extends RequestHandlerTest {
         assertEquals("invalid delay parameter value \"blah\"", body);
     }
 
-
     // response code ---------------------------------------------------------------------------------------------------
 
     @Test
@@ -188,6 +187,37 @@ public class EchoRequestHandlerTest extends RequestHandlerTest {
 
         assertEquals(HttpStatusCode.BAD_REQUEST, response.getStatusCode());
         assertEquals("invalid HTTP status code \"something\"", new String(response.getBody()));
+    }
+
+    // body length -----------------------------------------------------------------------------------------------------
+
+    @Test
+    public void customBodyLength() throws Exception {
+
+        EchoRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?length=50");
+
+        HttpResponse response = h.processRequest(request);
+
+        assertEquals(HttpStatusCode.OK, response.getStatusCode());
+        byte[] body = response.getBody();
+        assertEquals(50, body.length);
+
+        log.info(new String(body));
+    }
+
+    @Test
+    public void invalidCustomBodyLength() throws Exception {
+
+        EchoRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?length=blah");
+
+        HttpResponse response = h.processRequest(request);
+
+        assertEquals(HttpStatusCode.BAD_REQUEST, response.getStatusCode());
+        assertEquals("invalid body length \"blah\"", new String(response.getBody()));
     }
 
     // Tests -----------------------------------------------------------------------------------------------------------

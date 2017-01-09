@@ -87,7 +87,36 @@ public class EchoRequestHandler implements RequestHandler {
         }
 
         response.setStatusCode(code);
-        response.setBody(("SYNTHETIC " + code + "\n").getBytes()); // this will also set Content-Length
+
+        Integer bodyLength = null;
+
+        String s = request.getQueryParameter("length");
+
+        if (s != null) {
+
+            try {
+
+                bodyLength = Integer.parseInt(s);
+            }
+            catch (Exception e) {
+
+                return new HttpResponse(HttpStatusCode.BAD_REQUEST,("invalid body length \"" + s + "\"").getBytes());
+            }
+        }
+
+        byte[] body;
+
+        if (bodyLength == null) {
+
+            body = ("SYNTHETIC " + code + "\n").getBytes();
+        }
+        else {
+
+            body = generateRandomContent(bodyLength);
+        }
+
+        response.setBody(body); // this will also set Content-Length
+
 
         log.info(this + " responded with synthetic " + response.getStatusCode());
 
@@ -203,6 +232,20 @@ public class EchoRequestHandler implements RequestHandler {
         }
 
         return c;
+    }
+
+    private byte[] generateRandomContent(int length) {
+
+        byte[] b = new byte[length];
+
+        String s = "SYNTHETIC CONTENT ";
+
+        for(int i = 0; i < b.length; i ++) {
+
+            b[i] = (byte)s.charAt(i % s.length());
+        }
+
+        return b;
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
