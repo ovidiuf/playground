@@ -33,6 +33,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -179,7 +180,7 @@ public class ServerImpl implements HttpServer {
         acceptorThread.setDaemon(false);
         acceptorThread.start();
 
-        log.info("http server bound to " + port + ", document root " + documentRoot.getAbsolutePath());
+        displayServerInfo();
     }
 
     // Server implementation -------------------------------------------------------------------------------------------
@@ -301,6 +302,26 @@ public class ServerImpl implements HttpServer {
         handlers.add(new ServerExitRequestHandler(this));
         //handlers.add(new FileRequestHandler(documentRoot));
         handlers.add(new OKRequestHandler());
+    }
+
+    private void displayServerInfo() {
+
+        String serverInfo =
+                "http server bound to " + port + ", " +
+                        "document root " + documentRoot.getAbsolutePath() + ", " +
+                        "handlers :";
+
+        for(Iterator<RequestHandler> hi = handlers.iterator(); hi.hasNext(); ) {
+
+            serverInfo += hi.next().getClass().getSimpleName();
+
+            if (hi.hasNext()) {
+
+                serverInfo += ", ";
+            }
+        }
+
+        log.info(serverInfo);
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
