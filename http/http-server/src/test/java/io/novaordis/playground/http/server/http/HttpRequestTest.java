@@ -527,12 +527,33 @@ public class HttpRequestTest extends MessageTest {
         assertEquals("fname=Mickey&lname=Mouse", new String(body));
     }
 
+    // query parameters ------------------------------------------------------------------------------------------------
+
+    @Test
+    public void getQueryParameter_NoSuchParameter() throws Exception {
+
+        HttpRequest r = new HttpRequest("GET /something/?a=b&c=d HTTP/1.1\n".getBytes());
+
+        assertNull(r.getQueryParameter("no-such-parameter"));
+        assertEquals("/something/", r.getPath());
+    }
+
+    @Test
+    public void getQueryParameter() throws Exception {
+
+        HttpRequest r = new HttpRequest("GET /something/?a=b&c=d HTTP/1.1\n".getBytes());
+
+        assertEquals("b", r.getQueryParameter("a"));
+        assertEquals("d", r.getQueryParameter("c"));
+        assertEquals("/something/", r.getPath());
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
 
     @Override
-    protected HttpRequest getMessageImplementationToTest() {
+    protected HttpRequest getMessageImplementationToTest() throws Exception {
 
         return new HttpRequest(HttpMethod.GET, "/");
     }

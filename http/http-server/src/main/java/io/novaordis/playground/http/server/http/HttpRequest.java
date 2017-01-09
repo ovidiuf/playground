@@ -235,6 +235,7 @@ public class HttpRequest extends MessageImpl {
     private HttpMethod method;
     private String path;
     private String version;
+    private Query query;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -246,17 +247,27 @@ public class HttpRequest extends MessageImpl {
         super();
     }
 
-    public HttpRequest(HttpMethod method, String path) {
+    /**
+     * @param path (no query elements)
+     */
+    public HttpRequest(HttpMethod method, String path) throws InvalidHttpRequestException {
 
         this();
         this.method = method;
+
+        if (path.contains("?")) {
+            throw new IllegalArgumentException("the path contains a query section, which is not supported");
+        }
+
         this.path = path;
         this.version = HttpServer.SUPPORTED_HTTP_VERSION;
         this.wireFormat = (method + " " + path + " " + version).getBytes();
+        this.query = new Query();
     }
 
     /**
-     * The header content, as read from the socket. Does not include the blank line.
+     * The header content, as read from the socket (with the exception that the CRs are filtered out; only the LF are
+     * kept). Does not include the blank line.
      *
      * @exception InvalidHttpMessageException on faulty content that cannot be translated into a valid HTTP header
      */
@@ -268,6 +279,11 @@ public class HttpRequest extends MessageImpl {
         int from = 0;
 
         for(int i = 0; i < wireFormat.length; i ++) {
+
+            if (wireFormat[i] == '\r') {
+
+                throw new IllegalArgumentException("the wire format has CR leftovers");
+            }
 
             if (wireFormat[i] == '\n' || i == wireFormat.length - 1) {
 
@@ -311,6 +327,14 @@ public class HttpRequest extends MessageImpl {
         return version;
     }
 
+    /**
+     * @return the corresponding query parameter, if exists, or null otherwise.
+     */
+    public String getQueryParameter(String parameterName) {
+
+        return query.getParameter(parameterName);
+    }
+
     @Override
     public String toString() {
 
@@ -333,6 +357,7 @@ public class HttpRequest extends MessageImpl {
         int pathIndex = -1;
         int versionIndex = -1;
         int rightLimit = to >= wireFormat.length ? wireFormat.length : to;
+        String pathWithQuery = null;
 
         for(int i = from; i < rightLimit; i ++) {
 
@@ -353,19 +378,19 @@ public class HttpRequest extends MessageImpl {
                     continue;
                 }
 
-                path = new String(wireFormat, pathIndex, i - pathIndex);
+                pathWithQuery = new String(wireFormat, pathIndex, i - pathIndex);
                 versionIndex = i + 1;
                 break;
             }
         }
 
-        if (path == null) {
+        if (pathWithQuery == null) {
 
             if (pathIndex == -1) {
                 throw new InvalidHttpRequestException("malformed request");
             }
 
-            path = new String(wireFormat, pathIndex, wireFormat.length - pathIndex);
+            pathWithQuery = new String(wireFormat, pathIndex, wireFormat.length - pathIndex);
         }
 
         if (versionIndex == -1 || versionIndex >= wireFormat.length) {
@@ -383,6 +408,27 @@ public class HttpRequest extends MessageImpl {
         if (!"HTTP/1.1".equals(version)) {
 
             throw new InvalidHttpRequestException(version + " protocol version not supported");
+        }
+
+        //
+        // further parse the path to identify query parameters
+        //
+        parsePathWithQuery(pathWithQuery);
+    }
+
+    void parsePathWithQuery(String s) throws InvalidHttpRequestException {
+
+        int i = s.indexOf('?');
+
+        if (i == -1) {
+
+            this.query = new Query();
+            this.path = s;
+        }
+        else {
+
+            this.query = new Query(s.substring(i + 1));
+            this.path = s.substring(0, i);
         }
     }
 

@@ -534,7 +534,7 @@ public abstract class MessageTest {
 
     // Protected -------------------------------------------------------------------------------------------------------
 
-    protected abstract Message getMessageImplementationToTest();
+    protected abstract Message getMessageImplementationToTest() throws Exception;
 
     // Private ---------------------------------------------------------------------------------------------------------
 
