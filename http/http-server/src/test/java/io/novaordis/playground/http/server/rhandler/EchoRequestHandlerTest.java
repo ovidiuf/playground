@@ -203,6 +203,7 @@ public class EchoRequestHandlerTest extends RequestHandlerTest {
         assertEquals(HttpStatusCode.OK, response.getStatusCode());
         byte[] body = response.getBody();
         assertEquals(50, body.length);
+        assertEquals('\n', body[49]);
 
         log.info(new String(body));
     }

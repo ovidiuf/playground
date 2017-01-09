@@ -240,10 +240,12 @@ public class EchoRequestHandler implements RequestHandler {
 
         String s = "SYNTHETIC CONTENT ";
 
-        for(int i = 0; i < b.length; i ++) {
+        for(int i = 0; i < b.length - 1; i ++) {
 
             b[i] = (byte)s.charAt(i % s.length());
         }
+
+        b[length - 1] = '\n';
 
         return b;
     }
