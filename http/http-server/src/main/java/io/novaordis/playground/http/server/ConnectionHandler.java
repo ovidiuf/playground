@@ -300,11 +300,10 @@ public class ConnectionHandler implements Runnable {
         logResponse(response);
     }
 
+    /**
+     * Close or do not close the connection depending on the configuration.
+     */
     void manageConnection() {
-
-        //
-        // close or do not close the connection depending on the configuration.
-        //
 
         if (connection.isPersistent()) {
 

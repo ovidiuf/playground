@@ -38,29 +38,24 @@ public enum HttpStatusCode {
     private static final Logger log = LoggerFactory.getLogger(HttpStatusCode.class);
 
     /**
-     * Parses a status line and extracts the corresponding status code.
+     * Parses the string representation of the numeric status code extracts the corresponding status code.
      *
-     * @return null if no status code is identified or an inconsistency, such as invalid HTTP version, occurs.
+     * @return null if no status code is identified or an inconsistency, such as invalid value is encountered.
      */
-    public static HttpStatusCode fromStatusLine(String statusLine) throws InvalidHttpResponseException {
+    public static HttpStatusCode fromString(String s) {
 
-        if (!statusLine.startsWith(HttpServer.SUPPORTED_HTTP_VERSION)) {
+        if (s == null) {
 
             return null;
         }
 
-        statusLine = statusLine.substring(HttpServer.SUPPORTED_HTTP_VERSION.length()).trim();
-
-        int i = statusLine.indexOf(' ');
-        i = i == -1 ? statusLine.length() : i;
-
-        String sc = statusLine.substring(0, i);
+        s = s.trim();
 
         int sci;
 
         try {
 
-            sci = Integer.parseInt(sc);
+            sci = Integer.parseInt(s);
         }
         catch(Exception e ) {
 
@@ -82,6 +77,28 @@ public enum HttpStatusCode {
 
         log.debug(sci + " not found among declared StatusCodes");
         return null;
+    }
+
+    /**
+     * Parses a status line and extracts the corresponding status code.
+     *
+     * @return null if no status code is identified or an inconsistency, such as invalid HTTP version, occurs.
+     */
+    public static HttpStatusCode fromStatusLine(String statusLine) {
+
+        if (!statusLine.startsWith(HttpServer.SUPPORTED_HTTP_VERSION)) {
+
+            return null;
+        }
+
+        statusLine = statusLine.substring(HttpServer.SUPPORTED_HTTP_VERSION.length()).trim();
+
+        int i = statusLine.indexOf(' ');
+        i = i == -1 ? statusLine.length() : i;
+
+        String sc = statusLine.substring(0, i);
+
+        return fromString(sc);
     }
 
     private int statusCode;
@@ -107,6 +124,12 @@ public enum HttpStatusCode {
     public String getReasonPhrase() {
 
         return reasonPhrase;
+    }
+
+    @Override
+    public String toString() {
+
+        return getStatusCode() + " " + getReasonPhrase();
     }
 
 }

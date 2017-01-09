@@ -73,9 +73,12 @@ public class EchoRequestHandlerTest extends RequestHandlerTest {
         HttpResponse response = h.processRequest(request);
 
         assertEquals(HttpStatusCode.OK, response.getStatusCode());
-        assertEquals("OK\n", new String(response.getBody()));
-        assertEquals("3", response.getHeader(HttpEntityHeader.CONTENT_LENGTH).get(0).getFieldBody());
+        assertEquals("SYNTHETIC 200 OK\n", new String(response.getBody()));
+        assertEquals("" + "SYNTHETIC 200 OK\n".length(),
+                response.getHeader(HttpEntityHeader.CONTENT_LENGTH).get(0).getFieldBody());
     }
+
+    // delay -----------------------------------------------------------------------------------------------------------
 
     @Test
     public void delay_DefaultValue_RequestDoesNotContainOverride() throws Exception {
@@ -156,6 +159,35 @@ public class EchoRequestHandlerTest extends RequestHandlerTest {
         assertEquals(HttpStatusCode.BAD_REQUEST, response.getStatusCode());
         String body = new String(response.getBody());
         assertEquals("invalid delay parameter value \"blah\"", body);
+    }
+
+
+    // response code ---------------------------------------------------------------------------------------------------
+
+    @Test
+    public void customResponseCode() throws Exception {
+
+        EchoRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?code=500");
+
+        HttpResponse response = h.processRequest(request);
+
+        assertEquals(HttpStatusCode.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("SYNTHETIC 500 Internal Server Error\n", new String(response.getBody()));
+    }
+
+    @Test
+    public void invalidCustomResponseCode() throws Exception {
+
+        EchoRequestHandler h = getRequestHandlerToTest();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "/something?code=something");
+
+        HttpResponse response = h.processRequest(request);
+
+        assertEquals(HttpStatusCode.BAD_REQUEST, response.getStatusCode());
+        assertEquals("invalid HTTP status code \"something\"", new String(response.getBody()));
     }
 
     // Tests -----------------------------------------------------------------------------------------------------------

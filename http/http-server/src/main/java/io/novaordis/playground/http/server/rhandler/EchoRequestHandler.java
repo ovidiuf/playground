@@ -72,11 +72,25 @@ public class EchoRequestHandler implements RequestHandler {
     @Override
     public HttpResponse processRequest(HttpRequest request) {
 
-        HttpResponse response = new HttpResponse(HttpStatusCode.OK);
+        HttpResponse response = new HttpResponse();
         response.setRequest(request);
-        response.setBody("OK\n".getBytes()); // this will also set Content-Length
+
+        HttpStatusCode code;
 
         try {
+
+            code = generateResponseCode(request.getQueryParameter("code"));
+        }
+        catch(InvalidHttpRequestException e) {
+
+            return new HttpResponse(HttpStatusCode.BAD_REQUEST, e.getMessage().getBytes());
+        }
+
+        response.setStatusCode(code);
+        response.setBody(("SYNTHETIC " + code + "\n").getBytes()); // this will also set Content-Length
+
+        try {
+
             delayIfNecessary(request.getQueryParameter("delay"));
         }
         catch(InvalidHttpRequestException e) {
@@ -165,6 +179,28 @@ public class EchoRequestHandler implements RequestHandler {
                 throw new IllegalStateException("the thread was unexpectedly interrupted", e);
             }
         }
+    }
+
+    /**
+     * @param responseCode may be null if "code=" not present in request.
+     *
+     *  @exception InvalidHttpRequestException if the responseCode query parameter carries an illegal value
+     */
+    private HttpStatusCode generateResponseCode(String responseCode) throws InvalidHttpRequestException {
+
+        if (responseCode == null) {
+
+            return HttpStatusCode.OK;
+        }
+
+        HttpStatusCode c = HttpStatusCode.fromString(responseCode);
+
+        if (c == null) {
+
+            throw new InvalidHttpRequestException("invalid HTTP status code \"" + responseCode + "\"");
+        }
+
+        return c;
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

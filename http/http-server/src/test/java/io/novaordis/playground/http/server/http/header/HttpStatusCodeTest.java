@@ -42,6 +42,38 @@ public class HttpStatusCodeTest {
 
     // Tests -----------------------------------------------------------------------------------------------------------
 
+    // fromString() ----------------------------------------------------------------------------------------------------
+
+    @Test
+    public void fromString_InvalidContent() throws Exception {
+
+        HttpStatusCode c = HttpStatusCode.fromString("Something");
+        assertNull(c);
+    }
+
+    @Test
+    public void fromString_InvalidStatusCode() throws Exception {
+
+        HttpStatusCode c = HttpStatusCode.fromString("600");
+        assertNull(c);
+    }
+
+    @Test
+    public void fromString_TrimRequired() throws Exception {
+
+        HttpStatusCode sc = HttpStatusCode.fromString("   500 ");
+        assertEquals(HttpStatusCode.INTERNAL_SERVER_ERROR, sc);
+    }
+
+    @Test
+    public void fromString() throws Exception {
+
+        HttpStatusCode sc = HttpStatusCode.fromString("200");
+        assertEquals(HttpStatusCode.OK, sc);
+    }
+
+    // fromStatusLine() ------------------------------------------------------------------------------------------------
+
     @Test
     public void fromStatusLine_InvalidProtocolVersion() throws Exception {
 
