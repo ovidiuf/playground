@@ -67,7 +67,7 @@ public class ManagementConsole implements ManagementConsoleMBean {
     // Methods ---------------------------------------------------------------------------------------------------------
 
     @Override
-    public void listConnections() {
+    public String listConnections() {
 
         ConnectionManager cm = server.getConnectionManager();
 
@@ -79,10 +79,11 @@ public class ManagementConsole implements ManagementConsoleMBean {
         Collections.sort(ageOrderedConnections);
         String s = connectionListToString(true, ageOrderedConnections);
         log.info(s);
+        return s;
     }
 
     @Override
-    public void listClosedConnections() {
+    public String listClosedConnections() {
 
         ConnectionManager cm = server.getConnectionManager();
 
@@ -93,6 +94,7 @@ public class ManagementConsole implements ManagementConsoleMBean {
         List<Connection> closedConnections = cm.getClosedConnections();
         String s = connectionListToString(false, closedConnections);
         log.info(s);
+        return s;
     }
 
     @Override
