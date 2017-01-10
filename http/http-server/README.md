@@ -1,6 +1,7 @@
 #Simple HTTP server
 
-A simple HTTP server that can be used to experiment with the behavior of HTTP clients.
+An experimental multithreaded HTTP/1.1 server. It proved to be very useful in understanding how httpd mod_proxy 
+and mod_proxy_balancer really work.
 
 #NOKB
 
