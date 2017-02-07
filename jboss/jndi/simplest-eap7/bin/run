@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#
+# Figures out the class path and the main class and executes it.
+#
+
+function build-classpath() {
+
+    local found=false
+    for i in $(find $(dirname $0)/../target -name *.jar); do
+        [[ "${i}" =~ -source ]] && continue;
+        found=true
+        echo ${i}
+    done
+
+    ${found} || { echo "no *.jar file found in $(dirname $0)/../target" 1>&2; exit 1; }
+}
+
+function locate-main-class() {
+
+    local mainClass
+    for i in $(find $(dirname $0)/../src -name *Main.java); do
+        mainClass=${i}
+        break;
+    done
+
+    mainClass=${mainClass##*src/main/java/}
+    mainClass=${mainClass%.java}
+    mainClass=${mainClass//\//.}
+    echo ${mainClass}
+}
+
+function main() {
+
+    local args=""
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "-d" -o  "$1" = "--debug" ]; then
+            debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+        else
+            [ -z "${args}" ] && args=$1 || args="${args} $1"
+        fi
+        shift
+    done
+
+    local cp
+    local main_class
+
+    cp=$(build-classpath) || exit 1
+    main_class=$(locate-main-class) || exit 1
+
+    #
+    # add dependencies to classpath
+    #
+    cp=${cp}:\
+${M2}/org/slf4j/slf4j-api/1.7.12/slf4j-api-1.7.12.jar:\
+${M2}/org/slf4j/slf4j-log4j12/1.7.12/slf4j-log4j12-1.7.12.jar:\
+${M2}/log4j/log4j/1.2.17/log4j-1.2.17.jar
+
+    java ${debug_args} -cp ${cp} ${main_class} ${args}
+
+}
+
+main $@
