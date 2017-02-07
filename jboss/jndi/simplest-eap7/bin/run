@@ -55,7 +55,8 @@ function main() {
     cp=${cp}:\
 ${M2}/org/slf4j/slf4j-api/1.7.12/slf4j-api-1.7.12.jar:\
 ${M2}/org/slf4j/slf4j-log4j12/1.7.12/slf4j-log4j12-1.7.12.jar:\
-${M2}/log4j/log4j/1.2.17/log4j-1.2.17.jar
+${M2}/log4j/log4j/1.2.17/log4j-1.2.17.jar:\
+/Users/ovidiu/runtime/jboss-eap-7.0.4/bin/client/jboss-client.jar
 
     java ${debug_args} -cp ${cp} ${main_class} ${args}
 

@@ -19,56 +19,65 @@ package io.novaordis.playground.jboss.jndi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.naming.Binding;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NameClassPair;
-import javax.naming.NamingEnumeration;
-import java.util.Properties;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 2/7/17
  */
-public class Main {
+public class Util {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final Logger log = LoggerFactory.getLogger(Util.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    public static void logNameClassPair(NameClassPair ncp) {
 
-        Properties properties = new Properties();
+        String s = "name: ";
+        s += ncp.getName();
 
-        properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
-        properties.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+        s += ", class name: ";
+        s += ncp.getClassName();
 
-        Context root = new InitialContext(properties);
+        s += ", name in namespace: ";
 
-        NamingEnumeration<NameClassPair> e = root.list("");
+        try {
 
-        while(e.hasMore()) {
+            s += ncp.getNameInNamespace();
+        }
+        catch(UnsupportedOperationException e) {
 
-            NameClassPair b = e.next();
-            Util.logNameClassPair(b);
+            s += "UNSUPPORTED";
+
         }
 
+        s += ", ";
+        s += (ncp.isRelative() ? "relative" : "NOT relative");
 
-//        //
-//        // recursively dump the content of the JNDI space
-//        //
-//
-//        StringBuilder rendering =  new StringBuilder();
-//        rendering.append("/");
-//        descend(root, rendering, 1);
-//        log.info("JNDI space rendering:\n" + rendering);
+        log.info(s);
+    }
+
+    public static String getPrefix(int depth) {
+
+        String prefix = "";
+        String unit = "  ";
+
+        for(int i = 0; i < depth; i ++) {
+
+            prefix += unit;
+        }
+
+        return prefix;
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    private Util() {
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
@@ -77,33 +86,6 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-//    private static void descend(Context c, StringBuilder rendering, int depth) throws Exception {
-//
-//        rendering.append("\n");
-//
-//        String prefix = Util.getPrefix(depth);
-//
-//        NamingEnumeration<Binding> e = c.listBindings("");
-//
-//        while(e.hasMore()) {
-//
-//            Binding b = e.next();
-//            Util.logNameClassPair(b);
-//
-//            rendering.append(prefix).append(b.getName());
-//
-//            Object o = b.getObject();
-//
-//            if (o instanceof Context) {
-//
-//                Context child = (Context)o;
-//                String name = child.getNameInNamespace();
-//                descend(child, rendering, depth + 1);
-//            }
-//        }
-//
-//    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
