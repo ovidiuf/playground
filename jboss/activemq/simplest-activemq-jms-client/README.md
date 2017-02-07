@@ -63,5 +63,6 @@ security settings.
 
 #Also See
 
-https://github.com/NovaOrdis/playground/tree/master/jboss/hornetq/failover-testing-framework
+* https://kb.novaordis.com/index.php/Generic_JMS_Client_with_EAP/ActiveMQ
+* https://github.com/NovaOrdis/playground/tree/master/jboss/hornetq/failover-testing-framework
 

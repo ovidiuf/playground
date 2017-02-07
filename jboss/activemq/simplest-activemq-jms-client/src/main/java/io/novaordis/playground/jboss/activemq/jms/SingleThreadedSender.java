@@ -27,8 +27,8 @@ import javax.jms.Session;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SingleThreadedSender implements Runnable
-{
+public class SingleThreadedSender implements Runnable {
+
     // Constants -------------------------------------------------------------------------------------------------------
 
     private static final Logger log = LoggerFactory.getLogger(SingleThreadedSender.class);
@@ -51,8 +51,8 @@ public class SingleThreadedSender implements Runnable
     public SingleThreadedSender(int id, Connection connection, Destination destination,
                                 long sleepBetweenSendsMs,
                                 AtomicInteger remainingToSend, AtomicInteger messagesSent,
-                                CyclicBarrier barrier)
-    {
+                                CyclicBarrier barrier) {
+
         this.id = id;
         this.connection = connection;
         this.destination = destination;
@@ -64,23 +64,23 @@ public class SingleThreadedSender implements Runnable
 
     // Runnable implementation -----------------------------------------------------------------------------------------
 
-    public void run()
-    {
+    public void run() {
+
         Session session;
 
         log.info(this + " using connection " + connection);
 
-        try
-        {
+        try {
+
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             MessageProducer producer = session.createProducer(destination);
 
-            while (true)
-            {
+            while (true) {
+
                 int remaining = remainingToSend.getAndDecrement();
 
-                if (remaining <= 0)
-                {
+                if (remaining <= 0) {
+
                     break;
                 }
 
@@ -102,18 +102,18 @@ public class SingleThreadedSender implements Runnable
                 messagesSent.incrementAndGet();
             }
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
+
             log.info("thread " + Thread.currentThread().getName() + " failed: " + e);
         }
-        finally
-        {
-            try
-            {
+        finally {
+
+            try {
+
                 barrier.await();
             }
-            catch(Exception e)
-            {
+            catch(Exception e) {
+
                 log.info("failed to wait on barrier: " + e);
             }
         }
@@ -121,8 +121,7 @@ public class SingleThreadedSender implements Runnable
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public String toString()
-    {
+    public String toString() {
         return "SingleThreadedRunner[" + id + "]";
     }
 
