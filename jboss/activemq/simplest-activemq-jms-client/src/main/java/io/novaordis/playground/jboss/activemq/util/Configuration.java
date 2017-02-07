@@ -45,31 +45,31 @@ public class Configuration {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Configuration(String[] args) throws Exception
-    {
+    public Configuration(String[] args) throws Exception {
+
         threadCount = 1;
         messageCount = -1;
         statsOnly = false;
 
         parseArguments(args);
 
-        if (jndiUrl == null)
-        {
+        if (jndiUrl == null) {
+
             throw new Exception("specify a JNDI URL name with --jndi");
         }
 
-        if (destinationName == null)
-        {
+        if (destinationName == null) {
+
             throw new Exception("specify a destination name with --destination");
         }
 
-        if (connectionFactoryName == null)
-        {
+        if (connectionFactoryName == null) {
+
             throw new Exception("specify a connection factory name with --connection-factory");
         }
 
-        if (messageCountRequired && messageCount == -1)
-        {
+        if (messageCountRequired && messageCount == -1) {
+
             throw new Exception("specify the number of messages to send with --messages");
         }
     }
@@ -81,8 +81,12 @@ public class Configuration {
         return destinationName;
     }
 
-    public String getJndiUrl()
-    {
+    /**
+     * The JNDI URL in format host:port. No protocol is required, but if the protocol is specified, it has to be
+     * remoting-http://.
+     */
+    public String getJndiUrl() {
+
         return jndiUrl;
     }
 

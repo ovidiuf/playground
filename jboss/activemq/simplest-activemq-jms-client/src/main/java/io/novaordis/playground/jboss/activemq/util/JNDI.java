@@ -33,13 +33,15 @@ public class JNDI {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static Destination getDestination(String providerUrl, String destinationName) throws Exception
-    {
+    public static Destination getDestination(String providerUrl, String destinationName) throws Exception {
+
         InitialContext ic = null;
 
-        try
-        {
-            ic = new InitialContext(getProperties(providerUrl));
+        Properties properties = getProperties(providerUrl);
+
+        try {
+
+            ic = new InitialContext(properties);
 
             log.info("looking up '" + destinationName + "' ...");
             //noinspection UnnecessaryLocalVariable
@@ -47,23 +49,22 @@ public class JNDI {
 
             return d;
         }
-        finally
-        {
-            if (ic != null)
-            {
+        finally {
+
+            if (ic != null) {
+
                 ic.close();
             }
         }
     }
 
     public static ConnectionFactory getConnectionFactory(String providerUrl, String connectionFactoryName)
-        throws Exception
-    {
+        throws Exception {
 
         InitialContext ic = null;
 
-        try
-        {
+        try {
+
             ic = new InitialContext(getProperties(providerUrl));
 
             log.info("looking up '" + connectionFactoryName + "' ...");
@@ -72,10 +73,10 @@ public class JNDI {
 
             return cf;
         }
-        finally
-        {
-            if (ic != null)
-            {
+        finally {
+
+            if (ic != null) {
+
                 ic.close();
             }
         }
@@ -93,16 +94,17 @@ public class JNDI {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
-    private static Properties getProperties(String providerUrl)
-    {
+    private static Properties getProperties(String providerUrl) {
+
         Properties p = new Properties();
 
         p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
 
-        if (!providerUrl.startsWith("remote://"))
-        {
-            providerUrl = "remote://" + providerUrl;
+        if (!providerUrl.startsWith("http-remoting://")) {
+
+            providerUrl = "http-remoting://" + providerUrl;
         }
+
         p.put(Context.PROVIDER_URL, providerUrl);
         return p;
     }

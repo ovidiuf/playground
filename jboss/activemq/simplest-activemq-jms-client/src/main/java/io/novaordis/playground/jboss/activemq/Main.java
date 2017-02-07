@@ -52,9 +52,10 @@ public class Main {
         Configuration conf = new Configuration(args);
 
         String jndiUrl = conf.getJndiUrl();
-
         String destinationName = conf.getDestinationName();
+
         Destination destination = JNDI.getDestination(jndiUrl, destinationName);
+
         log.info("destination: " + destination);
 
         String connectionFactoryName = conf.getConnectionFactoryName();

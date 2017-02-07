@@ -1,7 +1,7 @@
 #Simple EAP/ActiveMQ JMS Client
 
 This is a simple, maven-built, command-line configured client that interacts with a WildFly-embedded 
-or EAP-embedded ActiveMQ server.
+or EAP-embedded ActiveMQ server. It was tested with EAP 7.0.4.
 
 To build:
 
@@ -20,9 +20,9 @@ Prepare the target WildFly instances you intend to connect to by:
 Then, to send messages (more help in-line by simply running ./send):
 
     ./bin/send \
-     --jndi 127.0.0.1:4447 \
-     --destination /queue/novaordis \
-     --connection-factory /jms/RemoteConnectionFactory \
+     --jndi [http-remoting://]127.0.0.1:8080 \
+     --destination jms/queue/novaordis \
+     --connection-factory jms/RemoteConnectionFactory \
      [--username jmsuser --password jmsuser123] \
      [--connections 10] \
      [--threads 10] \
@@ -48,9 +48,9 @@ Just only one thread is used to send messages, by default, unless --threads is u
 To receive messages (more help in-line by simply running ./receive):
 
     ./bin/receive \
-     --jndi 127.0.0.1:4447 \
-     --destination /queue/novaordis \
-     --connection-factory /jms/RemoteConnectionFactory \
+     --jndi [http-remoting://]127.0.0.1:8080 \
+     --destination jms/queue/novaordis \
+     --connection-factory jms/RemoteConnectionFactory \
      [--username jmsuser --password jmsuser123] \
      [stats]
 

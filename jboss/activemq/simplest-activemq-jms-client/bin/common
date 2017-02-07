@@ -19,7 +19,7 @@ function build-classpath(){
     short_name=${name%%.*}
 
     if [ "${short_name}" = "NOMBP2" ]; then
-        jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4
+        jboss_home=/Users/ovidiu/runtime/jboss-eap-7.0.4
     else
         #
         # we try JBOSS_HOME and if not set, we bail out
@@ -32,7 +32,7 @@ function build-classpath(){
     fi
 
 classpath="\
-$(dirname $0)/../target/simple-activemq-jms-client.jar:\
+$(dirname $0)/../target/simplest-activemq-jms-client.jar:\
 ${jboss_home}/bin/client/jboss-client.jar:\
 ${jboss_home}/modules/system/layers/base/org/slf4j/main/slf4j-api-1.7.2.redhat-3.jar:\
 ${M2}/org/slf4j/slf4j-log4j12/1.7.12/slf4j-log4j12-1.7.12.jar:\
@@ -50,7 +50,7 @@ function main(){
     local args;
 
     while [ -n "$1" ]; do
-        if [ "$1" = "--debug" ]; then
+        if [ "$1" = "--debug" -o "$1" = "-d" ]; then
             debug_opts="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
         else
             [ -z "${args}" ] && args="$1" || args="${args} $1"
