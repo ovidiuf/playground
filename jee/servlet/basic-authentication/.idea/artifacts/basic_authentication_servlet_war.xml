@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="basic-authentication-servlet:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="basic-authentication-servlet.war">
+      <element id="artifact" artifact-name="basic-authentication-servlet:war exploded" />
+    </root>
+  </artifact>
+</component>
