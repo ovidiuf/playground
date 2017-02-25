@@ -36,8 +36,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        createGarbage();
 
-        hist(args);
+        //hist(args);
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -94,6 +95,35 @@ public class Main {
         }
 
         br.close();
+    }
+
+    /**
+     * Allocates memory (and releases it from time to time) in an infinite loop.
+     */
+    private static void createGarbage() throws Exception {
+
+        int arrayCount = 10000;
+        int arraySize = 100000;
+
+        byte[][] arrayOfByteArrays = null;
+
+
+        while(true) {
+
+            arrayOfByteArrays = new byte[arrayCount][];
+
+            for(int i = 0; i < arrayCount; i ++) {
+
+                arrayOfByteArrays[i] = new byte[arraySize];
+            }
+
+            System.out.println("all arrays allocated");
+
+            Thread.sleep(500);
+
+            System.out.println("releasing ...");
+        }
+
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
