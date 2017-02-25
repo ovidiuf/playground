@@ -1,5 +1,4 @@
 {
-
   "null-example": null,
 
   "boolean-true-example": true,
@@ -23,7 +22,6 @@
     "array-element-1",
     "array-element-2"
   ]
-
 }
 
 

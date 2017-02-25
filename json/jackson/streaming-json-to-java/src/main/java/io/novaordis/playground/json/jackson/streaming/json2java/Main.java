@@ -20,7 +20,13 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonArray;
+import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonFalse;
+import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonFloat;
+import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonInteger;
+import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonNull;
 import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonObject;
+import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonString;
+import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonTrue;
 import io.novaordis.playground.json.jackson.streaming.json2java.model.JsonValue;
 
 import java.io.InputStream;
@@ -89,17 +95,44 @@ public class Main {
         if (JsonToken.START_OBJECT.equals(token)) {
 
             result = new JsonObject();
-
-            result.load(parser);
         }
         else if (JsonToken.START_ARRAY.equals(token)) {
 
             result = new JsonArray();
         }
+        else if (JsonToken.VALUE_NULL.equals(token)) {
+
+            result = new JsonNull();
+        }
+        else if (JsonToken.VALUE_TRUE.equals(token)) {
+
+            result = new JsonTrue();
+        }
+        else if (JsonToken.VALUE_FALSE.equals(token)) {
+
+            result = new JsonFalse();
+        }
+        else if (JsonToken.VALUE_STRING.equals(token)) {
+
+            String text = parser.getText();
+            result = new JsonString(text);
+        }
+        else if (JsonToken.VALUE_NUMBER_INT.equals(token)) {
+
+            int i = parser.getIntValue();
+            result = new JsonInteger(i);
+        }
+        else if (JsonToken.VALUE_NUMBER_FLOAT.equals(token)) {
+
+            float f = parser.getFloatValue();
+            result = new JsonFloat(f);
+        }
         else {
 
-            throw new RuntimeException("DON'T KNOW TO HANDLE " + token);
+            throw new IllegalStateException("don't know how to handle " + token);
         }
+
+        result.load(parser);
 
         return result;
     }

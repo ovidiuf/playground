@@ -2,6 +2,6 @@
 
 ##NOKB
 
-https://kb.novaordis.com/index.php/Jackson_JSON_to_Java#Example
+https://kb.novaordis.com/index.php/Jackson_Streaming_API#JSON_Parsing_with_Streaming_API_Code_Example
 
 
