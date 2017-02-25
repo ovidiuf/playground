@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/json-to-java.iml" filepath="$PROJECT_DIR$/json-to-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/streaming-json-to-java.iml" filepath="$PROJECT_DIR$/streaming-json-to-java.iml" />
     </modules>
   </component>
 </project>

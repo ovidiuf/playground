@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.novaordis.playground.json.jackson</groupId>
-    <artifactId>json-to-java</artifactId>
+    <artifactId>streaming-json-to-java</artifactId>
     <packaging>jar</packaging>
 
     <version>1</version>
@@ -15,7 +15,7 @@
 
     <build>
 
-        <finalName>json-to-java</finalName>
+        <finalName>streaming-json-to-java</finalName>
 
         <plugins>
             <plugin>
