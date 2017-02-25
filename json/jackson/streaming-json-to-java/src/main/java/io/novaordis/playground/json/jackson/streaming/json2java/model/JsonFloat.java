@@ -39,6 +39,22 @@ public class JsonFloat extends JsonValue {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+            System.out.print(indentation);
+        }
+
+        System.out.print(value);
+    }
+
+    @Override
+    public String toString() {
+
+        return "" + value;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

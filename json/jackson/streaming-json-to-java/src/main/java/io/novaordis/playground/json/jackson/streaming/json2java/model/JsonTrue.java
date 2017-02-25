@@ -32,6 +32,23 @@ public class JsonTrue extends JsonBoolean {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+            System.out.print(indentation);
+        }
+
+        System.out.print("true");
+    }
+
+
+    @Override
+    public String toString() {
+
+        return "true";
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

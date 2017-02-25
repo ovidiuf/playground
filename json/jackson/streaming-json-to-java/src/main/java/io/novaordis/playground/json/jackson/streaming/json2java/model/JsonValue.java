@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.JsonParser;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 2/25/17
  */
-public class JsonValue {
+public abstract class JsonValue {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -45,6 +45,8 @@ public class JsonValue {
         // convenience noop
         //
     }
+
+    public abstract void printJson(String indentation, boolean indentFirstLine);
 
     // Package protected -----------------------------------------------------------------------------------------------
 

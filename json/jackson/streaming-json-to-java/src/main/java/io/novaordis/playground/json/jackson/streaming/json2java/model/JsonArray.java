@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -106,6 +107,39 @@ public class JsonArray extends JsonValue {
                 throw new IllegalStateException(this + " does not expect " + token + " while loading");
             }
         }
+    }
+
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+
+            System.out.println(indentation);
+        }
+
+        System.out.println("[");
+
+        for(Iterator<JsonValue> i = values.iterator(); i.hasNext(); ) {
+
+            JsonValue f = i.next();
+
+            f.printJson(indentation + "    ", true);
+
+            if (i.hasNext()) {
+
+                System.out.print(",");
+            }
+
+            System.out.println();
+        }
+
+        System.out.println(indentation + "]");
+    }
+
+    @Override
+    public String toString() {
+
+        return "[" + values.size() + " elements]";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

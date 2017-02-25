@@ -99,6 +99,24 @@ public class JsonField extends JsonValue {
         }
     }
 
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+
+            System.out.print(indentation);
+        }
+
+        System.out.print(name + ": ");
+        value.printJson(indentation, false);
+    }
+
+    @Override
+    public String toString() {
+
+        return name + ": " + value;
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

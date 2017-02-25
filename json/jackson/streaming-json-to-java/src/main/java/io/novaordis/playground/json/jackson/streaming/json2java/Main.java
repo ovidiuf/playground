@@ -33,8 +33,6 @@ public class Main {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    public static final String INDENTATION_STEP = "    ";
-
     // Static ----------------------------------------------------------------------------------------------------------
 
     public static void main(String[] args) throws Exception {
@@ -60,7 +58,13 @@ public class Main {
 
         parser.close();
 
-        System.out.println(content);
+        if (content == null) {
+
+            System.out.println("null content");
+            return;
+        }
+
+        content.printJson("", true);
     }
 
     /**
@@ -68,7 +72,7 @@ public class Main {
      */
     public static JsonValue getValue(JsonParser parser) throws Exception {
 
-        JsonValue result = null;
+        JsonValue result;
 
         if (parser.isClosed()) {
 

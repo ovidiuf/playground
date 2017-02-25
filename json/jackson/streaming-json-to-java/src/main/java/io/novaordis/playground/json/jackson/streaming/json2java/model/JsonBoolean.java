@@ -20,7 +20,7 @@ package io.novaordis.playground.json.jackson.streaming.json2java.model;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 2/25/17
  */
-public class JsonBoolean extends JsonValue {
+public abstract class JsonBoolean extends JsonValue {
 
     // Constants -------------------------------------------------------------------------------------------------------
 

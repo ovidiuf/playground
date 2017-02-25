@@ -16,8 +16,6 @@
 
 package io.novaordis.playground.json.jackson.streaming.json2java.model;
 
-import com.fasterxml.jackson.core.JsonParser;
-
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 2/25/17
@@ -40,6 +38,22 @@ public class JsonString extends JsonValue {
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+            System.out.print(indentation);
+        }
+
+        System.out.print("\"" + value + "\"");
+    }
+
+    @Override
+    public String toString() {
+
+        return "\"" + value + "\"";
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

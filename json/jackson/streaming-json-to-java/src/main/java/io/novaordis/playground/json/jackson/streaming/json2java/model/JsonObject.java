@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,12 +74,47 @@ public class JsonObject extends JsonValue {
                 JsonField field = new JsonField(name);
 
                 field.load(parser);
+
+                fields.add(field);
             }
             else {
 
                 throw new IllegalStateException(this + " does not expect " + token + " while loading");
             }
         }
+    }
+
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+
+            System.out.println(indentation);
+        }
+
+        System.out.println("{");
+
+        for(Iterator<JsonField> i = fields.iterator(); i.hasNext(); ) {
+
+            JsonField f = i.next();
+
+            f.printJson(indentation + "    ", true);
+
+            if (i.hasNext()) {
+
+                System.out.print(",");
+            }
+
+            System.out.println();
+        }
+
+        System.out.print(indentation + "}");
+    }
+
+    @Override
+    public String toString() {
+
+        return "{" + fields.size() + " elements}";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

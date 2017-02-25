@@ -32,6 +32,22 @@ public class JsonNull extends JsonValue {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public void printJson(String indentation, boolean indentFirstLine) {
+
+        if (indentFirstLine) {
+            System.out.print(indentation);
+        }
+
+        System.out.print("null");
+    }
+
+    @Override
+    public String toString() {
+
+        return "null";
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
