@@ -19,6 +19,8 @@ package io.novaordis.playground.json.jackson.simpledatabinding.json2java;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,7 +44,84 @@ public class Main {
 
         Object root = om.readValue(is, Object.class);
 
-        Util.traverse(root);
+        traverse(root);
+    }
+
+    public static void traverse(Object o) {
+
+        traverse(0, o);
+        outln();
+        outln();
+    }
+
+    private static void traverse(int depth, Object o) {
+
+        if (o instanceof Map) {
+
+            outln();
+
+            Map m = (Map)o;
+
+            for(Iterator i = m.keySet().iterator(); i.hasNext(); ) {
+
+                Object k = i.next();
+
+                out(indentation(depth));
+                out(k + ": ");
+                traverse(depth + 1, m.get(k));
+
+                if (i.hasNext()) {
+                    outln();
+                }
+            }
+        }
+        else if (o instanceof List) {
+
+            outln();
+
+            List l = (List)o;
+            for(Iterator i = l.iterator(); i.hasNext(); ) {
+
+                Object v = i.next();
+                out(indentation(depth));
+                out(v);
+
+                if (i.hasNext()) {
+                    outln();
+                }
+            }
+        }
+        else {
+
+            out(o);
+        }
+    }
+
+    private static String indentation(int depth) {
+
+        String s = "";
+
+        for(int i = 0; i < depth; i ++) {
+
+            s += "    ";
+        }
+
+        return s;
+    }
+
+    private static void out(Object o) {
+
+        System.out.print("" + o);
+    }
+
+    private static void outln(Object o) {
+
+        System.out.println("" + o);
+    }
+
+    private static void outln() {
+
+        System.out.println();
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
