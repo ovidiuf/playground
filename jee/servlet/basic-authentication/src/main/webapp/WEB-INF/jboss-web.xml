@@ -1,3 +1,4 @@
 <jboss-web>
-    <security-domain>novaordis</security-domain>
+    <!-- <security-domain>mig</security-domain> -->
+    <security-domain>mig</security-domain>
 </jboss-web>
