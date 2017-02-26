@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.json.jackson.tree.json2java;
+package io.novaordis.playground.json.jackson.databinding.json2java;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
