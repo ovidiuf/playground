@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.json.jackson.fulldatabinding.json2java.model;
+package io.novaordis.playground.json.jackson.fulldatabinding.model;
 
 import java.util.List;
 

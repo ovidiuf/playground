@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.novaordis.playground.json.jackson</groupId>
-    <artifactId>full-data-binding-json-to-java</artifactId>
+    <artifactId>full-data-binding</artifactId>
     <packaging>jar</packaging>
 
     <version>1</version>
@@ -16,7 +16,7 @@
 
     <build>
 
-        <finalName>full-data-binding-json-to-java</finalName>
+        <finalName>full-data-binding</finalName>
 
         <plugins>
             <plugin>

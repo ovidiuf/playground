@@ -14,44 +14,61 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.json.jackson.fulldatabinding.json2java.model;
+package io.novaordis.playground.json.jackson.fulldatabinding;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.novaordis.playground.json.jackson.fulldatabinding.model.Root;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 2/26/17
+ * @since 2/25/17
  */
-public class ObjectExample {
+public class Main {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    // Attributes ------------------------------------------------------------------------------------------------------
+    public static void main(String[] args) throws Exception {
 
-    private String objectElement;
+        //
+        // JSON to Java
+        //
+
+        String fileName = "/field-names-are-method-names.json";
+
+        InputStream is = Main.class.getResourceAsStream(fileName);
+
+        ObjectMapper om = new ObjectMapper();
+
+        Root root = om.readValue(is, Root.class);
+
+        System.out.println(root);
+
+        //
+        // Java to JSON
+        //
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        om.writeValue(baos, root);
+
+        System.out.println(new String(baos.toByteArray()));
+
+    }
+
+    // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public String getObjectElement() {
-
-        return objectElement;
-    }
-
-    public void setObjectElement(String s) {
-
-        this.objectElement = s;
-    }
-
-
-    @Override
-    public String toString() {
-
-        return "ObjectExample[object-element: " + getObjectElement() + "]";
-    }
-
-
 
     // Package protected -----------------------------------------------------------------------------------------------
 
