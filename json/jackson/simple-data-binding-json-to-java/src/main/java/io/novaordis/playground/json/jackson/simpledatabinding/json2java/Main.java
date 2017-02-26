@@ -33,11 +33,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        InputStream is = Main.class.getResourceAsStream("/root-is-an-object.json");
+        //String fileName = "/root-is-an-object.json";
+        String fileName = "/root-is-an-array.json";
+
+        InputStream is = Main.class.getResourceAsStream(fileName);
 
         ObjectMapper om = new ObjectMapper();
 
-        Map root = om.readValue(is, Map.class);
+        Object root = om.readValue(is, Object.class);
 
         Util.traverse(root);
     }
