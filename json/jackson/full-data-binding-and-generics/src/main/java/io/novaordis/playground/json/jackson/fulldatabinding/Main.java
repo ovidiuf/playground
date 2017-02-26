@@ -16,12 +16,6 @@
 
 package io.novaordis.playground.json.jackson.fulldatabinding;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.novaordis.playground.json.jackson.fulldatabinding.model.Root;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 2/25/17
@@ -35,29 +29,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         //
-        // JSON to Java
+        // TODO
         //
-
-        String fileName = "/field-names-are-method-names.json";
-
-        InputStream is = Main.class.getResourceAsStream(fileName);
-
-        ObjectMapper om = new ObjectMapper();
-
-        Root root = om.readValue(is, Root.class);
-
-        System.out.println(root);
-
-        //
-        // Java to JSON
-        //
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        om.writeValue(baos, root);
-
-        System.out.println(new String(baos.toByteArray()));
-
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
