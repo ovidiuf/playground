@@ -40,6 +40,14 @@ public class Main {
 
         Map root = new HashMap<>();
 
+        Map a = new HashMap<>();
+
+        root.put("A", a);
+
+        a.put("B", "string");
+        a.put("C", 10);
+        a.put("D", 10.1);
+
         om.writeValue(baos, root);
 
         System.out.println(new String(baos.toByteArray()));
