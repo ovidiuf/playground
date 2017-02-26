@@ -1,0 +1,27 @@
+{
+  "null-example": null,
+
+  "boolean-true-example": true,
+
+  "boolean-false-example": false,
+
+  "string-example": "some string",
+
+  "int-example": 10,
+
+  "float-example": 10.1,
+
+  "object-example": {
+
+    "object-element": "some other string"
+
+  },
+
+  "array-example" : [
+
+    "array-element-1",
+    "array-element-2"
+  ]
+}
+
+
