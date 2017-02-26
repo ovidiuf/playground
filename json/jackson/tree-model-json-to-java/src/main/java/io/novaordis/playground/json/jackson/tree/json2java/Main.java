@@ -43,7 +43,18 @@ public class Main {
         JsonNode root = om.readTree(is);
 
         traverse(0, true, root);
+
+        //
+        // interesting Object access methods
+        //
+
+        System.out.println("object-example.object-element: " + root.get("object-example").get("object-element"));
+        System.out.println("array-example[1]: " + root.get("array-example").get(1));
+
+
     }
+
+
 
     public static void traverse(int depth, boolean indent, JsonNode node) {
 
