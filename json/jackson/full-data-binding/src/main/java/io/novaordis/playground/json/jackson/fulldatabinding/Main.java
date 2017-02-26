@@ -19,12 +19,8 @@ package io.novaordis.playground.json.jackson.fulldatabinding;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.novaordis.playground.json.jackson.fulldatabinding.model.Root;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
