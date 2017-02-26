@@ -18,9 +18,9 @@ package io.novaordis.playground.json.jackson.tree.java2json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.novaordis.playground.json.jackson.tree.java2json.model.Root;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -34,15 +34,24 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        JsonNode root = buildJsonNodeTree();
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         ObjectMapper om = new ObjectMapper();
 
-        Root root = new Root();
-
         om.writeValue(baos, root);
 
         System.out.println(new String(baos.toByteArray()));
+    }
+
+    private static JsonNode buildJsonNodeTree() throws Exception {
+
+        InputStream is = Main.class.getResourceAsStream("/example.json");
+
+        ObjectMapper om = new ObjectMapper();
+
+        return om.readTree(is);
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
