@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.json.jackson.simpledatabinding.json2java;
+package io.novaordis.playground.json.jackson.simpledatabinding.java2json;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-import java.io.InputStream;
-import java.util.Iterator;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,12 +34,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        InputStream is = Main.class.getResourceAsStream("/example.json");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         ObjectMapper om = new ObjectMapper();
 
-        Map root = om.readValue(is, Map.class);
+        Map root = new HashMap<>();
 
+        om.writeValue(baos, root);
+
+        System.out.println(new String(baos.toByteArray()));
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
