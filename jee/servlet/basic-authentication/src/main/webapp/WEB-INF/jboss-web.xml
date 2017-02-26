@@ -1,4 +1,3 @@
 <jboss-web>
-    <!-- <security-domain>mig</security-domain> -->
-    <security-domain>mig</security-domain>
+    <security-domain>other</security-domain>
 </jboss-web>
