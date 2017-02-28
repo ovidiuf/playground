@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/valve/global-valve.iml" filepath="$PROJECT_DIR$/valve/global-valve.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jboss-module/global-valve-jboss-module.iml" filepath="$PROJECT_DIR$/jboss-module/global-valve-jboss-module.iml" />
+      <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-servlet/test-servlet.iml" filepath="$PROJECT_DIR$/test-servlet/test-servlet.iml" />
+    </modules>
+  </component>
+</project>
