@@ -1,0 +1,5 @@
+#!/bin/bash
+
+$(dirname $0)/deploy-module
+$(dirname $0)/deploy-servlet
+

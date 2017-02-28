@@ -54,18 +54,41 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.12</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.12</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.spec.javax.servlet</groupId>
+                <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+                <version>1.0.2.Final-redhat-2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.web</groupId>
+                <artifactId>jbossweb</artifactId>
+                <version>7.5.17.Final-redhat-1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.as</groupId>
+                <artifactId>jboss-as-web</artifactId>
+                <version>7.5.10.Final-redhat-2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

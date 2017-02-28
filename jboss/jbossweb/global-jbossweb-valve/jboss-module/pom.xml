@@ -8,11 +8,39 @@
         <version>1</version>
     </parent>
 
-    <artifactId>global-valve-jboss-module</artifactId>
+    <artifactId>jboss-module</artifactId>
     <packaging>pom</packaging>
 
     <build>
-        <finalName>global-valve-jboss-module</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <finalName>global-jbossweb-valve-module-${project.version}</finalName>
+                    <descriptors>
+                        <descriptor>src/assembly/jboss-module.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assembly-execution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.novaordis.playground.jboss.jbossweb.global-jboss-valve</groupId>
+            <artifactId>global-valve</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+servlet_file=$(dirname $0)/../test-servlet/target/test-servlet.war
+
+[ -f ${servlet_file} ] || { echo "servlet file ${servlet_file} not found" 1>&2; exit 1; }
+
+cp ${servlet_file}  ${JBOSS_HOME}/profiles/valves/deployments && echo "servlet deployed"
+
