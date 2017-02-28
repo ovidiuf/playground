@@ -2,7 +2,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground.jboss.wildfly.global-jboss-valve</groupId>
+    <groupId>io.novaordis.playground.jboss.jbossweb.global-jboss-valve</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
 

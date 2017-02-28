@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.novaordis.playground.jboss.wildfly.global-jboss-valve</groupId>
+        <groupId>io.novaordis.playground.jboss.jbossweb.global-jboss-valve</groupId>
         <artifactId>root</artifactId>
         <version>1</version>
     </parent>
