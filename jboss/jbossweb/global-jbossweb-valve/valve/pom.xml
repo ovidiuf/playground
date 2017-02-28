@@ -25,9 +25,36 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-web</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.web</groupId>
             <artifactId>jbossweb</artifactId>
         </dependency>
+
+
+        <!--
+           We need to force declare this dependency to get source for debugging. Normally it should
+           be resolved as part of the transitive graph. Why isn't?
+        -->
+        <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.modules</groupId>
+            <artifactId>jboss-modules</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-dmr</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.msc</groupId>
+            <artifactId>jboss-msc</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

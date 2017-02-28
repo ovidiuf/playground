@@ -39,6 +39,8 @@ public class GlobalValve extends ValveBase {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private String someConfigurationParameter;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     /**
@@ -47,7 +49,7 @@ public class GlobalValve extends ValveBase {
     @SuppressWarnings("unused")
     public GlobalValve() {
 
-        log.debug(this + " constructed");
+        log.info(this + " constructed");
     }
 
     // ValveBase overrides ---------------------------------------------------------------------------------------------
@@ -59,6 +61,17 @@ public class GlobalValve extends ValveBase {
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    /**
+     * Invoked via reflection by the WildFly initialization runtime.
+     */
+    @SuppressWarnings("unused")
+    public void setSomeConfigurationParameter(String s) {
+
+        this.someConfigurationParameter = s;
+
+        log.info("someConfigurationParameter initialized with " + s);
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
