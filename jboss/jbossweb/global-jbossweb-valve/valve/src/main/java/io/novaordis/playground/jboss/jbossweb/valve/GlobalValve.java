@@ -57,6 +57,8 @@ public class GlobalValve extends ValveBase {
     @Override
     public void invoke(Request request, Response response) throws IOException, ServletException {
 
+        log.info(this + " invoked");
+
         getNext().invoke(request, response);
     }
 
