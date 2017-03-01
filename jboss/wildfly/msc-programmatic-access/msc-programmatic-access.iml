@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="jboss-deployment-structure.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/jboss-deployment-structure.xml" />
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-log4j12:1.7.12" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.msc:jboss-msc:1.1.6.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-server:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-controller:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-controller-client:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.wildfly:wildfly-core-security:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.wildfly:wildfly-core-security-api:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss:staxmapper:1.1.0.Final-redhat-3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-domain-http-interface:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-domain-management:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss:jboss-common-core:2.2.17.GA-redhat-3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.picketbox:picketbox:4.1.2.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.com.sun.httpserver:httpserver:1.0.6.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-deployment-repository:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-protocol:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.xnio:xnio-nio:3.0.15.GA-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-platform-mbean:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-process-controller:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-remoting:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-network:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.xnio:xnio-api:3.0.15.GA-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-version:7.5.9.Final-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss:jandex:1.2.2.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss:jboss-dmr:1.2.2.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.invocation:jboss-invocation:1.1.2.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.logging:jboss-logging:3.1.4.GA-redhat-2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.logmanager:jboss-logmanager:1.5.4.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.marshalling:jboss-marshalling:1.4.10.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.modules:jboss-modules:1.3.7.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.remoting3:jboss-remoting:3.3.8.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.sasl:jboss-sasl:1.0.5.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.stdio:jboss-stdio:1.0.2.GA-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.threads:jboss-threads:2.1.2.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss:jboss-vfs:3.2.10.Final-redhat-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.as:jboss-as-build-config:7.5.9.Final-redhat-2" level="project" />
+  </component>
+</module>

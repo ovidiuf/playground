@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.wildfly:wildfly-core-security:7.5.9.Final-redhat-2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/wildfly/wildfly-core-security/7.5.9.Final-redhat-2/wildfly-core-security-7.5.9.Final-redhat-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/wildfly/wildfly-core-security/7.5.9.Final-redhat-2/wildfly-core-security-7.5.9.Final-redhat-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/wildfly/wildfly-core-security/7.5.9.Final-redhat-2/wildfly-core-security-7.5.9.Final-redhat-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

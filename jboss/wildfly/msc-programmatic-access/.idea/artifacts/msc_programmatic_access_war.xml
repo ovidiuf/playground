@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="msc-programmatic-access:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="wrapper-servlet.war">
+      <element id="artifact" artifact-name="msc-programmatic-access:war exploded" />
+    </root>
+  </artifact>
+</component>
