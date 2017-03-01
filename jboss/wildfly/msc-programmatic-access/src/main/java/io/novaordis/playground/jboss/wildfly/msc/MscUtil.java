@@ -36,9 +36,9 @@ public class MscUtil {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void listServiceNames() {
+    public static String listServiceNames() {
 
-        ServiceName sn;
+        String s = "";
 
         ServiceContainer sc = CurrentServiceContainer.getServiceContainer();
 
@@ -47,7 +47,10 @@ public class MscUtil {
         for(ServiceName n: names) {
 
             log.info(n.toString());
+            s += n.toString() + "\n";
         }
+
+        return s;
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

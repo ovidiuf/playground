@@ -48,11 +48,8 @@ public class WrapperServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-
-        MscUtil.listServiceNames();
-
-        respond("ok", res);
-
+        String s = MscUtil.listServiceNames();
+        respond(s, res);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
