@@ -16,16 +16,22 @@
 
 package io.novaordis.playground.java.multicast;
 
+import java.io.InputStream;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.InterfaceAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketAddress;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Listen extends BaseAction implements Action {
+public class Send extends BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -33,15 +39,12 @@ public class Listen extends BaseAction implements Action {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private MulticastSocket serverSocket;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Listen(String[] args) throws Exception {
+    public Send(String[] args) throws Exception {
 
         super(args);
 
-        this.serverSocket = new MulticastSocket();
     }
 
     // Action implementation -------------------------------------------------------------------------------------------
@@ -49,27 +52,39 @@ public class Listen extends BaseAction implements Action {
     @Override
     public void execute() throws Exception {
 
-        SocketAddress multicastAddress = getMulticastAddress();
-        NetworkInterface networkInterface = getNetworkInterface();
+//        InetSocketAddress multicastAddress = getMulticastAddress();
+//
+//        String s = "test";
+//        byte[] buffer = s.getBytes();
+//
+//        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, multicastAddress);
+//
+//        NetworkInterface networkInterface = getNetworkInterface();
+//        List<InterfaceAddress> networkInterfaceAddresses = networkInterface.getInterfaceAddresses();
+//        InterfaceAddress a = networkInterfaceAddresses.get(1);
+//
+//        DatagramSocket socket = new DatagramSocket(multicastAddress.getPort(), a.getAddress());
+//
+//        socket.send(packet);
+//
+//        System.out.println("multicast packet sent to " + multicastAddress + " via " + socket.getInetAddress());
 
-        System.out.println("");
-        System.out.println("listening for " + multicastAddress + " on " + networkInterface);
 
-        serverSocket.joinGroup(multicastAddress, networkInterface);
+        int port = 10200;
 
+        MulticastSocket s = new MulticastSocket();
 
-        byte[] buffer = new byte[1024];
+        InetSocketAddress group = new InetSocketAddress("228.5.6.7", port);
 
-        //noinspection InfiniteLoopStatement
-        while(true) {
+        NetworkInterface ni = NetworkInterface.getByName("en0");
 
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-            serverSocket.receive(packet);
+        s.joinGroup(group, ni);
 
-            int i = packet.getLength();
+        String t = "test";
+        byte[] buffer = t.getBytes();
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group.getAddress(), port);
 
-            System.out.println("received " + i + " bytes");
-        }
+        s.send(packet);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

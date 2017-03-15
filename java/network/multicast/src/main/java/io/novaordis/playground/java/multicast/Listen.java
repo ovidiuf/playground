@@ -16,20 +16,18 @@
 
 package io.novaordis.playground.java.multicast;
 
-import java.io.InputStream;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.InterfaceAddress;
+import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketAddress;
-import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Send extends BaseAction implements Action {
+public class Listen extends BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -37,11 +35,14 @@ public class Send extends BaseAction implements Action {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private MulticastSocket serverSocket;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Send(String[] args) throws Exception {
+    public Listen(String[] args) throws Exception {
 
         super(args);
+
 
     }
 
@@ -50,22 +51,52 @@ public class Send extends BaseAction implements Action {
     @Override
     public void execute() throws Exception {
 
-        InetSocketAddress multicastAddress = getMulticastAddress();
+//        SocketAddress multicastAddress = getMulticastAddress();
+//        NetworkInterface networkInterface = getNetworkInterface();
+//
+//        System.out.println("");
+//        System.out.println("listening for " + multicastAddress + " on " + networkInterface);
+//
+//        serverSocket.joinGroup(multicastAddress, networkInterface);
+//
+//
+//        byte[] buffer = new byte[1024];
+//
+//        //noinspection InfiniteLoopStatement
+//        while(true) {
+//
+//            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+//            serverSocket.receive(packet);
+//
+//            int i = packet.getLength();
+//
+//            System.out.println("received " + i + " bytes");
+//        }
 
-        String s = "test";
-        byte[] buffer = s.getBytes();
 
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, multicastAddress);
+        int port = 10200;
+        this.serverSocket = new MulticastSocket();
 
-        NetworkInterface networkInterface = getNetworkInterface();
-        List<InterfaceAddress> networkInterfaceAddresses = networkInterface.getInterfaceAddresses();
-        InterfaceAddress a = networkInterfaceAddresses.get(1);
+        NetworkInterface ni = NetworkInterface.getByName("en0");
 
-        DatagramSocket socket = new DatagramSocket(multicastAddress.getPort(), a.getAddress());
+        ni.getInterfaceAddresses();
 
-        socket.send(packet);
+        InetSocketAddress group = new InetSocketAddress("228.5.6.7", port);
 
-        System.out.println("multicast packet sent to " + multicastAddress + " via " + socket.getInetAddress());
+        serverSocket.joinGroup(group, ni);
+
+        byte[] buffer = new byte[1024];
+
+        //noinspection InfiniteLoopStatement
+        while(true) {
+
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+            serverSocket.receive(packet);
+
+            int i = packet.getLength();
+
+            System.out.println("received " + i + " bytes");
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
