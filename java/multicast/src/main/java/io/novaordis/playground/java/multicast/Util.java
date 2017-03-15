@@ -16,32 +16,81 @@
 
 package io.novaordis.playground.java.multicast;
 
+import java.net.InetSocketAddress;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Main {
+public class Util {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    public static Action parseCommandLine(String[] args) throws Exception {
+
+        if (args == null || args.length == 0) {
+
+            throw new UserErrorException("must specify whether to listen or to send");
+        }
+
+        String command = args[0];
+        String[] rest = new String[args.length - 1];
+        System.arraycopy(args, 1, rest, 0, rest.length);
+
+        if ("listen".equalsIgnoreCase(command)) {
+
+            return new Listen(rest);
+
+        }
+        else if ("send".equalsIgnoreCase(command)) {
+
+            return new Send(rest);
+        }
+        else {
+
+            throw new UserErrorException("unknown command: \"" + command + "\"");
+        }
+    }
+
+    public static InetSocketAddress colonSeparatedStringToSocketAddress(String s) throws UserErrorException {
+
+        if (s == null) {
+
+            throw new IllegalArgumentException("null string");
+        }
+
+        int i = s.indexOf(':');
+
+        if (i == -1) {
+
+            throw new UserErrorException(
+                    "the multicast address and port must be specified in addr:port format, but we got \"" + s + "\"");
+        }
+
+        String addr = s.substring(0, i);
+        String p = s.substring(i + 1);
+        int port;
 
         try {
 
-            Action action = Util.parseCommandLine(args);
-            action.execute();
+            port = Integer.parseInt(p);
         }
-        catch(UserErrorException e) {
+        catch(Exception e) {
 
-            System.err.println("[error]: " + e.getMessage());
+            throw new UserErrorException("invalid port " + p);
         }
+
+        return new InetSocketAddress(addr, port);
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    private Util() {
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 

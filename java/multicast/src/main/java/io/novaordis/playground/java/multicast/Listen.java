@@ -16,32 +16,61 @@
 
 package io.novaordis.playground.java.multicast;
 
+import java.net.DatagramPacket;
+import java.net.MulticastSocket;
+import java.net.NetworkInterface;
+import java.net.SocketAddress;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Main {
+public class Listen extends BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
-
-        try {
-
-            Action action = Util.parseCommandLine(args);
-            action.execute();
-        }
-        catch(UserErrorException e) {
-
-            System.err.println("[error]: " + e.getMessage());
-        }
-    }
-
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private MulticastSocket serverSocket;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public Listen(String[] args) throws Exception {
+
+        super(args);
+
+        this.serverSocket = new MulticastSocket();
+    }
+
+    // Action implementation -------------------------------------------------------------------------------------------
+
+    @Override
+    public void execute() throws Exception {
+
+        SocketAddress multicastAddress = getMulticastAddress();
+        NetworkInterface networkInterface = getNetworkInterface();
+
+        System.out.println("");
+        System.out.println("listening for " + multicastAddress + " on " + networkInterface);
+
+        serverSocket.joinGroup(multicastAddress, networkInterface);
+
+
+        byte[] buffer = new byte[1024];
+
+        //noinspection InfiniteLoopStatement
+        while(true) {
+
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+            serverSocket.receive(packet);
+
+            int i = packet.getLength();
+
+            System.out.println("received " + i + " bytes");
+        }
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 

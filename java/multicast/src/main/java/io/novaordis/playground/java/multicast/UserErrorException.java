@@ -20,30 +20,22 @@ package io.novaordis.playground.java.multicast;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Main {
+public class UserErrorException extends Exception {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
-
-    public static void main(String[] args) throws Exception {
-
-        try {
-
-            Action action = Util.parseCommandLine(args);
-            action.execute();
-        }
-        catch(UserErrorException e) {
-
-            System.err.println("[error]: " + e.getMessage());
-        }
-    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public UserErrorException(String msg) {
+
+        super(msg);
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

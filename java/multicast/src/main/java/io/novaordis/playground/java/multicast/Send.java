@@ -16,32 +16,57 @@
 
 package io.novaordis.playground.java.multicast;
 
+import java.io.InputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketAddress;
+import java.util.List;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Main {
+public class Send extends BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
-
-        try {
-
-            Action action = Util.parseCommandLine(args);
-            action.execute();
-        }
-        catch(UserErrorException e) {
-
-            System.err.println("[error]: " + e.getMessage());
-        }
-    }
-
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public Send(String[] args) throws Exception {
+
+        super(args);
+
+    }
+
+    // Action implementation -------------------------------------------------------------------------------------------
+
+    @Override
+    public void execute() throws Exception {
+
+        InetSocketAddress multicastAddress = getMulticastAddress();
+
+        String s = "test";
+        byte[] buffer = s.getBytes();
+
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, multicastAddress);
+
+        NetworkInterface networkInterface = getNetworkInterface();
+        List<InterfaceAddress> networkInterfaceAddresses = networkInterface.getInterfaceAddresses();
+        InterfaceAddress a = networkInterfaceAddresses.get(1);
+
+        DatagramSocket socket = new DatagramSocket(multicastAddress.getPort(), a.getAddress());
+
+        socket.send(packet);
+
+        System.out.println("multicast packet sent to " + multicastAddress + " via " + socket.getInetAddress());
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 

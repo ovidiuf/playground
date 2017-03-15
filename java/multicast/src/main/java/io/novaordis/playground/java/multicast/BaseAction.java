@@ -16,34 +16,79 @@
 
 package io.novaordis.playground.java.multicast;
 
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.SocketAddress;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
-public class Main {
+public abstract class BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
-
-        try {
-
-            Action action = Util.parseCommandLine(args);
-            action.execute();
-        }
-        catch(UserErrorException e) {
-
-            System.err.println("[error]: " + e.getMessage());
-        }
-    }
-
     // Attributes ------------------------------------------------------------------------------------------------------
+
+    private InetSocketAddress multicastAddress;
+    private NetworkInterface networkInterface;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    protected BaseAction(String[] args) throws Exception {
+
+        String ni = null, mcaap = null;
+
+        //noinspection ForLoopReplaceableByForEach
+        for(int i = 0; i < args.length; i ++) {
+
+            if (ni == null) {
+
+                ni = args[i];
+            }
+            else if (mcaap == null) {
+
+                mcaap = args[i];
+            }
+
+            //
+            // ignore the rest
+            //
+        }
+
+        if (ni == null) {
+
+            throw new UserErrorException("must specify a network interface");
+        }
+
+        networkInterface = NetworkInterface.getByName(ni);
+
+        if (networkInterface == null) {
+
+            throw new UserErrorException("no such network interface " + ni);
+        }
+
+        if (mcaap == null) {
+
+            throw new UserErrorException("must specify a multicast-address:port");
+        }
+
+        multicastAddress = Util.colonSeparatedStringToSocketAddress(mcaap);
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public InetSocketAddress getMulticastAddress() {
+
+        return multicastAddress;
+    }
+
+    public NetworkInterface getNetworkInterface() {
+
+        return networkInterface;
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
