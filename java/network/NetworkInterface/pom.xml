@@ -2,16 +2,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground</groupId>
-    <artifactId>playground-project-template</artifactId>
+    <groupId>io.novaordis.playground.java.network</groupId>
+    <artifactId>network-interface</artifactId>
     <packaging>jar</packaging>
-    <!--
-        Multi-module
-    -->
-    <!--
-    <artifactId>root</artifactId>
-    <packaging>pom</packaging>
-    -->
 
     <version>1</version>
 
@@ -22,7 +15,7 @@
 
     <build>
 
-        <finalName>playground-project-template</finalName>
+        <finalName>network-interface</finalName>
 
         <plugins>
             <plugin>
@@ -47,28 +40,19 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
                 <configuration>
-                    <mainClass>org.novaordis.playground.Example</mainClass>
-                    <commandlineArgs>-verbose true</commandlineArgs>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>io.novaordis.playground.java.network.ni.Main</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 
 </project>

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+while [ "$1" != "" ]; do
+
+    if [ "$1" = "-d" ]; then
+        debug="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+    fi
+
+    shift
+done
+
+java ${debug} -jar $(dirname $0)/target/network-interface.jar
