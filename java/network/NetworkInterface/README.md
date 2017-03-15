@@ -1,5 +1,5 @@
-#playground Project Template
+#Playground Java NetworkInterface
 
-See https://kb.novaordis.com/index.php/Playground#New_Project
+See https://kb.novaordis.com/index.php/Java_Networking#NetworkInterface
 
 
