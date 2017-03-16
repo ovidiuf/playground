@@ -16,6 +16,13 @@
 
 package io.novaordis.playground.java.network.traffic;
 
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/15/17
@@ -30,9 +37,15 @@ public class Configuration {
 
     private Mode mode;
     private Protocol protocol;
+
     private String address;
+    private InetAddress inetAddress;
+
     private String interf;
+    private NetworkInterface networkInterface;
+
     private Integer port;
+
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -78,7 +91,7 @@ public class Configuration {
             }
             else if (arg.startsWith("--interface=")) {
 
-                interf = arg.substring("--interface=".length());
+                setInterface(arg.substring("--interface=".length()));
 
             }
             else if (arg.startsWith("--port=")) {
@@ -109,6 +122,17 @@ public class Configuration {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * Validates and resolves various values, such as the network interface, etc.
+     */
+    public void validate() throws UserErrorException {
+
+        validateProtocol();
+        initializeAndValidateNetworkInterface();
+        initializeAndValidateAddress();
+
+    }
+
     public Mode getMode() {
 
         return mode;
@@ -121,12 +145,35 @@ public class Configuration {
 
     /**
      * @return the value as passed with --address= command line argument. Null means the argument is not present in the
-     * command line.
+     * command line. It represents the remote address to send to. In case of a receive situation, it must be null.
      */
     public String getAddress() {
 
         return address;
     }
+
+    /**
+     * The remote address to send to. In case of a receive situation, it is null.
+     */
+    public InetAddress getInetAddress() {
+
+        //
+        // this value has to be "resolved" from the string configuration
+        //
+
+        return inetAddress;
+    }
+
+    /**
+     * @return the value as passed with --port= command line argument. Null means the argument is not present in
+     * the command line. Depending on the mode, it represents the local port to bind to (for receiving) or the remote
+     * port to send to (for sending).
+     */
+    public Integer getPort() {
+
+        return port;
+    }
+
 
     /**
      * @return the value as passed with --interface= command line argument. Null means the argument is not present in
@@ -137,29 +184,192 @@ public class Configuration {
         return interf;
     }
 
-    /**
-     * @return the value as passed with --port= command line argument. Null means the argument is not present in
-     * the command line.
-     */
-    public Integer getPort() {
 
-        return port;
+    //
+    // these values have to be "resolved" from the string configuration
+    //
+
+    /**
+     * May return null if no --interface was specified.
+     */
+    public NetworkInterface getNetworkInterface() {
+
+        return networkInterface;
+    }
+
+    public String getInterfaceName() {
+
+        if (networkInterface == null) {
+
+            return null;
+        }
+
+        return networkInterface.getName();
+    }
+
+    public List<InterfaceAddress> getNetworkInterfaceAddresses() {
+
+        if (networkInterface == null) {
+
+            return Collections.emptyList();
+        }
+
+        return networkInterface.getInterfaceAddresses();
+    }
+
+    /**
+     * @return may return null if there is no matching address
+     */
+    public InetAddress getNetworkInterfaceAddress(AddressType type) {
+
+        List<InterfaceAddress> interfaceAddresses = getNetworkInterfaceAddresses();
+
+        InetAddress a = null;
+
+        for(InterfaceAddress ia: interfaceAddresses) {
+
+            InetAddress iaa = ia.getAddress();
+            if (type.match(iaa)) {
+
+                if (a != null) {
+
+                    throw new IllegalArgumentException(
+                            "more than one InetAddress matches " + type + " for " + getNetworkInterface());
+                }
+
+                a = iaa;
+            }
+        }
+
+        return a;
     }
 
     @Override
     public String toString() {
 
         String s = "configuration:\n";
-        s += "     mode      " + mode + "\n";
-        s += "     interface " + interf + "\n";
-        s += "     protocol  " + protocol + "\n";
-        s += "     address   " + address + "\n";
-        s += "     port      " + port + "\n";
+        s += "     mode                       " + mode + "\n";
+        s += "     interface                  " + interf + "\n";
+        s += "     network interface          " + networkInterface + "\n";
+        s += "     network interface name     " + getInterfaceName() + "\n";
+        s += "     network interface addresses" + getNetworkInterfaceAddresses() + "\n";
+        s += "     protocol                   " + protocol + "\n";
+        s += "     address                    " + address + "\n";
+        s += "     internet address           " +
+                (inetAddress == null ? "null" : inetAddress.getClass().getSimpleName() + " " + inetAddress) + "\n";
+        s += "     port                       " + port + "\n";
 
         return s;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
+
+    void setInterface(String s) {
+
+        this.interf = s;
+    }
+
+    void initializeAndValidateNetworkInterface() throws UserErrorException {
+
+        String i = getInterface();
+
+        if (i == null) {
+
+            return;
+        }
+
+        try {
+
+            networkInterface = NetworkInterface.getByName(i);
+        }
+        catch(Exception e) {
+
+            throw new UserErrorException("failed to resolve network interface " + i, e);
+        }
+
+        if (networkInterface != null) {
+
+            //
+            // return, we're good
+            //
+            return;
+        }
+
+        //
+        // interpret the string as an address/host name and return the matching interface if any
+        //
+
+        try {
+
+            outer:
+            for (Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements(); ) {
+
+                NetworkInterface ni = e.nextElement();
+
+                for(Enumeration<InetAddress> ae = ni.getInetAddresses(); ae.hasMoreElements(); ) {
+
+                    InetAddress a = ae.nextElement();
+
+                    byte[] b = Util.addressToBytes(i);
+
+                    if (Util.identical(b, a.getAddress())) {
+
+                        //
+                        // found it
+                        //
+                        networkInterface = ni;
+                        break outer;
+                    }
+                }
+            }
+        }
+        catch(Exception e) {
+
+            throw new UserErrorException("NetworkInterface.getNetworkInterfaces() call failed", e);
+        }
+
+        if (networkInterface != null) {
+
+            //
+            // return, we're good
+            //
+            return;
+        }
+
+        throw new UserErrorException("no such interface: " + i);
+    }
+
+    /**
+     * Turns the address string into an InetAddress.
+     */
+    void initializeAndValidateAddress() throws UserErrorException {
+
+        String i = getAddress();
+
+        if (i == null) {
+
+            return;
+        }
+
+        try {
+
+            inetAddress = InetAddress.getByName(i);
+        }
+        catch(Exception e) {
+
+            throw new UserErrorException("invalid address " + i, e);
+        }
+    }
+
+    void validateProtocol() throws UserErrorException {
+
+        if (getProtocol() == null) {
+
+            throw new UserErrorException("a protocol must be specified with --protocol=udp|multicast|tcp|...");
+        }
+
+
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

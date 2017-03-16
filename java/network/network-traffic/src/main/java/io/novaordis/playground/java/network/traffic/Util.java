@@ -16,7 +16,8 @@
 
 package io.novaordis.playground.java.network.traffic;
 
-import java.net.InetSocketAddress;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -26,32 +27,61 @@ public class Util {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
+    public static final Pattern IPv4_FORMAT = Pattern.compile("([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)");
+
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static Action parseCommandLine(String[] args) throws Exception {
+    /**
+     * Attempts to interpret the address as a IPv4 or IPv6 byte[] address.
+     *
+     * @return the byte[4] or byte[16] or null if the conversion cannot be performed.
+     *
+     * @throws UserErrorException
+     */
+    public static byte[] addressToBytes(String address) throws UserErrorException {
 
-        if (args == null || args.length == 0) {
+        Matcher m = IPv4_FORMAT.matcher(address);
 
-            throw new UserErrorException("must specify whether to listen or to send");
+        if (m.find()) {
+
+            byte[] result = new byte[4];
+
+            String b = m.group(1);
+            result[0] = (byte)Integer.parseInt(b);
+            b = m.group(2);
+            result[1] = (byte)Integer.parseInt(b);
+            b = m.group(3);
+            result[2] = (byte)Integer.parseInt(b);
+            b = m.group(4);
+            result[3] = (byte)Integer.parseInt(b);
+
+            return result;
         }
 
-        String command = args[0];
-        String[] rest = new String[args.length - 1];
-        System.arraycopy(args, 1, rest, 0, rest.length);
+        return null;
+    }
 
-        if ("listen".equalsIgnoreCase(command)) {
+    public static boolean identical(byte[] b, byte[] b2) {
 
-            return new Listen(rest);
+        if (b == null || b2 == null) {
 
+            return false;
         }
-        else if ("send".equalsIgnoreCase(command)) {
 
-            return new Send(rest);
-        }
-        else {
+        if (b.length != b2.length) {
 
-            throw new UserErrorException("unknown command: \"" + command + "\"");
+            return false;
         }
+
+        for(int i = 0; i < b.length; i ++) {
+
+            if (b[i] != b2[i]) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

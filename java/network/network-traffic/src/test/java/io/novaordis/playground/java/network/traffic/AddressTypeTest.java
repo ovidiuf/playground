@@ -16,11 +16,20 @@
 
 package io.novaordis.playground.java.network.traffic;
 
+import org.junit.Test;
+
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/14/17
+ * @since 3/16/17
  */
-public class UserErrorException extends Exception {
+public class AddressTypeTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,16 +41,26 @@ public class UserErrorException extends Exception {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public UserErrorException(String msg) {
+    // Tests -----------------------------------------------------------------------------------------------------------
 
-        super(msg);
+    @Test
+    public void match_IPv4() throws Exception {
+
+        InetAddress a = Inet4Address.getByAddress(new byte[] {127, 0, 0, 1});
+
+        assertTrue(AddressType.IPv4.match(a));
+        assertFalse(AddressType.IPv6.match(a));
     }
 
-    public UserErrorException(String msg, Throwable cause) {
 
-        super(msg, cause);
+    @Test
+    public void match_IPv6() throws Exception {
+
+        InetAddress a = Inet6Address.getByAddress(new byte[]{127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1});
+
+        assertTrue(AddressType.IPv6.match(a));
+        assertFalse(AddressType.IPv4.match(a));
     }
-
 
     // Package protected -----------------------------------------------------------------------------------------------
 

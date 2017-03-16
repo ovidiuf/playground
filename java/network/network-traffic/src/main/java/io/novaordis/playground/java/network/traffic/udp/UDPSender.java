@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.java.network.traffic;
+package io.novaordis.playground.java.network.traffic.udp;
+
+import io.novaordis.playground.java.network.traffic.Configuration;
+import io.novaordis.playground.java.network.traffic.Sender;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/14/17
+ * @since 3/16/17
  */
-public class UserErrorException extends Exception {
+public class UDPSender implements Sender {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -28,20 +35,43 @@ public class UserErrorException extends Exception {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Configuration c;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    public UDPSender(Configuration c) {
+
+        this.c = c;
+    }
+
+    // Sender implementation -------------------------------------------------------------------------------------------
+
+    @Override
+    public void send() throws Exception {
+
+        DatagramSocket s = new DatagramSocket();
+
+        String payload = "test";
+
+        InetAddress remoteAddress = c.getInetAddress();
+        Integer remotePort = c.getPort();
+
+        DatagramPacket p = new DatagramPacket(payload.getBytes(), payload.length(), remoteAddress, remotePort);
+
+        s.send(p);
+
+        System.out.println(payload.length() +
+                " bytes have been sent via " + s.getLocalAddress() + ":" + s.getLocalPort() + " to " +
+                remoteAddress + ":" + remotePort);
+
+
+        s.close();
+
+
+
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public UserErrorException(String msg) {
-
-        super(msg);
-    }
-
-    public UserErrorException(String msg, Throwable cause) {
-
-        super(msg, cause);
-    }
-
 
     // Package protected -----------------------------------------------------------------------------------------------
 

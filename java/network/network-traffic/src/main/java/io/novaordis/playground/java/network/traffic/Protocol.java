@@ -46,4 +46,19 @@ public enum Protocol {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    public boolean isUDP() {
+
+        return udp.equals(this);
+    }
+
+    public boolean isMulticast() {
+
+        return multicast.equals(this);
+    }
+
+    public boolean isTCP() {
+
+        return tcp.equals(this);
+    }
+
 }

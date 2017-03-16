@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.java.network.traffic;
+package io.novaordis.playground.java.network.traffic.multicast;
+
+import io.novaordis.playground.java.network.traffic.Sender;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/14/17
+ * @since 3/16/17
  */
-public class UserErrorException extends Exception {
+public class MulticastSender implements Sender {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -30,18 +32,14 @@ public class UserErrorException extends Exception {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
+    // Sender implementation -------------------------------------------------------------------------------------------
+
+    @Override
+    public void send() {
+        throw new RuntimeException("receive() NOT YET IMPLEMENTED");
+    }
+
     // Public ----------------------------------------------------------------------------------------------------------
-
-    public UserErrorException(String msg) {
-
-        super(msg);
-    }
-
-    public UserErrorException(String msg, Throwable cause) {
-
-        super(msg, cause);
-    }
-
 
     // Package protected -----------------------------------------------------------------------------------------------
 

@@ -23,6 +23,7 @@ import java.net.NetworkInterface;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
+@Deprecated
 public abstract class BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------

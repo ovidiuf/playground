@@ -16,6 +16,11 @@
 
 package io.novaordis.playground.java.network.traffic;
 
+import io.novaordis.playground.java.network.traffic.multicast.MulticastReceiver;
+import io.novaordis.playground.java.network.traffic.multicast.MulticastSender;
+import io.novaordis.playground.java.network.traffic.udp.UDPReceiver;
+import io.novaordis.playground.java.network.traffic.udp.UDPSender;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
@@ -28,20 +33,73 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Configuration c = new Configuration(args);
 
+        try {
 
-        System.out.println(c);
+            Configuration c = new Configuration(args);
 
-//        try {
-//
-//            Action action = Util.parseCommandLine(args);
-//            action.execute();
-//        }
-//        catch(UserErrorException e) {
-//
-//            System.err.println("[error]: " + e.getMessage());
-//        }
+            c.validate();
+
+            System.out.println(c);
+
+            Mode m = c.getMode();
+            Protocol p = c.getProtocol();
+
+            if (m.isReceive()) {
+
+                Receiver r;
+
+                if (p.isUDP()) {
+
+                    r = new UDPReceiver(c);
+                }
+                else if (p.isMulticast()) {
+
+                    r = new MulticastReceiver();
+                }
+                else {
+
+                    throw new RuntimeException("NOT YET IMPLEMENTED " + p);
+                }
+
+                r.receive();
+            }
+            else {
+
+                //
+                // we're sending
+                //
+
+                Sender s;
+
+                if (p.isUDP()) {
+
+                    s = new UDPSender(c);
+                }
+                else if (p.isMulticast()) {
+
+                    s = new MulticastSender();
+                }
+                else {
+
+                    throw new RuntimeException("NOT YET IMPLEMENTED " + p);
+                }
+
+                s.send();
+            }
+        }
+        catch(UserErrorException e) {
+
+            System.err.println("[error]: " + e.getMessage());
+
+            Throwable cause = e.getCause();
+
+            if (cause != null) {
+
+                System.err.println("\n   cause:\n\n");
+                cause.printStackTrace(System.err);
+            }
+        }
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

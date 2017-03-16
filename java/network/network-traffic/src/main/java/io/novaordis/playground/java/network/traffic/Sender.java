@@ -18,9 +18,9 @@ package io.novaordis.playground.java.network.traffic;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/14/17
+ * @since 3/16/17
  */
-public class UserErrorException extends Exception {
+public interface Sender {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,16 +32,7 @@ public class UserErrorException extends Exception {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public UserErrorException(String msg) {
-
-        super(msg);
-    }
-
-    public UserErrorException(String msg, Throwable cause) {
-
-        super(msg, cause);
-    }
-
+    void send() throws Exception;
 
     // Package protected -----------------------------------------------------------------------------------------------
 

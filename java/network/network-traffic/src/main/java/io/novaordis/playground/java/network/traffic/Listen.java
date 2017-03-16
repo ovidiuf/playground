@@ -28,6 +28,7 @@ import java.net.NetworkInterface;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
+@Deprecated
 public class Listen extends BaseAction implements Action {
 
     // Constants -------------------------------------------------------------------------------------------------------

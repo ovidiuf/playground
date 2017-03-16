@@ -20,6 +20,7 @@ package io.novaordis.playground.java.network.traffic;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/14/17
  */
+@Deprecated
 public interface Action {
 
     // Constants -------------------------------------------------------------------------------------------------------

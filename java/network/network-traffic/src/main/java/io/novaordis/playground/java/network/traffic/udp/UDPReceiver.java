@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.java.network.traffic;
+package io.novaordis.playground.java.network.traffic.udp;
+
+import io.novaordis.playground.java.network.traffic.AddressType;
+import io.novaordis.playground.java.network.traffic.Configuration;
+import io.novaordis.playground.java.network.traffic.Receiver;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.InterfaceAddress;
-import java.net.MulticastSocket;
-import java.net.NetworkInterface;
+import java.net.SocketAddress;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/14/17
+ * @since 3/16/17
  */
-@Deprecated
-public class Send extends BaseAction implements Action {
+public class UDPReceiver implements Receiver {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -38,32 +38,40 @@ public class Send extends BaseAction implements Action {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Configuration c;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Send(String[] args) throws Exception {
+    public UDPReceiver(Configuration c) {
 
-        super(args);
+        this.c = c;
     }
 
-    // Action implementation -------------------------------------------------------------------------------------------
+    // Receiver implementation -----------------------------------------------------------------------------------------
 
     @Override
-    public void execute() throws Exception {
+    public void receive() throws Exception {
 
-        int port = getPort();
-        InetAddress multicastAddress = getMulticastAddress();
-        MulticastSocket s = new MulticastSocket();
-        s.setLoopbackMode(false);
-        s.setNetworkInterface(getNetworkInterface());
 
-        String t = "test";
-        byte[] buffer = t.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, multicastAddress, port);
-        s.setTimeToLive(10);
-        s.send(packet);
+        Integer localPort = c.getPort();
+        InetAddress localAddress = c.getNetworkInterfaceAddress(AddressType.IPv4);
+        SocketAddress socketAddress = new InetSocketAddress(localAddress, localPort);
 
-        System.out.println("multicast packet sent to " + multicastAddress + ":" + port + " using " + s.getNetworkInterface());
-        s.close();
+        DatagramSocket receivingSocket = new DatagramSocket(socketAddress);
+
+        byte[] buffer = new byte[1024];
+        DatagramPacket datagram = new DatagramPacket(buffer, buffer.length);
+
+        System.out.println(
+                "listening for UDP traffic on " +
+                receivingSocket.getLocalAddress() + ":" + receivingSocket.getLocalPort());
+
+        //noinspection InfiniteLoopStatement
+        while(true) {
+
+            receivingSocket.receive(datagram);
+            report(datagram);
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -73,6 +81,11 @@ public class Send extends BaseAction implements Action {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private void report(DatagramPacket datagram) {
+
+        System.out.println(datagram.getLength() + " bytes from " + datagram.getAddress() + ":" + datagram.getPort());
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

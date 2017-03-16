@@ -16,30 +16,45 @@
 
 package io.novaordis.playground.java.network.traffic;
 
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/15/17
+ * @since 3/16/17
  */
-public enum Mode {
+public enum AddressType {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    send,
-    receive,
+    IPv4,
+    IPv6,
     ;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    public boolean isSend() {
+    public boolean match(InetAddress a) {
 
-        return send.equals(this);
-    }
+        if (a == null) {
 
-    public boolean isReceive() {
+            return false;
+        }
 
-        return receive.equals(this);
+        if (a instanceof Inet4Address) {
+
+            return IPv4.equals(this);
+        }
+        else if (a instanceof Inet6Address) {
+
+            return IPv6.equals(this);
+        }
+        else {
+
+            throw new RuntimeException("NOT YET IMPLEMENTED: " + a);
+        }
     }
 
 }
