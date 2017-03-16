@@ -52,12 +52,10 @@ public class UDPReceiver implements Receiver {
     @Override
     public void receive() throws Exception {
 
-
         Integer localPort = c.getPort();
         InetAddress localAddress = c.getNetworkInterfaceAddress(AddressType.IPv4);
-        SocketAddress socketAddress = new InetSocketAddress(localAddress, localPort);
-
-        DatagramSocket receivingSocket = new DatagramSocket(socketAddress);
+        SocketAddress receivingSocketAddress = new InetSocketAddress(localAddress, localPort);
+        DatagramSocket receivingSocket = new DatagramSocket(receivingSocketAddress);
 
         byte[] buffer = new byte[1024];
         DatagramPacket datagram = new DatagramPacket(buffer, buffer.length);

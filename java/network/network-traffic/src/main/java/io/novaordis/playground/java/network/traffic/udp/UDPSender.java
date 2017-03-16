@@ -49,13 +49,17 @@ public class UDPSender implements Sender {
     @Override
     public void send() throws Exception {
 
+        //
+        // we only need to specify the remote address and port - we don't need to specify anything related to the
+        // local interface to bind to, the kernel routing will take care of that.
+        //
+
         DatagramSocket s = new DatagramSocket();
 
         String payload = "test";
 
-        InetAddress remoteAddress = c.getInetAddress();
         Integer remotePort = c.getPort();
-
+        InetAddress remoteAddress = c.getInetAddress();
         DatagramPacket p = new DatagramPacket(payload.getBytes(), payload.length(), remoteAddress, remotePort);
 
         s.send(p);
@@ -66,9 +70,6 @@ public class UDPSender implements Sender {
 
 
         s.close();
-
-
-
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

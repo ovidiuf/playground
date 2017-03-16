@@ -40,20 +40,6 @@ function build-classpath() {
     #cat $(dirname $0)/classpath
 }
 
-function locate-main-class() {
-
-    local mainClass
-    for i in $(find $(dirname $0)/../src -name *Main.java); do
-        mainClass=${i}
-        break;
-    done
-
-    mainClass=${mainClass##*src/main/java/}
-    mainClass=${mainClass%.java}
-    mainClass=${mainClass//\//.}
-    echo ${mainClass}
-}
-
 function execute() {
 
     local args=""
@@ -71,10 +57,8 @@ function execute() {
     done
 
     local cp
-    local main_class
 
     cp=$(build-classpath) || exit 1
-    main_class=$(locate-main-class) || exit 1
 
     java ${debug_args} -cp ${cp} io.novaordis.playground.java.network.traffic.Main ${mode} ${args}
 
