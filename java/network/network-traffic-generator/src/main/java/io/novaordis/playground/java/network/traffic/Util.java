@@ -91,43 +91,12 @@ public class Util {
         return true;
     }
 
-    public static void displayInfo() throws Exception {
-
-        for(Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements(); ) {
-
-            NetworkInterface ni = e.nextElement();
-
-            System.out.println(ni.getName());
-        }
-    }
-
     public static void validatePort(int port) throws UserErrorException {
 
         if (port < 0 || port > 0xFFFF) {
 
             throw new UserErrorException("port out of range: " + port);
         }
-    }
-
-    public static void dumpState(Configuration c, DatagramSocket s) throws Exception {
-
-        if (!c.isVerbose()) {
-            return;
-        }
-
-        System.out.println();
-        System.out.println(c);
-
-        String d = "socket:\n\n";
-
-        d += "    type:                        " + s.getClass().getSimpleName() + "\n";
-        d += "    is bound:                    " + s.isBound() + "\n";
-        d += "    is connected:                " + s.isConnected() + "\n";
-        d += "    local socket address:        " + s.getLocalSocketAddress() + "\n";
-        d += "    local address:               " + s.getLocalAddress() + "\n";
-        d += "    local port:                  " + s.getLocalPort() + "\n";
-
-        System.out.println(d);
     }
 
     /**
@@ -150,7 +119,6 @@ public class Util {
             throws UserErrorException {
 
         InetAddress effectiveAddress = null;
-        Integer effectivePort = null;
 
         if (ni != null) {
 
@@ -225,6 +193,8 @@ public class Util {
             }
         }
 
+        Integer effectivePort;
+
         if (localPort != null && port == null) {
 
             effectivePort = localPort;
@@ -273,6 +243,61 @@ public class Util {
         return (a instanceof Inet6Address);
 
     }
+
+    //
+    // display functions -----------------------------------------------------------------------------------------------
+    //
+
+    public static String inetAddressToString(InetAddress a) {
+
+        if (a == null) {
+
+            return "null";
+        }
+
+        String s = a.getClass().getSimpleName();
+        s += " ";
+        s += a;
+
+        if (a.isMulticastAddress()) {
+
+            s += " (MULTICAST)";
+        }
+
+        return s;
+    }
+
+    public static void displayInfo() throws Exception {
+
+        for(Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements(); ) {
+
+            NetworkInterface ni = e.nextElement();
+
+            System.out.println(ni.getName());
+        }
+    }
+
+    public static void dumpState(Configuration c, DatagramSocket s) throws Exception {
+
+        if (!c.isVerbose()) {
+            return;
+        }
+
+        System.out.println();
+        System.out.println(c);
+
+        String d = "socket:\n\n";
+
+        d += "    type:                        " + s.getClass().getSimpleName() + "\n";
+        d += "    is bound:                    " + s.isBound() + "\n";
+        d += "    is connected:                " + s.isConnected() + "\n";
+        d += "    local socket address:        " + s.getLocalSocketAddress() + "\n";
+        d += "    local address:               " + s.getLocalAddress() + "\n";
+        d += "    local port:                  " + s.getLocalPort() + "\n";
+
+        System.out.println(d);
+    }
+
 
     public static String truncate(byte[] payload, int length) {
 

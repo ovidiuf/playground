@@ -16,11 +16,16 @@
 
 package io.novaordis.playground.java.network.traffic;
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/16/17
  */
-public interface Receiver {
+public abstract class ReceiverTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,16 +37,30 @@ public interface Receiver {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    Configuration getConfiguration();
+    @Test
+    public void receiveBeforeStarting() throws Exception {
 
-    void start() throws Exception;
+        Configuration c = new Configuration();
+        Receiver r = getReceiverToTest(c);
 
-    /**
-     * @throws IllegalStateException if invoked before being started
-     */
-    void receive() throws Exception;
+        try {
+
+            r.receive();
+            fail("should throw exception");
+        }
+        catch(IllegalStateException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("not started"));
+        }
+    }
+
+
+    // Tests -----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
+
+    protected abstract Receiver getReceiverToTest(Configuration c) throws Exception;
 
     // Protected -------------------------------------------------------------------------------------------------------
 

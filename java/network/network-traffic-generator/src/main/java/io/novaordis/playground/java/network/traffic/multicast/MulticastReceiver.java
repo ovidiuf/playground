@@ -16,13 +16,21 @@
 
 package io.novaordis.playground.java.network.traffic.multicast;
 
-import io.novaordis.playground.java.network.traffic.Receiver;
+import io.novaordis.playground.java.network.traffic.Configuration;
+import io.novaordis.playground.java.network.traffic.UserErrorException;
+import io.novaordis.playground.java.network.traffic.Util;
+import io.novaordis.playground.java.network.traffic.udp.UDPReceiver;
+
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.MulticastSocket;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/16/17
  */
-public class MulticastReceiver implements Receiver {
+public class MulticastReceiver extends UDPReceiver {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,11 +40,45 @@ public class MulticastReceiver implements Receiver {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    // Receiver implementation -----------------------------------------------------------------------------------------
+    public MulticastReceiver(Configuration c) {
+        super(c);
+    }
+
+    // UDPReceiver overrides -------------------------------------------------------------------------------------------
 
     @Override
-    public void receive() {
-        throw new RuntimeException("receive() NOT YET IMPLEMENTED");
+    public void start() throws Exception {
+
+        Configuration configuration = getConfiguration();
+
+        InetSocketAddress receivingSocketAddress = Util.
+                computeLocalEndpoint(
+                        configuration.getNetworkInterface(),
+                        configuration.getLocalInetAddress(),
+                        configuration.getLocalPort(),
+                        null, // the local address is interpreted as multicast group to join
+                        configuration.getPort());
+
+        MulticastSocket s = new MulticastSocket(receivingSocketAddress);
+        setSocket(s);
+
+        //
+        // join the multicast group
+        //
+
+        InetAddress mcastAddress = configuration.getInetAddress();
+
+        if (mcastAddress == null) {
+
+            throw new UserErrorException("missing required multicast address, use --address= to specify");
+        }
+
+        if (!mcastAddress.isMulticastAddress()) {
+
+            throw new UserErrorException(mcastAddress + " not a multicast address");
+        }
+
+        //s.joinGroup();
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

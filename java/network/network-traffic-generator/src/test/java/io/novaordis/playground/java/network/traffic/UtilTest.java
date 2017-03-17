@@ -370,8 +370,49 @@ public class UtilTest {
     @Test
     public void truncate_Longer() throws Exception {
 
-        String s = Util.truncate(new byte[] { 't', 'e', 's', 't' }, 3);
+        String s = Util.truncate(new byte[]{'t', 'e', 's', 't'}, 3);
         assertEquals("tes[...]", s);
+    }
+
+    // inetAddressToString() -------------------------------------------------------------------------------------------
+
+    @Test
+    public void inetAddressToString_null() throws Exception {
+
+        String s = Util.inetAddressToString(null);
+
+        assertEquals("null", s);
+    }
+
+
+    @Test
+    public void inetAddressToString_IPv4() throws Exception {
+
+        InetAddress a = InetAddress.getByAddress(new byte[] {127, 7, 7, 7});
+
+        String s = Util.inetAddressToString(a);
+
+        assertEquals("Inet4Address /127.7.7.7", s);
+    }
+
+    @Test
+    public void inetAddressToString_IPv4_Multicast() throws Exception {
+
+        InetAddress a = InetAddress.getByAddress(new byte[] {(byte)225, 5, 5, 5});
+
+        String s = Util.inetAddressToString(a);
+
+        assertEquals("Inet4Address /225.5.5.5 (MULTICAST)", s);
+    }
+
+    @Test
+    public void inetAddressToString_IPv6() throws Exception {
+
+        InetAddress a = InetAddress.getByAddress(new byte[] {127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7});
+
+        String s = Util.inetAddressToString(a);
+
+        assertEquals("Inet6Address /7f00:0:0:0:0:0:7:707", s);
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

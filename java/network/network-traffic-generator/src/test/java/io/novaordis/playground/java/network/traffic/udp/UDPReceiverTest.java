@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.java.network.traffic;
+package io.novaordis.playground.java.network.traffic.udp;
+
+import io.novaordis.playground.java.network.traffic.Configuration;
+import io.novaordis.playground.java.network.traffic.ReceiverTest;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/16/17
  */
-public interface Receiver {
+public class UDPReceiverTest extends ReceiverTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,16 +35,14 @@ public interface Receiver {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    Configuration getConfiguration();
-
-    void start() throws Exception;
-
-    /**
-     * @throws IllegalStateException if invoked before being started
-     */
-    void receive() throws Exception;
-
     // Package protected -----------------------------------------------------------------------------------------------
+
+    @Override
+    protected UDPReceiver getReceiverToTest(Configuration c) throws Exception {
+
+        return new UDPReceiver(c);
+    }
+
 
     // Protected -------------------------------------------------------------------------------------------------------
 

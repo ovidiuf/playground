@@ -75,7 +75,7 @@ public class Configuration {
 
             if (m.toString().equalsIgnoreCase(args[0])) {
 
-                mode = m;
+                setMode(m);
                 break;
             }
         }
@@ -94,7 +94,7 @@ public class Configuration {
             if (arg.startsWith("--protocol=")) {
 
                 arg = arg.substring("--protocol=".length());
-                this.protocol = Protocol.fromString(arg);
+                setProtocol(Protocol.fromString(arg));
 
             }
             else if (arg.startsWith("--interface=")) {
@@ -154,7 +154,7 @@ public class Configuration {
     /**
      * Testing only.
      */
-    Configuration() {
+    public Configuration() {
 
         this.verbose = Boolean.getBoolean(VERBOSE_SYSTEM_PROPERTY_NAME);
     }
@@ -175,7 +175,16 @@ public class Configuration {
 
         if (mode.isReceive()) {
 
-            initializeAndValidateNetworkInterface(true);
+            //
+            // receive
+            //
+
+            initializeAndValidateNetworkInterface(false);
+
+            //
+            // the --address may be interpreted as multicast group address
+            //
+            initializeAndValidateAddress(false);
             validatePort();
         }
         else if (mode.isSend()) {
@@ -355,20 +364,41 @@ public class Configuration {
         s += "     network interface addresses " + getNetworkInterfaceAddresses() + "\n";
 
         s += "     local address               " + localAddress + "\n";
-        s += "     local internet address      " +
-            (localInetAddress == null ?
-            "null" :
-            localInetAddress.getClass().getSimpleName() + " " + localInetAddress) + "\n";
+        s += "     local internet address      " + Util.inetAddressToString(localInetAddress) + "\n";
         s += "     local port                  " + localPort + "\n";
 
         s += "     address                     " + address + "\n";
-        s += "     internet address            " +
-            (inetAddress == null ?
-            "null" :
-            inetAddress.getClass().getSimpleName() + " " + inetAddress) + "\n";
+        s += "     internet address            " + Util.inetAddressToString(inetAddress) + "\n";
         s += "     port                        " + port + "\n";
 
         return s;
+    }
+
+    // Public that should have been package protected, made public for testing -----------------------------------------
+
+    public void setAddress(String s) {
+
+        this.address = s;
+    }
+
+    public void setProtocol(Protocol p) {
+
+        this.protocol = p;
+    }
+
+    public void setMode(Mode m) {
+
+        this.mode = m;
+    }
+
+    public void setNetworkInterface(NetworkInterface n) {
+
+        this.networkInterface = n;
+    }
+
+    public void setPort(Integer i) {
+
+        this.port = i;
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
@@ -378,15 +408,6 @@ public class Configuration {
         this.interf = s;
     }
 
-    void setPort(Integer i) {
-
-        this.port = i;
-    }
-
-    void setAddress(String s) {
-
-        this.address = s;
-    }
 
     void setLocalPort(Integer i) {
 
@@ -418,7 +439,7 @@ public class Configuration {
 
         try {
 
-            networkInterface = NetworkInterface.getByName(i);
+            setNetworkInterface(NetworkInterface.getByName(i));
         }
         catch(Exception e) {
 
@@ -455,7 +476,7 @@ public class Configuration {
                         //
                         // found it
                         //
-                        networkInterface = ni;
+                        setNetworkInterface(ni);
                         break outer;
                     }
                 }

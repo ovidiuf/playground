@@ -38,6 +38,8 @@ public class UDPReceiver implements Receiver {
 
     private Configuration configuration;
 
+    private DatagramSocket receivingSocket;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public UDPReceiver(Configuration c) {
@@ -48,25 +50,42 @@ public class UDPReceiver implements Receiver {
     // Receiver implementation -----------------------------------------------------------------------------------------
 
     @Override
+    public Configuration getConfiguration() {
+
+        return configuration;
+    }
+
+    @Override
+    public void start() throws Exception {
+
+        InetSocketAddress receivingSocketAddress = Util.
+                computeLocalEndpoint(
+                        configuration.getNetworkInterface(),
+                        configuration.getLocalInetAddress(),
+                        configuration.getLocalPort(),
+                        configuration.getInetAddress(),
+                        configuration.getPort());
+
+        DatagramSocket s = new DatagramSocket(receivingSocketAddress);
+        setSocket(s);
+    }
+
+    @Override
     public void receive() throws Exception {
 
-        InetSocketAddress receivingSocketAddress = Util.computeLocalEndpoint(
-                configuration.getNetworkInterface(),
-                configuration.getLocalInetAddress(),
-                configuration.getLocalPort(),
-                configuration.getInetAddress(),
-                configuration.getPort());
+        if (receivingSocket == null) {
 
-        DatagramSocket receivingSocket = new DatagramSocket(receivingSocketAddress);
-
-        byte[] buffer = new byte[1024];
-        DatagramPacket datagram = new DatagramPacket(buffer, buffer.length);
+            throw new IllegalStateException(this + " not started");
+        }
 
         Util.dumpState(configuration, receivingSocket);
 
         System.out.println(
                 "listening for UDP traffic on " +
                         receivingSocket.getLocalAddress() + ":" + receivingSocket.getLocalPort());
+
+        byte[] buffer = new byte[1024];
+        DatagramPacket datagram = new DatagramPacket(buffer, buffer.length);
 
         //noinspection InfiniteLoopStatement
         while(true) {
@@ -79,6 +98,11 @@ public class UDPReceiver implements Receiver {
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
+
+    protected void setSocket(DatagramSocket s) {
+
+        this.receivingSocket = s;
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 
