@@ -12,11 +12,12 @@ Usage:
      --jndi 127.0.0.1:4447 \\
      --destination /queue/novaordis \\
      --connection-factory /jms/RemoteConnectionFactory \\
+     --messages 1 \\
      [--username jmsuser --password jmsuser123] \\
      [--connections 10] \\
      [--threads 10] \\
-     [--sleep-between-sends-ms 1000] \\
-     [--messages 100]
+     [--sleep-between-sends-ms 1000]
+
 
 The client sends the specified number of messages (or just one message if --message is omitted).
 
