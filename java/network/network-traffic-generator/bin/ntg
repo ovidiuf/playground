@@ -40,10 +40,11 @@ function build-classpath() {
     #cat $(dirname $0)/classpath
 }
 
-function execute() {
+function main() {
+
+    local mode=$(basename $0)
 
     local args=""
-    local mode=""
     local verbose=""
 
     while [ -n "$1" ]; do
@@ -51,8 +52,6 @@ function execute() {
             debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
         elif [ "$1" = "-v" -o  "$1" = "--verbose" ]; then
             verbose="-Dverbose=true";
-        elif [ -z "${mode}" ]; then
-            mode=$1
         else
             [ -z "${args}" ] && args=$1 || args="${args} $1"
         fi
@@ -66,3 +65,5 @@ function execute() {
     java ${debug_args} ${verbose} -cp ${cp} io.novaordis.playground.java.network.traffic.Main ${mode} ${args}
 
 }
+
+main $@

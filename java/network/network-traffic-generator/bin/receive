@@ -1,5 +1,1 @@
-#!/bin/bash
-
-[ -f $(dirname $0)/common ] && . $(dirname $0)/common || { echo "$(dirname $0)/common not found" 1>&2; exit 1; }
-
-execute $(basename $0) $@
+./ntg
