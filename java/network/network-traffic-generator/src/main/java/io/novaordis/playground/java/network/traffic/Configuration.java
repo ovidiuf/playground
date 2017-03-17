@@ -54,6 +54,8 @@ public class Configuration {
     private InetAddress localInetAddress;
     private Integer localPort;
 
+    private String payload;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public Configuration(String[] args) throws UserErrorException {
@@ -82,6 +84,8 @@ public class Configuration {
 
             throw new UserErrorException("unknown mode " + args[0]);
         }
+
+        payload = null;
 
         for(int i = 1; i < args.length; i ++) {
 
@@ -132,10 +136,16 @@ public class Configuration {
                     throw new UserErrorException("invalid local port value " + arg + ", not an integer");
                 }
             }
+            else if (arg.startsWith("-")) {
 
+                throw new UserErrorException("unknown option " + arg);
+            }
             else {
 
-                throw new UserErrorException("unknown argument " + arg);
+                //
+                // accumulate as payload
+                //
+                payload = payload == null ? arg : payload + " " + arg;
             }
 
         }
@@ -321,6 +331,14 @@ public class Configuration {
         }
 
         return a;
+    }
+
+    /**
+     * May return null.
+     */
+    public String getPayload() {
+
+        return payload;
     }
 
     @Override

@@ -300,6 +300,22 @@ public class UtilTest {
         assertTrue(Util.isIPv6(InetAddress.getByAddress(new byte[]{127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})));
     }
 
+    // truncate() ------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void truncate() throws Exception {
+
+        String s = Util.truncate(new byte[] { 't', 'e', 's', 't' }, 4);
+        assertEquals("test", s);
+    }
+
+    @Test
+    public void truncate_Longer() throws Exception {
+
+        String s = Util.truncate(new byte[] { 't', 'e', 's', 't' }, 3);
+        assertEquals("tes[...]", s);
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------

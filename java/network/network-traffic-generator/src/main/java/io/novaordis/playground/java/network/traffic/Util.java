@@ -262,6 +262,16 @@ public class Util {
 
     }
 
+    public static String truncate(byte[] payload, int length) {
+
+        if (payload.length <= length) {
+
+            return new String(payload);
+        }
+
+        return new String(payload, 0, length) + "[...]";
+    }
+
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------

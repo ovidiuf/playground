@@ -64,6 +64,56 @@ public class ConfigurationTest {
         assertEquals("127.0.0.1", c.getAddress());
         assertEquals("eth1", c.getInterface());
         assertEquals(5555, c.getPort().intValue());
+        assertNull(c.getPayload());
+    }
+
+    @Test
+    public void constructor_send_Payload() throws Exception {
+
+        String[] args = {
+
+                "send",
+                "--protocol=multicast",
+                "--interface=eth1",
+                "--address=127.0.0.1",
+                "--port=5555",
+                "payload"
+
+        };
+
+        Configuration c = new Configuration(args);
+
+        assertEquals(Mode.send, c.getMode());
+        assertEquals(Protocol.multicast, c.getProtocol());
+        assertEquals("127.0.0.1", c.getAddress());
+        assertEquals("eth1", c.getInterface());
+        assertEquals(5555, c.getPort().intValue());
+        assertEquals("payload", c.getPayload());
+    }
+
+
+    @Test
+    public void constructor_send_UnknownOption() throws Exception {
+
+        String[] args = {
+
+                "send",
+                "--protocol=multicast",
+                "--no-such-option",
+                "--interface=eth1",
+                "--port=5555"
+        };
+
+        try {
+            new Configuration(args);
+            fail("should throw exception");
+        }
+        catch(UserErrorException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("unknown option"));
+            assertTrue(msg.contains("--no-such-option"));
+        }
     }
 
     @Test
@@ -84,6 +134,30 @@ public class ConfigurationTest {
         assertNull(c.getAddress());
         assertEquals("eth1", c.getInterface());
         assertEquals(5555, c.getPort().intValue());
+    }
+
+    @Test
+    public void constructor_receive_UnknownOption() throws Exception {
+
+        String[] args = {
+
+                "receive",
+                "--protocol=multicast",
+                "--no-such-option",
+                "--interface=eth1",
+                "--port=5555"
+        };
+
+        try {
+            new Configuration(args);
+            fail("should throw exception");
+        }
+        catch(UserErrorException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("unknown option"));
+            assertTrue(msg.contains("--no-such-option"));
+        }
     }
 
     @Test

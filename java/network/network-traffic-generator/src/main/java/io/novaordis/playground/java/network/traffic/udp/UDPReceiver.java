@@ -19,6 +19,7 @@ package io.novaordis.playground.java.network.traffic.udp;
 import io.novaordis.playground.java.network.traffic.AddressType;
 import io.novaordis.playground.java.network.traffic.Configuration;
 import io.novaordis.playground.java.network.traffic.Receiver;
+import io.novaordis.playground.java.network.traffic.Util;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -38,13 +39,13 @@ public class UDPReceiver implements Receiver {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Configuration c;
+    private Configuration configuration;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public UDPReceiver(Configuration c) {
 
-        this.c = c;
+        this.configuration = c;
     }
 
     // Receiver implementation -----------------------------------------------------------------------------------------
@@ -52,13 +53,16 @@ public class UDPReceiver implements Receiver {
     @Override
     public void receive() throws Exception {
 
-        Integer localPort = c.getPort();
-        InetAddress localAddress = c.getNetworkInterfaceAddress(AddressType.IPv4);
+        Integer localPort = configuration.getPort();
+        InetAddress localAddress = configuration.getNetworkInterfaceAddress(AddressType.IPv4);
         SocketAddress receivingSocketAddress = new InetSocketAddress(localAddress, localPort);
+
         DatagramSocket receivingSocket = new DatagramSocket(receivingSocketAddress);
 
         byte[] buffer = new byte[1024];
         DatagramPacket datagram = new DatagramPacket(buffer, buffer.length);
+
+        Util.dumpState(configuration, receivingSocket);
 
         System.out.println(
                 "listening for UDP traffic on " +
@@ -82,7 +86,13 @@ public class UDPReceiver implements Receiver {
 
     private void report(DatagramPacket datagram) {
 
-        System.out.println(datagram.getLength() + " bytes from " + datagram.getAddress() + ":" + datagram.getPort());
+        byte[] buffer = datagram.getData();
+        int length = datagram.getLength();
+        byte[] payload = new byte[length];
+        System.arraycopy(buffer, 0, payload, 0, length);
+
+        System.out.println(datagram.getAddress() + ":" + datagram.getPort() + " " + length + " byte(s): " +
+                Util.truncate(payload, 10));
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

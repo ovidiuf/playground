@@ -67,7 +67,10 @@ public class UDPSender implements Sender {
 
         DatagramSocket s = la == null ? new DatagramSocket() : new DatagramSocket(la);
 
-        String payload = "test";
+        String payload = configuration.getPayload();
+        if (payload == null) {
+            payload = ".";
+        }
 
         Integer remotePort = configuration.getPort();
         InetAddress remoteAddress = configuration.getInetAddress();
@@ -79,7 +82,7 @@ public class UDPSender implements Sender {
         s.send(p);
 
         System.out.println(payload.length() +
-                " bytes have been sent via " + s.getLocalAddress() + ":" + s.getLocalPort() + " to " +
+                " byte(s) have been sent via " + s.getLocalAddress() + ":" + s.getLocalPort() + " to " +
                 remoteAddress + ":" + remotePort);
 
 
