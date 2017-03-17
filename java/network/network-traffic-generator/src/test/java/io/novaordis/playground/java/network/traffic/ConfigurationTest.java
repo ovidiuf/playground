@@ -151,6 +151,36 @@ public class ConfigurationTest {
         }
     }
 
+    @Test
+    public void constructor_LocalAddressAndPort() throws Exception {
+
+        String[] args = {
+
+                "send",
+                "--protocol=multicast",
+                "--address=127.0.0.1",
+                "--port=5555",
+                "--local-address=127.0.0.2",
+                "--local-port=6666",
+        };
+
+        Configuration c = new Configuration(args);
+
+        assertEquals("127.0.0.1", c.getAddress());
+        assertNull(c.getInetAddress());
+        assertEquals(5555, c.getPort().intValue());
+
+        assertEquals("127.0.0.2", c.getLocalAddress());
+        assertNull(c.getLocalInetAddress());
+        assertEquals(6666, c.getLocalPort().intValue());
+
+        c.validate();
+
+        assertEquals(InetAddress.getByAddress(new byte[] {127, 0, 0, 1}), c.getInetAddress());
+        assertEquals(InetAddress.getByAddress(new byte[] {127, 0, 0, 2}), c.getLocalInetAddress());
+
+    }
+
     // validatePort() --------------------------------------------------------------------------------------------------
 
     @Test
@@ -175,7 +205,7 @@ public class ConfigurationTest {
 
         Configuration c = new Configuration();
 
-        c.setPort(0);
+        c.setPort(-1);
 
         try {
 
@@ -185,7 +215,7 @@ public class ConfigurationTest {
         catch(UserErrorException e) {
 
             String msg = e.getMessage();
-            assertTrue(msg.contains("port value out of range"));
+            assertTrue(msg.contains("port out of range"));
         }
     }
 
@@ -204,7 +234,7 @@ public class ConfigurationTest {
         catch(UserErrorException e) {
 
             String msg = e.getMessage();
-            assertTrue(msg.contains("port value out of range"));
+            assertTrue(msg.contains("port out of range"));
         }
     }
 

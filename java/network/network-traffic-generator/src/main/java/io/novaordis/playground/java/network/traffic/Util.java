@@ -17,6 +17,10 @@
 package io.novaordis.playground.java.network.traffic;
 
 import java.net.DatagramSocket;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
@@ -89,14 +93,20 @@ public class Util {
 
     public static void displayInfo() throws Exception {
 
-
         for(Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces(); e.hasMoreElements(); ) {
 
             NetworkInterface ni = e.nextElement();
 
             System.out.println(ni.getName());
         }
+    }
 
+    public static void validatePort(int port) throws UserErrorException {
+
+        if (port < 0 || port > 0xFFFF) {
+
+            throw new UserErrorException("port out of range: " + port);
+        }
     }
 
     public static void dumpState(Configuration c, DatagramSocket s) throws Exception {
@@ -105,14 +115,151 @@ public class Util {
             return;
         }
 
+        System.out.println();
         System.out.println(c);
 
-        String d = "socket:\n";
+        String d = "socket:\n\n";
 
-        d += "    type:     " + s.getClass().getSimpleName() + "\n";
-        d += "    is bound: " + s.isBound() + "\n";
+        d += "    type:                        " + s.getClass().getSimpleName() + "\n";
+        d += "    is bound:                    " + s.isBound() + "\n";
+        d += "    is connected:                " + s.isConnected() + "\n";
+        d += "    local socket address:        " + s.getLocalSocketAddress() + "\n";
+        d += "    local address:               " + s.getLocalAddress() + "\n";
+        d += "    local port:                  " + s.getLocalPort() + "\n";
 
         System.out.println(d);
+    }
+
+    /**
+     * Heuristics to come up with a local endpoint coordinates, based on the values provided as follows:
+     *
+     * @param ni the NetworkInterface (inferred based on the value of --interface=). May be null.
+     * @param localAddress the local address (inferred based on the value of --local-address=). May be null.
+     * @param localPort the local port (inferred based on the value of --local-port=). May be null.
+     * @param address the address (inferred based on the value of --address=). May have a "local address" semantics.
+     *                May be null.
+     * @param port the port (inferred based on the value of --ports=). May have a "local port" semantics.
+     *                May be null.
+     *
+     * @return may return null
+     *
+     * @exception UserErrorException on incompatible values.
+     */
+    public static InetSocketAddress computeLocalEndpoint(
+            NetworkInterface ni, InetAddress localAddress, Integer localPort, InetAddress address, Integer port)
+            throws UserErrorException {
+
+        InetAddress effectiveAddress = null;
+        Integer effectivePort = null;
+
+        if (ni != null) {
+
+            for(Enumeration<InetAddress> e = ni.getInetAddresses(); e.hasMoreElements(); ) {
+
+                InetAddress a = e.nextElement();
+
+                if (effectiveAddress == null) {
+
+                    effectiveAddress = a;
+                }
+                else if (Util.isIPv6(effectiveAddress) && Util.isIPv4(a)) {
+
+                    //
+                    // prefer IPv4 addresses
+                    //
+
+                    effectiveAddress = a;
+                }
+            }
+
+            //
+            // check conflict if both network interface and local address are specified
+            //
+
+            if (localAddress != null) {
+
+                if (!localAddress.equals(effectiveAddress)) {
+
+                    throw new UserErrorException(
+                            "incompatible values: network interface " + effectiveAddress + "  and local address " +
+                                    localAddress);
+                }
+            }
+        }
+        else {
+
+            //
+            // no network interface specified, use the local address or the address, and check incompatibility if both
+            // are specified
+            //
+
+            if (localAddress != null && address == null) {
+
+                effectiveAddress = localAddress;
+            }
+            else if (localAddress == null && address != null) {
+
+                effectiveAddress = address;
+            }
+            else if (localAddress != null) {
+
+                //
+                // make sure they don't conflict
+                //
+                if (!localAddress.equals(address)) {
+
+                    throw new UserErrorException(
+                            "incompatible values: address " + address + " and local address " +
+                                    localAddress);
+
+                }
+
+                effectiveAddress = localAddress;
+            }
+            else {
+
+                //
+                // both are null, no network interface specified, effective address remains null
+                //
+                effectiveAddress = null;
+            }
+        }
+
+        if (localPort != null) {
+
+            effectivePort = localPort;
+        }
+
+        if (effectiveAddress == null) {
+
+            if (effectivePort == null) {
+
+                return null;
+            }
+
+            return new InetSocketAddress(effectivePort);
+        }
+
+        if (effectivePort == null) {
+
+            effectivePort = 0;
+        }
+
+        validatePort(effectivePort);
+
+        return new InetSocketAddress(effectiveAddress, effectivePort);
+    }
+
+    public static boolean isIPv4(InetAddress a) {
+
+        return (a instanceof Inet4Address);
+
+    }
+
+    public static boolean isIPv6(InetAddress a) {
+
+        return (a instanceof Inet6Address);
+
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

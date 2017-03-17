@@ -23,7 +23,7 @@ import io.novaordis.playground.java.network.traffic.Util;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.net.SocketAddress;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -37,13 +37,13 @@ public class UDPSender implements Sender {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private Configuration c;
+    private Configuration configuration;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public UDPSender(Configuration c) {
 
-        this.c = c;
+        this.configuration = c;
     }
 
     // Sender implementation -------------------------------------------------------------------------------------------
@@ -53,28 +53,28 @@ public class UDPSender implements Sender {
 
         //
         // we only need to specify the remote address and port - we don't need to specify anything related to the
-        // local interface to bind to, the JVM networking code and the kernel routing will take care of that; however
-        // we can force a specific interface to be used, if we want to
+        // local interface to bind to, the kernel will use wildcard addressing in that case; however we can force a
+        // specific interface if we want to
         //
 
-        DatagramSocket s = new DatagramSocket();
+        SocketAddress la = Util.
+                computeLocalEndpoint(
+                        configuration.getNetworkInterface(),
+                        configuration.getLocalInetAddress(),
+                        configuration.getLocalPort(),
+                        null, // when sending, ignore address for local endpoint definition purposes
+                        null);// when sending, ignore port for local endpoint definition purposes
 
-        NetworkInterface ni = c.getNetworkInterface();
-
-        if (ni != null) {
-
-
-
-
-        }
+        DatagramSocket s = la == null ? new DatagramSocket() : new DatagramSocket(la);
 
         String payload = "test";
 
-        Integer remotePort = c.getPort();
-        InetAddress remoteAddress = c.getInetAddress();
+        Integer remotePort = configuration.getPort();
+        InetAddress remoteAddress = configuration.getInetAddress();
+
         DatagramPacket p = new DatagramPacket(payload.getBytes(), payload.length(), remoteAddress, remotePort);
 
-        Util.dumpState(c, s);
+        Util.dumpState(configuration, s);
 
         s.send(p);
 

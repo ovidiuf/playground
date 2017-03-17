@@ -50,6 +50,9 @@ public class Configuration {
 
     private Integer port;
 
+    private String localAddress;
+    private InetAddress localInetAddress;
+    private Integer localPort;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -90,15 +93,14 @@ public class Configuration {
                 this.protocol = Protocol.fromString(arg);
 
             }
-            else if (arg.startsWith("--address=")) {
-
-                setAddress(arg.substring("--address=".length()));
-
-            }
             else if (arg.startsWith("--interface=")) {
 
                 setInterface(arg.substring("--interface=".length()));
 
+            }
+            else if (arg.startsWith("--address=")) {
+
+                setAddress(arg.substring("--address=".length()));
             }
             else if (arg.startsWith("--port=")) {
 
@@ -113,6 +115,24 @@ public class Configuration {
                     throw new UserErrorException("invalid port value " + arg + ", not an integer");
                 }
             }
+            else if (arg.startsWith("--local-address=")) {
+
+                setLocalAddress(arg.substring("--local-address=".length()));
+            }
+            else if (arg.startsWith("--local-port=")) {
+
+                arg = arg.substring("--local-port=".length());
+
+                try {
+
+                    setLocalPort(Integer.parseInt(arg));
+                }
+                catch(Exception e) {
+
+                    throw new UserErrorException("invalid local port value " + arg + ", not an integer");
+                }
+            }
+
             else {
 
                 throw new UserErrorException("unknown argument " + arg);
@@ -158,6 +178,8 @@ public class Configuration {
             initializeAndValidateAddress(true);
         }
 
+        initializeAndValidateLocalAddress();
+
 
     }
 
@@ -169,6 +191,36 @@ public class Configuration {
     public Protocol getProtocol() {
 
         return protocol;
+    }
+
+    /**
+     * @return the value as passed with --local-address= command line argument. Null means the argument is not present
+     * in the command line.
+     */
+    public String getLocalAddress() {
+
+        return localAddress;
+    }
+
+    /**
+     * The local address. May be null.
+     */
+    public InetAddress getLocalInetAddress() {
+
+        //
+        // this value has to be "resolved" from the string configuration
+        //
+
+        return localInetAddress;
+    }
+
+    /**
+     * @return the value as passed with --local-port= command line argument. Null means the argument is not present in
+     * the command line.
+     */
+    public Integer getLocalPort() {
+
+        return localPort;
     }
 
     /**
@@ -201,7 +253,6 @@ public class Configuration {
 
         return port;
     }
-
 
     /**
      * @return the value as passed with --interface= command line argument. Null means the argument is not present in
@@ -275,17 +326,29 @@ public class Configuration {
     @Override
     public String toString() {
 
-        String s = "configuration:\n";
-        s += "     mode                       " + mode + "\n";
-        s += "     interface                  " + interf + "\n";
-        s += "     network interface          " + networkInterface + "\n";
-        s += "     network interface name     " + getInterfaceName() + "\n";
-        s += "     network interface addresses" + getNetworkInterfaceAddresses() + "\n";
-        s += "     protocol                   " + protocol + "\n";
-        s += "     address                    " + address + "\n";
-        s += "     internet address           " +
-                (inetAddress == null ? "null" : inetAddress.getClass().getSimpleName() + " " + inetAddress) + "\n";
-        s += "     port                       " + port + "\n";
+        String s = "configuration:\n\n";
+        s += "     mode                        " + mode + "\n";
+
+        s += "     protocol                    " + protocol + "\n";
+
+        s += "     interface                   " + interf + "\n";
+        s += "     network interface           " + networkInterface + "\n";
+        s += "     network interface name      " + getInterfaceName() + "\n";
+        s += "     network interface addresses " + getNetworkInterfaceAddresses() + "\n";
+
+        s += "     local address               " + localAddress + "\n";
+        s += "     local internet address      " +
+            (localInetAddress == null ?
+            "null" :
+            localInetAddress.getClass().getSimpleName() + " " + localInetAddress) + "\n";
+        s += "     local port                  " + localPort + "\n";
+
+        s += "     address                     " + address + "\n";
+        s += "     internet address            " +
+            (inetAddress == null ?
+            "null" :
+            inetAddress.getClass().getSimpleName() + " " + inetAddress) + "\n";
+        s += "     port                        " + port + "\n";
 
         return s;
     }
@@ -305,6 +368,16 @@ public class Configuration {
     void setAddress(String s) {
 
         this.address = s;
+    }
+
+    void setLocalPort(Integer i) {
+
+        this.localPort = i;
+    }
+
+    void setLocalAddress(String s) {
+
+        this.localAddress = s;
     }
 
     /**
@@ -439,6 +512,25 @@ public class Configuration {
         }
     }
 
+    void initializeAndValidateLocalAddress() throws UserErrorException {
+
+        String a = getLocalAddress();
+
+        if (a == null) {
+
+            return;
+        }
+
+        try {
+
+            localInetAddress = InetAddress.getByName(a);
+        }
+        catch(Exception e) {
+
+            throw new UserErrorException("invalid local address " + a, e);
+        }
+    }
+
     /**
      * The protocol must be specified.
      */
@@ -462,12 +554,8 @@ public class Configuration {
             throw new UserErrorException("a port must be specified with --port=... or as part of the address");
         }
 
-        if (port <= 0 || port >= 65536) {
-
-            throw new UserErrorException("port value out of range: " + port);
-        }
+        Util.validatePort(port);
     }
-
 
     // Protected -------------------------------------------------------------------------------------------------------
 
