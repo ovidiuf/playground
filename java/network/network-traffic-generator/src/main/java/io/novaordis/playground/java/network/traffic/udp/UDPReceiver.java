@@ -80,9 +80,7 @@ public class UDPReceiver implements Receiver {
 
         Util.dumpState(configuration, receivingSocket, null);
 
-        System.out.println(
-                "listening for UDP traffic on " +
-                        receivingSocket.getLocalAddress() + ":" + receivingSocket.getLocalPort());
+        reportWeStartedToListen();
 
         byte[] buffer = new byte[1024];
         DatagramPacket datagram = new DatagramPacket(buffer, buffer.length);
@@ -102,6 +100,19 @@ public class UDPReceiver implements Receiver {
     protected void setSocket(DatagramSocket s) {
 
         this.receivingSocket = s;
+    }
+
+    protected DatagramSocket getSocket() {
+
+        return receivingSocket;
+    }
+
+    protected void reportWeStartedToListen() {
+
+        System.out.println(
+                "listening for " + configuration.getProtocol().toString().toUpperCase() + " traffic on " +
+                        receivingSocket.getLocalAddress() + ":" + receivingSocket.getLocalPort());
+
     }
 
     // Protected -------------------------------------------------------------------------------------------------------

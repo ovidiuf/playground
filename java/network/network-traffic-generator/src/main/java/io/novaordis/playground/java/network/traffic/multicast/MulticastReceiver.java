@@ -38,6 +38,8 @@ public class MulticastReceiver extends UDPReceiver {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private InetAddress multicastGroup;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public MulticastReceiver(Configuration c) {
@@ -65,19 +67,19 @@ public class MulticastReceiver extends UDPReceiver {
         // join the multicast group
         //
 
-        InetAddress mcastAddress = configuration.getInetAddress();
+        multicastGroup = configuration.getInetAddress();
 
-        if (mcastAddress == null) {
+        if (multicastGroup == null) {
 
             throw new UserErrorException("missing required multicast address, use --address= to specify");
         }
 
-        if (!mcastAddress.isMulticastAddress()) {
+        if (!multicastGroup.isMulticastAddress()) {
 
-            throw new UserErrorException(mcastAddress + " not a multicast address");
+            throw new UserErrorException(multicastGroup + " not a multicast address");
         }
 
-        s.joinGroup(mcastAddress);
+        s.joinGroup(multicastGroup);
 
         setSocket(s);
     }
@@ -87,6 +89,18 @@ public class MulticastReceiver extends UDPReceiver {
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    @Override
+    protected void reportWeStartedToListen() {
+
+        Configuration c = getConfiguration();
+        DatagramSocket s = getSocket();
+
+        System.out.println(
+                "listening for " + c.getProtocol().toString().toUpperCase() + " traffic on " +
+                        s.getLocalAddress() + ":" + s.getLocalPort() + " for multicast group " + multicastGroup);
+
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 
