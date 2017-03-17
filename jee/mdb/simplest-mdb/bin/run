@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#
+# Figures out the class path and the main class and executes it.
+#
+
+#
+# builds the classpath; first time it is executed caches mvn dependency:build-classpath in
+# ./bin/classpath. If the dependency graph changes, we won't detect this automatically,
+# we'll have to delete ./bin/classpath by hand.
+#
+function build-classpath() {
+
+    local found=false
+    for i in $(find $(dirname $0)/../target -name *.jar); do
+        [[ "${i}" =~ -source ]] && continue;
+        found=true
+        echo -n ${i}
+    done
+
+    ${found} || { echo "no *.jar file found in $(dirname $0)/../target" 1>&2; exit 1; }
+
+    echo -n ":"
+
+    #
+    # identify the rest of dependencies; because mvn dependency:build-classpath is costly
+    # we run it only once and cache the result. If the dependency graph changes, we won't
+    # detect this automatically, we'll have to delete ./bin/classpath by hand.
+    #
+
+    if [ ! -f $(dirname $0)/classpath ]; then
+        mvn dependency:build-classpath | grep -v "\[INFO\]" | grep -v "\[WARNING\]" >  $(dirname $0)/classpath
+    fi
+
+    cat $(dirname $0)/classpath
+}
+
+function locate-main-class() {
+
+    local mainClass
+    for i in $(find $(dirname $0)/../src -name *Main.java); do
+        mainClass=${i}
+        break;
+    done
+
+    mainClass=${mainClass##*src/main/java/}
+    mainClass=${mainClass%.java}
+    mainClass=${mainClass//\//.}
+    echo ${mainClass}
+}
+
+function main() {
+
+    local args=""
+
+    while [ -n "$1" ]; do
+        if [ "$1" = "-d" -o  "$1" = "--debug" ]; then
+            debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+        else
+            [ -z "${args}" ] && args=$1 || args="${args} $1"
+        fi
+        shift
+    done
+
+    local cp
+    local main_class
+
+    cp=$(build-classpath) || exit 1
+    main_class=$(locate-main-class) || exit 1
+
+    java ${debug_args} -cp ${cp} ${main_class} ${args}
+
+}
+
+main $@
