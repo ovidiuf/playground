@@ -157,7 +157,7 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NetworkInterface() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NetworkInterface() throws Exception {
 
         NetworkInterface ni = getLocalhostNetworkInterface();
 
@@ -169,7 +169,7 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NetworkInterface_And_LocalAddress_Same() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NetworkInterface_And_LocalAddress_Same() throws Exception {
 
         NetworkInterface ni = getLocalhostNetworkInterface();
 
@@ -181,7 +181,7 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NetworkInterface_And_LocalAddress_Different() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NetworkInterface_And_LocalAddress_Different() throws Exception {
 
         NetworkInterface ni = getLocalhostNetworkInterface();
 
@@ -200,7 +200,7 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NoNetworkInterface_LocalAddress() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NoNetworkInterface_LocalAddress() throws Exception {
 
         InetSocketAddress sa = Util.computeLocalEndpoint(null, InetAddress.getByName("127.0.0.5"), null, null, null);
         assertNotNull(sa);
@@ -210,7 +210,7 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NoNetworkInterface_Address() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NoNetworkInterface_Address() throws Exception {
 
         InetSocketAddress sa = Util.computeLocalEndpoint(null, null, null, InetAddress.getByName("127.0.0.6"), null);
         assertNotNull(sa);
@@ -220,7 +220,8 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NoNetworkInterface_LocalAddress_And_Address_Same() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NoNetworkInterface_LocalAddress_And_Address_Same()
+            throws Exception {
 
         InetSocketAddress sa = Util.computeLocalEndpoint(
                 null,
@@ -233,7 +234,7 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NoNetworkInterface_LocalPort() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NoNetworkInterface_LocalPort() throws Exception {
 
         InetSocketAddress sa = Util.computeLocalEndpoint(null, null, 12345, null, null);
 
@@ -244,7 +245,8 @@ public class UtilTest {
     }
 
     @Test
-    public void computeLocalEndpoint_NoNetworkInterface_LocalAddress_And_Address_NotSame() throws Exception {
+    public void computeLocalEndpoint_SendingEndpoint_NoNetworkInterface_LocalAddress_And_Address_NotSame()
+            throws Exception {
 
         try {
 
@@ -261,6 +263,62 @@ public class UtilTest {
             assertTrue(msg.contains("local address"));
         }
     }
+
+    @Test
+    public void computeLocalEndpoint_ReceivingEndpoint_NetworkInterface_Port() throws Exception {
+
+        NetworkInterface ni = getLocalhostNetworkInterface();
+
+        InetSocketAddress sa = Util.computeLocalEndpoint(ni, null, 5555, null, null);
+        assertNotNull(sa);
+
+        assertEquals(InetAddress.getByName("127.0.0.1"), sa.getAddress());
+        assertEquals(5555, sa.getPort());
+    }
+
+    @Test
+    public void computeLocalEndpoint_ReceivingEndpoint_NetworkInterface_LocalPort() throws Exception {
+
+        NetworkInterface ni = getLocalhostNetworkInterface();
+
+        InetSocketAddress sa = Util.computeLocalEndpoint(ni, null, null, null, 6666);
+        assertNotNull(sa);
+
+        assertEquals(InetAddress.getByName("127.0.0.1"), sa.getAddress());
+        assertEquals(6666, sa.getPort());
+    }
+
+    @Test
+    public void computeLocalEndpoint_ReceivingEndpoint_NetworkInterface_LocalPortAndPortSameValues() throws Exception {
+
+        NetworkInterface ni = getLocalhostNetworkInterface();
+
+        InetSocketAddress sa = Util.computeLocalEndpoint(ni, null, 7777, null, 7777);
+        assertNotNull(sa);
+
+        assertEquals(InetAddress.getByName("127.0.0.1"), sa.getAddress());
+        assertEquals(7777, sa.getPort());
+    }
+
+    @Test
+    public void computeLocalEndpoint_ReceivingEndpoint_NetworkInterface_LocalPortAndPortDifferentValues()
+            throws Exception {
+
+        NetworkInterface ni = getLocalhostNetworkInterface();
+
+        try {
+
+            Util.computeLocalEndpoint(ni, null, 8888, null, 9999);
+            fail("should have thrown exception");
+        }
+        catch(UserErrorException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("incompatible values: local port"));
+            assertTrue(msg.contains("port 9999"));
+        }
+    }
+
 
     // isIPv4() --------------------------------------------------------------------------------------------------------
 

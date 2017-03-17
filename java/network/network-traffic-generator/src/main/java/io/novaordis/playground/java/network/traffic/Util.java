@@ -225,7 +225,19 @@ public class Util {
             }
         }
 
-        if (localPort != null) {
+        if (localPort != null && port == null) {
+
+            effectivePort = localPort;
+        }
+        else if (localPort == null && port != null) {
+
+            effectivePort = port;
+        }
+        else if (localPort != null && !localPort.equals(port)) {
+
+            throw new UserErrorException("incompatible values: local port " + localPort + " and port " + port);
+        }
+        else {
 
             effectivePort = localPort;
         }

@@ -16,16 +16,13 @@
 
 package io.novaordis.playground.java.network.traffic.udp;
 
-import io.novaordis.playground.java.network.traffic.AddressType;
 import io.novaordis.playground.java.network.traffic.Configuration;
 import io.novaordis.playground.java.network.traffic.Receiver;
 import io.novaordis.playground.java.network.traffic.Util;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -53,9 +50,12 @@ public class UDPReceiver implements Receiver {
     @Override
     public void receive() throws Exception {
 
-        Integer localPort = configuration.getPort();
-        InetAddress localAddress = configuration.getNetworkInterfaceAddress(AddressType.IPv4);
-        SocketAddress receivingSocketAddress = new InetSocketAddress(localAddress, localPort);
+        InetSocketAddress receivingSocketAddress = Util.computeLocalEndpoint(
+                configuration.getNetworkInterface(),
+                configuration.getLocalInetAddress(),
+                configuration.getLocalPort(),
+                configuration.getInetAddress(),
+                configuration.getPort());
 
         DatagramSocket receivingSocket = new DatagramSocket(receivingSocketAddress);
 
@@ -66,7 +66,7 @@ public class UDPReceiver implements Receiver {
 
         System.out.println(
                 "listening for UDP traffic on " +
-                receivingSocket.getLocalAddress() + ":" + receivingSocket.getLocalPort());
+                        receivingSocket.getLocalAddress() + ":" + receivingSocket.getLocalPort());
 
         //noinspection InfiniteLoopStatement
         while(true) {
