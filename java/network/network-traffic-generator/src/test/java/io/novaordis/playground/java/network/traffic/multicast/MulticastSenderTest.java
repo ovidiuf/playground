@@ -17,19 +17,21 @@
 package io.novaordis.playground.java.network.traffic.multicast;
 
 import io.novaordis.playground.java.network.traffic.Configuration;
+import io.novaordis.playground.java.network.traffic.Mode;
+import io.novaordis.playground.java.network.traffic.Protocol;
 import io.novaordis.playground.java.network.traffic.UserErrorException;
-import io.novaordis.playground.java.network.traffic.Util;
-import io.novaordis.playground.java.network.traffic.udp.UDPSender;
+import io.novaordis.playground.java.network.traffic.udp.UDPSenderTest;
+import org.junit.Test;
 
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.SocketAddress;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/16/17
  */
-public class MulticastSender extends UDPSender {
+public class MulticastSenderTest extends UDPSenderTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -39,51 +41,62 @@ public class MulticastSender extends UDPSender {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public MulticastSender(Configuration c) {
-        super(c);
-    }
-
-    // Sender implementation -------------------------------------------------------------------------------------------
-
-    @Override
-    public void init() throws Exception {
-
-        Configuration configuration = getConfiguration();
-
-        SocketAddress la = Util.
-                computeLocalEndpoint(
-                        configuration.getNetworkInterface(),
-                        configuration.getLocalInetAddress(),
-                        configuration.getLocalPort(),
-                        null,
-                        null);
-
-        MulticastSocket s = la == null ? new MulticastSocket() : new MulticastSocket(la);
-
-        //
-        // join the multicast group
-        //
-
-        InetAddress mcastAddress = configuration.getInetAddress();
-
-        if (mcastAddress == null) {
-
-            throw new UserErrorException("missing required multicast address, use --address= to specify");
-        }
-
-        if (!mcastAddress.isMulticastAddress()) {
-
-            throw new UserErrorException(mcastAddress + " not a multicast address");
-        }
-
-        s.joinGroup(mcastAddress);
-
-        setSocket(s);
-    }
-
     // Public ----------------------------------------------------------------------------------------------------------
 
+    // Tests -----------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void init_MulticastAddressNotProvided() throws Exception {
+
+        Configuration c = new Configuration();
+        assertNull(c.getInetAddress());
+
+        MulticastSender s = getSenderToTest(c);
+
+        try {
+
+            s.init();
+            fail("should have thrown exception");
+        }
+        catch(UserErrorException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("missing required multicast address"));
+        }
+    }
+
+    @Test
+    public void init_MulticastAddressIsNotAMulticastAddress() throws Exception {
+
+        Configuration c = new Configuration();
+        c.setProtocol(Protocol.multicast);
+        c.setMode(Mode.receive);
+        c.setAddress("127.0.0.1");
+        c.setPort(7777);
+        c.validate();
+
+
+        MulticastSender s = getSenderToTest(c);
+
+        try {
+
+            s.init();
+            fail("should have thrown exception");
+        }
+        catch(UserErrorException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("not a multicast address"));
+        }
+    }
+
     // Package protected -----------------------------------------------------------------------------------------------
+
+    @Override
+    protected MulticastSender getSenderToTest(Configuration c) throws Exception {
+
+        return new MulticastSender(c);
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

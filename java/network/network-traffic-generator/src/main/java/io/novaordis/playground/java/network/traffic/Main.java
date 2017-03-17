@@ -93,13 +93,14 @@ public class Main {
                 }
                 else if (p.isMulticast()) {
 
-                    s = new MulticastSender();
+                    s = new MulticastSender(c);
                 }
                 else {
 
                     throw new RuntimeException("NOT YET IMPLEMENTED " + p);
                 }
 
+                s.init();
                 s.send();
             }
         }

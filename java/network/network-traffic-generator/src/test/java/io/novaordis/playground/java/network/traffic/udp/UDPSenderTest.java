@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.java.network.traffic;
+package io.novaordis.playground.java.network.traffic.udp;
+
+import io.novaordis.playground.java.network.traffic.Configuration;
+import io.novaordis.playground.java.network.traffic.SenderTest;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/16/17
  */
-public interface Sender {
+public class UDPSenderTest extends SenderTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -32,16 +35,14 @@ public interface Sender {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    Configuration getConfiguration();
-
-    void init() throws Exception;
-
-    /**
-     * @throws IllegalStateException if invoked before being initialized
-     */
-    void send() throws Exception;
-
     // Package protected -----------------------------------------------------------------------------------------------
+
+    @Override
+    protected UDPSender getSenderToTest(Configuration c) throws Exception {
+
+        return new UDPSender(c);
+    }
+
 
     // Protected -------------------------------------------------------------------------------------------------------
 

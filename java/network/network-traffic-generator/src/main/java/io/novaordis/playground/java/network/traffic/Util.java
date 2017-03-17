@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.java.network.traffic;
 
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -277,7 +278,7 @@ public class Util {
         }
     }
 
-    public static void dumpState(Configuration c, DatagramSocket s) throws Exception {
+    public static void dumpState(Configuration c, DatagramSocket s, DatagramPacket p) throws Exception {
 
         if (!c.isVerbose()) {
             return;
@@ -295,9 +296,16 @@ public class Util {
         d += "    local address:               " + s.getLocalAddress() + "\n";
         d += "    local port:                  " + s.getLocalPort() + "\n";
 
+        if (p != null) {
+
+            d = "\npacket:\n\n";
+
+            d += "    target address:              " + p.getAddress() + "\n";
+            d += "    target port:                 " + p.getPort() + "\n";
+        }
+
         System.out.println(d);
     }
-
 
     public static String truncate(byte[] payload, int length) {
 

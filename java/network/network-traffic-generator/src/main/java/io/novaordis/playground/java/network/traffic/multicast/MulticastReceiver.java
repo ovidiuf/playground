@@ -60,7 +60,6 @@ public class MulticastReceiver extends UDPReceiver {
                         configuration.getPort());
 
         MulticastSocket s = new MulticastSocket(receivingSocketAddress);
-        setSocket(s);
 
         //
         // join the multicast group
@@ -78,7 +77,9 @@ public class MulticastReceiver extends UDPReceiver {
             throw new UserErrorException(mcastAddress + " not a multicast address");
         }
 
-        //s.joinGroup();
+        s.joinGroup(mcastAddress);
+
+        setSocket(s);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

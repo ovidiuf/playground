@@ -78,7 +78,7 @@ public class UDPReceiver implements Receiver {
             throw new IllegalStateException(this + " not started");
         }
 
-        Util.dumpState(configuration, receivingSocket);
+        Util.dumpState(configuration, receivingSocket, null);
 
         System.out.println(
                 "listening for UDP traffic on " +

@@ -18,6 +18,7 @@ package io.novaordis.playground.java.network.traffic.udp;
 
 import io.novaordis.playground.java.network.traffic.Configuration;
 import io.novaordis.playground.java.network.traffic.Sender;
+import io.novaordis.playground.java.network.traffic.UserErrorException;
 import io.novaordis.playground.java.network.traffic.Util;
 
 import java.net.DatagramPacket;
@@ -39,6 +40,8 @@ public class UDPSender implements Sender {
 
     private Configuration configuration;
 
+    private DatagramSocket socket;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     public UDPSender(Configuration c) {
@@ -49,7 +52,13 @@ public class UDPSender implements Sender {
     // Sender implementation -------------------------------------------------------------------------------------------
 
     @Override
-    public void send() throws Exception {
+    public Configuration getConfiguration() {
+
+        return configuration;
+    }
+
+    @Override
+    public void init() throws Exception {
 
         //
         // we only need to specify the remote address and port - we don't need to specify anything related to the
@@ -66,32 +75,58 @@ public class UDPSender implements Sender {
                         null);// when sending, ignore port for local endpoint definition purposes
 
         DatagramSocket s = la == null ? new DatagramSocket() : new DatagramSocket(la);
+        setSocket(s);
+    }
+
+    @Override
+    public void send() throws Exception {
+
+        if (socket == null) {
+
+            throw new IllegalStateException(this + " not initialized");
+        }
 
         String payload = configuration.getPayload();
+
         if (payload == null) {
             payload = ".";
         }
 
+
         Integer remotePort = configuration.getPort();
+        if (remotePort == null) {
+
+            remotePort = configuration.getLocalPort();
+        }
+        if (remotePort == null) {
+            throw new UserErrorException("missing required remote port, use --port=<port> or --address=...:<port>");
+        }
+
         InetAddress remoteAddress = configuration.getInetAddress();
+        DatagramPacket packet = new DatagramPacket(payload.getBytes(), payload.length(), remoteAddress, remotePort);
 
-        DatagramPacket p = new DatagramPacket(payload.getBytes(), payload.length(), remoteAddress, remotePort);
+        Util.dumpState(configuration, socket, packet);
 
-        Util.dumpState(configuration, s);
+        //s.setTimeToLive(10);
 
-        s.send(p);
+        socket.send(packet);
 
         System.out.println(payload.length() +
-                " byte(s) have been sent via " + s.getLocalAddress() + ":" + s.getLocalPort() + " to " +
+                " byte(s) have been sent via " + socket.getLocalAddress() + ":" + socket.getLocalPort() + " to " +
                 remoteAddress + ":" + remotePort);
 
 
-        s.close();
+        socket.close();
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
     // Package protected -----------------------------------------------------------------------------------------------
+
+    protected void setSocket(DatagramSocket s) {
+
+        this.socket = s;
+    }
 
     // Protected -------------------------------------------------------------------------------------------------------
 

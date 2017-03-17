@@ -16,21 +16,16 @@
 
 package io.novaordis.playground.java.network.traffic;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.InterfaceAddress;
-import java.net.MulticastSocket;
-import java.net.NetworkInterface;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/14/17
+ * @since 3/16/17
  */
-@Deprecated
-public class Send extends BaseAction implements Action {
+public abstract class SenderTest {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -40,35 +35,31 @@ public class Send extends BaseAction implements Action {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Send(String[] args) throws Exception {
-
-        super(args);
-    }
-
-    // Action implementation -------------------------------------------------------------------------------------------
-
-    @Override
-    public void execute() throws Exception {
-
-        int port = getPort();
-        InetAddress multicastAddress = getMulticastAddress();
-        MulticastSocket s = new MulticastSocket();
-        s.setLoopbackMode(false);
-        s.setNetworkInterface(getNetworkInterface());
-
-        String t = "test";
-        byte[] buffer = t.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, multicastAddress, port);
-        s.setTimeToLive(10);
-        s.send(packet);
-
-        System.out.println("multicast packet sent to " + multicastAddress + ":" + port + " using " + s.getNetworkInterface());
-        s.close();
-    }
-
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @Test
+    public void sendBeforeInitializing() throws Exception {
+
+        Configuration c = new Configuration();
+        Sender s = getSenderToTest(c);
+
+        try {
+
+            s.send();
+            fail("should throw exception");
+        }
+        catch(IllegalStateException e) {
+
+            String msg = e.getMessage();
+            assertTrue(msg.contains("not initialized"));
+        }
+    }
+
+    // Tests -----------------------------------------------------------------------------------------------------------
+
     // Package protected -----------------------------------------------------------------------------------------------
+
+    protected abstract Sender getSenderToTest(Configuration c) throws Exception;
 
     // Protected -------------------------------------------------------------------------------------------------------
 
