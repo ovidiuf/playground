@@ -1,4 +1,4 @@
-#Simple HornetQ JMS Client
+# Simple HornetQ JMS Client
 
 This is a simple, maven-built, command-line configured command-line client that interacts with a
 WildFly-embedded HornetQ server.
@@ -15,7 +15,7 @@ Prepare the target WildFly instances you intend to connect to by:
 * Adding jmsuser/jmsuser123 with $JBOSS_HOME/bin/add-user.sh to the ApplicationRealm, and assign it to the
 "guest" role.
 
-##Sending Messages
+## Sending Messages
 
 Then, to send messages (more help in-line by simply running ./send):
 
@@ -43,7 +43,7 @@ Just only one connection is created by default, unless --connections is used.
 
 Just only one thread is used to send messages, by default, unless --threads is used.
 
-##Receiving Messages
+## Receiving Messages
 
 To receive messages (more help in-line by simply running ./receive):
 
@@ -61,7 +61,7 @@ If no --username (and corresponding --password) options are specified, the JMS C
 created anonymously. The server may or may not allow anonymous connections, depending on its
 security settings.
 
-#Also See
+# Also See
 
 https://github.com/NovaOrdis/playground/tree/master/jboss/hornetq/failover-testing-framework
 
