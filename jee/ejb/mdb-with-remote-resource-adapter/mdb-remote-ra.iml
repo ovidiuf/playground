@@ -15,5 +15,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-api:6.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.ejb3:jboss-ejb3-ext-api:2.1.0.redhat-1" level="project" />
+    <orderEntry type="library" name="jboss-remote-naming-1.0.12.Final-redhat-1" level="project" />
   </component>
 </module>
