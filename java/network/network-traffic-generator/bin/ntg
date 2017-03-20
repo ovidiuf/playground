@@ -46,12 +46,15 @@ function main() {
 
     local args=""
     local verbose=""
+    local system_properties=""
 
     while [ -n "$1" ]; do
         if [ "$1" = "-d" -o  "$1" = "--debug" ]; then
             debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
         elif [ "$1" = "-v" -o  "$1" = "--verbose" ]; then
             verbose="-Dverbose=true";
+        elif [[ "$1" =~ -D ]]; then
+            system_properties="${system_properties} $1"
         else
             [ -z "${args}" ] && args=$1 || args="${args} $1"
         fi
@@ -62,7 +65,7 @@ function main() {
 
     cp=$(build-classpath) || exit 1
 
-    java ${debug_args} ${verbose} -cp ${cp} io.novaordis.playground.java.network.traffic.Main ${mode} ${args}
+    java ${system_properties} ${debug_args} ${verbose} -cp ${cp} io.novaordis.playground.java.network.traffic.Main ${mode} ${args}
 
 }
 

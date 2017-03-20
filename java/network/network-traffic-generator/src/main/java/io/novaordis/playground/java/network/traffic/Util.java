@@ -292,6 +292,10 @@ public class Util {
         d += "    type:                        " + s.getClass().getSimpleName() + "\n";
         d += "    is bound:                    " + s.isBound() + "\n";
         d += "    is connected:                " + s.isConnected() + "\n";
+        d += "    SO_RCVBUF:                   " + s.getReceiveBufferSize() + " bytes\n";
+        d += "    SO_SNDBUF:                   " + s.getSendBufferSize() + " bytes\n";
+        d += "    SO_REUSEADDR:                " + s.getReuseAddress() + "\n";
+        d += "    SO_TIMEOUT:                  " + s.getSoTimeout() + " milliseconds\n";
         d += "    local socket address:        " + s.getLocalSocketAddress() + "\n";
         d += "    local address:               " + s.getLocalAddress() + "\n";
         d += "    local port:                  " + s.getLocalPort() + "\n";

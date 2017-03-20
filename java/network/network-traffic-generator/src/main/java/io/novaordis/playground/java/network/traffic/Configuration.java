@@ -354,19 +354,17 @@ public class Configuration {
     public String toString() {
 
         String s = "configuration:\n\n";
+
+        s += "     -Djava.net.preferIPv4Stack  " + Boolean.getBoolean("java.net.preferIPv4Stack") + "\n";
         s += "     mode                        " + mode + "\n";
-
         s += "     protocol                    " + protocol + "\n";
-
         s += "     interface                   " + interf + "\n";
         s += "     network interface           " + networkInterface + "\n";
         s += "     network interface name      " + getInterfaceName() + "\n";
         s += "     network interface addresses " + getNetworkInterfaceAddresses() + "\n";
-
         s += "     local address               " + localAddress + "\n";
         s += "     local internet address      " + Util.inetAddressToString(localInetAddress) + "\n";
         s += "     local port                  " + localPort + "\n";
-
         s += "     address                     " + address + "\n";
         s += "     internet address            " + Util.inetAddressToString(inetAddress) + "\n";
         s += "     port                        " + port + "\n";
