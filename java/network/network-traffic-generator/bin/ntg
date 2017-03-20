@@ -61,11 +61,13 @@ function main() {
         shift
     done
 
+    [ -z "${JAVA_HOME}" ] && { echo "JAVA_HOME not set" 1>&2; exit 1; }
+
     local cp
 
     cp=$(build-classpath) || exit 1
 
-    java ${system_properties} ${debug_args} ${verbose} -cp ${cp} io.novaordis.playground.java.network.traffic.Main ${mode} ${args}
+    ${JAVA_HOME}/bin/java ${system_properties} ${debug_args} ${verbose} -cp ${cp} io.novaordis.playground.java.network.traffic.Main ${mode} ${args}
 
 }
 

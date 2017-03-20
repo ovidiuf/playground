@@ -79,6 +79,8 @@ public class MulticastReceiver extends UDPReceiver {
             throw new UserErrorException(multicastGroup + " not a multicast address");
         }
 
+        //Util.dumpState(configuration, s, null);
+
         s.joinGroup(multicastGroup);
 
         setSocket(s);

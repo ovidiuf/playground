@@ -274,7 +274,14 @@ public class Util {
 
             NetworkInterface ni = e.nextElement();
 
-            System.out.println(ni.getName());
+            String s = ni.getName() + ": ";
+
+            for(Enumeration<InetAddress> ea = ni.getInetAddresses(); ea.hasMoreElements(); ) {
+
+                s += ea.nextElement() + " ";
+            }
+
+            System.out.println(s);
         }
     }
 
@@ -287,18 +294,23 @@ public class Util {
         System.out.println();
         System.out.println(c);
 
-        String d = "socket:\n\n";
+        String d = "";
 
-        d += "    type:                        " + s.getClass().getSimpleName() + "\n";
-        d += "    is bound:                    " + s.isBound() + "\n";
-        d += "    is connected:                " + s.isConnected() + "\n";
-        d += "    SO_RCVBUF:                   " + s.getReceiveBufferSize() + " bytes\n";
-        d += "    SO_SNDBUF:                   " + s.getSendBufferSize() + " bytes\n";
-        d += "    SO_REUSEADDR:                " + s.getReuseAddress() + "\n";
-        d += "    SO_TIMEOUT:                  " + s.getSoTimeout() + " milliseconds\n";
-        d += "    local socket address:        " + s.getLocalSocketAddress() + "\n";
-        d += "    local address:               " + s.getLocalAddress() + "\n";
-        d += "    local port:                  " + s.getLocalPort() + "\n";
+        if (s != null) {
+
+            d += "socket:\n\n";
+
+            d += "    type:                        " + s.getClass().getSimpleName() + "\n";
+            d += "    is bound:                    " + s.isBound() + "\n";
+            d += "    is connected:                " + s.isConnected() + "\n";
+            d += "    SO_RCVBUF:                   " + s.getReceiveBufferSize() + " bytes\n";
+            d += "    SO_SNDBUF:                   " + s.getSendBufferSize() + " bytes\n";
+            d += "    SO_REUSEADDR:                " + s.getReuseAddress() + "\n";
+            d += "    SO_TIMEOUT:                  " + s.getSoTimeout() + " milliseconds\n";
+            d += "    local socket address:        " + s.getLocalSocketAddress() + "\n";
+            d += "    local address:               " + s.getLocalAddress() + "\n";
+            d += "    local port:                  " + s.getLocalPort() + "\n";
+        }
 
         if (p != null) {
 
@@ -308,7 +320,10 @@ public class Util {
             d += "    target port:                 " + p.getPort() + "\n";
         }
 
-        System.out.println(d);
+        if (!d.isEmpty()) {
+
+            System.out.println(d);
+        }
     }
 
     public static String truncate(byte[] payload, int length) {
