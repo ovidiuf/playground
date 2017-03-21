@@ -19,6 +19,7 @@ package io.novaordis.playground.java.network.traffic;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -68,7 +69,7 @@ public class Configuration {
 
         if (args == null || args.length == 0) {
 
-            throw new UserErrorException("missing mode");
+            throw new UserErrorException("missing mode, use one of " + Arrays.asList(Mode.values()));
         }
 
         for(Mode m: Mode.values()) {
