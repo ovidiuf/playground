@@ -13,12 +13,35 @@
 
     <build>
         <finalName>stateless-ejb-and-servlet</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <modules>
+                        <ejbModule>
+                            <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+                            <artifactId>stateless-ejb-example</artifactId>
+                            <bundleFileName>stateless-ejb-example.jar</bundleFileName>
+                        </ejbModule>
+                        <webModule>
+                            <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+                            <artifactId>wrapper-servlet</artifactId>
+                            <bundleFileName>wrapper-servlet.war</bundleFileName>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
         <dependency>
             <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
             <artifactId>stateless-ejb-example</artifactId>
+            <type>ejb</type>
             <version>1</version>
         </dependency>
         <dependency>
@@ -28,6 +51,7 @@
             <version>1</version>
         </dependency>
     </dependencies>
+
 
 </project>
 
