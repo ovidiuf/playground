@@ -14,12 +14,17 @@
   ~ limitations under the License.
   -->
 
-<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
-
-    <deployment>
-        <dependencies>
-            <module name="deployment.stateless-ejb-example.jar"/>
-        </dependencies>
-    </deployment>
-
-</jboss-deployment-structure>
+<application xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             version="6"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd">
+    <application-name>Stateless EJB Example</application-name>
+    <module>
+        <ejb>stateless-ejb-example.jar</ejb>
+    </module>
+    <module>
+        <web>
+            <web-uri>wrapper-servlet.war</web-uri>
+            <context-root>/wrapper-servlet</context-root>
+        </web>
+    </module>
+</application>

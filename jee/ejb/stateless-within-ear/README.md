@@ -1,12 +1,9 @@
-# Stateless EJB Example via JNDI
+# Stateless EJB Example deployed within an EAR
 
-A simple stateless that can be invoked into from a wrapper servlet. The EJB and the servlet are deployed 
-as separated JBoss modules.
+A simple stateless EJB that can be invoked into from a wrapper servlet. Both the EJB and the servlet 
+are deployed together as part of the same EAR.
 
 The EJB bean reference is looked up by the servlet in JNDI.
-
-The EJB interface type is made available to the servlet module via module dependency declared in
-jboss-deployment-structure.xml.
 
  
 # To Build
@@ -20,8 +17,7 @@ mvn clean install
 In this order:
 
 ````
-cp ./stateless-ejb/target/stateless-ejb-example.jar $JBOSS_HOME/profiles/$JBOSS_PROFILE/deployments
-cp ./servlet/target/wrapper-servlet.war $JBOSS_HOME/profiles/$JBOSS_PROFILE/deployments
+cp ./ear/target/stateless-ejb-and-servlet.ear $JBOSS_HOME/profiles/$JBOSS_PROFILE/deployments
 
 ````
 
