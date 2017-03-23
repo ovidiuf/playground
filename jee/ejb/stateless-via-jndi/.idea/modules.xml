@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
       <module fileurl="file://$PROJECT_DIR$/stateless-ejb/stateless-ejb-example.iml" filepath="$PROJECT_DIR$/stateless-ejb/stateless-ejb-example.iml" />
-      <module fileurl="file://$PROJECT_DIR$/servlet/wrapper-servlet.iml" filepath="$PROJECT_DIR$/servlet/wrapper-servlet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrapper-servlet/wrapper-servlet.iml" filepath="$PROJECT_DIR$/wrapper-servlet/wrapper-servlet.iml" />
     </modules>
   </component>
 </project>

@@ -14,8 +14,8 @@
     </properties>
 
     <modules>
-        <module>servlet</module>
         <module>stateless-ejb</module>
+        <module>wrapper-servlet</module>
     </modules>
 
     <build>
