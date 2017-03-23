@@ -12,6 +12,7 @@
     <packaging>ear</packaging>
 
     <build>
+
         <finalName>stateless-ejb-and-servlet</finalName>
 
         <plugins>
@@ -51,7 +52,6 @@
             <version>1</version>
         </dependency>
     </dependencies>
-
 
 </project>
 

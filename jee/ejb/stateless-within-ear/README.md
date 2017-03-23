@@ -3,7 +3,7 @@
 A simple stateless EJB that can be invoked into from a wrapper servlet. Both the EJB and the servlet 
 are deployed together as part of the same EAR.
 
-The EJB bean reference is looked up by the servlet in JNDI.
+The EJB bean reference is injected with @EJB into the servlet.
 
  
 # To Build
