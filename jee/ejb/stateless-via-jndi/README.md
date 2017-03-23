@@ -1,6 +1,7 @@
 # Stateless EJB Example via JNDI
 
-A simple stateless that can be invoked into from a wrapper servlet.
+A simple stateless that can be invoked into from a wrapper servlet. The EJB and the servlet are deployed 
+as separated JBoss modules.
 
 The EJB bean reference is looked up by the servlet in JNDI.
 
