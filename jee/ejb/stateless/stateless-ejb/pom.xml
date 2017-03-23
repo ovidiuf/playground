@@ -15,5 +15,13 @@
         <finalName>stateless-ejb-example</finalName>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>
 

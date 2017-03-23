@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-package io.novaordis.playground.jee.ejb.stateless.invoker;
+package io.novaordis.playground.jee.ejb.stateless;
 
-import io.novaordis.playground.jee.ejb.stateless.SimpleStateless;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.naming.InitialContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.ejb.Stateless;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/22/17
  */
-public class InvokerServlet extends HttpServlet {
+@Stateless
+public class SimpleStatelessBean implements SimpleStateless {
 
     // Constants -------------------------------------------------------------------------------------------------------
-
-    private static final Logger log = LoggerFactory.getLogger(InvokerServlet.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -44,38 +33,22 @@ public class InvokerServlet extends HttpServlet {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    // HttpServlet overrides -------------------------------------------------------------------------------------------
+    // SimpleStateless implementation ----------------------------------------------------------------------------------
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException  {
+    public String methodOne(String arg) {
 
-        log.info(this + " handling GET");
+        String result = "";
 
-        SimpleStateless bean;
+        for(int i = arg.length() - 1; i >= 0; i --) {
 
-        try {
-
-            InitialContext ic = new InitialContext();
-            bean = (SimpleStateless)ic.lookup("java:global/stateless-ejb-example/SimpleStatelessBean");
-        }
-        catch(Exception e) {
-
-            throw new ServletException(e);
+            result += arg.charAt(i);
         }
 
-        String result = bean.methodOne("from servlet");
-
-        res.setContentType("text/html");
-        PrintWriter out = res.getWriter();
-        out.println("response from EJB: " + result);
+        return result;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
-
-    @Override
-    public String toString() {
-        return "InvokerServlet[" + Integer.toHexString(System.identityHashCode(this)) + "]";
-    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
