@@ -15,9 +15,13 @@
   -->
 
 <jboss-deployment-structure>
+
+    <!--
     <sub-deployment name="wrapper-servlet.war">
         <dependencies>
             <module name="deployment.stateless-ejb-and-servlet.ear.stateless-ejb-example.jar"/>
         </dependencies>
     </sub-deployment>
+    -->
+
 </jboss-deployment-structure>

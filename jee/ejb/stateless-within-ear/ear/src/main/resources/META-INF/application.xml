@@ -18,14 +18,18 @@
              version="6"
              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd">
     <application-name>Stateless EJB Example</application-name>
-    <initialize-in-order>true</initialize-in-order>
+
+    <!-- <initialize-in-order>true</initialize-in-order> -->
+
     <module>
         <ejb>stateless-ejb-example.jar</ejb>
     </module>
+
     <module>
         <web>
             <web-uri>wrapper-servlet.war</web-uri>
             <context-root>/wrapper-servlet</context-root>
         </web>
     </module>
+
 </application>
