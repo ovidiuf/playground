@@ -1,4 +1,4 @@
-# Session EJB and Servlet in Different Deployment Units on Same JBoss Instance, JNDI Lookup
+# Session EJB and Servlet in Different Deployment Units on Same JBoss Instance
 
 https://kb.novaordis.com/index.php/Session_EJB_and_Servlet_in_Different_Deployment_Units_on_Same_JBoss_Instance#GitHub_Example
  

@@ -43,8 +43,11 @@ public class InvokerServlet extends HttpServlet {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    @EJB(mappedName = "java:global/stateless-ejb-example/SimpleStatelessBean")
-    private SimpleStateless bean;
+    //
+    // Equivalent @EJB injection
+    //
+    //@EJB(mappedName = "java:global/stateless-ejb-example/SimpleStatelessBean")
+    //private SimpleStateless bean;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -53,33 +56,33 @@ public class InvokerServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException  {
 
-//        SimpleStateless bean;
-//
-//        InitialContext ic = null;
-//
-//        try {
-//
-//            ic = new InitialContext();
-//            bean = (SimpleStateless)ic.lookup("java:global/stateless-ejb-example/SimpleStatelessBean");
-//        }
-//        catch(Exception e) {
-//
-//            throw new ServletException(e);
-//        }
-//        finally {
-//
-//            if (ic != null) {
-//
-//                try {
-//
-//                    ic.close();
-//                }
-//                catch(Exception e) {
-//
-//                    log.error("failed to close initial context", e);
-//                }
-//            }
-//        }
+        SimpleStateless bean;
+
+        InitialContext ic = null;
+
+        try {
+
+            ic = new InitialContext();
+            bean = (SimpleStateless)ic.lookup("java:global/stateless-ejb-example/SimpleStatelessBean");
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+        finally {
+
+            if (ic != null) {
+
+                try {
+
+                    ic.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to close initial context", e);
+                }
+            }
+        }
 
         String result = bean.methodOne("from servlet");
 
