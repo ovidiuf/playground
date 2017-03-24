@@ -49,18 +49,32 @@ public class InvokerServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException  {
 
-        log.info(this + " handling GET");
-
         SimpleStateless bean;
+
+        InitialContext ic = null;
 
         try {
 
-            InitialContext ic = new InitialContext();
+            ic = new InitialContext();
             bean = (SimpleStateless)ic.lookup("java:global/stateless-ejb-example/SimpleStatelessBean");
         }
         catch(Exception e) {
 
             throw new ServletException(e);
+        }
+        finally {
+
+            if (ic != null) {
+
+                try {
+
+                    ic.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to close initial context", e);
+                }
+            }
         }
 
         String result = bean.methodOne("from servlet");
