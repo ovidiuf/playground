@@ -13,6 +13,30 @@
 
     <build>
         <finalName>stateless-ejb-example</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-some-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                            <includes>**/SimpleStateless.class</includes>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
@@ -20,8 +44,10 @@
             <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-jboss-instances</groupId>
             <artifactId>common-types</artifactId>
             <version>1</version>
+            <scope>provided</scope>
             <!--
-            Do not mark as <provided>, we need the classes in the deployment unit.
+            <provided> is fine, we'll "manually" include the classes we need in the final artifact
+            by configuring maven-dependency-plugin
             -->
         </dependency>
         <dependency>
