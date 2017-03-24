@@ -20,7 +20,7 @@ import io.novaordis.playground.jee.ejb.stateless.SimpleStateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.EJB;
+import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,9 +42,6 @@ public class InvokerServlet extends HttpServlet {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    @EJB
-    private SimpleStateless bean;
-
     // Constructors ----------------------------------------------------------------------------------------------------
 
     // HttpServlet overrides -------------------------------------------------------------------------------------------
@@ -52,7 +49,34 @@ public class InvokerServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException  {
 
-        log.info(this + " handling GET");
+        SimpleStateless bean;
+
+        InitialContext ic = null;
+
+        try {
+
+            ic = new InitialContext();
+
+            bean = (SimpleStateless)ic.lookup("java:app/stateless-ejb-example/SimpleStatelessBean");
+
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+        finally {
+
+            if (ic != null) {
+
+                try {
+                    ic.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to close initial context", e);
+                }
+            }
+        }
 
         String result = bean.methodOne("from servlet");
 

@@ -1,10 +1,6 @@
-# Stateless EJB Example deployed within an EAR
+# Stateless EJB and Invoking Servlet Deployed within an EAR, JNDI Lookup
 
-A simple stateless EJB that can be invoked into from a wrapper servlet. Both the EJB and the servlet 
-are deployed together as part of the same EAR.
-
-The EJB bean reference is injected with @EJB into the servlet.
-
+https://kb.novaordis.com/index.php/Session_EJB_and_Servlet_as_Different_EAR_Modules,_JNDI_Lookup
  
 # To Build
 
@@ -27,9 +23,5 @@ cp ./ear/target/stateless-ejb-and-servlet.ear $JBOSS_HOME/profiles/$JBOSS_PROFIL
 ./bin/invoke
 ````
  
-
-# NOKB
-
-https://kb.novaordis.com/index.php/Stateless_EJB#Example
 
 

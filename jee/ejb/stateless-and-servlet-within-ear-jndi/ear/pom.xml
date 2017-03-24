@@ -23,12 +23,12 @@
                 <configuration>
                     <modules>
                         <ejbModule>
-                            <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+                            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-within-ear-jndi</groupId>
                             <artifactId>stateless-ejb-example</artifactId>
                             <bundleFileName>stateless-ejb-example.jar</bundleFileName>
                         </ejbModule>
                         <webModule>
-                            <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+                            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-within-ear-jndi</groupId>
                             <artifactId>wrapper-servlet</artifactId>
                             <bundleFileName>wrapper-servlet.war</bundleFileName>
                         </webModule>
@@ -40,13 +40,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-within-ear-jndi</groupId>
             <artifactId>stateless-ejb-example</artifactId>
             <type>ejb</type>
             <version>1</version>
         </dependency>
         <dependency>
-            <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-within-ear-jndi</groupId>
             <artifactId>wrapper-servlet</artifactId>
             <type>war</type>
             <version>1</version>
