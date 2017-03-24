@@ -17,6 +17,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-jboss-instances</groupId>
+            <artifactId>common-types</artifactId>
+            <version>1</version>
+            <!--
+            Do not mark as <provided>, we need the classes in the deployment unit.
+            -->
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -28,12 +36,6 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-jboss-instances</groupId>
-            <artifactId>stateless-ejb-example</artifactId>
-            <version>1</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
