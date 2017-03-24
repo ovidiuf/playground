@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+        <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-deployment-units-jndi</groupId>
         <artifactId>root</artifactId>
         <version>1</version>
     </parent>
