@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-deployment-units-same-as-instance-jndi</groupId>
+        <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-deployment-units-same-jboss-instance</groupId>
         <artifactId>root</artifactId>
         <version>1</version>
     </parent>
@@ -30,7 +30,7 @@
             <artifactId>javaee-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-deployment-units-same-as-instance-jndi</groupId>
+            <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-different-deployment-units-same-jboss-instance</groupId>
             <artifactId>stateless-ejb-example</artifactId>
             <version>1</version>
             <scope>provided</scope>
