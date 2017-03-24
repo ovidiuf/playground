@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.novaordis.playground.jee.ejb.stateless.deployed-ejb-context</groupId>
+        <artifactId>root</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>stateless-ejb-example</artifactId>
+    <packaging>jar</packaging>
+
+    <build>
+        <finalName>stateless-ejb-example</finalName>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>
+

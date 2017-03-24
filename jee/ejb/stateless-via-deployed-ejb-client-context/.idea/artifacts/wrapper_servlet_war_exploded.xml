@@ -7,7 +7,9 @@
           <element id="module-output" name="wrapper-servlet" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:3.1.0" />
+          <element id="archive" name="common-types-1.jar">
+            <element id="module-output" name="common-types" />
+          </element>
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -11,5 +11,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-api:6.0" level="project" />
+    <orderEntry type="library" name="jboss-ejb-client-2.1.7.Final-redhat-1" level="project" />
   </component>
 </module>
