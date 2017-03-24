@@ -2,7 +2,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground.jee.ejb.stateless</groupId>
+    <groupId>io.novaordis.playground.jee.ejb.stateless-and-servlet-within-ear-jndi</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
 
