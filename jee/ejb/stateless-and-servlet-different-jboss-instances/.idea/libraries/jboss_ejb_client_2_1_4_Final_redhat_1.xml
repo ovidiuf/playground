@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jboss-ejb-client-2.1.4.Final-redhat-1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-7.0.0.GA-maven-repository/maven-repository/org/jboss/jboss-ejb-client/2.1.4.Final-redhat-1/jboss-ejb-client-2.1.4.Final-redhat-1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-7.0.0.GA-maven-repository/maven-repository/org/jboss/jboss-ejb-client/2.1.4.Final-redhat-1/jboss-ejb-client-2.1.4.Final-redhat-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
