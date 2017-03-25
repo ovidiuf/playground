@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.novaordis.playground.jee.ejb.stateless-and-standalone-jboss-application</groupId>
+        <artifactId>root</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>standalone</artifactId>
+    <packaging>jar</packaging>
+
+    <build>
+        <finalName>standalone</finalName>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.novaordis.playground.jee.ejb.stateless-and-standalone-jboss-application</groupId>
+            <artifactId>common-types</artifactId>
+            <version>1</version>
+            <!--
+            Do not mark as <provided>, we need the classes in the deployment unit.
+            -->
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+

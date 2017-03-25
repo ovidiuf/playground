@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/common-types/common-types.iml" filepath="$PROJECT_DIR$/common-types/common-types.iml" />
+      <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrapper-servlet/standalone.iml" filepath="$PROJECT_DIR$/wrapper-servlet/standalone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/standalone/standalone.iml" filepath="$PROJECT_DIR$/standalone/standalone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stateless-ejb/stateless-ejb-example.iml" filepath="$PROJECT_DIR$/stateless-ejb/stateless-ejb-example.iml" />
+    </modules>
+  </component>
+</project>

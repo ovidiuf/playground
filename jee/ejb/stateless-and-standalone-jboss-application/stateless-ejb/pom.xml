@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.novaordis.playground.jee.ejb.stateless-and-standalone-jboss-application</groupId>
+        <artifactId>root</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>stateless-ejb-example</artifactId>
+    <packaging>jar</packaging>
+
+    <build>
+        <finalName>stateless-ejb-example</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-some-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                            <includes>**/SimpleStateless.class</includes>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.novaordis.playground.jee.ejb.stateless-and-standalone-jboss-application</groupId>
+            <artifactId>common-types</artifactId>
+            <version>1</version>
+            <scope>provided</scope>
+            <!--
+            <provided> is fine, we'll "manually" include the classes we need in the final artifact
+            by configuring maven-dependency-plugin
+            -->
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>
+
