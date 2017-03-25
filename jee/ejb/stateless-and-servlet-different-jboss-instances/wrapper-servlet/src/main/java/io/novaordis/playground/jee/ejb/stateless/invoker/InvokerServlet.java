@@ -62,7 +62,8 @@ public class InvokerServlet extends HttpServlet {
         try {
 
             ic = new InitialContext();
-            bean = (SimpleStateless)ic.lookup("java:global/stateless-ejb-example/SimpleStatelessBean");
+            bean = (SimpleStateless)ic.lookup(
+                    "ejb:/stateless-ejb-example/SimpleStatelessBean!io.novaordis.playground.jee.ejb.stateless.SimpleStateless");
         }
         catch(Exception e) {
 
@@ -83,7 +84,7 @@ public class InvokerServlet extends HttpServlet {
             }
         }
 
-        String result = bean.methodOne("from servlet");
+        String result = bean.methodOne("some content from servlet");
 
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();

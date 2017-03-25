@@ -16,12 +16,15 @@
 
 package io.novaordis.playground.jee.ejb.stateless;
 
+import javax.ejb.Remote;
+
 /**
  * The business interface.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 3/22/17
  */
+@Remote
 public interface SimpleStateless {
 
     // Constants -------------------------------------------------------------------------------------------------------

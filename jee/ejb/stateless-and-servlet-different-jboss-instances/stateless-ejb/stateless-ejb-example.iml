@@ -9,6 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jboss-ejb-client-2.1.4.Final-redhat-1" level="project" />
     <orderEntry type="module" module-name="common-types" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-api:6.0" level="project" />
   </component>
