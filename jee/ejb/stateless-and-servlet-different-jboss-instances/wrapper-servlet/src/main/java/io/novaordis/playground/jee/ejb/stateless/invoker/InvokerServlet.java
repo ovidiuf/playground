@@ -45,8 +45,8 @@ public class InvokerServlet extends HttpServlet {
     //
     // Equivalent @EJB injection
     //
-    //@EJB(mappedName = "java:global/stateless-ejb-example/SimpleStatelessBean")
-    //private SimpleStateless bean;
+//    @EJB(mappedName = "ejb:/stateless-ejb-example/SimpleStatelessBean!io.novaordis.playground.jee.ejb.stateless.SimpleStateless")
+//    private SimpleStateless bean;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
