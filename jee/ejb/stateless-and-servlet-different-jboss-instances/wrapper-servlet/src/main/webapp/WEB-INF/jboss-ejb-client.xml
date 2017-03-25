@@ -1,7 +1,12 @@
 <jboss-ejb-client xmlns:xsi="urn:jboss:ejb-client:1.2" xsi:noNamespaceSchemaLocation="jboss-ejb-client_1_2.xsd">
     <client-context>
+        <!-- exclude-local-receiver="true"
+        -->
         <ejb-receivers>
             <remoting-ejb-receiver outbound-connection-ref="remote-ejb-container-1"/>
+            <!--
+            <remoting-ejb-receiver outbound-connection-ref="remote-ejb-container-2"/>
+            -->
         </ejb-receivers>
     </client-context>
 </jboss-ejb-client>
