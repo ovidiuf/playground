@@ -34,4 +34,4 @@ Upon deployment, the MDB will react to a message sent with:
 send --jndi 127.0.0.1:[4447|8080] --destination /jms/queue/playground --connection-factory /jms/RemoteConnectionFactory --messages 1
 ````
 
-(for the client, see playground/jboss/hornetq|activemq/simplest-client
+(for the client, see playground/jboss/hornetq|activemq/simplest-client).
