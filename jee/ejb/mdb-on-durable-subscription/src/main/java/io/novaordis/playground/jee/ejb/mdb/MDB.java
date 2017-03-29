@@ -25,7 +25,7 @@ import java.util.Map;
         @ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Topic"),
         @ActivationConfigProperty(propertyName="destination", propertyValue="/jms/topic/playground-topic"),
         @ActivationConfigProperty(propertyName="subscriptionDurability", propertyValue="Durable"),
-        @ActivationConfigProperty(propertyName="subscriptionName", propertyValue="something"),
+        @ActivationConfigProperty(propertyName="subscriptionName", propertyValue="something")
 })
 public class MDB implements MessageListener {
 
