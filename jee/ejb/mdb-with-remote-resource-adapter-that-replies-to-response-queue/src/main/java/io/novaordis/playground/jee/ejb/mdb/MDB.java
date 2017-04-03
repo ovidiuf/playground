@@ -93,7 +93,7 @@ public class MDB implements MessageListener {
         }
         catch(Exception e) {
 
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
         }
         finally {
 
