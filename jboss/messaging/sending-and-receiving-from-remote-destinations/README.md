@@ -10,11 +10,13 @@ For more details see:
 
 * https://kb.novaordis.com/index.php/Configuring_a_Remote_HornetQ_JMS_Server_as_a_Resource_Adapter
 * https://kb.novaordis.com/index.php/Configuring_a_Remote_HornetQ_JMS_Server_as_a_Resource_Adapter#Sending_Messages_to_Remote_Destinations
+* https://kb.novaordis.com/index.php/WildFly_Naming_Subsystem_Configuration#Importing_an_External_JNDI_Context
+
 
 In order to execute the example, the remote JMS server has to exposed as described in
 the above articles.
 
-#Build
+# Build
 
 ```
 mvn clean install
