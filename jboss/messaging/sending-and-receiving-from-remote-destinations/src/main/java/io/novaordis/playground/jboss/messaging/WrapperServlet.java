@@ -19,6 +19,7 @@ package io.novaordis.playground.jboss.messaging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageConsumer;
@@ -31,11 +32,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Service;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.util.UUID;
 
 /**
@@ -48,13 +46,25 @@ public class WrapperServlet extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(WrapperServlet.class);
 
-    public static final String DESTINATION_JNDI_NAME = "/jms/queue/remote-playground";
+    public static final String LOCAL_NAME_OF_THE_EXTERNAL_CONTEXT = "java:global/remote-hornetq";
+
+    public static final String DESTINATION_JNDI_NAME = "jms/queue/remote-playground";
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    @Resource(lookup = "java:global/remote-hornetq")
+    private InitialContext externalContext;
+
+    private InitialContext localInitialContext;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    public WrapperServlet() throws Exception {
+
+        localInitialContext = new InitialContext();
+    }
 
     // HttpServlet overrides -------------------------------------------------------------------------------------------
 
@@ -67,11 +77,13 @@ public class WrapperServlet extends HttpServlet {
 
         if (uri.startsWith("/wrapper-servlet/send")) {
 
-            send();
+            //send();
+            send2();
         }
         else if (uri.startsWith("/wrapper-servlet/receive")) {
 
-            receive();
+            //receive();
+            receive2();
         }
         else {
 
@@ -106,9 +118,7 @@ public class WrapperServlet extends HttpServlet {
 
             ic = new InitialContext();
 
-            Object o = ic.lookup("java:global/remote-hornetq" + DESTINATION_JNDI_NAME);
-
-            Queue queue = (Queue)o;
+            Queue queue = (Queue)ic.lookup(LOCAL_NAME_OF_THE_EXTERNAL_CONTEXT + "/" + DESTINATION_JNDI_NAME);
 
             log.info("queue: " + queue);
 
@@ -164,6 +174,60 @@ public class WrapperServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Equivalent with send(), just that we do not create the external InitialContext ourselves, we use the one that was
+     * injected.
+     */
+    private void send2() throws ServletException {
+
+        Connection c = null;
+
+        try {
+
+            Queue queue = (Queue)externalContext.lookup(DESTINATION_JNDI_NAME);
+
+            log.info("queue: " + queue);
+
+            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup("java:/RemoteJmsXA");
+
+            log.info("connection factory: " + cf);
+
+            c = cf.createConnection();
+
+            Session s = c.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            MessageProducer p = s.createProducer(queue);
+
+            String text = "test " + UUID.randomUUID().toString();
+
+            TextMessage tm = s.createTextMessage(text);
+
+            c.start();
+
+            p.send(tm);
+
+            log.info("sent message \"" + text + "\"");
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+        finally {
+
+            if (c != null) {
+
+                try {
+
+                    c.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to close JMS connection", e);
+                }
+            }
+        }
+    }
+
     private void receive() throws ServletException {
 
         InitialContext ic = null;
@@ -173,9 +237,7 @@ public class WrapperServlet extends HttpServlet {
 
             ic = new InitialContext();
 
-            Object o = ic.lookup("java:global/remote-hornetq" + DESTINATION_JNDI_NAME);
-
-            Queue queue = (Queue)o;
+            Queue queue = (Queue)ic.lookup(LOCAL_NAME_OF_THE_EXTERNAL_CONTEXT + "/" + DESTINATION_JNDI_NAME);
 
             log.info("queue: " + queue);
 
@@ -227,9 +289,59 @@ public class WrapperServlet extends HttpServlet {
                 }
             }
         }
-
     }
 
+    /**
+     * Equivalent with receive(), just that we do not create the external InitialContext ourselves, we use the one that
+     * was injected.
+     */
+    private void receive2() throws ServletException {
+
+        Connection c = null;
+
+        try {
+
+            Queue queue = (Queue)externalContext.lookup(DESTINATION_JNDI_NAME);
+
+            log.info("queue: " + queue);
+
+            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup("java:/RemoteJmsXA");
+
+            log.info("connection factory: " + cf);
+
+            c = cf.createConnection();
+
+            Session s = c.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            MessageConsumer mc = s.createConsumer(queue);
+
+            c.start();
+
+            log.info("blocking to receive message ...");
+
+            TextMessage tm = (TextMessage)mc.receive();
+
+            log.info("received \"" + tm.getText() + "\"");
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+        finally {
+
+            if (c != null) {
+
+                try {
+
+                    c.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to close JMS connection", e);
+                }
+            }
+        }
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
