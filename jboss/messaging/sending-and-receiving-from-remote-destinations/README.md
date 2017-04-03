@@ -22,5 +22,8 @@ the above articles.
 mvn clean install
 ```
 
+# Execute
+
+http://localhost:8080/wrapper-servlet/send|receive
 
 

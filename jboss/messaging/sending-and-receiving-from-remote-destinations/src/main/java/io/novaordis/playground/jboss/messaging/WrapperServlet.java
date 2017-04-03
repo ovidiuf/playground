@@ -26,17 +26,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 1/9/16
  */
-public class ServletExample extends HttpServlet {
+public class WrapperServlet extends HttpServlet {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(ServletExample.class);
+    private static final Logger log = LoggerFactory.getLogger(WrapperServlet.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -47,20 +46,8 @@ public class ServletExample extends HttpServlet {
     // HttpServlet overrides -------------------------------------------------------------------------------------------
 
     @Override
-    public void init()
-    {
-        log.info(this + " initialized");
-    }
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-    @Override
-    public void destroy()
-    {
-        log.info(this + " destroyed");
-    }
-
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-    {
         log.info(this + " handling GET");
 
         res.setContentType("text/html");
@@ -68,21 +55,7 @@ public class ServletExample extends HttpServlet {
         PrintWriter out = res.getWriter();
 
         out.println("<html>");
-        out.println("GET handled by " + getHostName());
-        out.println("</html>");
-    }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse res)  throws ServletException, IOException {
-
-        log.info(this + " handling POST");
-
-        res.setContentType("text/html");
-
-        PrintWriter out = res.getWriter();
-
-        out.println("<html>");
-        out.println("POST handled by " + getHostName());
+        out.println("OK");
         out.println("</html>");
     }
 
@@ -90,7 +63,7 @@ public class ServletExample extends HttpServlet {
 
     @Override
     public String toString() {
-        return "ServletExample[" + Integer.toHexString(System.identityHashCode(this)) + "]";
+        return "WrapperServlet[" + Integer.toHexString(System.identityHashCode(this)) + "]";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------
@@ -98,56 +71,6 @@ public class ServletExample extends HttpServlet {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-    /**
-     * May return null.
-     */
-    private String getHostName() {
-
-        log.info("getHostName()");
-
-        String hostName = System.getenv("HOSTNAME");
-
-        if (hostName == null || hostName.length() == 0) {
-
-            String command = "/bin/hostname";
-
-            Process p = null;
-            StringBuilder sb = null;
-
-            try {
-
-                p = Runtime.getRuntime().exec(new String[]{command});
-
-                log.info(p + " created");
-
-                InputStream is = p.getInputStream();
-                sb = new StringBuilder();
-                int i;
-                while ((i = is.read()) != -1) {
-                    sb.append((char)i);
-                }
-            }
-            catch (Exception e) {
-
-                log.error("failed to execute \"" + command + "\"");
-            }
-            finally {
-
-                if (p != null) {
-                    p.destroy();
-                }
-            }
-
-            log.info("sb: " + sb);
-
-            if (sb != null) {
-                hostName = sb.toString();
-            }
-        }
-
-        return hostName;
-    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 

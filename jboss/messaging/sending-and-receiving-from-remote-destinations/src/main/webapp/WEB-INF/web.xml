@@ -7,12 +7,12 @@
     <distributable/>
     -->
     <servlet>
-        <servlet-name>ServletExample</servlet-name>
-        <servlet-class>com.novaordis.playground.jee.servlet.simplest.ServletExample</servlet-class>
+        <servlet-name>WrapperServlet</servlet-name>
+        <servlet-class>io.novaordis.playground.jboss.messaging.WrapperServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ServletExample</servlet-name>
+        <servlet-name>WrapperServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
