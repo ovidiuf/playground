@@ -1,10 +1,12 @@
-# Sending and Receiving Messages from Remote Destinations
+# Sending and Receiving Messages from Remote Destinations, Destinations are Injected with @Remote
 
 # Overview
 
 This is an example of how a JEE component (servlet in this case) can send and receive
 messages to/from JMS destinations deployed on a remote JMS server, that was exposed
 locally via a resource adapter.
+
+The remote destinations are injected with @Remote
 
 For more details see:
 
@@ -24,6 +26,7 @@ mvn clean install
 
 # Execute
 
-http://localhost:8080/wrapper-servlet/send|receive
+http://localhost:8080/wrapper-servlet/send/
+http://localhost:8080/wrapper-servlet/receive/
 
 
