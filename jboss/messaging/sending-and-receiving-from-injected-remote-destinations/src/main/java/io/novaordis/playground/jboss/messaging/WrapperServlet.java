@@ -53,7 +53,7 @@ public class WrapperServlet extends HttpServlet {
     @Resource(name="java:global/remote-hornetq/jms/queue/remote-inbound")
     private Queue remoteQueue;
 
-    @Resource(lookup = "java:/RemoteJmsXA")
+    @Resource(name="java:/RemoteJmsXA")
     private ConnectionFactory connectionFactory;
 
     // Constructors ----------------------------------------------------------------------------------------------------
