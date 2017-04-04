@@ -49,6 +49,7 @@ public class WrapperServlet extends HttpServlet {
     public static final String LOCAL_NAME_OF_THE_EXTERNAL_CONTEXT = "java:global/remote-hornetq";
 
     public static final String DESTINATION_JNDI_NAME = "jms/queue/remote-playground";
+    // public static final String DESTINATION_JNDI_NAME = "jms/queue/remote-inbound";
 
     // Static ----------------------------------------------------------------------------------------------------------
 
