@@ -20,6 +20,9 @@ import javax.jms.TextMessage;
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
 /**
+ * An MDB that receives and sends messages and will work without any coding changes with a collocated JMS provider, as
+ * well as with a remote JMS provider.
+ *
  * The set of properties that will configure this MDB to work with a remote JMS provider:
  *
     <system-properties>
