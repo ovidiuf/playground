@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.novaordis.playground.jee.servlet.simplest</groupId>
+    <groupId>io.novaordis.playground.jee.servlet.simplest</groupId>
     <artifactId>servlet-example</artifactId>
     <packaging>war</packaging>
 
@@ -12,8 +12,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j-version>1.7.12</slf4j-version>
-        <servlet-api-version>3.1.0</servlet-api-version>
     </properties>
 
     <build>
@@ -47,41 +45,24 @@
         </pluginManagement>
     </build>
 
-    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4j-version}</version>
+                <version>1.7.12</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j-version}</version>
+                <version>1.7.12</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet-api-version}</version>
+                <version>3.1.0</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

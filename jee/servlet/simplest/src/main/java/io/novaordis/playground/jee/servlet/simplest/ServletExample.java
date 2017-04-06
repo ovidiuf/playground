@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.novaordis.playground.jee.servlet.simplest;
+package io.novaordis.playground.jee.servlet.simplest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,20 +47,17 @@ public class ServletExample extends HttpServlet {
     // HttpServlet overrides -------------------------------------------------------------------------------------------
 
     @Override
-    public void init()
-    {
+    public void init() {
         log.info(this + " initialized");
     }
 
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         log.info(this + " destroyed");
     }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-    {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         log.info(this + " handling GET");
 
         res.setContentType("text/html");

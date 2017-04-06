@@ -8,7 +8,7 @@
     -->
     <servlet>
         <servlet-name>ServletExample</servlet-name>
-        <servlet-class>com.novaordis.playground.jee.servlet.simplest.ServletExample</servlet-class>
+        <servlet-class>io.novaordis.playground.jee.servlet.simplest.ServletExample</servlet-class>
     </servlet>
 
     <servlet-mapping>
