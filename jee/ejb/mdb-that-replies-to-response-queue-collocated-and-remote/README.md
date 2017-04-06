@@ -7,6 +7,6 @@ system properties in annotations.
 
 For more details, see:
 
-https://kb.novaordis.com/index.php/Configuring_a_Remote_HornetQ_JMS_Server_as_a_Resource_Adapter#mdb_relay
+https://kb.novaordis.com/index.php/Configuring_a_Remote_HornetQ_JMS_Server_as_a_Resource_Adapter#Using_System_Properties_that_are_Resolved_at_Runtime
 
 
