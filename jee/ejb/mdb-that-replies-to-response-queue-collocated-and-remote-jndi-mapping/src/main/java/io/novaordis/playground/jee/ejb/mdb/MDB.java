@@ -23,24 +23,6 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
  * An MDB that receives and sends messages and will work without any coding changes with a collocated JMS provider, as
  * well as with a remote JMS provider.
  *
- * The set of properties that will configure this MDB to work with a remote JMS provider:
- *
-    <system-properties>
-        <property name="inbound.queue.jndi.name" value="/jms/queue/inbound-queue"/>
-        <property name="resource.adapter.name" value="hornetq-remote-ra"/>
-        <property name="outbound.queue.jndi.name" value="java:global/remote-hornetq/jms/queue/outbound-queue"/>
-        <property name="outbound.connection.factory.jndi.name" value="java:/RemoteJmsXA"/>
-    </system-properties>
- *
- * The set of properties that will configure this MDB to work with a local JMS provider:
- *
-    <system-properties>
-        <property name="inbound.queue.jndi.name" value="java:/jms/queue/inbound-queue"/>
-        <property name="resource.adapter.name" value="hornetq-ra"/>
-        <property name="outbound.queue.jndi.name" value="java:/jms/queue/outbound-queue"/>
-        <property name="outbound.connection.factory.jndi.name" value="java:/JmsXA"/>
-    </system-properties>
- *
  *
  * @author <a href="mailto:ovidiu@novardis.com">Ovidiu Feodorov</a>
  * @version <tt>$Revision: 1.2 $</tt>
@@ -51,13 +33,10 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
         @ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Queue"),
 
         //
-        // We are using a system property because the JNDI name of the inbound queue is different depending on whether
-        // the queue is deployed in the local JNDI space by the collocated JMS provider
-        // ("java:/jms/queue/inbound-queue") or is deployed in an remote JNDI space by a remote JNDI provider
-        // ("/jms/queue/inbound-queue")
+        // TODO
         //
 
-        @ActivationConfigProperty(propertyName="destination", propertyValue="${inbound.queue.jndi.name}"),
+        @ActivationConfigProperty(propertyName="destination", propertyValue="java:/jms/queue/inbound-queue"),
 
 })
 
@@ -77,14 +56,12 @@ public class MDB implements MessageListener {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+
     //
-    // We are using a system property because the JNDI name of the outbound queue is different depending on whether
-    // the queue is deployed in the local JNDI space by the collocated JMS provider
-    // ("java:/jms/queue/outbound-queue") or is deployed in an remote JNDI space by a remote JNDI provider
-    // ("java:global/remote-hornetq/jms/queue/outbound-queue")
+    // TODO
     //
 
-    @Resource(name="${outbound.queue.jndi.name}")
+    @Resource(name="java:/jms/queue/outbound-queue")
     private Queue responseQueue;
 
     //
