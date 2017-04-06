@@ -41,6 +41,18 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
         <property name="outbound.connection.factory.jndi.name" value="java:/JmsXA"/>
     </system-properties>
  *
+ * Also, "org.hornetq" dependency must be added as a global module for this to work, otherwise the JNDI lookup of the
+ * remote destination will fail:
+ *
+
+ <subsystem xmlns="urn:jboss:domain:ee:1.2">
+    <global-modules>
+        <module name="org.hornetq" slot="main"/>
+    </global-modules>
+    <annotation-property-replacement>true</annotation-property-replacement>
+    ...
+ </subsystem>
+
  *
  * @author <a href="mailto:ovidiu@novardis.com">Ovidiu Feodorov</a>
  * @version <tt>$Revision: 1.2 $</tt>

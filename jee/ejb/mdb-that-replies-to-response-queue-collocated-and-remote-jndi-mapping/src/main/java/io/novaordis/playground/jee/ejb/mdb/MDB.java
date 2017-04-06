@@ -20,9 +20,35 @@ import javax.jms.TextMessage;
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
 /**
- * An MDB that receives and sends messages and will work without any coding changes with a collocated JMS provider, as
- * well as with a remote JMS provider.
+ * An MDB that receives and sends messages and will work without any destination name changes with a collocated JMS
+ * provider, as well as with a remote JMS provider.
  *
+ * This is possible because the outbound queue is mapped in JNDI as follows:
+ *
+ <subsystem xmlns="urn:jboss:domain:naming:...">
+    <bindings>
+        <external-context name="java:global/remote-hornetq" module="org.jboss.remote-naming" class="javax.naming.InitialContext">
+            <environment>
+                <property name="java.naming.factory.initial" value="org.jboss.naming.remote.client.InitialContextFactory"/>
+                <property name="java.naming.provider.url" value="remote://${remote.hornetq.node.one.address}:${remote.hornetq.node.one.remoting.port},remote://${remote.hornetq.node.two.address}:${remote.hornetq.node.two.remoting.port}"/>
+            </environment>
+        </external-context>
+        <lookup name="java:/jms/queue/outbound-queue" lookup="java:global/remote-hornetq/jms/queue/outbound-queue" />
+    </bindings>
+    ...
+ </subsystem>
+
+ * Also, "org.hornetq" dependency must be added as a global module for this to work, otherwise the JNDI lookup of the
+ * remote destination will fail:
+ *
+
+ <subsystem xmlns="urn:jboss:domain:ee:1.2">
+    <global-modules>
+        <module name="org.hornetq" slot="main"/>
+    </global-modules>
+    <annotation-property-replacement>true</annotation-property-replacement>
+    ...
+ </subsystem>
  *
  * @author <a href="mailto:ovidiu@novardis.com">Ovidiu Feodorov</a>
  * @version <tt>$Revision: 1.2 $</tt>
@@ -33,7 +59,8 @@ import org.jboss.ejb3.annotation.ResourceAdapter;
         @ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Queue"),
 
         //
-        // TODO
+        // The same hardcoded JNDI name "java:/jms/queue/inbound-queue" is valid for the collocated as well
+        // as the remote JMS deployment. This is resolved transparently by the MDB container.
         //
 
         @ActivationConfigProperty(propertyName="destination", propertyValue="java:/jms/queue/inbound-queue"),
@@ -56,9 +83,9 @@ public class MDB implements MessageListener {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-
     //
-    // TODO
+    // The same hardcoded JNDI name "java:/jms/queue/outbound-queue" is valid for the collocated as well
+    // as the remote JMS deployment. This is made possible by the <lookup> mapping in the "naming" subystem
     //
 
     @Resource(name="java:/jms/queue/outbound-queue")
