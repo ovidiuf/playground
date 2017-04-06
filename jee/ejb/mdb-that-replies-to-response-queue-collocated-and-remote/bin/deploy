@@ -1,0 +1,12 @@
+#!/bin/bash
+
+jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.10
+jboss_profile=mdb
+
+artifact=$(dirname $0)/../target/mdb-remote-ra.jar
+
+[ -f ${artifact} ] || { echo "${artifact} not found" 1>&2; exit 1; }
+
+cp ${artifact} ${jboss_home}/profiles/${jboss_profile}/deployments && \
+    echo "ok" || \
+    echo "failed"
