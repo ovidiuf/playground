@@ -17,17 +17,39 @@
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
 
     <servlet>
-        <servlet-name>InvokerServlet</servlet-name>
-        <servlet-class>io.novaordis.playground.jee.ear.servlet.InvokerServlet</servlet-class>
+
+        <servlet-name>ServletA</servlet-name>
+
+        <servlet-class>io.novaordis.playground.jee.ear.servlet.ServletA</servlet-class>
+
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>InvokerServlet</servlet-name>
+        <servlet-name>ServletA</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <!--
+         Simple entry that will be injected with:
+
+         @Resource
+         private int configurationParameterA;
+
+    -->
+    <env-entry>
+        <env-entry-name>io.novaordis.playground.jee.ear.servlet.ServletA/configurationParameterA</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>11</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>configuration-parameter-B</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>22</env-entry-value>
+    </env-entry>
 
 </web-app>
