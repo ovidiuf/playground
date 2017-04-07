@@ -1,27 +1,21 @@
-# Stateless EJB and Invoking Servlet Deployed within an EAR, JNDI Lookup
+# JEE EAR with embedded web application WAR and EJB
 
-https://kb.novaordis.com/index.php/Session_EJB_and_Servlet_as_Different_EAR_Modules,_JNDI_Lookup
- 
-# To Build
+An example of how to build a simple JEE EAR with an embedded EJB JAR and a web application WAR. 
+
+To build and deploy:
 
 ````
 mvn clean install
-````
+cp ./ear/target/war-and-ejb.ear <deployment-dir>
 
-# To Deploy
+````    
 
-In this order:
+If correctly deployed, the application will be available under the root context "/invoker".
 
-````
-cp ./ear/target/stateless-ejb-and-servlet.ear $JBOSS_HOME/profiles/$JBOSS_PROFILE/deployments
+To exercise:
 
-````
+http://localhost:8080/invoke/
 
-# To Run
+# NOKB
 
-````
-./bin/invoke
-````
- 
-
-
+https://kb.novaordis.com/index.php/EAR#Examples
