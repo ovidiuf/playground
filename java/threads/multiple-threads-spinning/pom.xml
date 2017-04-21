@@ -14,7 +14,7 @@
 
     <build>
 
-        <finalName>multiple-threads-spinning</finalName>
+        <finalName>threads</finalName>
 
         <plugins>
             <plugin>
@@ -46,7 +46,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.novaordis.playground.java.threads.mts</mainClass>
+              <mainClass>io.novaordis.playground.java.threads.mts.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
