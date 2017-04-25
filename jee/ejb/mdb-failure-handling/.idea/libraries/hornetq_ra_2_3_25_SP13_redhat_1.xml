@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="hornetq-ra-2.3.25.SP13-redhat-1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.10-incremental-maven-repository/org/hornetq/hornetq-ra/2.3.25.SP13-redhat-1/hornetq-ra-2.3.25.SP13-redhat-1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.10-incremental-maven-repository/org/hornetq/hornetq-ra/2.3.25.SP13-redhat-1/hornetq-ra-2.3.25.SP13-redhat-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

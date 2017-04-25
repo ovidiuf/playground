@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jboss-as-ee-7.5.10.Final-redhat-2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.10-incremental-maven-repository/org/jboss/as/jboss-as-ee/7.5.10.Final-redhat-2/jboss-as-ee-7.5.10.Final-redhat-2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/runtime/jboss-eap-6.4.10-incremental-maven-repository/org/jboss/as/jboss-as-ee/7.5.10.Final-redhat-2/jboss-as-ee-7.5.10.Final-redhat-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
