@@ -25,6 +25,7 @@ import java.util.Map;
         @ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Queue"),
         @ActivationConfigProperty(propertyName="destination", propertyValue="/jms/queue/playground"),
         @ActivationConfigProperty(propertyName="maxSession", propertyValue="15"),
+        // dLQMaxResent is deprecated in EAP 6.4.10
         @ActivationConfigProperty(propertyName="dLQMaxResent", propertyValue="10"),
 
 })
