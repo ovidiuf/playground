@@ -1,6 +1,21 @@
 #!/bin/bash
 
-GC_LOGGING_ARGS="-Xloggc:./$(date +'%y-%m-%d-%H.%M.%S')-gc.log -XX:+PrintGCDateStamps";
+#GC_LOGGING_ARGS="-Xloggc:./$(date +'%y-%m-%d-%H.%M.%S')-gc.log -XX:+PrintGCDateStamps";
 
 #java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main $@
-java -cp $(dirname $0)/target/main-1.jar ${GC_LOGGING_ARGS} io.novaordis.playground.Main $@
+
+
+debug_args=""
+file_name=""
+
+while [ -n "$1" ]; do
+
+    if [ "$1" = "-d" ]; then
+        debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+    elif [ -z "${file_name}" ]; then
+         file_name=$1
+    fi
+    shift
+done
+
+java ${debug_args} -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main ${file_name}

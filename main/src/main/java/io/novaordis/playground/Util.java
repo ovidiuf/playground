@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Nova Ordis LLC
+ * Copyright (c) 2017 Nova Ordis LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +19,65 @@ package io.novaordis.playground;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 10/5/16
+ * @since 4/28/17
  */
-public class Main {
+public class Util {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
+    private static final DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("dd/MMM/yy:HH:mm:ss");
+    private static final DateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
+
+
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void main(String[] args) throws Exception {
+    public static void hist(String[] args) throws Exception {
 
-        Util.hist(args);
+        String filename = args[0];
 
+        File f = new File(filename);
+
+
+        BufferedReader br = new BufferedReader(new FileReader(f));
+
+        String line;
+
+        Date current = null;
+        int count = 0;
+
+        while((line = br.readLine()) != null) {
+
+            Date d = INPUT_DATE_FORMAT.parse(line);
+
+            if (current == null) {
+
+                current = d;
+                count ++;
+            }
+            else if (current.equals(d)) {
+                count ++;
+            }
+            else if (current.compareTo(d) > 0) {
+
+                throw new Exception(current + " is after " + d);
+            }
+            else {
+
+                System.out.println(OUTPUT_DATE_FORMAT.format(current) + ", " + count);
+                current = d;
+                count = 1;
+            }
+        }
+
+        br.close();
     }
+
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
@@ -47,8 +90,6 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
