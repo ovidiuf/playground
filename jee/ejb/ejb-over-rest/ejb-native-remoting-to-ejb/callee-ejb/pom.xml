@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.novaordis.playground.jee.ejb.ejb-over-rest.ejb-native-remoting-to-ejb</groupId>
+        <artifactId>root</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>callee-ejb</artifactId>
+    <packaging>jar</packaging>
+
+    <build>
+        <finalName>callee-ejb</finalName>
+    </build>
+
+</project>
