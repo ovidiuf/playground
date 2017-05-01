@@ -52,8 +52,8 @@ public class CallerImpl implements LocalAccessToCaller {
 
         log.info("triggering remote call");
 
-        //sendOneInvocation();
-        invokeSeriallyInALoop(10000);
+        sendOneInvocation();
+        //invokeSeriallyInALoop(10000);
         //invokeConcurrentlyFromMultipleThreadsInALoop(10, 1000);
 
     }

@@ -21,6 +21,7 @@ import io.novaordis.playground.jee.ejb.ejb2rest.common.Measurements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.concurrent.CountDownLatch;
@@ -41,7 +42,7 @@ public class CallerImpl implements LocalAccessToCaller {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    // @EJB(lookup = "ejb:/callee-ejb/CalleeImpl!io.novaordis.playground.jee.ejb.ejb2rest.common.Callee")
+    //@EJB(lookup = "ejb:/callee/CalleeImpl!io.novaordis.playground.jee.ejb.ejb2rest.common.Callee")
     @Inject
     private Callee callee;
 
@@ -56,7 +57,7 @@ public class CallerImpl implements LocalAccessToCaller {
 
         //sendOneInvocation();
 
-        Measurements.invokeSeriallyInALoop(callee, 10000);
+        Measurements.invokeSeriallyInALoop(callee, 100000);
 
         //invokeConcurrentlyFromMultipleThreadsInALoop(10, 1000);
     }
