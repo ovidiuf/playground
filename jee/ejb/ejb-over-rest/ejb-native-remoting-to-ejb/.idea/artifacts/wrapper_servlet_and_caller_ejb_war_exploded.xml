@@ -6,6 +6,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="wrapper-servlet-and-caller-ejb" />
         </element>
+        <element id="directory" name="lib">
+          <element id="archive" name="common-types-1.jar">
+            <element id="module-output" name="common-types" />
+          </element>
+        </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/target/caller/META-INF/MANIFEST.MF" />

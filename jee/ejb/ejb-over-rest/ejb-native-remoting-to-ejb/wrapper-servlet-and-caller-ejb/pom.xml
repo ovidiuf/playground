@@ -15,4 +15,12 @@
         <finalName>caller</finalName>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.novaordis.playground.jee.ejb.ejb-over-rest.ejb-native-remoting-to-ejb</groupId>
+            <artifactId>common-types</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>
