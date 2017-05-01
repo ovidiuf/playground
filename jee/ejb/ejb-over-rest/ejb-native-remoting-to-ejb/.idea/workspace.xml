@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f5a1be8-67e1-4be9-926c-7f8f506a47e0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/callee-ejb/src/main/java/io/novaordis/playground/jee/ejb2rest/callee/CalleeImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/src/main/webapp/WEB-INF/jboss-ejb-client.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/src/main/java/io/novaordis/playground/jee/ejb/ejb2rest/caller/CallerImpl.java" afterPath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/src/main/java/io/novaordis/playground/jee/ejb/ejb2rest/caller/CallerImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/callee-ejb/callee-ejb.iml" afterPath="$PROJECT_DIR$/callee-ejb/callee-ejb.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/callee-ejb/pom.xml" afterPath="$PROJECT_DIR$/callee-ejb/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/pom.xml" afterPath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/wrapper-servlet-and-caller-ejb.iml" afterPath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/wrapper-servlet-and-caller-ejb.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/wrapper_servlet_and_caller_ejb_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/wrapper_servlet_and_caller_ejb_war_exploded.xml" />
     </list>
     <ignored path="Playground EJB over Rest - Native Origin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,8 +44,8 @@
       <file leaf-file-name="CallerImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/src/main/java/io/novaordis/playground/jee/ejb/ejb2rest/caller/CallerImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32967034">
-              <caret line="40" column="17" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.83516484">
+              <caret line="106" column="69" selection-start-line="106" selection-start-column="69" selection-end-line="106" selection-end-column="69" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -773,12 +766,12 @@
       <created>1493646420429</created>
       <option name="number" value="Default" />
       <updated>1493646420429</updated>
-      <workItem from="1493646421547" duration="2477000" />
+      <workItem from="1493646421547" duration="3169000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2477000" />
+    <option name="totallyTimeSpent" value="3169000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="933" y="77" width="1539" height="1280" extended-state="0" />
@@ -900,8 +893,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/src/main/java/io/novaordis/playground/jee/ejb/ejb2rest/caller/CallerImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32967034">
-          <caret line="40" column="17" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.83516484">
+          <caret line="106" column="69" selection-start-line="106" selection-start-column="69" selection-end-line="106" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

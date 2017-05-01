@@ -27,6 +27,7 @@ import javax.ejb.Stateless;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/1/17
  */
+@SuppressWarnings("unused")
 @Stateless
 public class CallerImpl implements LocalAccessToCaller {
 
@@ -50,9 +51,9 @@ public class CallerImpl implements LocalAccessToCaller {
 
         log.info("triggering remote call");
 
-        String result = callee.businessMethodA("test");
-
-        log.info("result: " + result);
+//        sendOneInvocation();
+        invokeSeriallyInALoop(10000);
+//        invokeConcurrentlyFromMultipleThreadsInALoop();
 
     }
 
@@ -63,6 +64,53 @@ public class CallerImpl implements LocalAccessToCaller {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private void sendOneInvocation() {
+
+        String result = callee.businessMethodA("test");
+        log.info("result: " + result);
+    }
+
+    private void invokeSeriallyInALoop(int invocationCount) {
+
+        long[] callDuration = new long[invocationCount];
+
+        log.info("invoking serially in a loop, " + invocationCount + " invocations ...");
+
+        for(int i = 0; i < invocationCount; i ++) {
+
+            long t0 = System.currentTimeMillis();
+
+            String result = callee.businessMethodA("test");
+
+            long t1 = System.currentTimeMillis();
+
+            callDuration[i] = t1 - t0;
+        }
+
+        String s = "";
+        double total = 0d;
+
+        for (int i =  0; i < invocationCount; i ++) {
+
+            total += callDuration[i];
+            s += callDuration[i];
+
+            if (i < invocationCount - 1) {
+
+                s += ", ";
+            }
+        }
+
+        log.info(s);
+
+        log.info("average call duration " + (total / invocationCount));
+    }
+
+    private void invokeConcurrentlyFromMultipleThreadsInALoop() {
+
+        throw new RuntimeException("NYE");
+    }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
