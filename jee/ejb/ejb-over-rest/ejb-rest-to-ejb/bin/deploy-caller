@@ -1,0 +1,11 @@
+#!/bin/bash
+
+jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.10
+
+artifact=$(dirname $0)/../wrapper-servlet-and-caller-ejb/target/caller.war
+
+[ ! -f ${artifact} ] && { echo "artifact ${artifact} not found, build and try again ..." 1>&2; exit 1; }
+
+cp ${artifact} ${jboss_home}/profiles/ejb-caller/deployments && echo "$(basename ${artifact}) deployed" || { echo "$(basename ${artifact}) deployment failed" 1>&2; exit 1; }
+
+

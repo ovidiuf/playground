@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/callee-ejb/callee-ejb.iml" filepath="$PROJECT_DIR$/callee-ejb/callee-ejb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-types/common-types.iml" filepath="$PROJECT_DIR$/common-types/common-types.iml" />
+      <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/wrapper-servlet-and-caller-ejb.iml" filepath="$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/wrapper-servlet-and-caller-ejb.iml" />
+    </modules>
+  </component>
+</project>

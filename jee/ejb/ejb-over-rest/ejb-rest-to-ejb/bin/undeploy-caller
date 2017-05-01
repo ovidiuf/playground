@@ -1,0 +1,13 @@
+#!/bin/bash
+
+jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.10
+
+artifact_name=caller.war
+
+deployment=${jboss_home}/profiles/ejb-caller/deployments/${artifact_name}
+
+[ ! -f ${artifact} ] && { echo "${artifact_name} not deployed"; exit 0; }
+
+rm ${jboss_home}/profiles/ejb-caller/deployments/${artifact_name} && echo "${artifact_name} undeployed"
+
+
