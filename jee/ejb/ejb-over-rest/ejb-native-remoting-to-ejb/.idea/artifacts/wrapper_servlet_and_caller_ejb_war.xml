@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="wrapper-servlet-and-caller-ejb:war">
+    <output-path>$PROJECT_DIR$/wrapper-servlet-and-caller-ejb/target</output-path>
+    <root id="archive" name="caller.war">
+      <element id="artifact" artifact-name="wrapper-servlet-and-caller-ejb:war exploded" />
+    </root>
+  </artifact>
+</component>

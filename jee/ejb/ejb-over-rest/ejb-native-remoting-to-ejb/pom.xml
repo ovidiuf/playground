@@ -2,7 +2,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.novaordis.playground.jee.ejb.ejb-over-rest.ejb-native-remoting-to-ejb/groupId>
+    <groupId>io.novaordis.playground.jee.ejb.ejb-over-rest.ejb-native-remoting-to-ejb</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
 
@@ -15,8 +15,7 @@
 
     <modules>
         <module>common-types</module>
-        <module>stateless-ejb</module>
-        <module>caller-ejb</module>
+        <module>wrapper-servlet-and-caller-ejb</module>
         <module>callee-ejb</module>
     </modules>
 
