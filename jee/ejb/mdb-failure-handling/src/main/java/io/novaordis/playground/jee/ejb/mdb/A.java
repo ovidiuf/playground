@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.MessageDrivenContext;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
