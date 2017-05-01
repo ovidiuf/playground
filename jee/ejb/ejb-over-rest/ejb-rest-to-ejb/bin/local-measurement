@@ -1,0 +1,13 @@
+#!/bin/bash
+
+java_home=/Users/ovidiu/runtime/jboss-eap-6.4.10
+
+
+java -cp \
+$(dirname $0)/../callee/target/classes:\
+$(dirname $0)/../common-types/target/common-types.jar:\
+${M2}/org/slf4j/slf4j-api/1.7.6/slf4j-api-1.7.6.jar:\
+${M2}/org/slf4j/slf4j-log4j12/1.7.6/slf4j-log4j12-1.7.6.jar:\
+${M2}/log4j/log4j/1.2.17/log4j-1.2.17.jar:\
+$(dirname $0)\
+ io.novaordis.playground.jee.ejb2rest.callee.CalleeImpl

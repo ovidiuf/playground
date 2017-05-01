@@ -1,6 +1,7 @@
 package io.novaordis.playground.jee.ejb2rest.callee;
 
 import io.novaordis.playground.jee.ejb.ejb2rest.common.Callee;
+import io.novaordis.playground.jee.ejb.ejb2rest.common.Measurements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,13 @@ public class CalleeImpl implements Callee {
     private static final Logger log = LoggerFactory.getLogger(CalleeImpl.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
+
+    public static void main(String[] args) throws Exception {
+
+        Callee c = new CalleeImpl();
+
+        Measurements.invokeSeriallyInALoop(c, 100000);
+    }
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
