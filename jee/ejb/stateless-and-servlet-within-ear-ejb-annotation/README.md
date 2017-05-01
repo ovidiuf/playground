@@ -1,4 +1,4 @@
-# Stateless EJB and Invoking Servlet Deployed within an EAR, JNDI Lookup
+# Stateless EJB and Invoking Servlet Deployed within an EAR, Annotation 
 
 https://kb.novaordis.com/index.php/Session_EJB_and_Servlet_as_Different_EAR_Modules,_@EJB_Injection
  
