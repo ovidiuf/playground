@@ -17,7 +17,7 @@ class ServiceLocator {
      */
     static String getSystemPropertyNameForService(final Class<?> serviceInterface) {
 
-        return "mp-rest-client.base-url." + serviceInterface.getSimpleName();
+        return "playground.ejb-to-rest.base-url." + serviceInterface.getSimpleName();
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -37,11 +37,17 @@ class ServiceLocator {
 
         final String systemProperty = getSystemPropertyNameForService(serviceInterface);
 
-        final String baseUrl = System.getProperty(systemProperty);
+        String baseUrl = System.getProperty(systemProperty);
 
         if (baseUrl == null || baseUrl.isEmpty()) {
 
-            throw new IllegalStateException("Missing system property: " + systemProperty);
+            //
+            // because this is a simple demonstrative example, we use a hardcoded value
+            //
+            // TODO externalize host name and port
+            //
+
+            baseUrl = "http://localhost:8280/" + serviceInterface.getSimpleName().toLowerCase();
         }
 
         try {

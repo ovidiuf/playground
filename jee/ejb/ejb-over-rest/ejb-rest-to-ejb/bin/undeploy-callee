@@ -2,7 +2,7 @@
 
 jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.10
 
-artifact_name=callee-ejb.jar
+artifact_name=callee.war
 
 deployment=${jboss_home}/profiles/ejb-callee/deployments/${artifact_name}
 

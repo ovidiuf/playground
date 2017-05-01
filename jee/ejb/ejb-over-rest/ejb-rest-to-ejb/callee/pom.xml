@@ -8,13 +8,14 @@
         <version>1</version>
     </parent>
 
-    <artifactId>callee-ejb</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>callee</artifactId>
+    <packaging>war</packaging>
 
     <build>
-        <finalName>callee-ejb</finalName>
+        <finalName>callee</finalName>
 
         <plugins>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -36,6 +37,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
 

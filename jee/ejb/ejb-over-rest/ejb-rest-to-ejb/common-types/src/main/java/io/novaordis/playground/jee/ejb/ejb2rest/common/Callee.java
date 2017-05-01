@@ -17,6 +17,10 @@
 package io.novaordis.playground.jee.ejb.ejb2rest.common;
 
 import javax.ejb.Remote;
+import javax.enterprise.inject.Produces;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 
 /**
  * The interface used by the Caller EJB instance to invoke remotely into the Callee.
@@ -25,6 +29,7 @@ import javax.ejb.Remote;
  * @since 5/1/17
  */
 @Remote
+@Path("/")
 public interface Callee {
 
     // Constants -------------------------------------------------------------------------------------------------------
@@ -33,6 +38,8 @@ public interface Callee {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    @POST
+    @Consumes("application/json")
     String businessMethodA(String arg);
 
 }

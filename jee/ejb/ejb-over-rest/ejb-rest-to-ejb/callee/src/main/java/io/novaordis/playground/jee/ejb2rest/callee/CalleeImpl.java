@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
  * @since 5/1/17
  */
 @SuppressWarnings("unused")
-@Stateless
+//@Stateless
 public class CalleeImpl implements Callee {
 
     // Constants -------------------------------------------------------------------------------------------------------

@@ -5,9 +5,12 @@
     -->
     <deployment>
         <dependencies>
+            <module name="org.codehaus.jackson.jackson-jaxrs" slot="main"/>
+            <module name="org.codehaus.jackson.jackson-core-asl" slot="main"/>
             <module name="org.codehaus.jackson.jackson-mapper-asl" slot="main"/>
             <module name="org.jboss.resteasy.resteasy-jaxrs" slot="main"/>
             <module name="org.apache.httpcomponents" slot="main"/>
+            <module name="org.joda.time" slot="main"/>
         </dependencies>
     </deployment>
 

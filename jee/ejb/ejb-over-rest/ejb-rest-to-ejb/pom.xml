@@ -16,7 +16,7 @@
     <modules>
         <module>common-types</module>
         <module>wrapper-servlet-and-caller-ejb</module>
-        <module>callee-ejb</module>
+        <module>callee</module>
     </modules>
 
     <build>

@@ -2,7 +2,7 @@
 
 jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.10
 
-artifact=$(dirname $0)/..//callee-ejb/target/callee-ejb.jar
+artifact=$(dirname $0)/../callee/target/callee.war
 
 [ ! -f ${artifact} ] && { echo "artifact ${artifact} not found, build and try again ..." 1>&2; exit 1; }
 

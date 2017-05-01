@@ -36,10 +36,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="callee-ejb" />
+      </profile>
+      <profile default="false" name="Annotation profile for callee" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="callee" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="callee" target="1.8" />
       <module name="callee-ejb" target="1.8" />
       <module name="common-types" target="1.8" />
       <module name="root" target="1.8" />
