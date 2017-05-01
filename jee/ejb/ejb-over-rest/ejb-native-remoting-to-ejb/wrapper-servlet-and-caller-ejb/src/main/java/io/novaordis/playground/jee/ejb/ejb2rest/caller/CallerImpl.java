@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -51,9 +52,9 @@ public class CallerImpl implements LocalAccessToCaller {
 
         log.info("triggering remote call");
 
-//        sendOneInvocation();
+        //sendOneInvocation();
         invokeSeriallyInALoop(10000);
-//        invokeConcurrentlyFromMultipleThreadsInALoop();
+        //invokeConcurrentlyFromMultipleThreadsInALoop(10, 1000);
 
     }
 
@@ -104,14 +105,82 @@ public class CallerImpl implements LocalAccessToCaller {
 
         log.info(s);
 
-        log.info("average call duration " + (total / invocationCount));
+        log.info("average call duration " + (total / invocationCount) + " ms");
     }
 
-    private void invokeConcurrentlyFromMultipleThreadsInALoop() {
+    private void invokeConcurrentlyFromMultipleThreadsInALoop(int threadCount, final int invocationCountPerThread) {
 
-        throw new RuntimeException("NYE");
+        log.info("invoking in parallel on " + threadCount + " threads, " + invocationCountPerThread + " invocations per thread ...");
+
+        final CountDownLatch latch = new CountDownLatch(threadCount);
+
+        final long[][] callDuration = new long[threadCount][invocationCountPerThread];
+
+        for(int i = 0; i < threadCount; i ++) {
+
+            new Thread(new Runner(latch, i, invocationCountPerThread, callDuration), "Load Thread #" + i).start();
+        }
+
+        try {
+
+            latch.await();
+        }
+        catch(InterruptedException e) {
+
+            throw new IllegalStateException(e);
+        }
+
+        log.info("all threads finished");
+
+        double total = 0d;
+
+        for(int i = 0; i < threadCount; i ++) {
+
+            for(int j = 0; j < invocationCountPerThread; j ++) {
+
+                total += callDuration[i][j];
+            }
+        }
+
+        log.info("average call duration " + (total / (threadCount * invocationCountPerThread)) + " ms");
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------
+
+    private class Runner implements Runnable {
+
+        private CountDownLatch latch;
+        private int threadIndex;
+        private int invocationCountPerThread;
+        private long[][] callDuration;
+
+        public Runner(CountDownLatch latch, int threadIndex, int invocationCountPerThread, long[][] callDuration) {
+
+            this.latch = latch;
+            this.threadIndex = threadIndex;
+            this.invocationCountPerThread = invocationCountPerThread;
+            this.callDuration = callDuration;
+        }
+
+        @Override
+        public void run() {
+
+            for(int j = 0; j < invocationCountPerThread; j ++) {
+
+                long t0 = System.currentTimeMillis();
+
+                String result = callee.businessMethodA("test");
+
+                long t1 = System.currentTimeMillis();
+
+                callDuration[threadIndex][j] = t1 - t0;
+            }
+
+            latch.countDown();
+
+            log.info(Thread.currentThread().getName() + " done");
+        }
+
+    }
 
 }
