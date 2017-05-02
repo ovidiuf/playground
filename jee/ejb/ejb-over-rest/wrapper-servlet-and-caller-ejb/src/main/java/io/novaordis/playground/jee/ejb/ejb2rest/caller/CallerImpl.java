@@ -54,9 +54,9 @@ public class CallerImpl implements LocalAccessToCaller {
 
         log.info("triggering remote call over " + (isEJB() ? "NATIVE REMOTING" : "REST"));
 
-        sendOneInvocation();
+        // sendOneInvocation();
 
-        // Measurements.invokeSeriallyInALoop(callee, 100000);
+        Measurements.invokeSeriallyInALoop(callee, 100000);
 
         //Measurements.invokeConcurrentlyFromMultipleThreadsInALoop(callee, 10, 1000);
     }

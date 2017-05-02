@@ -25,11 +25,17 @@ import java.net.URL;
  * Default implementation of {@link RestClientFactory}.
  */
 @Default
+
+// OPTIMIZED
 @ApplicationScoped
+
+// NON-OPTIMIZED
+//@Dependent
 public class RestClientFactoryImpl implements RestClientFactory {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
+    // OPTIMIZED
     /**
      * The HttpContext that will be used for all requests.
      */
@@ -41,7 +47,6 @@ public class RestClientFactoryImpl implements RestClientFactory {
     private static final ClientExecutor EXECUTOR = new LoggingClientExecutor(
             new ApacheHttpClient4Executor(HttpClients.createSystem(), CONTEXT));
 
-
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -52,6 +57,7 @@ public class RestClientFactoryImpl implements RestClientFactory {
     @Inject
     private Configurator configurator;
 
+    // OPTIMIZED
     /**
      * The {@link ResteasyProviderFactory} to be used for each client proxy we create.
      */
@@ -68,6 +74,7 @@ public class RestClientFactoryImpl implements RestClientFactory {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
+    // OPTIMIZED
     /**
      * Initializes the providerFactory, so that it will be ready for use in Resteasy client proxies later on.
      */
@@ -147,6 +154,7 @@ public class RestClientFactoryImpl implements RestClientFactory {
 
         final URL location = new ServiceLocator().lookupService(serviceInterface);
 
+        // OPTIMIZED
         CONTEXT.setTarget(
                 configurator.createContext(
                         new HttpHost(
@@ -155,6 +163,51 @@ public class RestClientFactoryImpl implements RestClientFactory {
                                 location.getProtocol())));
 
         return ProxyFactory.create(serviceInterface, location.toURI(), EXECUTOR, providerFactory);
+
+        //
+        // NON-OPTIMIZED
+        //
+
+//        final ApacheHttpClient4Executor executor = new ApacheHttpClient4Executor(
+//                HttpClientBuilder.create().build(),
+//                configurator.createContext(
+//                        new HttpHost(
+//                                location.getHost(),
+//                                location.getPort(),
+//                                location.getProtocol())));
+//
+//        /*
+//         * This is a fairly annoying process where we have to --manually-- create the provider
+//         * factory. We'd just like to configure the object mapper that the Resteasy provider uses,
+//         * but ... Resteasy will discover the Jackson provider automatically via /META-INF/services
+//         * and load it automatically --before-- we can configure it. Once added, we can't gain
+//         * access to it and Resteasy will reject our customized version. So, we're going to create
+//         * the provider factory from scratch and do the same things that it would do by default, but
+//         * we won't register the built in providers until we've registered our special ones first.
+//         */
+//        final ResteasyProviderFactory providerFactory = new ResteasyProviderFactory();
+//
+//        final JacksonJsonProvider jacksonProvider = new JacksonJsonProvider();
+//        jacksonProvider.setMapper(BasicObjectMapperProvider.getInstance().getContext(Void.class));
+//
+//        providerFactory.registerProviderInstance(jacksonProvider);
+//
+//        /*
+//         * OK, now that we have customized Jackson we let the built in (automatically discovered)
+//         * providers be added to our providerFactory.
+//         */
+//        RegisterBuiltin.register(providerFactory);
+//
+//        return ProxyFactory.create(
+//                serviceInterface,
+//                location.toURI(),
+//                new LoggingClientExecutor(executor),
+//                providerFactory);
+
+        //
+        // END of NON-OPTIMIZED
+        //
+
     }
 
     // Inner classes ---------------------------------------------------------------------------------------------------

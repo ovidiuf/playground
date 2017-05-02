@@ -52,8 +52,15 @@ public class BasicAuthConfigurator implements Configurator {
         authCache.put(targetHost, basicAuth);
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+
+        // OPTIMIZED
         credentialsProvider
                 .setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+
+        // NON-OPTIMIZED
+//        credentialsProvider.setCredentials(
+//                new AuthScope(targetHost.getHostName(), targetHost.getPort()),
+//                new UsernamePasswordCredentials(username, password));
 
         final BasicHttpContext context = new BasicHttpContext();
         context.setAttribute(HttpClientContext.AUTH_CACHE, authCache);
