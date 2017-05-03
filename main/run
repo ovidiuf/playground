@@ -6,16 +6,16 @@
 
 
 debug_args=""
-file_name=""
+args=""
 
 while [ -n "$1" ]; do
 
     if [ "$1" = "-d" ]; then
         debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
-    elif [ -z "${file_name}" ]; then
-         file_name=$1
+    else
+        args="${args} $1"
     fi
     shift
 done
 
-java ${debug_args} -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main ${file_name}
+java ${debug_args} -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main ${args}

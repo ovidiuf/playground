@@ -19,6 +19,8 @@ package io.novaordis.playground;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -32,8 +34,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Util.hist(args);
+        // Util.hist(args);
 
+        FDAndLsofAnalysis.run(args);
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -47,8 +50,6 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
