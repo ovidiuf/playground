@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -f $(dirname $0)/configuration ] && . $(dirname $0)/configuration || { echo "$(dirname $0)/configuration not found" 1>&2; exit 1; }
+
 function deploy() {
 
     local name=$1
@@ -17,8 +19,11 @@ function deploy() {
 
 function name-to-ip() {
 
-    [ "$1" = "jdg-app1" ] && { echo "172.16.153.101"; return 0; }
-    [ "$1" = "jdg-app2" ] && { echo "172.16.153.102"; return 0; }
+    [ -z "${node_1_ip}" ] && { echo "script infrastructure was not configured correctly, node_1_ip not defined" 1>&2; exit 1; }
+    [ -z "${node_2_ip}" ] && { echo "script infrastructure was not configured correctly, node_2_ip not defined" 1>&2; exit 1; }
+
+    [ "$1" = "jdg-app1" ] && { echo "${node_1_ip}"; return 0; }
+    [ "$1" = "jdg-app2" ] && { echo "${node_2_ip}"; return 0; }
 
      echo "unknown host name: ${1}" 1>&2
      exit 1
@@ -27,10 +32,13 @@ function name-to-ip() {
 # 1-based
 function index-to-ip() {
 
-    [ "$1" = "1" ] && { echo "172.16.153.101"; return 0; }
-    [ "$1" = "2" ] && { echo "172.16.153.102"; return 0; }
+    [ -z "${node_1_ip}" ] && { echo "script infrastructure was not configured correctly, node_1_ip not defined" 1>&2; exit 1; }
+    [ -z "${node_2_ip}" ] && { echo "script infrastructure was not configured correctly, node_2_ip not defined" 1>&2; exit 1; }
 
-     echo "unknown host index: ${1}" 1>&2
+    [ "$1" = "1" ] && { echo "${node_1_ip}"; return 0; }
+    [ "$1" = "2" ] && { echo "${node_1_ip}"; return 0; }
+
+     echo "unknown host index '${1}', use 1-based indexes" 1>&2
      exit 1
 }
 
@@ -41,4 +49,23 @@ function index-to-name() {
 
      echo "unknown host index: ${1}" 1>&2
      exit 1
+}
+
+#
+# append query strings to URI
+#
+function append-query-string() {
+
+    local uri=$1
+    local name=$2
+    local value=$3
+
+    [ -z "${uri}" ] && { echo "missing uri" 1>&2; exit 1; }
+    [ -z "${name}" ] && { echo "missing name" 1>&2; exit 1; }
+    [ -z "${value}" ] && { echo "missing value" 1>&2; exit 1; }
+
+    [[ ! ${uri} =~ \? ]] && uri="${uri}?"
+
+    uri="${uri}&${name}=${value}"
+    echo "${uri}"
 }

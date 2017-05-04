@@ -35,38 +35,51 @@ public class Util {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    //
+    // cache locally for speed, it's not going to change for the life of the application
+    //
+
+    private static TransactionManager TRANSACTION_MANAGER;
+
+    /**
+     * Yes, we know it's not thread safe.
+     */
     public static TransactionManager getTransactionManager() throws ServletException {
 
-        InitialContext ic = null;
+        if (TRANSACTION_MANAGER == null) {
 
-        try {
-
-            ic = new InitialContext();
-
-            return (TransactionManager)ic.lookup("java:/TransactionManager");
-        }
-        catch(Exception e) {
-
-            throw new ServletException(e);
-        }
-        finally {
+            InitialContext ic = null;
 
             try {
 
-                if (ic != null) {
+                ic = new InitialContext();
 
-                    ic.close();
+                TRANSACTION_MANAGER = (TransactionManager) ic.lookup("java:/TransactionManager");
+
+            }
+            catch (Exception e) {
+
+                throw new ServletException(e);
+            }
+            finally {
+
+                try {
+
+                    if (ic != null) {
+
+                        ic.close();
+                    }
+                } catch (Exception e) {
+
+                    log.warn("failed to close initial context", e);
                 }
             }
-            catch(Exception e) {
-
-                log.warn("failed to close initial context", e);
-            }
         }
+
+        return TRANSACTION_MANAGER;
     }
 
     public static boolean inTransaction() throws ServletException {
-
 
         TransactionManager tm = getTransactionManager();
 

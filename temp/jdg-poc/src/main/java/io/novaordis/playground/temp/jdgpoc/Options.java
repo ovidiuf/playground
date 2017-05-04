@@ -16,61 +16,89 @@
 
 package io.novaordis.playground.temp.jdgpoc;
 
-import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.transaction.TransactionManager;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/4/17
  */
-public class Get extends CacheApiInvocation {
+public class Options {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Get.class);
+    private static final Logger log = LoggerFactory.getLogger(Lock.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private String key;
+    private Integer sleepSecs;
+
+    private boolean nonTransactional;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Get(List<String> uriTokens, Options options) throws UserErrorException {
+    public Options(HttpServletRequest req) throws Exception {
 
-        super(options);
+        nonTransactional = false;
 
-        if (uriTokens.size() < 1) {
-            throw new UserErrorException("a key must be specified");
+        for(Enumeration<String> names= req.getParameterNames(); names.hasMoreElements(); ) {
+
+            String name = names.nextElement();
+            String value = req.getParameter(name);
+
+            if ("sleep-secs".equalsIgnoreCase(name)) {
+
+                try {
+
+                    sleepSecs = Integer.parseInt(value);
+                }
+                catch(Exception e) {
+
+                    throw new UserErrorException("'" + value + "' is not a valid sleep value");
+                }
+            }
+            else if ("non-transactional".equalsIgnoreCase(name)) {
+
+                if ("true".equalsIgnoreCase(value)) {
+
+                    nonTransactional = true;
+                }
+                else if (!"false".equalsIgnoreCase(name)) {
+
+                    throw new UserErrorException("'" + value + "' is not a valid boolean");
+                }
+            }
+            else {
+
+                log.warn("unknown option '" + name + "', ignoring ...");
+            }
         }
-
-        key = uriTokens.get(0);
-    }
-
-    // CacheApiInvocation overrides ------------------------------------------------------------------------------------
-
-    @Override
-    public String execute(Cache<String, String> cache) throws Exception {
-
-        TransactionManager tm = Util.getTransactionManager();
-
-        tm.begin();
-
-        log.info("get(" + key + ") " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
-
-        String result = cache.get(key);
-
-        tm.commit();
-
-        return result;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
+
+    public boolean isNonTransactional() {
+
+        return nonTransactional;
+    }
+
+    public boolean isTransactional() {
+
+        return !nonTransactional;
+    }
+
+    /**
+     * May return null, which means no sleep.
+     */
+    public Integer getSleepSecs() {
+
+        return sleepSecs;
+    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 

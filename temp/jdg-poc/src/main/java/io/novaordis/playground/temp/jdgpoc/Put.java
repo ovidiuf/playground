@@ -20,7 +20,6 @@ import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import javax.transaction.TransactionManager;
 import java.util.List;
 
@@ -40,22 +39,23 @@ public class Put extends CacheApiInvocation {
 
     private String key;
     private String value;
-    private long sleep = 20000L;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Put(List<String> uriTokens) {
+    public Put(List<String> uriTokens, Options options) throws UserErrorException {
+
+        super(options);
 
         if (uriTokens.size() < 1) {
 
-            throw new IllegalArgumentException("a key must be specified");
+            throw new UserErrorException("a key must be specified");
         }
 
         key = uriTokens.get(0);
 
         if (uriTokens.size() < 2) {
 
-            throw new IllegalArgumentException("a value must be specified");
+            throw new UserErrorException("a value must be specified for key '" + key + "'");
         }
 
         value = uriTokens.get(1);
@@ -66,29 +66,46 @@ public class Put extends CacheApiInvocation {
     @Override
     public String execute(Cache<String, String> cache) throws Exception {
 
-        TransactionManager tm = Util.getTransactionManager();
+        boolean transactional = getOptions().isTransactional();
 
-        tm.begin();
+        if (transactional) {
 
-        log.info("locking key " + key + "...");
+            log.info("beginning transaction");
+            Util.getTransactionManager().begin();
+        }
 
-        boolean lock = cache.getAdvancedCache().lock(key);
+        boolean success = false;
 
-        log.info("lock " + (lock ? "acquired" : "not acquired"));
+        try {
 
-        log.info("put(" + key + "=" + value + ") " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
+            log.info("put " + key + "=" + value + " " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
 
-        String result = cache.put(key, value);
+            String result = cache.put(key, value);
 
-        log.info("sleeping for " + (sleep / 1000L) + " seconds ...");
+            sleepIfNeeded();
 
-        Thread.sleep(sleep);
+            success = true;
 
-        log.info("done sleeping, committing transaction");
+            return result;
+        }
+        finally {
 
-        tm.commit();
+            if (transactional) {
 
-        return result;
+                TransactionManager tm = Util.getTransactionManager();
+
+                if (success) {
+
+                    log.info("committing transaction");
+                    tm.commit();
+                }
+                else {
+
+                    log.info("rolling back transaction");
+                    tm.rollback();
+                }
+            }
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

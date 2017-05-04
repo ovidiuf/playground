@@ -130,6 +130,13 @@ public class ServletWrapper extends HttpServlet {
 
             result = i.execute(cache);
         }
+        catch(UserErrorException e) {
+
+            String msg = e.getMessage();
+
+            log.error(msg);
+            result = "[error]: " + msg;
+        }
         catch(Exception e) {
 
             throw new ServletException(e);

@@ -17,6 +17,8 @@
 package io.novaordis.playground.temp.jdgpoc;
 
 import org.infinispan.Cache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ import java.util.List;
 public abstract class CacheApiInvocation {
 
     // Constants -------------------------------------------------------------------------------------------------------
+
+    private static final Logger log = LoggerFactory.getLogger(CacheApiInvocation.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -52,17 +56,19 @@ public abstract class CacheApiInvocation {
 
         String command = tokens.get(1);
 
+        Options options = new Options(req);
+
         if ("put".equalsIgnoreCase(command)) {
 
-            return new Put(tokens.subList(2, tokens.size()));
+            return new Put(tokens.subList(2, tokens.size()), options);
         }
         else if ("get".equalsIgnoreCase(command)) {
 
-            return new Get(tokens.subList(2, tokens.size()));
+            return new Get(tokens.subList(2, tokens.size()), options);
         }
         else if ("lock".equalsIgnoreCase(command)) {
 
-            return new Lock(tokens.subList(2, tokens.size()));
+            return new Lock(tokens.subList(2, tokens.size()), options);
         }
         else {
 
@@ -73,7 +79,14 @@ public abstract class CacheApiInvocation {
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
+    private Options options;
+
     // Constructors ----------------------------------------------------------------------------------------------------
+
+    protected CacheApiInvocation(Options options) {
+
+        this.options = options;
+    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 
@@ -82,6 +95,27 @@ public abstract class CacheApiInvocation {
     // Package protected -----------------------------------------------------------------------------------------------
 
     // Protected -------------------------------------------------------------------------------------------------------
+
+    protected Options getOptions() {
+
+        return options;
+    }
+
+    protected void sleepIfNeeded() throws InterruptedException {
+
+        if (options.getSleepSecs() == null) {
+
+            return;
+        }
+
+        int sleepSecs = getOptions().getSleepSecs();
+
+        log.info("sleeping for " + sleepSecs + " seconds ...");
+
+        Thread.sleep(1000L * sleepSecs);
+
+        log.info("done sleeping");
+    }
 
     // Private ---------------------------------------------------------------------------------------------------------
 

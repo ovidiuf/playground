@@ -41,7 +41,9 @@ public class Lock extends CacheApiInvocation {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Lock(List<String> uriTokens) {
+    public Lock(List<String> uriTokens, Options options) {
+
+        super(options);
 
         if (uriTokens.size() < 1) {
             throw new IllegalArgumentException("a key must be specified");
