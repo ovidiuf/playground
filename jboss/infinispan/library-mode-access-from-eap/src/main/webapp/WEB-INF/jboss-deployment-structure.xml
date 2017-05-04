@@ -3,7 +3,7 @@
 <jboss-deployment-structure>
     <deployment>
         <dependencies>
-            <module name="org.infinispan.client.hotrod" slot="jdg-7.0"/>
+            <module name="org.infinispan" slot="jdg-7.0" services="export"/>
         </dependencies>
     </deployment>
 </jboss-deployment-structure>

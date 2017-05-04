@@ -16,10 +16,11 @@
 
 package io.novaordis.playground.jboss.infinispan.libmode;
 
-import org.infinispan.client.hotrod.RemoteCacheManager;
-import org.infinispan.client.hotrod.configuration.Configuration;
-import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-import org.infinispan.commons.api.BasicCache;
+import org.infinispan.Cache;
+import org.infinispan.configuration.global.GlobalConfiguration;
+import org.infinispan.configuration.global.GlobalConfigurationBuilder;
+import org.infinispan.manager.DefaultCacheManager;
+import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,14 +43,11 @@ public class ServletWrapper extends HttpServlet {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static final String JDG_SERVER_IP_ADDRESS = "172.16.153.101";
-    public static final int JDG_SERVER_IP_PORT = 11222;
-
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private RemoteCacheManager remoteCacheManager;
+    private EmbeddedCacheManager cacheManager;
 
-    private BasicCache<String, String> cache;
+    private Cache<String, String> cache;
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -58,23 +56,22 @@ public class ServletWrapper extends HttpServlet {
     @Override
     public void init() {
 
-        ConfigurationBuilder cb = new ConfigurationBuilder();
+        GlobalConfigurationBuilder cb = new GlobalConfigurationBuilder();
 
-        cb.tcpNoDelay(true)
-                .connectionPool()
-                .numTestsPerEvictionRun(3)
-                .testOnBorrow(false)
-                .testOnReturn(false)
-                .testWhileIdle(true)
-                .addServer()
-                .host(JDG_SERVER_IP_ADDRESS)
-                .port(JDG_SERVER_IP_PORT);
+        cb.
+                clusteredDefault().
+                globalJmxStatistics().
+                allowDuplicateDomains(true).
+                enable();
 
-        Configuration c = cb.build();
+        GlobalConfiguration globC = cb.build();
 
-        this.remoteCacheManager = new RemoteCacheManager(c);
+//        cb.clustering().cacheMode(CacheMode.DIST_SYNC);
+//        Configuration c = cb.build();
 
-        this.cache = remoteCacheManager.getCache();
+        this.cacheManager = new DefaultCacheManager(globC);
+
+        this.cache = cacheManager.getCache();
 
         log.info(this + " initialized");
     }
@@ -82,9 +79,9 @@ public class ServletWrapper extends HttpServlet {
     @Override
     public void destroy() {
 
-        if (remoteCacheManager != null) {
+        if (cacheManager != null) {
 
-            remoteCacheManager.stop();
+            cacheManager.stop();
         }
 
         log.info(this + " destroyed");
@@ -93,13 +90,22 @@ public class ServletWrapper extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-        cache.put("A", "B");
+        String result;
 
-        String s = cache.get("A");
+        try {
+
+            CacheApiInvocation i = CacheApiInvocation.parse(req);
+
+            result = i.execute(cache);
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
 
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
-        out.println("content retrieved from remote JDG cache: " + s);
+        out.println(result);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
@@ -107,7 +113,7 @@ public class ServletWrapper extends HttpServlet {
     @Override
     public String toString() {
 
-        return "ServletExample[" + Integer.toHexString(System.identityHashCode(this)) + "]";
+        return "JDG Access Servlet[" + Integer.toHexString(System.identityHashCode(this)) + "]";
     }
 
     // Package protected -----------------------------------------------------------------------------------------------

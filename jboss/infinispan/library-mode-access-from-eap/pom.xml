@@ -64,7 +64,7 @@
             </dependency>
             <dependency>
                 <groupId>org.infinispan</groupId>
-                <artifactId>infinispan-remote</artifactId>
+                <artifactId>infinispan-core</artifactId>
                 <version>8.3.0.Final-redhat-1</version>
                 <scope>provided</scope>
             </dependency>
