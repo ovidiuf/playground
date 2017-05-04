@@ -24,6 +24,9 @@ import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.transaction.LockingMode;
+import org.infinispan.transaction.TransactionMode;
+import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,7 +93,11 @@ public class ServletWrapper extends HttpServlet {
 
         ccb.
                 clustering().
-                cacheMode(CacheMode.DIST_SYNC);
+                cacheMode(CacheMode.DIST_SYNC).
+                transaction().transactionMode(TransactionMode.TRANSACTIONAL).
+                transactionManagerLookup(new GenericTransactionManagerLookup()).
+                lockingMode(LockingMode.PESSIMISTIC).
+                useSynchronization(true);
 
         Configuration cc = ccb.build();
 

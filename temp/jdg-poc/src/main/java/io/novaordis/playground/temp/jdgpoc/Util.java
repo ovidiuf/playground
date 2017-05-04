@@ -16,57 +16,73 @@
 
 package io.novaordis.playground.temp.jdgpoc;
 
-import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.naming.InitialContext;
+import javax.servlet.ServletException;
 import javax.transaction.TransactionManager;
-import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/4/17
  */
-public class Get extends CacheApiInvocation {
+public class Util {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Get.class);
+    private static final Logger log = LoggerFactory.getLogger(Util.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
+    public static TransactionManager getTransactionManager() throws ServletException {
+
+        InitialContext ic = null;
+
+        try {
+
+            ic = new InitialContext();
+
+            return (TransactionManager)ic.lookup("java:/TransactionManager");
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+        finally {
+
+            try {
+
+                if (ic != null) {
+
+                    ic.close();
+                }
+            }
+            catch(Exception e) {
+
+                log.warn("failed to close initial context", e);
+            }
+        }
+    }
+
+    public static boolean inTransaction() throws ServletException {
+
+
+        TransactionManager tm = getTransactionManager();
+
+        try {
+
+            return tm.getTransaction() != null;
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+    }
+
     // Attributes ------------------------------------------------------------------------------------------------------
 
-    private String key;
-
     // Constructors ----------------------------------------------------------------------------------------------------
-
-    public Get(List<String> uriTokens) {
-
-        if (uriTokens.size() < 1) {
-            throw new IllegalArgumentException("a key must be specified");
-        }
-
-        key = uriTokens.get(0);
-    }
-
-    // CacheApiInvocation overrides ------------------------------------------------------------------------------------
-
-    @Override
-    public String execute(Cache<String, String> cache) throws Exception {
-
-        TransactionManager tm = Util.getTransactionManager();
-
-        tm.begin();
-
-        log.info("get(" + key + ") " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
-
-        String result = cache.get(key);
-
-        tm.commit();
-
-        return result;
-    }
 
     // Public ----------------------------------------------------------------------------------------------------------
 

@@ -60,6 +60,10 @@ public abstract class CacheApiInvocation {
 
             return new Get(tokens.subList(2, tokens.size()));
         }
+        else if ("lock".equalsIgnoreCase(command)) {
+
+            return new Lock(tokens.subList(2, tokens.size()));
+        }
         else {
 
             throw new IllegalArgumentException("unknown command \"" + command + "\"");

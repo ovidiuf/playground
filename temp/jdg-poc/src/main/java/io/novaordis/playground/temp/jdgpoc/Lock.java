@@ -27,11 +27,11 @@ import java.util.List;
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/4/17
  */
-public class Get extends CacheApiInvocation {
+public class Lock extends CacheApiInvocation {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(Get.class);
+    private static final Logger log = LoggerFactory.getLogger(Lock.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ public class Get extends CacheApiInvocation {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    public Get(List<String> uriTokens) {
+    public Lock(List<String> uriTokens) {
 
         if (uriTokens.size() < 1) {
             throw new IllegalArgumentException("a key must be specified");
@@ -59,13 +59,15 @@ public class Get extends CacheApiInvocation {
 
         tm.begin();
 
-        log.info("get(" + key + ") " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
+        log.info("attempting to lock " + key + " ...");
 
-        String result = cache.get(key);
+        boolean lockAcquired = cache.getAdvancedCache().lock(key);
+
+        log.info("lock was " + (lockAcquired ? "" : "NOT ") + "acquired");
 
         tm.commit();
 
-        return result;
+        return "" + lockAcquired;
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
