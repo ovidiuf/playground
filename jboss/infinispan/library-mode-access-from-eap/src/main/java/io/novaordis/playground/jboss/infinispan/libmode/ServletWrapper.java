@@ -17,6 +17,9 @@
 package io.novaordis.playground.jboss.infinispan.libmode;
 
 import org.infinispan.Cache;
+import org.infinispan.configuration.cache.CacheMode;
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
@@ -41,6 +44,9 @@ public class ServletWrapper extends HttpServlet {
 
     private static final Logger log = LoggerFactory.getLogger(ServletWrapper.class);
 
+    public static final String CLUSTER_NAME = "PLAYGROUND-CLUSTER";
+    public static final String CACHE_NAME = "playground-cache";
+
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -56,22 +62,41 @@ public class ServletWrapper extends HttpServlet {
     @Override
     public void init() {
 
-        GlobalConfigurationBuilder cb = new GlobalConfigurationBuilder();
+        //
+        // Configure and build the cache manager
+        //
 
-        cb.
-                clusteredDefault().
+        GlobalConfigurationBuilder gcb = new GlobalConfigurationBuilder();
+
+        gcb.
+                transport().
+                defaultTransport().
+                clusterName(CLUSTER_NAME).
+                // the jgroups.xml file will be deployed within WEB-INF/classes
+                addProperty("configurationFile", "jgroups.xml").
                 globalJmxStatistics().
                 allowDuplicateDomains(true).
                 enable();
 
-        GlobalConfiguration globC = cb.build();
+        GlobalConfiguration gc = gcb.build();
 
-//        cb.clustering().cacheMode(CacheMode.DIST_SYNC);
-//        Configuration c = cb.build();
+        this.cacheManager = new DefaultCacheManager(gc);
 
-        this.cacheManager = new DefaultCacheManager(globC);
+        //
+        // Configure and build the cache
+        //
 
-        this.cache = cacheManager.getCache();
+        ConfigurationBuilder ccb = new ConfigurationBuilder();
+
+        ccb.
+                clustering().
+                cacheMode(CacheMode.DIST_SYNC);
+
+        Configuration cc = ccb.build();
+
+        cacheManager.defineConfiguration(CACHE_NAME, cc);
+
+        this.cache = cacheManager.getCache(CACHE_NAME);
 
         log.info(this + " initialized");
     }

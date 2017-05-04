@@ -17,7 +17,11 @@ mvn clean install
 
 # Use
 
+Deploy on both nodes and:
+
 ````
 curl http://<eap-node-address>:8080/jdg-access/put/Some-Key/Some-Value
 curl http://<eap-node-address>:8080/jdg-access/get/Some-Key
 ````
+
+The cluster will form after the first invocations on both sides.
