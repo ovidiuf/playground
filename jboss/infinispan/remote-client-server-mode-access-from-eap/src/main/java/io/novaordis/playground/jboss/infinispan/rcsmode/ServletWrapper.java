@@ -99,7 +99,7 @@ public class ServletWrapper extends HttpServlet {
 
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
-        out.println("content retireved from remote JDG cache: " + s);
+        out.println("content retrieved from remote JDG cache: " + s);
     }
 
     // Public ----------------------------------------------------------------------------------------------------------
