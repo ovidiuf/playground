@@ -1,0 +1,24 @@
+#!/bin/bash
+
+[ -f $(dirname $0)/functions ] && . $(dirname $0)/functions || { echo "$(dirname $0)/functions not found" 1>&2; exit 1; }
+
+function main() {
+
+    local node_index=$1
+    local key=$2
+    local value=$3
+
+    local operation=$(basename $0)
+
+    local address
+    local node_name
+
+    address=$(index-to-ip ${node_index}) || exit 1
+    node_name=$(index-to-name ${node_index}) || exit 1
+
+    echo "${operation} ${key} on node ${node_name} ..."
+    curl http://${address}:8080/jdg-access/${operation}/${key}/${value}
+
+}
+
+main $@

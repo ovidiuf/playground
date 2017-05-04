@@ -1,45 +1,19 @@
 #!/bin/bash
 
-function deploy() {
+[ -f $(dirname $0)/functions ] && . $(dirname $0)/functions || { echo "$(dirname $0)/functions not found" 1>&2; exit 1; }
 
-    local name=$1
+if [ "$0" = "deploy-jdg-app1" ]; then
 
-    file=$(dirname $0)/../target/jdg-access.war
+    deploy jdg-app1
 
-    [ -f ${file} ] || { echo "${file} not found" 1>&2; exit 1; }
+elif [ "$0" = "deploy-jdg-app2" ]; then
 
-    echo "deploying on ${name} ..."
+    deploy jdg-app2
 
-    local address
-    address=$(name-to-ip ${name})
-    scp ${file} vagrant@${address}:/opt/eap/profiles/jdg-library/deployments
-}
+else
 
-function name-to-ip() {
-
-    [ "$1" = "jdg-app1" ] && { echo "172.16.153.101"; return 0; }
-    [ "$1" = "jdg-app2" ] && { echo "172.16.153.102"; return 0; }
-
-     echo "unknown host name: ${1}" 1>&2
-     exit 1
-}
-
-function main() {
-
-    if [ "$0" = "deploy-jdg-app1" ]; then
-
-        deploy jdg-app1
-
-    elif [ "$0" = "deploy-jdg-app2" ]; then
-
-        deploy jdg-app2
-    else
-
-        deploy jdg-app1
-        deploy jdg-app2
-    fi
-}
-
-main
+    deploy jdg-app1
+    deploy jdg-app2
+fi
 
 
