@@ -36,7 +36,7 @@ function index-to-ip() {
     [ -z "${node_2_ip}" ] && { echo "script infrastructure was not configured correctly, node_2_ip not defined" 1>&2; exit 1; }
 
     [ "$1" = "1" ] && { echo "${node_1_ip}"; return 0; }
-    [ "$1" = "2" ] && { echo "${node_1_ip}"; return 0; }
+    [ "$1" = "2" ] && { echo "${node_2_ip}"; return 0; }
 
      echo "unknown host index '${1}', use 1-based indexes" 1>&2
      exit 1
