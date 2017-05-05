@@ -5,8 +5,8 @@
 An implementation that can be used to experiment with JDG transactions and locking in library mode.
 Deploys as a servlet that bootstraps an EmbeddedCacheManager. The JDG dependencies must be previously
 deployed as a module and available. Commands can be sent to it using bash shell wrappers available
-in the ./bin directory (put, get, lock, etc). The JDG cluster will be bootstraped and form after 
-the first invocation.
+in the ./bin directory (put, get, lock, etc). The JDG cluster will be bootstraped and form after the 
+first invocation.
 
 
 # Build

@@ -17,10 +17,10 @@ and execute operations in a non-transactional context, use --non-transactional o
 
 Options:
 
-    -s <sleep-in-seconds> - sleeps after the cache operation. By default, there is no sleep, the
-      JTA transaction is committed as soon as the cache operation completes. This could be useful
-      to experiment with timeouts, and more importantly, to slow down the system so humans could
-      interact with it from command line.
+    -s <sleep-in-seconds> - sleeps after some cache operations. By default, there is no sleep,
+      the JTA transaction is committed as soon as the cache operation completes. This could be
+      useful to experiment with timeouts, and more importantly, to slow down the system so humans
+      could interact with it from command line.
 
     --non-transactional - executes the cache operation in a non-transactional context. By default
       all cache operations are executed within a JTA transaction.
