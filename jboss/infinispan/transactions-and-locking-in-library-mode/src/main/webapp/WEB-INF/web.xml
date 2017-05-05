@@ -8,7 +8,7 @@
     -->
     <servlet>
         <servlet-name>ServletExample</servlet-name>
-        <servlet-class>io.novaordis.playground.temp.jdgpoc.ServletWrapper</servlet-class>
+        <servlet-class>io.novaordis.playground.jboss.infinispan.tllm.JDGAccessServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

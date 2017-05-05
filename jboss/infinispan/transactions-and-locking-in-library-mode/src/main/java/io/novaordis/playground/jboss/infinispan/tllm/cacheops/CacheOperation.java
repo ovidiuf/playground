@@ -1,21 +1,6 @@
-/*
- * Copyright (c) 2017 Nova Ordis LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package io.novaordis.playground.jboss.infinispan.tllm.cacheops;
 
-package io.novaordis.playground.temp.jdgpoc;
-
+import io.novaordis.playground.jboss.infinispan.tllm.Options;
 import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,20 +12,20 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Represents a GET, PUT, etc.
+ * Represents a GET, PUT, or a more complex sequence of API calls that happen in a transaction, etc.
  *
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
  * @since 5/4/17
  */
-public abstract class CacheApiInvocation {
+public abstract class CacheOperation {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final Logger log = LoggerFactory.getLogger(CacheApiInvocation.class);
+    private static final Logger log = LoggerFactory.getLogger(CacheOperation.class);
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static CacheApiInvocation parse(HttpServletRequest req) throws Exception {
+    public static CacheOperation parse(HttpServletRequest req) throws Exception {
 
         String uri = req.getRequestURI();
 
@@ -83,7 +68,7 @@ public abstract class CacheApiInvocation {
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
-    protected CacheApiInvocation(Options options) {
+    protected CacheOperation(Options options) {
 
         this.options = options;
     }
