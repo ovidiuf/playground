@@ -81,13 +81,14 @@ function main() {
     local uri="http://"
 
     [ -z "${node_index}" ] && { echo "a node index must be specified" 1>&2; exit 1; }
-    [ -z "${key}" ] && { echo "a key must be specified" 1>&2; exit 1; }
 
     local address
     local node_name
 
     address=$(index-to-ip ${node_index}) || exit 1
     node_name=$(index-to-name ${node_index}) || exit 1
+
+    [ -z "${key}" ] && { echo "a key must be specified" 1>&2; exit 1; }
 
     uri="${uri}${address}:8080/jdg-access/${operation}/${key}"
 
