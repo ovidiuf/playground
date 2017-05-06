@@ -7,7 +7,6 @@ import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.transaction.TransactionManager;
 import java.util.List;
 
 /**
@@ -46,17 +45,31 @@ public class Get extends CacheOperation {
     @Override
     public String execute(Cache<String, String> cache) throws Exception {
 
-        TransactionManager tm = Util.getTransactionManager();
+        startATransactionIfWeWereConfiguredToDoSo();
 
-        tm.begin();
+        boolean success = false;
 
-        log.info("get(" + key + ") " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
+        try {
 
-        String result = cache.get(key);
+            log.info("get(" + key + ") " + (Util.inTransaction() ? "transactionally" : "non-transactionally"));
 
-        tm.commit();
+            String result = cache.get(key);
 
-        return result;
+            success = true;
+
+            return result;
+        }
+        finally {
+
+            if (success) {
+
+                commitTransactionIfPresent();
+            }
+            else {
+
+                rollbackTransactionIfPresent();
+            }
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

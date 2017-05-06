@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
 import javax.servlet.ServletException;
+import javax.transaction.Status;
+import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
 
 /**
@@ -69,9 +71,12 @@ public class Util {
 
         TransactionManager tm = getTransactionManager();
 
+
         try {
 
-            return tm.getTransaction() != null;
+            Transaction t = tm.getTransaction();
+
+            return t != null && t.getStatus() == Status.STATUS_ACTIVE;
         }
         catch(Exception e) {
 

@@ -1,12 +1,10 @@
 package io.novaordis.playground.jboss.infinispan.tllm.cacheops;
 
 import io.novaordis.playground.jboss.infinispan.tllm.Options;
-import io.novaordis.playground.jboss.infinispan.tllm.Util;
 import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.transaction.TransactionManager;
 import java.util.List;
 
 /**
@@ -45,19 +43,33 @@ public class Lock extends CacheOperation {
     @Override
     public String execute(Cache<String, String> cache) throws Exception {
 
-        TransactionManager tm = Util.getTransactionManager();
+        startATransactionIfWeWereConfiguredToDoSo();
 
-        tm.begin();
+        boolean success = false;
 
-        log.info("attempting to lock " + key + " ...");
+        try {
 
-        boolean lockAcquired = cache.getAdvancedCache().lock(key);
+            log.info("attempting to lock " + key + " ...");
 
-        log.info("lock was " + (lockAcquired ? "" : "NOT ") + "acquired");
+            boolean lockAcquired = cache.getAdvancedCache().lock(key);
 
-        tm.commit();
+            log.info("lock was " + (lockAcquired ? "" : "NOT ") + "acquired");
 
-        return "" + lockAcquired;
+            success = true;
+
+            return "" + lockAcquired;
+        }
+        finally {
+
+            if (success) {
+
+                commitTransactionIfPresent();
+            }
+            else {
+
+                rollbackTransactionIfPresent();
+            }
+        }
     }
 
     // Public ----------------------------------------------------------------------------------------------------------

@@ -7,7 +7,6 @@ import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.transaction.TransactionManager;
 import java.util.List;
 
 /**
@@ -55,13 +54,7 @@ public class Put extends CacheOperation {
     @Override
     public String execute(Cache<String, String> cache) throws Exception {
 
-        boolean transactional = getOptions().isTransactional();
-
-        if (transactional) {
-
-            log.info("beginning transaction");
-            Util.getTransactionManager().begin();
-        }
+        startATransactionIfWeWereConfiguredToDoSo();
 
         boolean success = false;
 
@@ -79,20 +72,13 @@ public class Put extends CacheOperation {
         }
         finally {
 
-            if (transactional) {
+            if (success) {
 
-                TransactionManager tm = Util.getTransactionManager();
+                commitTransactionIfPresent();
+            }
+            else {
 
-                if (success) {
-
-                    log.info("committing transaction");
-                    tm.commit();
-                }
-                else {
-
-                    log.info("rolling back transaction");
-                    tm.rollback();
-                }
+                rollbackTransactionIfPresent();
             }
         }
     }

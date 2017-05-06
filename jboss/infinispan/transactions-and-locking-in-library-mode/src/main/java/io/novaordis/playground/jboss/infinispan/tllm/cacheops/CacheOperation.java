@@ -1,11 +1,15 @@
 package io.novaordis.playground.jboss.infinispan.tllm.cacheops;
 
 import io.novaordis.playground.jboss.infinispan.tllm.Options;
+import io.novaordis.playground.jboss.infinispan.tllm.Util;
 import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Status;
+import javax.transaction.Transaction;
+import javax.transaction.TransactionManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -66,6 +70,8 @@ public abstract class CacheOperation {
 
     private Options options;
 
+    private Transaction suspendedTransaction;
+
     // Constructors ----------------------------------------------------------------------------------------------------
 
     protected CacheOperation(Options options) {
@@ -100,6 +106,61 @@ public abstract class CacheOperation {
         Thread.sleep(1000L * sleepSecs);
 
         log.info("done sleeping");
+    }
+
+    protected void startATransactionIfWeWereConfiguredToDoSo() throws Exception {
+
+        boolean transactional = options.isTransactional();
+
+        //
+        // clean the transactional context, even if we are in a non-transactional case
+        //
+
+        TransactionManager tm = Util.getTransactionManager();
+
+        Transaction t = tm.getTransaction();
+
+        if (t != null) {
+
+            tm.suspend();
+
+            suspendedTransaction = t;
+        }
+
+        if (transactional) {
+
+            log.info("starting JTA transaction");
+            tm.begin();
+        }
+    }
+
+    protected void commitTransactionIfPresent() throws Exception {
+
+        Transaction t = Util.getTransactionManager().getTransaction();
+
+        if (t == null || t.getStatus() != Status.STATUS_ACTIVE) {
+
+            return;
+        }
+
+        log.info("committing the JTA transaction");
+
+        t.commit();
+
+    }
+
+    protected void rollbackTransactionIfPresent() throws Exception {
+
+        Transaction t = Util.getTransactionManager().getTransaction();
+
+        if (t == null || t.getStatus() != Status.STATUS_ACTIVE) {
+
+            return;
+        }
+
+        log.info("rolling back the JTA transaction");
+
+        t.rollback();
     }
 
     // Private ---------------------------------------------------------------------------------------------------------
