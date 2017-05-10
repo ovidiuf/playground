@@ -82,7 +82,7 @@ public class JDGAccessServlet extends HttpServlet {
                 transport().
                 defaultTransport().
                 clusterName(CLUSTER_NAME).
-                // the jgroups.xml file will be deployed within WEB-INF/classes
+                // the configuration file must be placed in $JBOSS_HOME/<profile>/configuration directory
                 addProperty("configurationFile", jdgConfiguration).
                 globalJmxStatistics().
                 allowDuplicateDomains(true).
