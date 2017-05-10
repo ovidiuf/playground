@@ -8,6 +8,11 @@ deployed as a module and available. Commands can be sent to it using bash shell 
 in the ./bin directory (put, get, lock, etc). The JDG cluster will be bootstraped and form after the 
 first invocation.
 
+# Configuration
+
+The JDG cache configuration is externalized, jdg-jgroups-configuration.xml needs to be copied
+in the "configuration" directory of the JBoss instances.
+
 
 # Build
 
