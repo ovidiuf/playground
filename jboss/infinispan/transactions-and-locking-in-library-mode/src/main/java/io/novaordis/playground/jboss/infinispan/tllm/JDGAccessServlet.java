@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -55,6 +56,23 @@ public class JDGAccessServlet extends HttpServlet {
     public void init() {
 
         //
+        // Configuration externalization
+        //
+
+        String jdgConfiguration = System.getProperty("playground.jdg.configuration");
+
+        log.info("configuring the cache from " + jdgConfiguration);
+
+        File jdgConfigurationFile = new File(jdgConfiguration);
+
+        if (!jdgConfigurationFile.isFile() || !jdgConfigurationFile.canRead()) {
+
+            throw new IllegalStateException(
+                    "the cache configuration file " + jdgConfiguration +
+                            " does not exist or is not readable - was the PoC correctly configured?");
+        }
+
+        //
         // Configure and build the cache manager
         //
 
@@ -65,7 +83,7 @@ public class JDGAccessServlet extends HttpServlet {
                 defaultTransport().
                 clusterName(CLUSTER_NAME).
                 // the jgroups.xml file will be deployed within WEB-INF/classes
-                addProperty("configurationFile", "jgroups.xml").
+                addProperty("configurationFile", jdgConfiguration).
                 globalJmxStatistics().
                 allowDuplicateDomains(true).
                 enable();
