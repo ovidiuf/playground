@@ -220,6 +220,7 @@ openshift_clock_enabled=true
 #
 
 #os_sdn_network_plugin_name='redhat/openshift-ovs-subnet'
+#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 
 #
 # Disable the OpenShift SDN plugin
