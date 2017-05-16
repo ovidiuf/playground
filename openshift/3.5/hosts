@@ -13,7 +13,7 @@
 
 
 #
-# Cluster variables - variables common for all OSEv3 hosts
+# Cluster variables - variables common for all environment hosts
 #
 
 [OSEv3:vars]
@@ -21,7 +21,6 @@
 #######################################################################################################################
 # Ansible Configuration
 #######################################################################################################################
-
 
 timeout=60
 
@@ -68,19 +67,21 @@ containerized=false
 # Deployment type ("origin" or "openshift-enterprise")
 #
 
-openshift_deployment_type=openshift-enterprise
+deployment_type=openshift-enterprise
 
 #######################################################################################################################
 # Version verification
 #######################################################################################################################
 
+#
 # Specify the generic release of OpenShift to install. This is used mainly just during installation, after which we
 # rely on the version running on the first master. Works best for containerized installs where we can usually
 # use this to lookup the latest exact version of the container images, which is the tag actually used to configure
 # the cluster. For RPM installations we just verify the version detected in your configured repositories matches this
 # release.
-#openshift_release=v3.5
+#
 
+#openshift_release=v3.5
 
 #
 # Specify an exact container image tag to install or configure.
@@ -127,7 +128,6 @@ osm_cockpit_plugins=['cockpit-kubernetes']
 
 openshift_master_api_port=443
 openshift_master_console_port=443
-
 
 #######################################################################################################################
 # Master HA Configuration
@@ -196,7 +196,6 @@ openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
 #
 
 openshift_set_hostname=true
-
 
 #
 # This variable enables rolling restarts of HA masters when running the upgrade playbook directly. It defaults to
@@ -438,7 +437,11 @@ openshift_hosted_metrics_deploy=true
 openshift_hosted_metrics_storage_kind=nfs
 openshift_metrics_cassandra_storage_type=nfs
 openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
-openshift_hosted_metrics_storage_nfs_directory=/srv/nfs
+
+#
+# The exported file system will be created on the NFS server
+#
+openshift_hosted_metrics_storage_nfs_directory=/nfs
 openshift_hosted_metrics_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_metrics_storage_volume_name=metrics
 openshift_hosted_metrics_storage_volume_size=10Gi
@@ -500,7 +503,10 @@ openshift_hosted_logging_deploy=true
 
 openshift_hosted_logging_storage_kind=nfs
 openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
-openshift_hosted_logging_storage_nfs_directory=/srv/nfs
+#
+# The exported file system will be created on the NFS server
+#
+openshift_hosted_logging_storage_nfs_directory=/nfs
 openshift_hosted_logging_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_logging_storage_volume_name=logging
 openshift_hosted_logging_storage_volume_size=10Gi
@@ -694,7 +700,10 @@ openshift_hosted_registry_replicas=2
 
 openshift_hosted_registry_storage_kind=nfs
 openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
-openshift_hosted_registry_storage_nfs_directory=/srv/nfs
+#
+# The exported file system will be created on the NFS server
+#
+openshift_hosted_registry_storage_nfs_directory=/nfs
 openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_registry_storage_volume_name=registry
 openshift_hosted_registry_storage_volume_size=10Gi
