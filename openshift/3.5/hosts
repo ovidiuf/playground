@@ -305,7 +305,10 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 #openshift_master_htpasswd_users={'user1': '<pre-hashed password>', 'user2': '<pre-hashed password>'}
 # or
-#openshift_master_htpasswd_file=<path to local pre-generated htpasswd file>
+#openshift_master_htpasswd_file=<path to local pre-generated htpasswd file>. The way this work is that the installation
+# process copies the content of 'openshift_master_htpasswd_file' from the installation server into the files
+# specified by 'filename', above.
+#
 openshift_master_htpasswd_file=/root/htpasswd.openshift
 
 #
