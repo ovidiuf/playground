@@ -1,0 +1,159 @@
+#!/bin/bash
+
+[ -f $(dirname $0)/functions ] && . $(dirname $0)/functions || { echo "$(dirname $0)/functions not found" 1>&2; exit 1; }
+
+#
+# Environment Configuration
+#
+
+ns=172.23.0.3
+master1=172.23.0.4
+master2=172.23.0.5
+master3=172.23.0.6
+lb=172.23.0.7
+support=172.23.0.8
+node1=172.23.0.9
+node2=172.23.0.10
+infranode1=172.23.0.11
+infranode2=172.23.0.12
+
+#
+#
+#
+
+function start-environment() {
+
+    if is-running ${ns}; then
+        echo "ns already on-line"
+    else
+        echo "starting ns ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "ns on-line"
+    fi
+
+    if is-running ${support}; then
+        echo "support already on-line"
+    else
+        echo "starting support ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "support on-line"
+    fi
+
+    if is-running ${master1}; then
+        echo "master1 already on-line"
+    else
+        echo "starting master1 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "master1 on-line"
+    fi
+
+    if is-running ${master2}; then
+        echo "master2 already on-line"
+    else
+        echo "starting master2 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "master2 on-line"
+    fi
+
+    if is-running ${master3}; then
+        echo "master3 already on-line"
+    else
+        echo "starting master3 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "master3 on-line"
+    fi
+
+    if is-running ${lb}; then
+        echo "lb already on-line"
+    else
+        echo "starting lb ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "lb on-line"
+    fi
+
+    if is-running ${infranode1}; then
+        echo "infranode1 already on-line"
+    else
+        echo "starting infranode1 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "infranode1 on-line"
+    fi
+
+    if is-running ${infranode2}; then
+        echo "infranode2 already on-line"
+    else
+        echo "starting infranode2 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "infranode2 on-line"
+    fi
+
+    if is-running ${node1}; then
+        echo "node1 already on-line"
+    else
+        echo "starting node1 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "node1 on-line"
+    fi
+
+    if is-running ${lb}; then
+        echo "node2 already on-line"
+    else
+        echo "starting node2 ..."
+        start ${ns}
+        wait-to-start ${ns}
+        echo "node2 on-line"
+    fi
+}
+
+function status-environment() {
+
+    is-running ${node2} && echo "node2      up" || echo "node2      down"
+    is-running ${node1} && echo "node1      up" || echo "node1      down"
+    is-running ${infranode2} && echo "infranode2 up" || echo "infranode2 down"
+    is-running ${infranode1} && echo "infranode1 up" || echo "infranode1 down"
+    is-running ${lb} && echo "lb         up" || echo "lb         down"
+    is-running ${master3} && echo "master3    up" || echo "master3    down"
+    is-running ${master2} && echo "master2    up" || echo "master2    down"
+    is-running ${master1} && echo "master1    up" || echo "master1    down"
+    is-running ${support} && echo "support    up" || echo "support    down"
+    is-running ${ns} && echo "ns         up" || echo "ns         down"
+}
+
+function stop-environment() {
+
+    is-running ${node2} && stop ${node2}
+    is-running ${node1} && stop ${node1}
+    is-running ${infranode2} && stop ${infranode2}
+    is-running ${infranode1} && stop ${infranode1}
+    is-running ${lb} && stop ${lb}
+    is-running ${master3} && stop ${master3}
+    is-running ${master2} && stop ${master2}
+    is-running ${master1} && stop ${master1}
+    is-running ${support} && stop ${support}
+    is-running ${ns} && stop ${ns}
+    echo "all nodes stopped"
+}
+
+function main() {
+
+    if [ "$1" = "start" ]; then
+        start-environment
+    elif [ "$1" = "stop" ]; then
+        stop-environment
+    elif [ "$1" = "status" ]; then
+        status-environment
+    else
+        echo "unknown command" 1>&2;
+    fi
+}
+
+main $@

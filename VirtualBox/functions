@@ -1,0 +1,115 @@
+#!/bin/bash
+
+
+#
+# VirtualBox command line management API functions
+#
+
+
+#
+# We expect the hostname/IP mapping for the environment to be declared in a configuration file that should
+# be sourced before these functions are invoked. The environment configuration file should be similar to
+#
+# master1=192.1.1.1
+# master2=192.1.1.2
+# ...
+#
+
+#
+# The wrapper shell that invokes these functions should start with:
+#
+#[ -f $(dirname $0)/environment-configuration ] && . $(dirname $0)/environment-configuration || { echo "$(dirname $0)/environment-configuration not found" 1>&2; exit 1; }
+#[ -z "${PLAYGROUND_HOME}" ] && { echo "PLAYGROUND_HOME not defined" 1>&2; exit 1; }
+#[ -f ${PLAYGROUND_HOME}/VirtualBox/functions ] && . ${PLAYGROUND_HOME}/VirtualBox/functions || { echo "${PLAYGROUND_HOME}/VirtualBox/functions" 1>&2; exit 1; }
+#
+
+
+#
+# arg1: ip address of the target to check
+# arg2: (optional) the user who will ssh into the target host; if missing, "root" is implied
+#
+function is-running() {
+
+    local target_ip=$1
+    local user=$2
+
+    [ -z "${user}" ] && user=root
+
+    local ssh_output
+
+    ssh_output=$(ssh -o ConnectTimeout=1 ${user}@${target_ip} "hostname" 2>&1)
+
+    if [ $? -eq 0 ]; then
+        #
+        # success
+        #
+        local name_as_reported_by_target=${ssh_output}
+        name_as_reported_by_target=${name_as_reported_by_target%%.*}
+        return 0
+    else
+        #
+        # failure
+        #
+        return 1
+    fi
+}
+
+#
+# Asynchronously starts a VM. The operation is NOT idempotent, attempt to start an already started VM will fail.
+#
+# arg1: ip address of the target to start
+#
+function start() {
+
+    local target_name
+
+    target_name=$(ip-to-hostname $1)
+
+    VBoxManage startvm ${target_name} --type headless
+}
+
+#
+# arg1: ip address of the target to start
+#
+function stop() {
+
+    local target_name
+
+    target_name=$(ip-to-hostname $1)
+
+    VBoxManage controlvm ${target_name} acpipowerbutton
+}
+
+
+#
+# arg1: ip address of the target to start
+# arg2: timeout. If the VM does not respond in arg2 seconds, timeout and exit. Currently now implemented, will loop
+# forever
+#
+#
+function wait-to-start() {
+
+    while [ true ]; do
+
+        is-running $1 && return 0
+        sleep 1
+
+    done
+}
+
+#
+# returns the short hostname, as captured by the variable that carries the IP
+#
+# arg1: the IP
+#
+function ip-to-hostname() {
+
+    #
+    # iterate through the variables and return the name of the variable that contains the IP address value
+    #
+    s=$(declare -p | grep "^.*=$1$" | sed -e 's/=.*$//')
+
+    [ -z "${s}" ] && { echo "no variable carries the IP value $1, hostname cannot be inferred" 1>&2; exit 1; }
+
+    echo ${s}
+}
