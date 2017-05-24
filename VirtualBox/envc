@@ -1,6 +1,10 @@
 #!/bin/bash
 
-[ -f $(dirname $0)/functions ] && . $(dirname $0)/functions || { echo "$(dirname $0)/functions not found" 1>&2; exit 1; }
+#[ -f $(dirname $0)/functions ] && . $(dirname $0)/functions || { echo "$(dirname $0)/functions not found" 1>&2; exit 1; }
+
+[ -z "${PLAYGROUND_HOME}" ] && { echo "PLAYGROUND_HOME not set" 1>&2; exit 1; }
+[ -f ${PLAYGROUND_HOME}/VirtualBox/functions ] && . ${PLAYGROUND_HOME}/VirtualBox/functions || { echo "${PLAYGROUND_HOME}/VirtualBox/functions" 1>&2; exit 1; }
+
 
 #
 # Environment Configuration
