@@ -37,7 +37,8 @@ ansible_become=yes
 #
 
 #ansible_ssh_user=root
-ansible_ssh_user=ec2-user
+#ansible_ssh_user=ec2-user
+ansible_ssh_user=ansible
 
 #
 # Describes which INFO messages are logged to the systemd-journald.service. Set one of the following:
@@ -150,12 +151,13 @@ openshift_master_cluster_method=native
 # this must be set to load balancer or to one or all of the masters, if no load balancer is present.
 #
 
-openshift_master_cluster_hostname=loadbalancer1.rdu20.internal
+openshift_master_cluster_hostname=lb.openshift35.local
 
 #
 # Overrides the public host name for the cluster, which defaults to the host name of the master.
 #
-openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
+#openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
+openshift_master_cluster_public_hostname=console.openshift35.NOMBP2
 
 #
 # In case of the "pacemaker" method, the environment must be able to self provision the configured VIP and
@@ -170,7 +172,8 @@ openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
 # The default subdomain to use for exposed routes.
 #
 
-openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
+#openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
+openshift_master_default_subdomain=apps.openshift35.NOMBP2
 
 #
 # NOTE: 'openshift_master_named_certificates' is cached on masters and is an additive fact, meaning that each run with a
@@ -195,7 +198,7 @@ openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
 # do not have valid dns entries for the interfaces attached to the host.
 #
 
-openshift_set_hostname=true
+#openshift_set_hostname=true
 
 #
 # This variable enables rolling restarts of HA masters when running the upgrade playbook directly. It defaults to
@@ -206,7 +209,8 @@ openshift_set_hostname=true
 #openshift_rolling_restart_mode=services
 
 #
-# Configure usage of openshift_clock role. Must be enabled on masters to ensure proper failover.
+# Enables Network Time Protocol (NTP) to prevent masters and nodes in the cluster from going out of sync.
+# It also configures usage of openshift_clock role. Must be enabled on masters to ensure proper failover.
 #
 openshift_clock_enabled=true
 
@@ -242,11 +246,7 @@ openshift_clock_enabled=true
 #osm_cluster_network_cidr=10.128.0.0/14
 
 #
-# Configures the subnet in which services will be created within the SDN. This network block should be private and must
-# not conflict with any existing network blocks in your infrastructure to which pods, nodes, or the master may require
-# access to, or the installation will fail. Defaults to 172.30.0.0/16, and cannot be re-configured after deployment.
-# If changing from the default, avoid 172.16.0.0/16, which the docker0 network bridge uses by default, or modify the
-# docker0 network.
+# The service subnet. See https://kb.novaordis.com/index.php/OpenShift_Concepts#The_Services_Subnet
 #
 
 #openshift_master_portal_net='172.30.0.0/16'
@@ -482,7 +482,8 @@ openshift_hosted_metrics_storage_volume_size=10Gi
 # the "/hawkular/metrics" path will break installation of metrics.
 #
 
-openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
+#openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
+openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.openshift35.NOMBP2/hawkular/metrics
 
 ########################################################################################################################
 # Logging Configuration
@@ -547,9 +548,11 @@ openshift_hosted_logging_storage_volume_size=10Gi
 # kibana.{{ openshift_master_default_subdomain }}
 #
 
-openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
+#openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
+openshift_hosted_logging_hostname=kibana.apps.openshift35.NOMBP2
 
-openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
+#openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
+openshift_master_logging_public_url=https://kibana.apps.openshift35.NOMBP2
 
 #
 # Configure the number of elastic search nodes, unless you're using dynamic provisioning this value must be 1
@@ -581,7 +584,6 @@ openshift_hosted_logging_elasticsearch_cluster_size=1
 #
 
 openshift_hosted_router_selector='env=infra'
-#openshift_router_selector='region=infra'
 
 #
 # Router replicas. Unless specified, Ansible will calculate the replica count based on the number of nodes matching the
@@ -673,7 +675,6 @@ openshift_hosted_router_replicas=2
 #
 
 openshift_hosted_registry_selector='env=infra'
-#openshift_registry_selector='region=infra'
 
 #
 # Registry replicas. Unless specified, openshift-ansible will calculate the replica count based on the number of nodes
@@ -1337,16 +1338,15 @@ nfs
 #   available for placement of new pods.
 # ansible_ssh_private_key_file
 #
-
 [masters]
-master1.rdu20.internal host_zone=us-east-1c
-master2.rdu20.internal host_zone=us-east-1c
-master3.rdu20.internal host_zone=us-east-1c
+master1.openshift35.local
+master2.openshift35.local
+master3.openshift35.local
 
 [etcd]
-master1.rdu20.internal host_zone=us-east-1c
-master2.rdu20.internal host_zone=us-east-1c
-master3.rdu20.internal host_zone=us-east-1c
+master1.openshift35.local
+master2.openshift35.local
+master3.openshift35.local
 
 #
 # 'nodes' include masters too.
@@ -1359,29 +1359,29 @@ master3.rdu20.internal host_zone=us-east-1c
 #
 # master
 #
-master1.rdu20.internal openshift_hostname=master1.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20', 'zone':'us-east-1c'}"
-master2.rdu20.internal openshift_hostname=master2.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20', 'zone':'us-east-1c'}"
-master3.rdu20.internal openshift_hostname=master3.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20', 'zone':'us-east-1c'}"
+master1.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20'}"
+master2.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20'}"
+master3.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20'}"
 #
 # infrastructure nodes
 #
-infranode1.rdu20.internal openshift_hostname=infranode1.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra', 'region':'infra', 'zone':'us-east-1c'}"
-infranode2.rdu20.internal openshift_hostname=infranode2.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra', 'region':'infra', 'zone':'us-east-1c'}"
+infranode1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra', 'region':'infra'}"
+infranode2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra', 'region':'infra'}"
 #
 # regular nodes
 #
-node1.rdu20.internal openshift_hostname=node1.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'app', 'zone':'us-east-1c'}"
-node2.rdu20.internal openshift_hostname=node2.rdu20.internal ansible_ssh_user=ec2-user openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'app', 'zone':'us-east-1c'}"
+node1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'app'}"
+node2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'app'}"
 
 #
 # NOTE: Containerized load balancer hosts are not yet supported, if using a global containerized=true host variable we
 # must set to false.
 #
 [lb]
-loadbalancer1.rdu20.internal openshift_hostname=loadbalancer1.rdu20.internal host_zone=us-east-1c containerized=false
+lb.openshift35.local containerized=false
 
 [nfs]
-support3.rdu20.internal openshift_hostname=support3.rdu20.internal ansible_ssh_user=ec2-user
+support.openshift35.local ansible_ssh_user=ansible
 
 
 
