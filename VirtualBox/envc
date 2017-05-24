@@ -40,8 +40,8 @@ function start-environment() {
         echo "support already on-line"
     else
         echo "starting support ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${support}
+        wait-to-start ${support}
         echo "support on-line"
     fi
 
@@ -49,8 +49,8 @@ function start-environment() {
         echo "master1 already on-line"
     else
         echo "starting master1 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${master1}
+        wait-to-start ${master1}
         echo "master1 on-line"
     fi
 
@@ -58,8 +58,8 @@ function start-environment() {
         echo "master2 already on-line"
     else
         echo "starting master2 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${master2}
+        wait-to-start ${master2}
         echo "master2 on-line"
     fi
 
@@ -67,8 +67,8 @@ function start-environment() {
         echo "master3 already on-line"
     else
         echo "starting master3 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${master3}
+        wait-to-start ${master3}
         echo "master3 on-line"
     fi
 
@@ -76,8 +76,8 @@ function start-environment() {
         echo "lb already on-line"
     else
         echo "starting lb ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${lb}
+        wait-to-start ${lb}
         echo "lb on-line"
     fi
 
@@ -85,8 +85,8 @@ function start-environment() {
         echo "infranode1 already on-line"
     else
         echo "starting infranode1 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${infranode1}
+        wait-to-start ${infranode1}
         echo "infranode1 on-line"
     fi
 
@@ -94,8 +94,8 @@ function start-environment() {
         echo "infranode2 already on-line"
     else
         echo "starting infranode2 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${infranode2}
+        wait-to-start ${infranode2}
         echo "infranode2 on-line"
     fi
 
@@ -103,17 +103,17 @@ function start-environment() {
         echo "node1 already on-line"
     else
         echo "starting node1 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${node1}
+        wait-to-start ${node1}
         echo "node1 on-line"
     fi
 
-    if is-running ${lb}; then
+    if is-running ${node2}; then
         echo "node2 already on-line"
     else
         echo "starting node2 ..."
-        start ${ns}
-        wait-to-start ${ns}
+        start ${node2}
+        wait-to-start ${node2}
         echo "node2 on-line"
     fi
 }
