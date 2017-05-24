@@ -1,16 +1,17 @@
 #@IgnoreInspection BashAddShebang
 #
-# Example of an Ansible inventory file used to build an OpenShift 3.5 environment in Amazon AWS. This type of inventory
-# file is referred to as "bring your own" (byo) host inventory. Pre-requisites must be completed before running the
-# Ansible installation process.
+# Example of an Ansible inventory file used to build an OpenShift 3.5 environment in Amazon AWS/VirtualBox local
+# environment. This type of inventory file is referred to as "bring your own" (byo) host inventory. Pre-requisites must
+# be completed before running the Ansible installation process.
 #
 # More details:
 #
-# https://docs.openshift.com/container-platform/3.5/install_config/install/advanced_install.html#configuring-host-variables
+#
+# https://kb.novaordis.com/index.php/OpenShift_3.5_Installation
+# https://docs.openshift.com/container-platform/3.5/install_config/index.html
 #
 # Original inventory file: https://github.com/openshift/openshift-ansible/blob/master/inventory/byo/hosts.ose.example
 #
-
 
 #
 # Cluster variables - variables common for all environment hosts
@@ -67,6 +68,8 @@ containerized=false
 #
 # Deployment type ("origin" or "openshift-enterprise")
 #
+# https://docs.openshift.com/container-platform/3.5/install_config/install/advanced_install.html#advanced-install-deployment-types
+#
 
 deployment_type=openshift-enterprise
 
@@ -82,16 +85,17 @@ deployment_type=openshift-enterprise
 # release.
 #
 
-#openshift_release=v3.5
+openshift_release=v3.5
 
 #
 # Specify an exact container image tag to install or configure.
+#
 # WARNING: This value will be used for all hosts in containerized environments, even those that have another version
 # installed. This could potentially trigger an upgrade and downtime, so be careful with modifying this value after
 # the cluster is set up.
 #
 
-#openshift_image_tag=v3.5
+openshift_image_tag=v3.5
 
 #######################################################################################################################
 # Selectors
@@ -102,22 +106,6 @@ deployment_type=openshift-enterprise
 #
 
 osm_default_node_selector='env=app'
-
-#######################################################################################################################
-# Optional Variables
-#######################################################################################################################
-
-#
-# Enable cockpit
-#
-
-osm_use_cockpit=true
-
-#
-# Set cockpit plugins
-#
-
-osm_cockpit_plugins=['cockpit-kubernetes']
 
 #######################################################################################################################
 # Master Configuration
@@ -140,8 +128,8 @@ openshift_master_console_port=443
 # The "native" method implies a load balancer. If no "lb" group is defined, the installer assumes that a load balancer
 # has been independently deployed and pre-configured. If a host is defined in the "lb" section of the inventory file,
 # Ansible installs and configures HAProxy automatically on that host. For this HA method,
-# 'openshift_master_cluster_hostname' must resolve to the load balancer or to one or all of the masters defined in the
-# inventory if no load balancer is present.
+# 'openshift_master_cluster_hostname' must resolve to the internal hostname of the load balancer or to one or all of
+# internal hostnames of the masters defined in the inventory if no load balancer is present.
 #
 
 openshift_master_cluster_method=native
@@ -154,16 +142,16 @@ openshift_master_cluster_method=native
 openshift_master_cluster_hostname=lb.openshift35.local
 
 #
-# Overrides the public host name for the cluster, which defaults to the host name of the master.
+# Overrides the public host name for the cluster, which defaults to the host name of the master. This is how the
+# master (or masters) are accessed externally if they are load balanced.
 #
 #openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
-openshift_master_cluster_public_hostname=console.openshift35.NOMBP2
+openshift_master_cluster_public_hostname=master.openshift35.NOMBP2
 
 #
 # In case of the "pacemaker" method, the environment must be able to self provision the configured VIP and
 # 'openshift_master_cluster_hostname' must resolve to the configured VIP.
 #
-
 #openshift_master_cluster_password=openshift_cluster
 #openshift_master_cluster_vip=192.168.133.25
 #openshift_master_cluster_public_vip=192.168.133.25
@@ -176,10 +164,10 @@ openshift_master_cluster_public_hostname=console.openshift35.NOMBP2
 openshift_master_default_subdomain=apps.openshift35.NOMBP2
 
 #
-# NOTE: 'openshift_master_named_certificates' is cached on masters and is an additive fact, meaning that each run with a
-# different set of certificates will add the newly provided certificates to the cached set of certificates. An optional
-# CA may be specified for each named certificate. CAs will be added to the OpenShift CA bundle which allows for the
-# named certificate to be served for internal cluster communication. If you would like
+# NOTE: 'openshift_master_named_certificates' is cached on masters and is an additive fact, meaning that each run with
+# a different set of certificates will add the newly provided certificates to the cached set of certificates.
+# An optional CA may be specified for each named certificate. CAs will be added to the OpenShift CA bundle which allows
+# for the named certificate to be served for internal cluster communication. If you would like
 # 'openshift_master_named_certificates' to be overwritten with the provided value, specify
 # 'openshift_master_overwrite_named_certificates'.
 #
@@ -187,11 +175,23 @@ openshift_master_default_subdomain=apps.openshift35.NOMBP2
 #openshift_master_overwrite_named_certificates=true
 
 #
-# Configure nodeIP in the node config. This is needed in cases where node traffic is desired to go over an interface
+# Provide local certificate paths which will be deployed to masters
+#
+
+#openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "cafile": "/path/to/custom-ca1.crt"}]
+
+#
+# Detected names may be overridden by specifying the "names" key
+#
+
+#openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "names": ["public-master-host.com"], "cafile": "/path/to/custom-ca1.crt"}]
+
+#
+# Configure node IP in the node config. This is needed in cases where node traffic is desired to go over an interface
 # other than the default network interface.
 #
 
-#openshift_set_node_ip=True
+#openshift_set_node_ip=true
 
 #
 # Force setting of system hostname when configuring OpenShift. This works around issues related to installations that
@@ -222,8 +222,10 @@ openshift_clock_enabled=true
 # Configures which OpenShift SDN plug-in to use for the pod network. Values: 'redhat/openshift-ovs-subnet' (default)
 # or 'redhat/openshift-ovs-multitenant'.
 #
+# More details https://docs.openshift.com/container-platform/3.5/install_config/configuring_sdn.html
+#
 
-#os_sdn_network_plugin_name='redhat/openshift-ovs-subnet'
+os_sdn_network_plugin_name='redhat/openshift-ovs-subnet'
 #os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 
 #
@@ -242,15 +244,10 @@ openshift_clock_enabled=true
 # WORKAROUND : If you must use an overlapping subnet, you can configure a non conflicting docker0 CIDR range by adding
 # '--bip=192.168.2.1/24' to DOCKER_NETWORK_OPTIONS environment variable located in /etc/sysconfig/docker-network.
 #
+# See https://kb.novaordis.com/index.php/OpenShift_Concepts#The_Cluster_Network
+#
 
 #osm_cluster_network_cidr=10.128.0.0/14
-
-#
-# The service subnet. See https://kb.novaordis.com/index.php/OpenShift_Concepts#The_Services_Subnet
-#
-
-#openshift_master_portal_net='172.30.0.0/16'
-#openshift_portal_net=172.30.0.0/16
 
 #
 # Configure number of bits to allocate to each host’s subnet allocated for pod IPs by the SDN. Defaults to 9 which
@@ -259,6 +256,15 @@ openshift_clock_enabled=true
 #
 
 #osm_host_subnet_length=9
+
+#
+# The service subnet.
+#
+# See https://kb.novaordis.com/index.php/OpenShift_Concepts#The_Services_Subnet
+#
+
+#openshift_master_portal_net='172.30.0.0/16'
+#openshift_portal_net=172.30.0.0/16
 
 #
 # ExternalIPNetworkCIDRs controls what values are acceptable for the service external IP field. If empty, no externalIP
@@ -306,11 +312,11 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 #openshift_master_htpasswd_users={'user1': '<pre-hashed password>', 'user2': '<pre-hashed password>'}
 # or
-#openshift_master_htpasswd_file=<path to local pre-generated htpasswd file>. The way this work is that the installation
-# process copies the content of 'openshift_master_htpasswd_file' from the installation server into the files
-# specified by 'filename', above.
+#openshift_master_htpasswd_file=<path to local pre-generated htpasswd file>. This should resolve to a file on the
+# host that drives the installation. The way this work is that the installation process copies the content of
+# 'openshift_master_htpasswd_file' from the installation server into the files specified by 'filename', above.
 #
-openshift_master_htpasswd_file=/root/htpasswd.openshift
+openshift_master_htpasswd_file=/etc/ansible/htpasswd.openshift.installation
 
 #
 # "Allow All" identity provider
@@ -371,18 +377,6 @@ openshift_master_htpasswd_file=/root/htpasswd.openshift
 # https://docs.openshift.com/enterprise/latest/install_config/certificate_customization.html
 #
 
-#
-# Provide local certificate paths which will be deployed to masters
-#
-
-#openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "cafile": "/path/to/custom-ca1.crt"}]
-
-#
-# Detected names may be overridden by specifying the "names" key
-#
-
-#openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "names": ["public-master-host.com"], "cafile": "/path/to/custom-ca1.crt"}]
-
 ########################################################################################################################
 # OAuth Session Options
 ########################################################################################################################
@@ -410,31 +404,106 @@ openshift_master_htpasswd_file=/root/htpasswd.openshift
 #openshift_master_session_encryption_secrets=['DONT+USE+THIS+SECRET+b4NV+pmZNSO']
 
 ########################################################################################################################
-# Metrics Deployment. See: https://docs.openshift.com/enterprise/latest/install_config/cluster_metrics.html
+# Metrics. See: https://docs.openshift.com/enterprise/latest/install_config/cluster_metrics.html
 ########################################################################################################################
 
 #
 # By default metrics are not automatically deployed, set this to enable them
 #
-
 openshift_hosted_metrics_deploy=true
+openshift_metrics_install_metrics=true
 
 #
-# The 'openshift_metrics_cassandra_storage_type' variable must be set in order to use persistent storage for metrics.
-# If 'openshift_metrics_cassandra_storage_type' is not set, then cluster metrics data is stored in an EmptyDir volume,
-# which will be deleted when the Cassandra pod terminates.
+# Start the metrics cluster after deploying the components
 #
-#openshift_metrics_cassandra_storage_type=nfs
+openshift_metrics_start_cluster=true
+
+#
+# The name of the metrics project. Default is "openshift-infra"
+#
+# See https://kb.novaordis.com/index.php/OpenShift_Concepts#Metrics
+#
+#openshift_metrics_project=openshift-infra
+
+#
+# The time interval between two successive readings, in seconds. Defined as a number and time identifier: seconds (s),
+# minutes (m), hours (h). Default is 30 seconds.
+#
+openshift_metrics_resolution=1m
+
+#
+# The time, in seconds, to wait until Hawkular Metrics and Heapster start up before attempting a restart.
+#
+#openshift_metrics_startup_timeout=
+
+#
+# The number of days to store metrics before they are purged.
+#
+openshift_metrics_duration=1
+
+#
+# Override metricsPublicURL in the master config for cluster metrics. Defaults to
+# https://hawkular-metrics.{{openshift_master_default_subdomain}}/hawkular/metrics. If you alter this variable, ensure
+# the host name is accessible via your router. Currently, you may only alter the hostname portion of the url, altering
+# the "/hawkular/metrics" path will break installation of metrics.
+#
+
+#openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
+openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35.NOMBP2/hawkular/metrics
+
+#
+# The metrics URL propagates to master-config.yaml assetConfig.metricsPublicURL
+#
+#openshift_metrics_hawkular_hostname=hawkular-metrics.apps.openshift35.NOMBP2
+
+########################################################################################################################
+# Metrics/Cassandra
+########################################################################################################################
+
+#
+# Memory request and limit for the Cassandra database pod. Default is 2Gi. which limits Cassandra to 2 GB of memory.
+# This value could be further adjusted by the start script based on available memory of the node on which it is
+# scheduled.
+#
+openshift_metrics_cassandra_request_memory=500MBi
+openshift_metrics_cassandra_limits_memory=500MBi
+
+#
+# The CPU request and limit for the Cassandra pod. For example, a value of 4000m (4000 millicores) would limit
+# Cassandra to 4 CPUs.
+#
+openshift_metrics_cassandra_limits_cpu=500m
+openshift_metrics_cassandra_request_cpu=500m
+
+#
+# The number of Cassandra nodes for the metrics stack. This value dictates the number of Cassandra replication
+# controllers.
+openshift_metrics_cassandra_replicas=1
+
+#
+# The prefix for the component images. For example, with openshift3/openshift-metrics-cassandra:3.5.0, set prefix
+# openshift/openshift-.
+#
+#openshift_metrics_image_prefix=
+
+#
+# The version for the component images. For example, with openshift3/openshift-metrics-cassandra:3.5.0, set version
+# as 3.5.0.
+#
+#openshift_metrics_image_version=3.5.0
 
 #
 # Metrics Storage Options. If 'openshift_hosted_metrics_storage_kind'/'openshift_metrics_cassandra_storage_type' is
-# unset then metrics will be stored in an EmptyDir volume and will be deleted when the cassandra pod terminates. Storage
-# options A & B currently support only one cassandra pod which is generally enough for up to 1000 pods. Additional
-# volumes can be created manually after the fact and metrics scaled per the docs.
+# unset then metrics will be stored in an EmptyDir volume and will be deleted when the cassandra pod terminates. To
+# force this behavior set openshift_metrics_cassandra_storage_type=emptydir. Other possible values values: "pv" for
+# persistent volumes, which need to be created before the installation, "dynamic" for dynamic persistent volumes and
+# "nfs". The NFS option currently support only one cassandra pod (set openshift_metrics_cassandra_replicas=1), which
+# is generally enough for up to 1000 pods. Additional volumes can be created manually after the fact and metrics scaled
+# per the docs.
 #
 
 #
-# Option A - NFS Host Group.  An NFS volume will be created with path "nfs_directory/volume_name on the host within the
+# Option A - NFS Host Group. An NFS volume will be created with path "nfs_directory/volume_name on the host within the
 # [nfs] host group. For example, the volume path using these options would be "/exports/metrics"
 #
 
@@ -443,18 +512,18 @@ openshift_metrics_cassandra_storage_type=nfs
 openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
 
 #
-# The exported file system will be created on the NFS server
+# The storage directory specified below must exist on the NFS server and must be backed by a device with sufficient
+# storage. Ansible will configure the NFS server to export nfs_director/volume_name.
 #
-openshift_hosted_metrics_storage_nfs_directory=/nfs
-openshift_hosted_metrics_storage_nfs_options='*(rw,root_squash)'
+openshift_hosted_metrics_storage_nfs_directory=/storage
 openshift_hosted_metrics_storage_volume_name=metrics
+openshift_hosted_metrics_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_metrics_storage_volume_size=10Gi
 
 #
 # Option B - External NFS Host. NFS volume must already exist with path "nfs_directory/volume_name" on the storage_host.
 # For example, the remote volume path using these options would be "nfs.example.com:/exports/metrics"
 #
-
 #openshift_hosted_metrics_storage_kind=nfs
 #openshift_metrics_cassandra_storage_type=nfs
 #openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
@@ -466,24 +535,103 @@ openshift_hosted_metrics_storage_volume_size=10Gi
 #
 # Option C - Dynamic -- If openshift supports dynamic volume provisioning for your cloud platform use this.
 #
-
 #openshift_hosted_metrics_storage_kind=dynamic
 #openshift_metrics_cassandra_storage_type=dynamic
+
+#
+# Option D - Persistent Volumes
+#
+#openshift_metrics_cassandra_storage_type=pv
+
+#
+# The persistent volume claim prefix created for Cassandra. A serial number is appended to the prefix starting from 1.
+#
+#openshift_metrics_cassandra_pvc_prefix=
+
+#
+# The persistent volume claim size for each of the Cassandra nodes.
+#
+#openshift_metrics_cassandra_cpvc_size=
+
+#
+# The supplemental storage group to use for Cassandra.
+#
+#openshift_metrics_cassandra_storage_group=
+
+#
+# The size of the persisted volume claim is to be used for metrics storage. Default is 10 GB.
+#
+#openshift_metrics_cassandra_pvc_size=10Gi
+
+########################################################################################################################
+# Metrics/Hawkular
+########################################################################################################################
+
+#
+# Requests and limits for Hawkular memory. A value of 2Gi would request 2 GB of memory.
+#
+openshift_metrics_hawkular_request_memory=500MBi
+openshift_metrics_hawkular_limits_memory=500MBi
+
+#
+# Requests and limits for Hawkular CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
+#
+openshift_metrics_hawkular_request_cpu=500m
+openshift_metrics_hawkular_limits_cpu=500m
+
+#
+# A comma-separated list of CN to accept. By default, this is set to allow the OpenShift service proxy to connect.
+# Add system:master-proxy to the list when overriding in order to allow horizontal pod autoscaling to function properly.
+#
+#openshift_metrics_heapster_allowed_users=
+
+#
+# The number of replicas for Hawkular metrics.
+#
+openshift_metrics_hawkular_replicas=1
+
+#
+# An optional certificate authority (CA) file used to sign the Hawkular certificate.
+# See https://docs.openshift.com/container-platform/latest/install_config/cluster_metrics.html#metrics-using-secrets
+#
+#openshift_metrics_hawkular_ca=
+#
+# The certificate file used for re-encrypting the route to Hawkular metrics. The certificate must contain the host name
+# used by the route. If unspecified, the default router certificate is used.
+# See https://docs.openshift.com/container-platform/latest/install_config/cluster_metrics.html#metrics-using-secrets
+#
+#openshift_metrics_hawkular_cert=
+#
+# The key file used with the Hawkular certificate.
+# See https://docs.openshift.com/container-platform/latest/install_config/cluster_metrics.html#metrics-using-secrets
+#
+#openshift_metrics_hawkular_key=
+
+########################################################################################################################
+# Metrics/Heapster
+########################################################################################################################
+
+#
+# Requests and limits for Heapster memory. A value of 2Gi would request 2 GB of memory.
+#
+openshift_metrics_heapster_request_memory=500MBi
+openshift_metrics_heapster_limits_memory=500MBi
+
+#
+# Requests and limits for Heapster CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
+#
+openshift_metrics_heapster_request_cpu=500m
+openshift_metrics_heapster_limits_cpu=500m
+
+#
+# Deploy only Heapster, without the Hawkular Metrics and Cassandra components.
+#
+#openshift_metrics_heapster_standalone=true
 
 #
 # Other Metrics Options -- Common items you may wish to reconfigure, for the complete list of options please see
 # roles/openshift_metrics/README.md
 #
-
-#
-# Override metricsPublicURL in the master config for cluster metrics. Defaults to
-# https://hawkular-metrics.{{openshift_master_default_subdomain}}/hawkular/metrics. If you alter this variable, ensure
-# the host name is accessible via your router. Currently, you may only alter the hostname portion of the url, altering
-# the "/hawkular/metrics" path will break installation of metrics.
-#
-
-#openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
-openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.openshift35.NOMBP2/hawkular/metrics
 
 ########################################################################################################################
 # Logging Configuration
@@ -1295,6 +1443,22 @@ openshift_hosted_registry_storage_volume_size=10Gi
 #
 
 #etcd_ca_default_days=1825
+
+#######################################################################################################################
+# Optional Variables
+#######################################################################################################################
+
+#
+# Enable cockpit
+#
+
+osm_use_cockpit=true
+
+#
+# Set cockpit plugins
+#
+
+osm_cockpit_plugins=['cockpit-kubernetes']
 
 ########################################################################################################################
 # Topology of the environment
