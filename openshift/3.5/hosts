@@ -143,10 +143,12 @@ openshift_master_cluster_hostname=lb.openshift35.local
 
 #
 # Overrides the public host name for the cluster, which defaults to the host name of the master. This is how the
-# master (or masters) are accessed externally if they are load balanced.
+# master (or masters) are accessed externally if they are load balanced. This name must be a valid host name and
+# resolve correctly to a publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift
+# cluster.
 #
 #openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
-openshift_master_cluster_public_hostname=master.openshift35.NOMBP2
+openshift_master_cluster_public_hostname=master.openshift35.external
 
 #
 # In case of the "pacemaker" method, the environment must be able to self provision the configured VIP and
@@ -157,11 +159,12 @@ openshift_master_cluster_public_hostname=master.openshift35.NOMBP2
 #openshift_master_cluster_public_vip=192.168.133.25
 
 #
-# The default subdomain to use for exposed routes.
+# The default subdomain to use for exposed routes. This name must be a valid wildcard DNS subdomain and resolve
+# correctly to a publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift cluster.
 #
 
 #openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
-openshift_master_default_subdomain=apps.openshift35.NOMBP2
+openshift_master_default_subdomain=apps.openshift35.external
 
 #
 # NOTE: 'openshift_master_named_certificates' is cached on masters and is an additive fact, meaning that each run with
@@ -446,16 +449,18 @@ openshift_metrics_duration=1
 # Override metricsPublicURL in the master config for cluster metrics. Defaults to
 # https://hawkular-metrics.{{openshift_master_default_subdomain}}/hawkular/metrics. If you alter this variable, ensure
 # the host name is accessible via your router. Currently, you may only alter the hostname portion of the url, altering
-# the "/hawkular/metrics" path will break installation of metrics.
+# the "/hawkular/metrics" path will break installation of metrics.  This name must be a valid host name and
+# resolve correctly to an accessible IP address both 1) externally and 2) by the DNS serving the OpenShift
+# cluster.
 #
 
 #openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
-openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35.NOMBP2/hawkular/metrics
+openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35.external/hawkular/metrics
 
 #
 # The metrics URL propagates to master-config.yaml assetConfig.metricsPublicURL
 #
-#openshift_metrics_hawkular_hostname=hawkular-metrics.apps.openshift35.NOMBP2
+#openshift_metrics_hawkular_hostname=hawkular-metrics.openshift35.external
 
 ########################################################################################################################
 # Metrics/Cassandra
@@ -646,14 +651,15 @@ openshift_hosted_logging_deploy=true
 
 #
 # Configure loggingPublicURL in the master config for aggregate logging, defaults to
-# kibana.{{ openshift_master_default_subdomain }}
+# kibana.{{ openshift_master_default_subdomain }}. This name must be a valid host name and resolve correctly to a
+# publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift cluster.
 #
 
 #openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
-openshift_hosted_logging_hostname=kibana.openshift35.NOMBP2
+openshift_hosted_logging_hostname=kibana.openshift35.external
 
 #openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
-openshift_master_logging_public_url=https://kibana.openshift35.NOMBP2
+openshift_master_logging_public_url=https://kibana.openshift35.external
 
 #
 # Configure the number of elasticsearch nodes, unless you're using dynamic provisioning this value must be 1
