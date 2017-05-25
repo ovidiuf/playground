@@ -295,9 +295,37 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-subnet'
 
 #openshift_use_flannel=false
 
-#######################################################################################################################
+########################################################################################################################
+# DNS
+########################################################################################################################
+
+#
+# Configure dnsIP in the node config.
+#
+# This does not seem to be picked in 3.5, I needed to patch the Ansible installation logic to make it work.
+# See
+#
+
+openshift_dns_ip=172.23.0.3
+
+#
+# Configure dnsmasq for cluster dns, switch the host's local resolver to use dnsmasq and configure node's dnsIP to point
+# at the node's local dnsmasq instance. Defaults to True for Origin 1.2 and OSE 3.2. False for 1.1 / 3.1 installs, this
+# cannot be used with 1.0 and 3.0.
+#
+
+#openshift_use_dnsmasq=False
+
+#
+# Define an additional dnsmasq.conf file to deploy to /etc/dnsmasq.d/openshift-ansible.conf. This is useful for POC
+# environments where DNS may not actually be available yet or to set options like 'strict-order' to alter dnsmasq
+# configuration.
+
+#openshift_node_dnsmasq_additional_config_file=/home/bob/ose-dnsmasq.conf
+
+########################################################################################################################
 # Identity provider configuration.
-#######################################################################################################################
+########################################################################################################################
 
 #
 # By default 'openshift_master_identity_providers' is "Deny All".
@@ -1366,17 +1394,6 @@ openshift_hosted_registry_storage_volume_size=10Gi
 
 #openshift_node_proxy_mode=iptables
 
-#
-# Configure dnsIP in the node config.
-#
-# When running a private DNS that resolves environment names and not setting this, /etc/resolv.conf is modified as
-# follows:
-# nameserver updated by /etc/NetworkManager/dispatcher.d/99-origin-dns.sh
-# nameserver 10.0.3.15
-#
-
-#openshift_dns_ip=172.30.0.1
-openshift_dns_ip=172.23.0.3
 
 #
 # Configure node kubelet arguments. pods-per-core is valid in OpenShift Origin 1.3 or OpenShift Container Platform 3.3
@@ -1390,21 +1407,6 @@ openshift_dns_ip=172.23.0.3
 #
 
 #logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n/var/log/messages\n/var/log/secure\n/var/log/spooler\n", "options": ["daily", "rotate 7", "compress", "sharedscripts", "missingok"], "scripts": {"postrotate": "/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true"}}]
-
-#
-# Configure dnsmasq for cluster dns, switch the host's local resolver to use dnsmasq and configure node's dnsIP to point
-# at the node's local dnsmasq instance. Defaults to True for Origin 1.2 and OSE 3.2. False for 1.1 / 3.1 installs, this
-# cannot be used with 1.0 and 3.0.
-#
-
-#openshift_use_dnsmasq=False
-
-#
-# Define an additional dnsmasq.conf file to deploy to /etc/dnsmasq.d/openshift-ansible.conf. This is useful for POC
-# environments where DNS may not actually be available yet or to set options like 'strict-order' to alter dnsmasq
-# configuration.
-
-#openshift_node_dnsmasq_additional_config_file=/home/bob/ose-dnsmasq.conf
 
 #
 # masterConfig.volumeConfig.dynamicProvisioningEnabled, configurable as of 1.2/3.2, enabled by default
