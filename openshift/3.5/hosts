@@ -1516,19 +1516,19 @@ master3.openshift35.local
 #
 # master
 #
-master1.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20'}"
-master2.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20'}"
-master3.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'rdu20'}"
+master1.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
+master2.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
+master3.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
 #
 # infrastructure nodes
 #
-infranode1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra'}"
-infranode2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra'}"
+infranode1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'infra'}"
+infranode2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'infra'}"
 #
 # regular nodes
 #
-node1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'app'}"
-node2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'app'}"
+node1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'app'}"
+node2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'app'}"
 
 #
 # NOTE: Containerized load balancer hosts are not yet supported, if using a global containerized=true host variable we
