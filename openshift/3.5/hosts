@@ -499,10 +499,10 @@ openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35.externa
 #
 # Memory request and limit for the Cassandra database pod. Default is 2Gi. which limits Cassandra to 2 GB of memory.
 # This value could be further adjusted by the start script based on available memory of the node on which it is
-# scheduled.
+# scheduled. The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #
-openshift_metrics_cassandra_request_memory=500MBi
-openshift_metrics_cassandra_limits_memory=500MBi
+openshift_metrics_cassandra_request_memory=500Mi
+openshift_metrics_cassandra_limits_memory=500Mi
 
 #
 # The CPU request and limit for the Cassandra pod. For example, a value of 4000m (4000 millicores) would limit
@@ -554,6 +554,7 @@ openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_metrics_storage_nfs_directory=/storage
 openshift_hosted_metrics_storage_volume_name=metrics
 openshift_hosted_metrics_storage_nfs_options='*(rw,root_squash)'
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 openshift_hosted_metrics_storage_volume_size=10Gi
 
 #
@@ -566,6 +567,7 @@ openshift_hosted_metrics_storage_volume_size=10Gi
 #openshift_hosted_metrics_storage_host=nfs.example.com
 #openshift_hosted_metrics_storage_nfs_directory=/exports
 #openshift_hosted_metrics_storage_volume_name=metrics
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #openshift_hosted_metrics_storage_volume_size=10Gi
 
 #
@@ -604,10 +606,11 @@ openshift_hosted_metrics_storage_volume_size=10Gi
 ########################################################################################################################
 
 #
-# Requests and limits for Hawkular memory. A value of 2Gi would request 2 GB of memory.
+# Requests and limits for Hawkular memory. A value of 2Gi would request 2 GB of memory. The quantity must match the
+# regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #
-openshift_metrics_hawkular_request_memory=500MBi
-openshift_metrics_hawkular_limits_memory=500MBi
+openshift_metrics_hawkular_request_memory=500Mi
+openshift_metrics_hawkular_limits_memory=500Mi
 
 #
 # Requests and limits for Hawkular CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
@@ -648,10 +651,11 @@ openshift_metrics_hawkular_replicas=1
 ########################################################################################################################
 
 #
-# Requests and limits for Heapster memory. A value of 2Gi would request 2 GB of memory.
+# Requests and limits for Heapster memory. A value of 2Gi would request 2 GB of memory.The quantity must match the
+# regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #
-openshift_metrics_heapster_request_memory=500MBi
-openshift_metrics_heapster_limits_memory=500MBi
+openshift_metrics_heapster_request_memory=500Mi
+openshift_metrics_heapster_limits_memory=500Mi
 
 #
 # Requests and limits for Heapster CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
@@ -722,6 +726,7 @@ openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_logging_storage_nfs_directory=/storage
 openshift_hosted_logging_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_logging_storage_volume_name=logging
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 openshift_hosted_logging_storage_volume_size=10Gi
 
 #
@@ -734,6 +739,7 @@ openshift_hosted_logging_storage_volume_size=10Gi
 #openshift_hosted_logging_storage_host=nfs.example.com
 #openshift_hosted_logging_storage_nfs_directory=/exports
 #openshift_hosted_logging_storage_volume_name=logging
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #openshift_hosted_logging_storage_volume_size=10Gi
 
 #
@@ -891,6 +897,7 @@ openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
 openshift_hosted_registry_storage_nfs_directory=/storage
 openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_registry_storage_volume_name=registry
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 openshift_hosted_registry_storage_volume_size=10Gi
 
 #
