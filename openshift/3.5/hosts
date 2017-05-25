@@ -638,16 +638,39 @@ openshift_metrics_heapster_limits_cpu=500m
 ########################################################################################################################
 
 #
-# Currently logging deployment is disabled by default, enable it by setting 'openshift_hosted_logging_deploy'
+# Currently logging deployment is disabled by default, enable it by setting openshift_hosted_logging_deploy=true
 #
 
 openshift_hosted_logging_deploy=true
 
 #
+# Configure loggingPublicURL in the master config for aggregate logging, defaults to
+# kibana.{{ openshift_master_default_subdomain }}
+#
+
+#openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
+openshift_hosted_logging_hostname=kibana.openshift35.NOMBP2
+
+#openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
+openshift_master_logging_public_url=https://kibana.openshift35.NOMBP2
+
+#
+# Configure the number of elasticsearch nodes, unless you're using dynamic provisioning this value must be 1
+#
+
+openshift_hosted_logging_elasticsearch_cluster_size=1
+
+#
+# Configure the prefix and version for the component images
+#
+
+#openshift_hosted_logging_deployer_prefix=registry.example.com:8888/openshift3/
+#openshift_hosted_logging_deployer_version=3.5.0
+
+#
 # Logging Storage Options. If 'openshift_hosted_logging_storage_kind' is unset then then cluster logging data is stored
 # in an EmptyDir volume, which will be deleted when the Elasticsearch pod terminates.
 #
-
 
 #
 # Option A - NFS Host Group. An NFS volume will be created with path "nfs_directory/volume_name" on the host within the
@@ -659,7 +682,7 @@ openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
 #
 # The exported file system will be created on the NFS server
 #
-openshift_hosted_logging_storage_nfs_directory=/nfs
+openshift_hosted_logging_storage_nfs_directory=/storage
 openshift_hosted_logging_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_logging_storage_volume_name=logging
 openshift_hosted_logging_storage_volume_size=10Gi
@@ -691,72 +714,43 @@ openshift_hosted_logging_storage_volume_size=10Gi
 # roles/openshift_logging/README.md
 #
 
-#
-# Configure loggingPublicURL in the master config for aggregate logging, defaults to
-# kibana.{{ openshift_master_default_subdomain }}
-#
-
-#openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
-openshift_hosted_logging_hostname=kibana.apps.openshift35.NOMBP2
-
-#openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
-openshift_master_logging_public_url=https://kibana.apps.openshift35.NOMBP2
-
-#
-# Configure the number of elastic search nodes, unless you're using dynamic provisioning this value must be 1
-#
-
-openshift_hosted_logging_elasticsearch_cluster_size=1
-
-#
-# Configure the prefix and version for the component images
-#
-
-#openshift_hosted_logging_deployer_prefix=registry.example.com:8888/openshift3/
-#openshift_hosted_logging_deployer_version=3.5.0
-
 ########################################################################################################################
 # Router Options
 ########################################################################################################################
 
 #
 # An OpenShift router will be created during install if there are nodes present with labels matching the default
-# router selector "region=infra". Set openshift_node_labels per node as needed in order to label nodes.
+# router selector "env=infra". Set openshift_node_labels per node as needed in order to label nodes.
 #
 # Example:
 # [nodes]
-# node.example.com openshift_node_labels="{'region': 'infra'}"
+# node.example.com openshift_node_labels="{'env': 'infra'}"
 #
 # The router selector (the labels nodes need to expose for a router to be created may be changed with
 # 'openshift_hosted_router_selector'. The default value is 'region=infra'
 #
-
 openshift_hosted_router_selector='env=infra'
 
 #
 # Router replicas. Unless specified, Ansible will calculate the replica count based on the number of nodes matching the
 # openshift router selector.
 #
-
-openshift_hosted_router_replicas=2
+openshift_hosted_router_replicas=1
 
 #
 # Router force subdomain. A router path format to force on all routes used by this router (will ignore the route host
 # value)
 #
-
 #openshift_hosted_router_force_subdomain='${name}-${namespace}.apps.example.com'
 
 #
 # Router certificate. Provide local certificate paths which will be configured as the router's default certificate.
 #
-
 #openshift_hosted_router_certificate={"certfile": "/path/to/router.crt", "keyfile": "/path/to/router.key", "cafile": "/path/to/router-ca.crt"}
 
 #
 # Disable management of the OpenShift Router
 #
-
 #openshift_hosted_manage_router=false
 
 #
@@ -810,11 +804,11 @@ openshift_hosted_router_replicas=2
 
 #
 # An OpenShift registry will be created during install if there are nodes present with labels matching the default
-# registry selector, "region=infra". Set openshift_node_labels per node as needed in order to label nodes.
+# registry selector, "env=infra". Set openshift_node_labels per node as needed in order to label nodes.
 #
 # Example:
 # [nodes]
-# node.example.com openshift_node_labels="{'region': 'infra'}"
+# node.example.com openshift_node_labels="{'env': 'infra'}"
 #
 
 #
@@ -823,13 +817,14 @@ openshift_hosted_router_replicas=2
 #
 
 openshift_hosted_registry_selector='env=infra'
+openshift_registry_selector='env=infra'
 
 #
 # Registry replicas. Unless specified, openshift-ansible will calculate the replica count based on the number of nodes
 # matching the openshift registry selector.
 #
 
-openshift_hosted_registry_replicas=2
+openshift_hosted_registry_replicas=1
 
 #
 # Validity of the auto-generated certificate in days (optional)
@@ -856,7 +851,7 @@ openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
 #
 # The exported file system will be created on the NFS server
 #
-openshift_hosted_registry_storage_nfs_directory=/nfs
+openshift_hosted_registry_storage_nfs_directory=/storage
 openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_registry_storage_volume_name=registry
 openshift_hosted_registry_storage_volume_size=10Gi
@@ -1144,9 +1139,24 @@ openshift_hosted_registry_storage_volume_size=10Gi
 #openshift_cloudprovider_kind=gce
 
 ########################################################################################################################
-# Miscellaneous
+# Project Configuration
 ########################################################################################################################
 
+#osm_project_request_message=''
+#osm_project_request_template=''
+#osm_mcs_allocator_range='s0:/2'
+#osm_mcs_labels_per_project=5
+#osm_uid_allocator_range='1000000000-1999999999/10000'
+
+#
+# Configure additional projects
+#
+
+#openshift_additional_projects={'my-project': {'default_node_selector': 'label=value'}}
+
+########################################################################################################################
+# Miscellaneous
+########################################################################################################################
 
 #
 # Ansible will wait indefinitely for your input when it detects that the value of openshift_hostname resolves to an IP
@@ -1242,23 +1252,6 @@ openshift_hosted_registry_storage_volume_size=10Gi
 #
 
 #openshift_additional_repos=[{'id': 'ose-devel', 'name': 'ose-devel', 'baseurl': 'http://example.com/puddle/build/AtomicOpenShift/3.1/latest/RH7-RHOSE-3.0/$basearch/os', 'enabled': 1, 'gpgcheck': 0}]
-
-
-#
-# Project Configuration
-#
-
-#osm_project_request_message=''
-#osm_project_request_template=''
-#osm_mcs_allocator_range='s0:/2'
-#osm_mcs_labels_per_project=5
-#osm_uid_allocator_range='1000000000-1999999999/10000'
-
-#
-# Configure additional projects
-#
-
-#openshift_additional_projects={'my-project': {'default_node_selector': 'label=value'}}
 
 #
 # Override the default controller lease ttl
@@ -1529,8 +1522,8 @@ master3.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_s
 #
 # infrastructure nodes
 #
-infranode1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra', 'region':'infra'}"
-infranode2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra', 'region':'infra'}"
+infranode1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra'}"
+infranode2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'rdu20', 'env':'infra'}"
 #
 # regular nodes
 #
