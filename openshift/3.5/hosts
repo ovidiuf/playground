@@ -188,10 +188,11 @@ openshift_master_default_subdomain=apps.openshift35.NOMBP2
 
 #
 # Configure node IP in the node config. This is needed in cases where node traffic is desired to go over an interface
-# other than the default network interface.
+# other than the default network interface. If this attribute is set to true, then each node declaration must contain
+# an 'openshift_ip' host variable configured with the IP address of the interface to use
 #
 
-#openshift_set_node_ip=true
+openshift_set_node_ip=true
 
 #
 # Force setting of system hostname when configuring OpenShift. This works around issues related to installations that
@@ -1516,29 +1517,45 @@ master3.openshift35.local
 #
 # master
 #
-master1.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
-master2.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
-master3.openshift35.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+master1.openshift35.local openshift_ip=172.23.0.4 openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
+master2.openshift35.local openshift_ip=172.23.0.5 openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
+master3.openshift35.local openshift_ip=172.23.0.6 openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'hadron'}"
 #
 # infrastructure nodes
 #
-infranode1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'infra'}"
-infranode2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'infra'}"
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+infranode1.openshift35.local openshift_ip=172.23.0.11 openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'infra'}"
+infranode2.openshift35.local openshift_ip=172.23.0.12 openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'infra'}"
 #
 # regular nodes
 #
-node1.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'app'}"
-node2.openshift35.local openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'app'}"
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+node1.openshift35.local openshift_ip=172.23.0.9 openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'app'}"
+node2.openshift35.local openshift_ip=172.23.0.10 openshift_node_labels="{'logging':'true', 'cluster':'hadron', 'env':'app'}"
 
 #
 # NOTE: Containerized load balancer hosts are not yet supported, if using a global containerized=true host variable we
 # must set to false.
 #
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
 [lb]
-lb.openshift35.local containerized=false
+lb.openshift35.local openshift_ip=172.23.0.7 containerized=false
 
+#
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
 [nfs]
-support.openshift35.local ansible_ssh_user=ansible
+support.openshift35.local openshift_ip=172.23.0.8 ansible_ssh_user=ansible
 
 
 
