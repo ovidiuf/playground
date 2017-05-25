@@ -302,8 +302,10 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-subnet'
 #
 # Configure dnsIP in the node config.
 #
-# This does not seem to be picked in 3.5, I needed to patch the Ansible installation logic to make it work.
-# See
+# This does not seem to be picked up in 3.5, I needed to patch the Ansible installation logic to make it work.
+# See Patch B6sr35BT4:
+# /usr/share/ansible/openshift-ansible/roles/openshift_node_dnsmasq/files/networkmanager/99-origin-dns.sh
+# and /usr/share/ansible/openshift-ansible/roles/openshift_node_dnsmasq/tasks/main.yml
 #
 
 openshift_dns_ip=172.23.0.3
