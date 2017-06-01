@@ -36,7 +36,8 @@ public class Main {
 
         // Util.hist(args);
 
-        FDAndLsofAnalysis.run(args);
+        QueueDepths.queueDepths(args);
+
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------

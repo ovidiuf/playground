@@ -78,6 +78,47 @@ public class Util {
         br.close();
     }
 
+    public static void queueDepths(String[] args) throws Exception {
+
+        String filename = args[0];
+
+        File f = new File(filename);
+
+        BufferedReader br = new BufferedReader(new FileReader(f));
+
+        String line;
+
+        Date current = null;
+        int count = 0;
+
+        while((line = br.readLine()) != null) {
+
+            Date d = INPUT_DATE_FORMAT.parse(line);
+
+            if (current == null) {
+
+                current = d;
+                count ++;
+            }
+            else if (current.equals(d)) {
+                count ++;
+            }
+            else if (current.compareTo(d) > 0) {
+
+                throw new Exception(current + " is after " + d);
+            }
+            else {
+
+                System.out.println(OUTPUT_DATE_FORMAT.format(current) + ", " + count);
+                current = d;
+                count = 1;
+            }
+        }
+
+        br.close();
+    }
+
+
 
     // Attributes ------------------------------------------------------------------------------------------------------
 
