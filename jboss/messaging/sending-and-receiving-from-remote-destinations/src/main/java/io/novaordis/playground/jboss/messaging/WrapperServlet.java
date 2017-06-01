@@ -51,6 +51,8 @@ public class WrapperServlet extends HttpServlet {
     public static final String DESTINATION_JNDI_NAME = "jms/queue/remote-playground";
     // public static final String DESTINATION_JNDI_NAME = "jms/queue/remote-inbound";
 
+    public static final String CONNECTION_FACTORY_JNDI_NAME = "java:/RemoteJmsXA";
+
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -123,7 +125,7 @@ public class WrapperServlet extends HttpServlet {
 
             log.info("queue: " + queue);
 
-            ConnectionFactory cf = (ConnectionFactory)ic.lookup("java:/RemoteJmsXA");
+            ConnectionFactory cf = (ConnectionFactory)ic.lookup(CONNECTION_FACTORY_JNDI_NAME);
 
             log.info("connection factory: " + cf);
 
@@ -189,7 +191,7 @@ public class WrapperServlet extends HttpServlet {
 
             log.info("queue: " + queue);
 
-            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup("java:/RemoteJmsXA");
+            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup(CONNECTION_FACTORY_JNDI_NAME);
 
             log.info("connection factory: " + cf);
 
@@ -242,7 +244,7 @@ public class WrapperServlet extends HttpServlet {
 
             log.info("queue: " + queue);
 
-            ConnectionFactory cf = (ConnectionFactory)ic.lookup("java:/RemoteJmsXA");
+            ConnectionFactory cf = (ConnectionFactory)ic.lookup(CONNECTION_FACTORY_JNDI_NAME);
 
             log.info("connection factory: " + cf);
 
@@ -306,7 +308,7 @@ public class WrapperServlet extends HttpServlet {
 
             log.info("queue: " + queue);
 
-            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup("java:/RemoteJmsXA");
+            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup(CONNECTION_FACTORY_JNDI_NAME);
 
             log.info("connection factory: " + cf);
 
