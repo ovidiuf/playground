@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="pooled-connection-factory-example:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="invoker.war">
-      <element id="artifact" artifact-name="pooled-connection-factory-example:war exploded" />
-    </root>
-  </artifact>
-</component>
