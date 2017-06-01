@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -81,7 +82,9 @@ public class WrapperServlet extends HttpServlet {
         if (uri.startsWith("/wrapper-servlet/send")) {
 
             //send();
-            send2();
+            //send2();
+            //sendMultipleMessagesOnDifferentConnectionsOnTheSameThread();
+            sendMultipleMessagesOnDifferentConnectionsOnDifferentThreads();
         }
         else if (uri.startsWith("/wrapper-servlet/receive")) {
 
@@ -228,6 +231,128 @@ public class WrapperServlet extends HttpServlet {
                     log.error("failed to close JMS connection", e);
                 }
             }
+        }
+    }
+
+    private void sendMultipleMessagesOnDifferentConnectionsOnTheSameThread() throws ServletException {
+
+        Connection c = null;
+
+        int messageCount = 100;
+
+        try {
+
+            Queue queue = (Queue)externalContext.lookup(DESTINATION_JNDI_NAME);
+
+            log.info("queue: " + queue);
+
+            ConnectionFactory cf = (ConnectionFactory)localInitialContext.lookup(CONNECTION_FACTORY_JNDI_NAME);
+
+            log.info("connection factory: " + cf);
+
+            for(int i = 0; i < messageCount; i ++) {
+
+                c = cf.createConnection();
+
+                Session s = c.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+                MessageProducer p = s.createProducer(queue);
+
+                String text = "test " + UUID.randomUUID().toString();
+
+                TextMessage tm = s.createTextMessage(text);
+
+                c.start();
+
+                p.send(tm);
+
+                log.info("sent message \"" + text + "\"");
+
+                c.close();
+
+                Thread.sleep(100L);
+            }
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
+        }
+        finally {
+
+            if (c != null) {
+
+                try {
+
+                    c.close();
+                }
+                catch(Exception e) {
+
+                    log.error("failed to close JMS connection", e);
+                }
+            }
+        }
+    }
+
+    private void sendMultipleMessagesOnDifferentConnectionsOnDifferentThreads() throws ServletException {
+
+        int messageCount = 100;
+
+        final CountDownLatch latch = new CountDownLatch(3);
+
+        try {
+
+            Queue queue = (Queue) externalContext.lookup(DESTINATION_JNDI_NAME);
+
+            log.info("queue: " + queue);
+
+            ConnectionFactory cf = (ConnectionFactory) localInitialContext.lookup(CONNECTION_FACTORY_JNDI_NAME);
+
+            log.info("connection factory: " + cf);
+
+            for (int i = 0; i < messageCount; i++) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+
+                            Connection c = cf.createConnection();
+
+                            Session s = c.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+                            MessageProducer p = s.createProducer(queue);
+
+                            String text = "test " + UUID.randomUUID().toString();
+
+                            TextMessage tm = s.createTextMessage(text);
+
+                            c.start();
+
+                            p.send(tm);
+
+                            log.info("sent message \"" + text + "\" with connection " + c + " on thread " + Thread.currentThread().getName() );
+
+                            //
+                            // wait until the other threads reached the same point - this way we are sure we are using
+                            // connections in parallel
+                            //
+                            latch.countDown();
+                            latch.await();
+
+                            c.close();
+                        }
+                        catch (Exception e) {
+
+                            throw new IllegalArgumentException(e);
+                        }
+                    }
+                }, "Sending Thread #" + i).start();
+            }
+        }
+        catch(Exception e) {
+
+            throw new ServletException(e);
         }
     }
 
