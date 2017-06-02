@@ -1,0 +1,1577 @@
+#@IgnoreInspection BashAddShebang
+#
+# Example of an Ansible inventory file used to build an OpenShift 3.5 minimal environment in Amazon AWS/VirtualBox local
+# environment. This type of inventory file is referred to as "bring your own" (byo) host inventory. Pre-requisites must
+# be completed before running the Ansible installation process.
+#
+# More details:
+#
+#
+# https://kb.novaordis.com/index.php/OpenShift_3.5_Installation
+# https://docs.openshift.com/container-platform/3.5/install_config/index.html
+#
+# Original inventory file: https://github.com/openshift/openshift-ansible/blob/master/inventory/byo/hosts.ose.example
+#
+
+#
+# Cluster variables - variables common for all environment hosts
+#
+
+[OSEv3:vars]
+
+#######################################################################################################################
+# Ansible Configuration
+#######################################################################################################################
+
+timeout=60
+
+#
+# If 'ansible_ssh_user' is not root, ansible_become must be set to true and the user must be configured for passwordless
+# sudo
+
+ansible_become=yes
+
+#
+# The ssh user used by Ansible to connect to hosts. This user should allow ssh based authentication without requiring a
+# password, and also it should allow passwordless sudo to root. If using ssh key based authentication, then the key
+# should be managed by an ssh agent. Also see 'ansible_become'
+#
+
+#ansible_ssh_user=root
+#ansible_ssh_user=ec2-user
+ansible_ssh_user=ansible
+
+#
+# Describes which INFO messages are logged to the systemd-journald.service. Set one of the following:
+#
+#  0 to log errors and warnings only
+#
+#  2 to log normal information (default)
+#
+#  4 to log debugging-level information
+#
+#  6 to log API-level (request/response) debugging information
+#
+#  8 to log body-level API debugging information
+#
+
+debug_level=2
+
+#
+# If set to true, containerized OpenShift services (instead of RPM-based) are run on all nodes. The default is "false"
+# which means the default RPM method is used. RHEL Atomic Host requires the containerized method, which is automatically
+# selected for you based on the detection of the /run/ostree-booted file. Since 3.1.1.
+#
+
+containerized=false
+
+#
+# Deployment type ("origin" or "openshift-enterprise")
+#
+# https://docs.openshift.com/container-platform/3.5/install_config/install/advanced_install.html#advanced-install-deployment-types
+#
+
+deployment_type=openshift-enterprise
+
+#######################################################################################################################
+# Version verification
+#######################################################################################################################
+
+#
+# Specify the generic release of OpenShift to install. This is used mainly just during installation, after which we
+# rely on the version running on the first master. Works best for containerized installs where we can usually
+# use this to lookup the latest exact version of the container images, which is the tag actually used to configure
+# the cluster. For RPM installations we just verify the version detected in your configured repositories matches this
+# release.
+#
+
+openshift_release=v3.5
+
+#
+# Specify an exact container image tag to install or configure.
+#
+# WARNING: This value will be used for all hosts in containerized environments, even those that have another version
+# installed. This could potentially trigger an upgrade and downtime, so be careful with modifying this value after
+# the cluster is set up.
+#
+
+openshift_image_tag=v3.5
+
+#######################################################################################################################
+# Selectors
+#######################################################################################################################
+
+#
+# Override the node selector that projects will use by default when placing pods. Example:
+#
+
+osm_default_node_selector='env=app'
+
+#######################################################################################################################
+# Master Configuration
+#######################################################################################################################
+
+#
+# Configure master API and console ports.
+#
+
+openshift_master_api_port=443
+openshift_master_console_port=443
+
+#######################################################################################################################
+# Master HA Configuration
+#######################################################################################################################
+
+#
+# The HA method when deploying multiple masters. Possible values "native" or "pacemaker".
+#
+# The "native" method implies a load balancer. If no "lb" group is defined, the installer assumes that a load balancer
+# has been independently deployed and pre-configured. If a host is defined in the "lb" section of the inventory file,
+# Ansible installs and configures HAProxy automatically on that host. For this HA method,
+# 'openshift_master_cluster_hostname' must resolve to the internal hostname of the load balancer or to one or all of
+# internal hostnames of the masters defined in the inventory if no load balancer is present.
+#
+
+#openshift_master_cluster_method=native
+
+#
+# Overrides the host name for the cluster, which defaults to the host name of the master. For the "native" method,
+# this must be set to load balancer or to one or all of the masters, if no load balancer is present.
+#
+
+#openshift_master_cluster_hostname=lb.openshift35.local
+
+#
+# Overrides the public host name for the cluster, which defaults to the host name of the master. This is how the
+# master (or masters) are accessed externally if they are load balanced. This name must be a valid host name and
+# resolve correctly to a publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift
+# cluster.
+#
+#openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
+#openshift_master_cluster_public_hostname=master.openshift35.external
+
+#
+# In case of the "pacemaker" method, the environment must be able to self provision the configured VIP and
+# 'openshift_master_cluster_hostname' must resolve to the configured VIP.
+#
+#openshift_master_cluster_password=openshift_cluster
+#openshift_master_cluster_vip=192.168.133.25
+#openshift_master_cluster_public_vip=192.168.133.25
+
+#
+# The default subdomain to use for exposed routes. This name must be a valid wildcard DNS subdomain and resolve
+# correctly to a publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift cluster.
+#
+
+#openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
+openshift_master_default_subdomain=apps.openshift35min.external
+
+#
+# NOTE: 'openshift_master_named_certificates' is cached on masters and is an additive fact, meaning that each run with
+# a different set of certificates will add the newly provided certificates to the cached set of certificates.
+# An optional CA may be specified for each named certificate. CAs will be added to the OpenShift CA bundle which allows
+# for the named certificate to be served for internal cluster communication. If you would like
+# 'openshift_master_named_certificates' to be overwritten with the provided value, specify
+# 'openshift_master_overwrite_named_certificates'.
+#
+
+#openshift_master_overwrite_named_certificates=true
+
+#
+# Provide local certificate paths which will be deployed to masters
+#
+
+#openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "cafile": "/path/to/custom-ca1.crt"}]
+
+#
+# Detected names may be overridden by specifying the "names" key
+#
+
+#openshift_master_named_certificates=[{"certfile": "/path/to/custom1.crt", "keyfile": "/path/to/custom1.key", "names": ["public-master-host.com"], "cafile": "/path/to/custom-ca1.crt"}]
+
+#
+# Configure node IP in the node config. This is needed in cases where node traffic is desired to go over an interface
+# other than the default network interface. If this attribute is set to true, then each node declaration must contain
+# an 'openshift_ip' host variable configured with the IP address of the interface to use
+#
+
+#openshift_set_node_ip=true
+
+#
+# Force setting of system hostname when configuring OpenShift. This works around issues related to installations that
+# do not have valid dns entries for the interfaces attached to the host.
+#
+
+#openshift_set_hostname=true
+
+#
+# This variable enables rolling restarts of HA masters when running the upgrade playbook directly. It defaults to
+# 'services', which allows rolling restarts of services on the masters. It can instead be set to 'system', which enables
+# rolling, full system restarts and also works for single master clusters.
+#
+
+#openshift_rolling_restart_mode=services
+
+#
+# Enables Network Time Protocol (NTP) to prevent masters and nodes in the cluster from going out of sync.
+# It also configures usage of openshift_clock role. Must be enabled on masters to ensure proper failover.
+#
+openshift_clock_enabled=true
+
+#######################################################################################################################
+# SDN
+#######################################################################################################################
+
+#
+# Configures which OpenShift SDN plug-in to use for the pod network. Values: 'redhat/openshift-ovs-subnet' (default)
+# or 'redhat/openshift-ovs-multitenant'.
+#
+# More details https://docs.openshift.com/container-platform/3.5/install_config/configuring_sdn.html
+#
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-subnet'
+#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
+#
+# Disable the OpenShift SDN plugin
+#
+
+#openshift_use_openshift_sdn=false
+
+#
+# Configure SDN cluster network and kubernetes service CIDR blocks. This is the network from which pod IPs are assigned.
+# These network blocks should be private and must not conflict with existing network blocks in your infrastructure that
+# pods, nodes or the master may require access to. Defaults to 10.128.0.0/14. Cannot be arbitrarily re-configured after
+# deployment, although certain changes to it can be made in the SDN master configuration.
+# WARNING : Do not pick subnets that overlap with the default Docker bridge subnet of 172.17.0.0/16.  Your
+# installation will fail and/or your configuration change will cause the Pod SDN or Cluster SDN to fail.
+# WORKAROUND : If you must use an overlapping subnet, you can configure a non conflicting docker0 CIDR range by adding
+# '--bip=192.168.2.1/24' to DOCKER_NETWORK_OPTIONS environment variable located in /etc/sysconfig/docker-network.
+#
+# See https://kb.novaordis.com/index.php/OpenShift_Concepts#The_Cluster_Network
+#
+
+#osm_cluster_network_cidr=10.128.0.0/14
+
+#
+# Configure number of bits to allocate to each host’s subnet allocated for pod IPs by the SDN. Defaults to 9 which
+# means a /23 network on the host. For example, given the default 10.128.0.0/14 cluster network, this will allocate
+# 10.128.0.0/23, 10.128.2.0/23, 10.128.4.0/23, and so on. This cannot be re-configured after deployment.
+#
+
+#osm_host_subnet_length=9
+
+#
+# The service subnet.
+#
+# See https://kb.novaordis.com/index.php/OpenShift_Concepts#The_Services_Subnet
+#
+
+#openshift_master_portal_net='172.30.0.0/16'
+#openshift_portal_net=172.30.0.0/16
+
+#
+# ExternalIPNetworkCIDRs controls what values are acceptable for the service external IP field. If empty, no externalIP
+# may be set. It may contain a list of CIDRs which are checked for access. If a CIDR is prefixed with !, IPs in that
+# CIDR will be rejected. Rejections will be applied first, then the IP checked against one of the allowed CIDRs. You
+# should ensure this range does not overlap with your nodes, pods, or service CIDRs for security reasons.
+#
+
+#openshift_master_external_ip_network_cidrs=['0.0.0.0/0']
+
+#
+# IngressIPNetworkCIDR controls the range to assign ingress IPs from for services of type LoadBalancer on bare metal.
+# If empty, ingress IPs will not be assigned. It may contain a single CIDR that will be allocated from. For security
+# reasons, you should ensure that this range does not overlap with the CIDRs reserved for external IPs, nodes, pods, or
+# services.
+#
+
+#openshift_master_ingress_ip_network_cidr=172.46.0.0/16
+
+#
+# Enables flannel as an alternative networking layer instead of the default SDN. If enabling flannel, disable the
+# default SDN with the 'openshift_use_openshift_sdn variable'.
+#
+
+#openshift_use_flannel=false
+
+########################################################################################################################
+# DNS
+########################################################################################################################
+
+#
+# Configure dnsIP in the node config.
+#
+# This does not seem to be picked up in 3.5, I needed to patch the Ansible installation logic to make it work.
+# See Patch B6sr35BT4:
+# /usr/share/ansible/openshift-ansible/roles/openshift_node_dnsmasq/files/networkmanager/99-origin-dns.sh
+# and /usr/share/ansible/openshift-ansible/roles/openshift_node_dnsmasq/tasks/main.yml
+#
+
+openshift_dns_ip=172.16.153.3
+
+#
+# Configure dnsmasq for cluster dns, switch the host's local resolver to use dnsmasq and configure node's dnsIP to point
+# at the node's local dnsmasq instance. Defaults to True for Origin 1.2 and OSE 3.2. False for 1.1 / 3.1 installs, this
+# cannot be used with 1.0 and 3.0.
+#
+
+#openshift_use_dnsmasq=False
+
+#
+# Define an additional dnsmasq.conf file to deploy to /etc/dnsmasq.d/openshift-ansible.conf. This is useful for POC
+# environments where DNS may not actually be available yet or to set options like 'strict-order' to alter dnsmasq
+# configuration.
+
+#openshift_node_dnsmasq_additional_config_file=/home/bob/ose-dnsmasq.conf
+
+########################################################################################################################
+# Identity provider configuration.
+########################################################################################################################
+
+#
+# By default 'openshift_master_identity_providers' is "Deny All".
+# See https://docs.openshift.com/container-platform/3.5/install_config/install/advanced_install.html#advanced-install-custom-certificates
+#
+
+#
+# htpasswd identity provider
+#
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+
+#
+# Pre-defined htpasswd users:
+#
+
+#openshift_master_htpasswd_users={'user1': '<pre-hashed password>', 'user2': '<pre-hashed password>'}
+# or
+#openshift_master_htpasswd_file=<path to local pre-generated htpasswd file>. This should resolve to a file on the
+# host that drives the installation. The way this work is that the installation process copies the content of
+# 'openshift_master_htpasswd_file' from the installation server into the files specified by 'filename', above.
+#
+openshift_master_htpasswd_file=/etc/ansible/htpasswd.openshift.installation
+
+#
+# "Allow All" identity provider
+#
+
+#openshift_master_identity_providers=[{'name': 'allow_all', 'login': 'true', 'challenge': 'true', 'kind': 'AllowAllPasswordIdentityProvider'}]
+
+#
+# LDAP identity provider
+#
+
+#openshift_master_identity_providers=[{'name': 'my_ldap_provider', 'challenge': 'true', 'login': 'true', 'kind': 'LDAPPasswordIdentityProvider', 'attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']}, 'bindDN': '', 'bindPassword': '', 'ca': 'my-ldap-ca.crt', 'insecure': 'false', 'url': 'ldap://ldap.example.com:389/ou=users,dc=example,dc=com?uid'}]
+
+#
+# LDAP CA certificate configuration. Specify either the ASCII contents of the certificate or the path to the local file
+# that will be copied to the remote host. CA certificate contents will be copied to master systems and saved within
+# /etc/origin/master/ with a filename matching the "ca" key set within the LDAPPasswordIdentityProvider.
+#
+
+#openshift_master_ldap_ca=<ca text>
+# or
+#openshift_master_ldap_ca_file=<path to local ca file to use>
+
+#
+# OpenID identity provider
+#
+
+#openshift_master_identity_providers=[{"name": "openid_auth", "login": "true", "challenge": "false", "kind": "OpenIDIdentityProvider", "client_id": "my_client_id", "client_secret": "my_client_secret", "claims": {"id": ["sub"], "preferredUsername": ["preferred_username"], "name": ["name"], "email": ["email"]}, "urls": {"authorize": "https://myidp.example.com/oauth2/authorize", "token": "https://myidp.example.com/oauth2/token"}, "ca": "my-openid-ca-bundle.crt"}]
+
+#
+# OpenID CA certificate configuration. Specify either the ASCII contents of the certificate or the path to the local
+# file that will be copied to the remote host. CA certificate contents will be copied to master systems and saved
+# within /etc/origin/master/ with a filename matching the "ca" key set within the OpenIDIdentityProvider.
+#
+
+#openshift_master_openid_ca=<ca text>
+# or
+#openshift_master_openid_ca_file=<path to local ca file to use>
+
+#
+# Request header identity provider
+#
+
+#openshift_master_identity_providers=[{"name": "my_request_header_provider", "challenge": "true", "login": "true", "kind": "RequestHeaderIdentityProvider", "challengeURL": "https://www.example.com/challenging-proxy/oauth/authorize?${query}", "loginURL": "https://www.example.com/login-proxy/oauth/authorize?${query}", "clientCA": "my-request-header-ca.crt", "clientCommonNames": ["my-auth-proxy"], "headers": ["X-Remote-User", "SSO-User"], "emailHeaders": ["X-Remote-User-Email"], "nameHeaders": ["X-Remote-User-Display-Name"], "preferredUsernameHeaders": ["X-Remote-User-Login"]}]
+
+#
+# Request header CA certificate configuration. Specify either the ASCII contents of the certificate or the path to the
+# local file that will be copied to the remote host. CA certificate contents will be copied to master systems and saved
+# within /etc/origin/master/ with a filename matching the "clientCA" key set within the RequestHeaderIdentityProvider.
+#
+
+#openshift_master_request_header_ca=<ca text>
+# or
+#openshift_master_request_header_ca_file=<path to local ca file to use>
+
+#
+# Configure custom named certificates (SNI certificates). More more details, see:
+# https://docs.openshift.com/enterprise/latest/install_config/certificate_customization.html
+#
+
+########################################################################################################################
+# OAuth Session Options
+########################################################################################################################
+
+#
+# By default, Ansible populates a sessionSecretsFile with generated authentication and encryption secrets so that
+# sessions generated by one master can be decoded by the others. The default location is
+# /etc/origin/master/session-secrets.yaml, and this file will only be re-created if deleted on all masters.
+#
+
+#openshift_master_session_name=ssn
+#openshift_master_session_max_seconds=3600
+
+#
+# An authentication and encryption secret will be generated if secrets are not provided. If provided,
+# 'openshift_master_session_auth_secrets' and 'openshift_master_encryption_secrets' must be equal length.
+#
+# Signing secrets, used to authenticate sessions using HMAC. Recommended to use secrets with 32 or 64 bytes.
+#openshift_master_session_auth_secrets=['DONT+USE+THIS+SECRET+b4NV+pmZNSO']
+#
+# Encrypting secrets, used to encrypt sessions. Must be 16, 24, or 32 characters long, to select AES-128, AES-192, or
+# AES-256.
+#
+
+#openshift_master_session_encryption_secrets=['DONT+USE+THIS+SECRET+b4NV+pmZNSO']
+
+########################################################################################################################
+# Metrics. See: https://docs.openshift.com/enterprise/latest/install_config/cluster_metrics.html
+########################################################################################################################
+
+#
+# By default metrics are not automatically deployed, set this to enable them
+#
+openshift_hosted_metrics_deploy=true
+openshift_metrics_install_metrics=true
+
+#
+# Start the metrics cluster after deploying the components
+#
+openshift_metrics_start_cluster=true
+
+#
+# The name of the metrics project. Default is "openshift-infra"
+#
+# See https://kb.novaordis.com/index.php/OpenShift_Concepts#Metrics
+#
+#openshift_metrics_project=openshift-infra
+
+#
+# The time interval between two successive readings, in seconds. Defined as a number and time identifier: seconds (s),
+# minutes (m), hours (h). Default is 30 seconds.
+#
+openshift_metrics_resolution=1m
+
+#
+# The time, in seconds, to wait until Hawkular Metrics and Heapster start up before attempting a restart.
+#
+#openshift_metrics_startup_timeout=
+
+#
+# The number of days to store metrics before they are purged.
+#
+openshift_metrics_duration=1
+
+#
+# Override metricsPublicURL in the master config for cluster metrics. Defaults to
+# https://hawkular-metrics.{{openshift_master_default_subdomain}}/hawkular/metrics. If you alter this variable, ensure
+# the host name is accessible via your router. Currently, you may only alter the hostname portion of the url, altering
+# the "/hawkular/metrics" path will break installation of metrics.  This name must be a valid host name and
+# resolve correctly to an accessible IP address both 1) externally and 2) by the DNS serving the OpenShift
+# cluster.
+#
+
+#openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
+openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35min.external/hawkular/metrics
+
+#
+# The metrics URL propagates to master-config.yaml assetConfig.metricsPublicURL
+#
+#openshift_metrics_hawkular_hostname=hawkular-metrics.openshift35.external
+
+########################################################################################################################
+# Metrics/Cassandra
+########################################################################################################################
+
+#
+# Memory request and limit for the Cassandra database pod. Default is 2Gi. which limits Cassandra to 2 GB of memory.
+# This value could be further adjusted by the start script based on available memory of the node on which it is
+# scheduled. The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+#
+openshift_metrics_cassandra_request_memory=500Mi
+openshift_metrics_cassandra_limits_memory=500Mi
+
+#
+# The CPU request and limit for the Cassandra pod. For example, a value of 4000m (4000 millicores) would limit
+# Cassandra to 4 CPUs.
+#
+openshift_metrics_cassandra_limits_cpu=500m
+openshift_metrics_cassandra_request_cpu=500m
+
+#
+# The number of Cassandra nodes for the metrics stack. This value dictates the number of Cassandra replication
+# controllers.
+openshift_metrics_cassandra_replicas=1
+
+#
+# The prefix for the component images. For example, with openshift3/openshift-metrics-cassandra:3.5.0, set prefix
+# openshift/openshift-.
+#
+#openshift_metrics_image_prefix=
+
+#
+# The version for the component images. For example, with openshift3/openshift-metrics-cassandra:3.5.0, set version
+# as 3.5.0.
+#
+#openshift_metrics_image_version=3.5.0
+
+#
+# Metrics Storage Options. If 'openshift_hosted_metrics_storage_kind'/'openshift_metrics_cassandra_storage_type' is
+# unset then metrics will be stored in an EmptyDir volume and will be deleted when the cassandra pod terminates. To
+# force this behavior set openshift_metrics_cassandra_storage_type=emptydir. Other possible values values: "pv" for
+# persistent volumes, which need to be created before the installation, "dynamic" for dynamic persistent volumes and
+# "nfs". The NFS option currently support only one cassandra pod (set openshift_metrics_cassandra_replicas=1), which
+# is generally enough for up to 1000 pods. Additional volumes can be created manually after the fact and metrics scaled
+# per the docs.
+#
+
+#
+# Option A - NFS Host Group. An NFS volume will be created with path "nfs_directory/volume_name on the host within the
+# [nfs] host group. For example, the volume path using these options would be "/exports/metrics"
+#
+
+openshift_hosted_metrics_storage_kind=nfs
+openshift_metrics_cassandra_storage_type=nfs
+openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
+
+#
+# The storage directory specified below must exist on the NFS server and must be backed by a device with sufficient
+# storage. Ansible will configure the NFS server to export nfs_director/volume_name.
+#
+openshift_hosted_metrics_storage_nfs_directory=/nfs-storage
+openshift_hosted_metrics_storage_volume_name=metrics
+openshift_hosted_metrics_storage_nfs_options='*(rw,root_squash)'
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+openshift_hosted_metrics_storage_volume_size=10Gi
+
+#
+# Option B - External NFS Host. NFS volume must already exist with path "nfs_directory/volume_name" on the storage_host.
+# For example, the remote volume path using these options would be "nfs.example.com:/exports/metrics"
+#
+#openshift_hosted_metrics_storage_kind=nfs
+#openshift_metrics_cassandra_storage_type=nfs
+#openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
+#openshift_hosted_metrics_storage_host=nfs.example.com
+#openshift_hosted_metrics_storage_nfs_directory=/exports
+#openshift_hosted_metrics_storage_volume_name=metrics
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+#openshift_hosted_metrics_storage_volume_size=10Gi
+
+#
+# Option C - Dynamic -- If openshift supports dynamic volume provisioning for your cloud platform use this.
+#
+#openshift_hosted_metrics_storage_kind=dynamic
+#openshift_metrics_cassandra_storage_type=dynamic
+
+#
+# Option D - Persistent Volumes
+#
+#openshift_metrics_cassandra_storage_type=pv
+
+#
+# The persistent volume claim prefix created for Cassandra. A serial number is appended to the prefix starting from 1.
+#
+#openshift_metrics_cassandra_pvc_prefix=
+
+#
+# The persistent volume claim size for each of the Cassandra nodes.
+#
+#openshift_metrics_cassandra_cpvc_size=
+
+#
+# The supplemental storage group to use for Cassandra.
+#
+#openshift_metrics_cassandra_storage_group=
+
+#
+# The size of the persisted volume claim is to be used for metrics storage. Default is 10 GB.
+#
+#openshift_metrics_cassandra_pvc_size=10Gi
+
+########################################################################################################################
+# Metrics/Hawkular
+########################################################################################################################
+
+#
+# Requests and limits for Hawkular memory. A value of 2Gi would request 2 GB of memory. The quantity must match the
+# regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+#
+openshift_metrics_hawkular_request_memory=500Mi
+openshift_metrics_hawkular_limits_memory=500Mi
+
+#
+# Requests and limits for Hawkular CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
+#
+openshift_metrics_hawkular_request_cpu=500m
+openshift_metrics_hawkular_limits_cpu=500m
+
+#
+# A comma-separated list of CN to accept. By default, this is set to allow the OpenShift service proxy to connect.
+# Add system:master-proxy to the list when overriding in order to allow horizontal pod autoscaling to function properly.
+#
+#openshift_metrics_heapster_allowed_users=
+
+#
+# The number of replicas for Hawkular metrics.
+#
+openshift_metrics_hawkular_replicas=1
+
+#
+# An optional certificate authority (CA) file used to sign the Hawkular certificate.
+# See https://docs.openshift.com/container-platform/latest/install_config/cluster_metrics.html#metrics-using-secrets
+#
+#openshift_metrics_hawkular_ca=
+#
+# The certificate file used for re-encrypting the route to Hawkular metrics. The certificate must contain the host name
+# used by the route. If unspecified, the default router certificate is used.
+# See https://docs.openshift.com/container-platform/latest/install_config/cluster_metrics.html#metrics-using-secrets
+#
+#openshift_metrics_hawkular_cert=
+#
+# The key file used with the Hawkular certificate.
+# See https://docs.openshift.com/container-platform/latest/install_config/cluster_metrics.html#metrics-using-secrets
+#
+#openshift_metrics_hawkular_key=
+
+########################################################################################################################
+# Metrics/Heapster
+########################################################################################################################
+
+#
+# Requests and limits for Heapster memory. A value of 2Gi would request 2 GB of memory.The quantity must match the
+# regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+#
+openshift_metrics_heapster_request_memory=500Mi
+openshift_metrics_heapster_limits_memory=500Mi
+
+#
+# Requests and limits for Heapster CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
+#
+openshift_metrics_heapster_request_cpu=500m
+openshift_metrics_heapster_limits_cpu=500m
+
+#
+# Deploy only Heapster, without the Hawkular Metrics and Cassandra components.
+#
+#openshift_metrics_heapster_standalone=true
+
+#
+# Other Metrics Options -- Common items you may wish to reconfigure, for the complete list of options please see
+# roles/openshift_metrics/README.md
+#
+
+########################################################################################################################
+# Logging Configuration
+########################################################################################################################
+
+#
+# Currently logging deployment is disabled by default, enable it by setting openshift_hosted_logging_deploy=true
+#
+
+openshift_hosted_logging_deploy=true
+
+#
+# Configure loggingPublicURL in the master config for aggregate logging, defaults to
+# kibana.{{ openshift_master_default_subdomain }}. This name must be a valid host name and resolve correctly to a
+# publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift cluster.
+#
+
+#openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
+openshift_hosted_logging_hostname=kibana.openshift35min.external
+
+#openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
+openshift_master_logging_public_url=https://kibana.openshift35min.external
+
+#
+# Configure the number of elasticsearch nodes, unless you're using dynamic provisioning this value must be 1
+#
+
+openshift_hosted_logging_elasticsearch_cluster_size=1
+
+#
+# Configure the prefix and version for the component images
+#
+
+#openshift_hosted_logging_deployer_prefix=registry.example.com:8888/openshift3/
+#openshift_hosted_logging_deployer_version=3.5.0
+
+#
+# Logging Storage Options. If 'openshift_hosted_logging_storage_kind' is unset then then cluster logging data is stored
+# in an EmptyDir volume, which will be deleted when the Elasticsearch pod terminates.
+#
+
+#
+# Option A - NFS Host Group. An NFS volume will be created with path "nfs_directory/volume_name" on the host within the
+# [nfs] host group.  For example, the volume path using these options would be "/exports/logging"
+#
+
+openshift_hosted_logging_storage_kind=nfs
+openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
+#
+# The exported file system will be created on the NFS server
+#
+openshift_hosted_logging_storage_nfs_directory=/nfs-storage
+openshift_hosted_logging_storage_nfs_options='*(rw,root_squash)'
+openshift_hosted_logging_storage_volume_name=logging
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+openshift_hosted_logging_storage_volume_size=10Gi
+
+#
+# Option B - External NFS Host. NFS volume must already exist with path "nfs_directory/_volume_name" on the
+# storage_host. For example, the remote volume path using these options would be "nfs.example.com:/exports/logging"
+#
+
+#openshift_hosted_logging_storage_kind=nfs
+#openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
+#openshift_hosted_logging_storage_host=nfs.example.com
+#openshift_hosted_logging_storage_nfs_directory=/exports
+#openshift_hosted_logging_storage_volume_name=logging
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+#openshift_hosted_logging_storage_volume_size=10Gi
+
+#
+# Option C - Dynamic -- If openshift supports dynamic volume provisioning for your cloud platform use this.
+#
+
+#openshift_hosted_logging_storage_kind=dynamic
+
+#
+# Option D - none -- Logging will use EmptyDir volumes which are destroyed when pods are deleted
+#
+
+#
+# Other Logging Options -- Common items you may wish to reconfigure, for the complete list of options please see
+# roles/openshift_logging/README.md
+#
+
+########################################################################################################################
+# Router Options
+########################################################################################################################
+
+#
+# An OpenShift router will be created during install if there are nodes present with labels matching the default
+# router selector "env=infra". Set openshift_node_labels per node as needed in order to label nodes.
+#
+# Example:
+# [nodes]
+# node.example.com openshift_node_labels="{'env': 'infra'}"
+#
+# The router selector (the labels nodes need to expose for a router to be created may be changed with
+# 'openshift_hosted_router_selector'. The default value is 'region=infra'
+#
+openshift_hosted_router_selector='env=infra'
+
+#
+# Router replicas. Unless specified, Ansible will calculate the replica count based on the number of nodes matching the
+# openshift router selector.
+#
+openshift_hosted_router_replicas=1
+
+#
+# Router force subdomain. A router path format to force on all routes used by this router (will ignore the route host
+# value)
+#
+#openshift_hosted_router_force_subdomain='${name}-${namespace}.apps.example.com'
+
+#
+# Router certificate. Provide local certificate paths which will be configured as the router's default certificate.
+#
+#openshift_hosted_router_certificate={"certfile": "/path/to/router.crt", "keyfile": "/path/to/router.key", "cafile": "/path/to/router-ca.crt"}
+
+#
+# Disable management of the OpenShift Router
+#
+#openshift_hosted_manage_router=false
+
+#
+# Router sharding support has been added and can be achieved by supplying the correct data to the inventory. The
+# variable to house the data is 'openshift_hosted_routers' and is in the form of a list. If no data is passed then a
+# default router will be created.  There are multiple combinations of router sharding. The one described below supports
+# routers on separate nodes.
+
+#openshift_hosted_routers:
+#- name: router1
+#  stats_port: 1936
+#  ports:
+#  - 80:80
+#  - 443:443
+#  replicas: 1
+#  namespace: default
+#  serviceaccount: router
+#  selector: type=router1
+#  images: "openshift3/ose-${component}:${version}"
+#  edits: []
+#  certificates:
+#    certfile: /path/to/certificate/abc.crt
+#    keyfile: /path/to/certificate/abc.key
+#    cafile: /path/to/certificate/ca.crt
+#- name: router2
+#  stats_port: 1936
+#  ports:
+#  - 80:80
+#  - 443:443
+#  replicas: 1
+#  namespace: default
+#  serviceaccount: router
+#  selector: type=router2
+#  images: "openshift3/ose-${component}:${version}"
+#  certificates:
+#    certfile: /path/to/certificate/xyz.crt
+#    keyfile: /path/to/certificate/xyz.key
+#    cafile: /path/to/certificate/ca.crt
+#  edits:
+#  # ROUTE_LABELS sets the router to listen for routes
+#  # tagged with the provided values
+#  - key: spec.template.spec.containers[0].env
+#    value:
+#      name: ROUTE_LABELS
+#      value: "route=external"
+#    action: append
+
+########################################################################################################################
+# Internal Registry Configuration
+########################################################################################################################
+
+#
+# An OpenShift registry will be created during install if there are nodes present with labels matching the default
+# registry selector, "env=infra". Set openshift_node_labels per node as needed in order to label nodes.
+#
+# Example:
+# [nodes]
+# node.example.com openshift_node_labels="{'env': 'infra'}"
+#
+
+#
+# Registry selector.  Registry will only be created if nodes matching this label are present.
+# Default value: 'region=infra'
+#
+
+openshift_hosted_registry_selector='env=infra'
+openshift_registry_selector='env=infra'
+
+#
+# Registry replicas. Unless specified, openshift-ansible will calculate the replica count based on the number of nodes
+# matching the openshift registry selector.
+#
+
+openshift_hosted_registry_replicas=1
+
+#
+# Validity of the auto-generated certificate in days (optional)
+#
+
+#openshift_hosted_registry_cert_expire_days=730
+
+#
+# Disable management of the OpenShift Registry
+#
+
+#openshift_hosted_manage_registry=false
+
+#
+# Registry Storage Options
+#
+
+#
+# NFS Host Group. An NFS volume will be created with path "nfs_directory/volume_name" on the host within the [nfs]
+# host group.  For example, the volume path using these options would be "/exports/registry"
+
+openshift_hosted_registry_storage_kind=nfs
+openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
+#
+# The exported file system will be created on the NFS server
+#
+openshift_hosted_registry_storage_nfs_directory=/nfs-storage
+openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
+openshift_hosted_registry_storage_volume_name=registry
+# The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+openshift_hosted_registry_storage_volume_size=10Gi
+
+#
+# External NFS Host. NFS volume must already exist with path "nfs_directory/_volume_name" on the storage_host.
+# For example, the remote volume path using these options would be "nfs.example.com:/exports/registry"
+#
+
+#openshift_hosted_registry_storage_kind=nfs
+#openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
+#openshift_hosted_registry_storage_host=nfs.example.com
+#openshift_hosted_registry_storage_nfs_directory=/exports
+#openshift_hosted_registry_storage_volume_name=registry
+#openshift_hosted_registry_storage_volume_size=10Gi
+
+#
+# Openstack. Volume must already exist.
+#
+
+#openshift_hosted_registry_storage_kind=openstack
+#openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
+#openshift_hosted_registry_storage_openstack_filesystem=ext4
+#openshift_hosted_registry_storage_openstack_volumeID=3a650b4f-c8c5-4e0a-8ca5-eaee11f16c57
+#openshift_hosted_registry_storage_volume_size=10Gi
+
+#
+# AWS S3. S3 bucket must already exist.
+#
+
+#openshift_hosted_registry_storage_kind=object
+#openshift_hosted_registry_storage_provider=s3
+#openshift_hosted_registry_storage_s3_accesskey=aws_access_key_id
+#openshift_hosted_registry_storage_s3_secretkey=aws_secret_access_key
+#openshift_hosted_registry_storage_s3_bucket=bucket_name
+#openshift_hosted_registry_storage_s3_region=bucket_region
+#openshift_hosted_registry_storage_s3_chunksize=26214400
+#openshift_hosted_registry_storage_s3_rootdirectory=/registry
+#openshift_hosted_registry_pullthrough=true
+#openshift_hosted_registry_acceptschema2=true
+#openshift_hosted_registry_enforcequota=true
+
+#
+# Any S3 service (Minio, ExoScale, ...): Basically the same as above but with regionendpoint configured. S3 bucket must
+# already exist.
+#
+
+#openshift_hosted_registry_storage_kind=object
+#openshift_hosted_registry_storage_provider=s3
+#openshift_hosted_registry_storage_s3_accesskey=access_key_id
+#openshift_hosted_registry_storage_s3_secretkey=secret_access_key
+#openshift_hosted_registry_storage_s3_regionendpoint=https://myendpoint.example.com/
+#openshift_hosted_registry_storage_s3_bucket=bucket_name
+#openshift_hosted_registry_storage_s3_region=bucket_region
+#openshift_hosted_registry_storage_s3_chunksize=26214400
+#openshift_hosted_registry_storage_s3_rootdirectory=/registry
+#openshift_hosted_registry_pullthrough=true
+#openshift_hosted_registry_acceptschema2=true
+#openshift_hosted_registry_enforcequota=true
+
+#
+# Additional CloudFront Options. When using CloudFront all three of the followingg variables must be defined.
+#
+
+#openshift_hosted_registry_storage_s3_cloudfront_baseurl=https://myendpoint.cloudfront.net/
+#openshift_hosted_registry_storage_s3_cloudfront_privatekeyfile=/full/path/to/secret.pem
+#openshift_hosted_registry_storage_s3_cloudfront_keypairid=yourpairid
+
+#######################################################################################################################
+# Docker Configuration
+#######################################################################################################################
+
+#
+# Specify exact version of Docker to configure or upgrade to. Downgrades are not supported and will error out. Be
+# careful when upgrading docker from < 1.10 to > 1.10.
+#
+
+#docker_version="1.12.1"
+
+#
+# Add additional, insecure, and blocked registries to global docker configuration. For enterprise deployment types we
+# ensure that registry.access.redhat.com is included if you do not include it
+#
+
+#openshift_docker_additional_registries=registry.example.com
+#openshift_docker_insecure_registries=registry.example.com
+#openshift_docker_blocked_registries=registry.hacker.com
+
+#
+# Disable pushing to dockerhub
+#
+
+#openshift_docker_disable_push_dockerhub=True
+
+#
+# Use Docker inside a System Container. Note that this is a tech preview and should not be used to upgrade!
+# The following options for docker are ignored: 'docker_version', 'docker_upgrade'. The following options must not be
+# used: 'openshift_docker_options'
+#
+
+#openshift_docker_use_system_container=False
+
+#
+# Force the registry to use for the system container. By default the registry will be built off of the deployment type
+# and 'ansible_distribution'. Only use this option if you are sure you know what you are doing!
+#
+
+#openshift_docker_systemcontainer_image_registry_override="registry.example.com"
+
+#
+# Items added, as is, to end of /etc/sysconfig/docker OPTIONS
+# Default value: "--log-driver=journald"
+#
+
+#openshift_docker_options="-l warn --ipv6=false"
+
+#
+# Skip upgrading Docker during an OpenShift upgrade, leaves the current Docker version alone.
+#
+
+#docker_upgrade=False
+
+########################################################################################################################
+# Registry Configuration
+########################################################################################################################
+
+#
+# The default registry is "registry.access.redhat.com". If a different value is required, it can be configured with
+# 'oreg_url'
+#
+
+#oreg_url=example.com/openshift3/ose-${component}:${version}
+
+#
+# If 'oreg_url' points to a registry other than "registry.access.redhat.com", we can modify image streams to point at
+# that registry by setting the following to 'true':
+#
+
+#openshift_examples_modify_imagestreams=true
+
+########################################################################################################################
+# Global Proxy Configuration
+########################################################################################################################
+
+#
+# These options configure HTTP_PROXY, HTTPS_PROXY, and NOPROXY environment variables for master services and docker
+# daemons. The NOPROXY variable should be set to a comma separated list of host names or wildcard host names that should
+# not use the defined proxy. This list will be augmented with the list of all defined OpenShift host names and
+# *.cluster.local by default.
+#
+
+#openshift_http_proxy=http://USER:PASSWORD@IPADDR:PORT
+#openshift_https_proxy=https://USER:PASSWORD@IPADDR:PORT
+#openshift_no_proxy='.hosts.example.com,some-host.com'
+
+#
+# Most environments don't require a proxy between openshift masters, nodes, and etcd hosts. Consequently, these
+# hostnames are automatically added to 'openshift_no_proxy'. The default value for 'openshift_generate_no_proxy_hosts'
+# is 'true'. If all of your hosts share a common domain you may wish to disable this and specify that domain in
+# 'openshift_no_proxy'
+
+#openshift_generate_no_proxy_hosts=True
+
+#
+# These options configure the BuildDefaults admission controller which injects configuration into Builds and define
+# the values of the HTTP_PROXY, HTTPS_PROXY and NO_PROXY environment variables inserted into builds using the
+# BuildDefaults admission controller. Proxy related values will default to the global proxy config values. You only need
+# to set these if they differ from the global proxy settings. See BuildDefaults documentation at
+# https://docs.openshift.org/latest/admin_guide/build_defaults_overrides.html
+#
+
+#openshift_builddefaults_http_proxy=http://USER:PASSWORD@HOST:PORT
+#openshift_builddefaults_https_proxy=https://USER:PASSWORD@HOST:PORT
+#openshift_builddefaults_no_proxy=mycorp.com
+
+#
+# These variable defines the HTTP/HTTPS proxies and NO_PROXY used by git clone operations during a build, defined using
+# the BuildDefaults admission controller. If openshift_builddefaults_http_proxy is set, this variable will inherit that
+# value; you only need to set this if you want your git clone operations to use a different value.
+#
+
+#openshift_builddefaults_git_http_proxy=http://USER:PASSWORD@HOST:PORT
+#openshift_builddefaults_git_https_proxy=https://USER:PASSWORD@HOST:PORT
+#openshift_builddefaults_git_no_proxy=mycorp.com
+
+#
+# Other BuildDefaults settings
+#
+
+#openshift_builddefaults_image_labels=[{'name':'imagelabelname1','value':'imagelabelvalue1'}]
+#openshift_builddefaults_nodeselectors={'nodelabel1':'nodelabelvalue1'}
+#openshift_builddefaults_annotations={'annotationkey1':'annotationvalue1'}
+#openshift_builddefaults_resources_requests_cpu=100m
+#openshift_builddefaults_resources_requests_memory=256m
+#openshift_builddefaults_resources_limits_cpu=1000m
+#openshift_builddefaults_resources_limits_memory=512m
+
+#
+# Alternatively, you may optionally define your own build defaults configuration serialized as json
+#
+
+#openshift_builddefaults_json='{"BuildDefaults":{"configuration":{"apiVersion":"v1","env":[{"name":"HTTP_PROXY","value":"http://proxy.example.com.redhat.com:3128"},{"name":"NO_PROXY","value":"ose3-master.example.com"}],"gitHTTPProxy":"http://proxy.example.com:3128","gitNoProxy":"ose3-master.example.com","kind":"BuildDefaultsConfig"}}}'
+
+#
+# These options configure the BuildOverrides admission controller which injects configuration into Builds. See
+# BuildOverrides documentation at https://docs.openshift.org/latest/admin_guide/build_defaults_overrides.html
+#
+
+#openshift_buildoverrides_force_pull=true
+#openshift_buildoverrides_image_labels=[{'name':'imagelabelname1','value':'imagelabelvalue1'}]
+#openshift_buildoverrides_nodeselectors={'nodelabel1':'nodelabelvalue1'}
+#openshift_buildoverrides_annotations={'annotationkey1':'annotationvalue1'}
+
+#
+# Alternatively, you may optionally define your own build overrides configuration serialized as json
+#
+
+#openshift_buildoverrides_json='{"BuildOverrides":{"configuration":{"apiVersion":"v1","kind":"BuildDefaultsConfig","forcePull":"true"}}}'
+
+########################################################################################################################
+# etcd Configuration
+########################################################################################################################
+
+#
+# Specify exact version of etcd to configure or upgrade to.
+#
+
+#etcd_version="3.1.0"
+
+#
+# Enable etcd debug logging, defaults to false
+#
+
+#etcd_debug=true
+
+#
+# Set etcd log levels by package
+#
+
+#etcd_log_package_levels="etcdserver=WARNING,security=DEBUG"
+
+########################################################################################################################
+# Cloud Provider Configuration
+########################################################################################################################
+
+# Note: You may make use of environment variables rather than store sensitive configuration within the ansible inventory.
+# For example:
+#
+
+#openshift_cloudprovider_aws_access_key="{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+#openshift_cloudprovider_aws_secret_key="{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+
+#
+# AWS
+#
+
+#openshift_cloudprovider_kind=aws
+
+#
+# Note: IAM profiles may be used instead of storing API credentials on disk.
+#
+
+#openshift_cloudprovider_aws_access_key=aws_access_key_id
+#openshift_cloudprovider_aws_secret_key=aws_secret_access_key
+
+#
+# Openstack
+#
+
+#openshift_cloudprovider_kind=openstack
+#openshift_cloudprovider_openstack_auth_url=http://openstack.example.com:35357/v2.0/
+#openshift_cloudprovider_openstack_username=username
+#openshift_cloudprovider_openstack_password=password
+#openshift_cloudprovider_openstack_domain_id=domain_id
+#openshift_cloudprovider_openstack_domain_name=domain_name
+#openshift_cloudprovider_openstack_tenant_id=tenant_id
+#openshift_cloudprovider_openstack_tenant_name=tenant_name
+#openshift_cloudprovider_openstack_region=region
+#openshift_cloudprovider_openstack_lb_subnet_id=subnet_id
+
+#
+# GCE
+#
+
+#openshift_cloudprovider_kind=gce
+
+########################################################################################################################
+# Project Configuration
+########################################################################################################################
+
+#osm_project_request_message=''
+#osm_project_request_template=''
+#osm_mcs_allocator_range='s0:/2'
+#osm_mcs_labels_per_project=5
+#osm_uid_allocator_range='1000000000-1999999999/10000'
+
+#
+# Configure additional projects
+#
+
+#openshift_additional_projects={'my-project': {'default_node_selector': 'label=value'}}
+
+########################################################################################################################
+# Miscellaneous
+########################################################################################################################
+
+#
+# Ansible will wait indefinitely for your input when it detects that the value of openshift_hostname resolves to an IP
+# address not bound to any local interfaces. This mis-configuration is problematic for any pod leveraging host
+# networking and liveness or readiness probes. Setting this variable to true will override that check.
+#
+
+#openshift_override_hostname_check=true
+
+
+#
+# Specify an exact rpm version to install or configure.
+# WARNING: This value will be used for all hosts in RPM based environments, even those that have another version
+# installed. This could potentially trigger an upgrade and downtime, so be careful with modifying this value after
+# the cluster is set up.
+#
+
+#openshift_pkg_version=-3.6.0
+
+#
+# Install the openshift examples
+#
+
+#openshift_install_examples=true
+
+#
+# Configure logoutURL in the master config for console customization
+# See: https://docs.openshift.org/latest/install_config/web_console_customization.html#changing-the-logout-url
+#
+
+#openshift_master_logout_url=http://example.com
+
+#
+# Configure extensionScripts in the master config for console customization
+# See: https://docs.openshift.org/latest/install_config/web_console_customization.html#loading-custom-scripts-and-stylesheets
+#
+
+#openshift_master_extension_scripts=['/path/to/script1.js','/path/to/script2.js']
+
+#
+# Configure extensionStylesheets in the master config for console customization
+# See: https://docs.openshift.org/latest/install_config/web_console_customization.html#loading-custom-scripts-and-stylesheets
+#
+
+#openshift_master_extension_stylesheets=['/path/to/stylesheet1.css','/path/to/stylesheet2.css']
+
+#
+# Configure extensions in the master config for console customization
+# See: https://docs.openshift.org/latest/install_config/web_console_customization.html#serving-static-files
+#
+
+#openshift_master_extensions=[{'name': 'images', 'sourceDirectory': '/path/to/my_images'}]
+
+#
+# Configure extensions in the master config for console customization
+# See: https://docs.openshift.org/latest/install_config/web_console_customization.html#serving-static-files
+#
+
+#openshift_master_oauth_template=/path/to/login-template.html
+
+#
+# Configure imagePolicyConfig in the master config
+# See: https://godoc.org/github.com/openshift/origin/pkg/cmd/server/api#ImagePolicyConfig
+#
+
+#openshift_master_image_policy_config={"maxImagesBulkImportedPerRepository": 3, "disableScheduledImport": true}
+
+#
+# Upgrade Hooks. Hooks are available to run custom tasks at various points during a cluster upgrade. Each hook should
+# point to a file with Ansible tasks defined. Suggest using absolute paths, if not the path will be treated as relative
+# to the file where the hook is actually used.
+#
+# Tasks to run before each master is upgraded.
+#
+
+#openshift_master_upgrade_pre_hook=/usr/share/custom/pre_master.yml
+
+#
+# Tasks to run to upgrade the master. These tasks run after the main openshift-ansible upgrade steps, but before we
+# restart system/services.
+#
+
+#openshift_master_upgrade_hook=/usr/share/custom/master.yml
+
+#
+# Tasks to run after each master is upgraded and system/services have been restarted.
+#
+
+#openshift_master_upgrade_post_hook=/usr/share/custom/post_master.yml
+
+#
+# Additional yum repos to install
+#
+
+#openshift_additional_repos=[{'id': 'ose-devel', 'name': 'ose-devel', 'baseurl': 'http://example.com/puddle/build/AtomicOpenShift/3.1/latest/RH7-RHOSE-3.0/$basearch/os', 'enabled': 1, 'gpgcheck': 0}]
+
+#
+# Override the default controller lease ttl
+#
+
+#osm_controller_lease_ttl=30
+
+#
+# Configure controller arguments
+#
+
+#osm_controller_args={'resource-quota-sync-period': ['10s']}
+
+#
+# Configure api server arguments
+#
+
+#osm_api_server_args={'max-requests-inflight': ['400']}
+
+#
+# Additional cors origins
+#
+
+#osm_custom_cors_origins=['foo.example.com', 'bar.example.com']
+
+#
+# Override the default pod eviction timeout
+#
+
+#openshift_master_pod_eviction_timeout=5m
+
+#
+# Override the default oauth tokenConfig settings:
+#
+
+# openshift_master_access_token_max_seconds=86400
+# openshift_master_auth_token_max_seconds=500
+
+#
+# Override master servingInfo.maxRequestsInFlight
+#
+
+#openshift_master_max_requests_inflight=500
+
+#
+# Override master and node servingInfo.minTLSVersion and .cipherSuites
+# valid TLS versions are VersionTLS10, VersionTLS11, VersionTLS12
+# example cipher suites override, valid cipher suites are https://golang.org/pkg/crypto/tls/#pkg-constants
+#
+
+#openshift_master_min_tls_version=VersionTLS12
+#openshift_master_cipher_suites=['TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256', '...']
+#
+#openshift_node_min_tls_version=VersionTLS12
+#openshift_node_cipher_suites=['TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256', '...']
+
+#
+# default storage plugin dependencies to install, by default the ceph and glusterfs plugin dependencies will be
+# installed, if available.
+#
+
+#osn_storage_plugin_deps=['ceph','glusterfs']
+
+#
+# OpenShift Registry Console Options
+#
+
+#
+# Override the console image prefix for enterprise deployments, not used in origin default is
+# "registry.access.redhat.com/openshift3/" and the image appended is "registry-console"
+#
+
+#openshift_cockpit_deployer_prefix=registry.example.com/myrepo/
+
+#
+# Override image version, defaults to latest for origin, matches the product version for enterprise
+#
+
+#openshift_cockpit_deployer_version=1.4.1
+
+#
+# set RPM version for debugging purposes
+#
+
+#openshift_pkg_version=-3.1.0.0
+
+#
+# Configure custom ca certificate. NOTE: CA certificate will not be replaced with existing clusters. This option may
+# only be specified when creating a new cluster or when redeploying cluster certificates with the redeploy-certificates
+# playbook.
+#
+
+#openshift_master_ca_certificate={'certfile': '/path/to/ca.crt', 'keyfile': '/path/to/ca.key'}
+
+#
+# Configure how often node iptables rules are refreshed
+#
+
+#openshift_node_iptables_sync_period=5s
+
+#
+# Specifies the service proxy mode to use: either 'iptables' (default), pure-iptables implementation, or 'userspace'
+# for the user space proxy.
+#
+
+#openshift_node_proxy_mode=iptables
+
+
+#
+# Configure node kubelet arguments. pods-per-core is valid in OpenShift Origin 1.3 or OpenShift Container Platform 3.3
+# and later.
+#
+
+#openshift_node_kubelet_args={'pods-per-core': ['10'], 'max-pods': ['250'], 'image-gc-high-threshold': ['90'], 'image-gc-low-threshold': ['80']}
+
+#
+# Configure logrotate scripts. See: https://github.com/nickhammond/ansible-logrotate
+#
+
+#logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n/var/log/messages\n/var/log/secure\n/var/log/spooler\n", "options": ["daily", "rotate 7", "compress", "sharedscripts", "missingok"], "scripts": {"postrotate": "/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true"}}]
+
+#
+# masterConfig.volumeConfig.dynamicProvisioningEnabled, configurable as of 1.2/3.2, enabled by default
+#
+
+#openshift_master_dynamic_provisioning_enabled=False
+
+#
+# Admission plugin config
+#
+
+#openshift_master_admission_plugin_config={"ProjectRequestLimit":{"configuration":{"apiVersion":"v1","kind":"ProjectRequestLimitConfig","limits":[{"selector":{"admin":"true"}},{"maxProjects":"1"}]}},"PodNodeConstraints":{"configuration":{"apiVersion":"v1","kind":"PodNodeConstraintsConfig"}}}
+
+#
+# OpenShift Per-Service Environment Variables. Environment variables are added to /etc/sysconfig files for each
+# OpenShift service: node, master (api and controllers). API and controllers environment variables are merged in single
+# master environments.
+#
+
+#openshift_master_api_env_vars={"ENABLE_HTTP2": "true"}
+#openshift_master_controllers_env_vars={"ENABLE_HTTP2": "true"}
+#openshift_node_env_vars={"ENABLE_HTTP2": "true"}
+
+#
+# Enable API service auditing, available as of 3.2
+#
+
+#openshift_master_audit_config={"enabled": true}
+
+#
+# Validity of the auto-generated OpenShift certificates in days. See also 'openshift_hosted_registry_cert_expire_days'
+# above.
+#
+
+#openshift_ca_cert_expire_days=1825
+#openshift_node_cert_expire_days=730
+#openshift_master_cert_expire_days=730
+
+#
+# Validity of the auto-generated external etcd certificates in days. Controls validity for etcd CA, peer, server and
+# client certificates.
+#
+
+#etcd_ca_default_days=1825
+
+#######################################################################################################################
+# Optional Variables
+#######################################################################################################################
+
+#
+# Enable cockpit
+#
+
+osm_use_cockpit=true
+
+#
+# Set cockpit plugins
+#
+
+osm_cockpit_plugins=['cockpit-kubernetes']
+
+########################################################################################################################
+# Topology of the environment
+########################################################################################################################
+
+#
+# Create an OSEv3 Ansible group that contains the masters and nodes groups. Variables for this group have been declared
+# above in [OSEv3:vars]
+#
+
+[OSEv3:children]
+masters
+etcd
+nodes
+nfs
+
+#
+# Host variables:
+#
+# openshift_hostname - This variable overrides the internal cluster host name for the system. Use this when the system’s
+#   default IP address does not resolve to the system host name.
+# openshift_public_hostname - This variable overrides the system’s public host name. Use this for cloud installations,
+#   or for hosts on networks using a network address translation (NAT).
+# openshift_ip - This variable overrides the cluster internal IP address for the system. Use this when using an
+#   interface that is not configured with the default route.
+# openshift_public_ip - This variable overrides the system’s public IP address. Use this for cloud installations, or for
+#   hosts on networks using a network address translation (NAT).
+# containerized - overrides the global value for a specific host.
+# openshift_node_labels - This variable adds labels to nodes during installation.
+# openshift_node_kubelet_args - This variable is used to configure 'kubeletArguments on nodes', such as arguments used
+#   in container and image garbage collection, and to specify resources per node. 'kubeletArguments' are key value pairs
+#   that are passed directly to the Kubelet that match the Kubelet’s command line arguments. kubeletArguments are not
+#   migrated or validated and may become invalid if used. These values override other settings in node configuration
+#   which may cause invalid configurations. Example usage:
+#   {'image-gc-high-threshold': ['90'],'image-gc-low-threshold': ['80']}.
+# openshift_hosted_router_selector - Overrides global 'openshift_hosted_router_selector' for host.
+# openshift_registry_selector - Default node selector for automatically deploying registry pods.
+# openshift_docker_options - Overrides global 'openshift_docker_options' for host.
+# openshift_schedulable - This variable configures whether the host is marked as a schedulable node, meaning that it is
+#   available for placement of new pods.
+# ansible_ssh_private_key_file
+#
+[masters]
+master.openshift35min.local
+
+[etcd]
+master.openshift35min.local
+
+#
+# 'nodes' include masters too.
+# NOTE: Currently we require that masters be part of the SDN which requires that they also be nodes. However, in order
+# to ensure that the masters are not overloaded with running pods, they should be made unschedulable by adding
+# 'openshift_schedulable'=false any node that's also a master.
+#
+
+[nodes]
+#
+# master
+#
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+master.openshift35min.local openshift_node_labels="{'logging':'true', 'openshift_schedulable':'False', 'cluster':'lepton'}"
+#
+# infrastructure nodes
+#
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+infranode.openshift35min.local openshift_node_labels="{'logging':'true', 'cluster':'lepton', 'env':'infra'}"
+#
+# regular nodes
+#
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+node1.openshift35min.local openshift_node_labels="{'logging':'true', 'cluster':'lepton', 'env':'app'}"
+node2.openshift35min.local openshift_node_labels="{'logging':'true', 'cluster':'lepton', 'env':'app'}"
+
+#
+# NOTE: Containerized load balancer hosts are not yet supported, if using a global containerized=true host variable we
+# must set to false.
+#
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+#[lb]
+#lb.openshift35.local openshift_ip=172.23.0.7 containerized=false
+
+#
+# 'openshift_ip' is activated by 'openshift_set_node_ip=true' and it is ONLY needed when the interface we want to use
+# is not associated with the default route on the target host.
+#
+[nfs]
+support.openshift35min.local ansible_ssh_user=ansible
+
+
+
+
