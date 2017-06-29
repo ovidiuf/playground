@@ -6,6 +6,8 @@ A simple interactive client that connects to an Infinispan/JDG cluster over the 
 creates a RemoteCacheManager and retrieves the default cache. Once the connection is established, the client allows to 
 interactively read and write the cache.
 
+<font color=red>TODO: the document is made obsolete by the latest changes in Maven metadata, update it.</font>
+
 ## Build
 
 The client can be built against multiple versions of Infinispan and JDG. By default, if no profile is specified, 
