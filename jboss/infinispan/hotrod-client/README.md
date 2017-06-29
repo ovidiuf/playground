@@ -1,12 +1,12 @@
-#Infinispan HotRod Client
+# Infinispan HotRod Client
 
-##Overview
+## Overview
 
 A simple interactive client that connects to an Infinispan/JDG cluster over the HotRod protocol. The "connect" command
 creates a RemoteCacheManager and retrieves the default cache. Once the connection is established, the client allows to 
 interactively read and write the cache.
 
-##Build
+## Build
 
 The client can be built against multiple versions of Infinispan and JDG. By default, if no profile is specified, 
 it is built against Infinispan 8.2.4.Final. 
@@ -56,7 +56,7 @@ to:
     jboss_home=~/runtime/jboss-datagrid-6.6.0-server
     infinispan_version=6.4.0.Final-redhat-4
 
-##Usage Example
+## Usage Example
 
 In order to use the example, you will need to build it first, see above.
 
@@ -76,7 +76,7 @@ specified, the default cache of the cache container is used. If a name of a cach
 client will display an error message.
 
    
-##See Also
+## See Also
 
 https://kb.novaordis.com/index.php/Infinispan_Tools#Tools
  
