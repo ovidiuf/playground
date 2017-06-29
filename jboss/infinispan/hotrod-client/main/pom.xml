@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <!--
+        Usage: https://github.com/NovaOrdis/playground/tree/master/jboss/infinispan/hotrod-client
+    -->
+
+    <name>Hot Rod Client Library</name>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.novaordis.playground.wildfly.infinispan.hotrod-client</groupId>
+        <artifactId>hotrod-client-root</artifactId>
+        <version>1.0.0-SNAPSHOT-1</version>
+    </parent>
+
+    <artifactId>hotrod-client</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j-version>1.7.12</slf4j-version>
+        <junit-version>4.12</junit-version>
+        <infinispan-version>8.2.4.Final</infinispan-version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>jdg6</id>
+            <repositories>
+                <repository>
+                    <id>jboss-datagrid-6.6.0-maven-repository</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
+                </repository>
+            </repositories>
+            <properties>
+                <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdg7</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <!--
+                    Note that JDG repository should be used in conjunction with the EAP repository
+                -->
+                <repository>
+                    <id>jboss-eap-7.0.0.GA-maven</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-eap-7.0.0.GA-maven-repository/maven-repository</url>
+                </repository>
+                <repository>
+                    <id>jboss-datagrid-7.0-maven</id>
+                    <url>file:///Users/ovidiu/runtime/jboss-datagrid-7.0.0-maven-repository/maven-repository</url>
+                </repository>
+            </repositories>
+            <properties>
+                <infinispan-version>8.3.0.Final-redhat-1</infinispan-version>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <version>3.5.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <version>3.0.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-commons</artifactId>
+            <version>${infinispan-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-client-hotrod</artifactId>
+            <version>${infinispan-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-core</artifactId>
+            <version>${infinispan-version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
+

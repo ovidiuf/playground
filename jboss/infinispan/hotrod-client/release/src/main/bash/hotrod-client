@@ -1,0 +1,16 @@
+#!/bin/bash
+
+[ -f $(dirname $0)/bash-wrapper-functions ] && .  $(dirname $0)/bash-wrapper-functions || { echo "$(dirname $0)/bash-wrapper-functions not found" 1>&2; exit 1; }
+
+function main() {
+
+    local java
+    local cp
+
+    java=$(get-java-binary) || exit 1
+    cp=$(get-classpath-from-directory $(dirname $0)/../lib) || exit 1
+
+    ${java} -cp ${cp} io.novaordis.playground.wildfly.infinispan.hotrodclient.Main
+}
+
+main $@

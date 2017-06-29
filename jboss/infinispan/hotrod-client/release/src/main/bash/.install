@@ -1,0 +1,60 @@
+#!/bin/bahs
+# installation script. To be executed on initial installation or upgrade, from the bin directory.
+#
+
+application_name=hotrod-client
+link_name=${application_name}
+remove_older_releases=true
+
+release_directory=$(basename $(cd $(dirname $0)/..; pwd))
+
+function main() {
+
+    link-to-installation-directory
+    configure-user-environment
+    ${remove_older_releases} && remove-older-releases
+}
+
+function link-to-installation-directory() {
+
+    local link=$(dirname $0)/../../${link_name}
+
+    if [ -h ${link} ]; then
+
+        # the link exists, must be removed
+        rm ${link} || { echo "failed to remove the old link ${link}" 1>&2; exit 1; }
+    fi
+
+    (cd $(dirname $0)/../..; ln -s ./${release_directory} ${link_name}) || \
+        { "failed to link to ${release_directory}" 1>&2; exit 1; }
+}
+
+function configure-user-environment() {
+
+    # TODO
+    echo "" > /dev/null
+}
+
+function remove-older-releases() {
+
+    for i in $(dirname $0)/../../${application_name}-*; do
+
+        [ ! -d ${i} ] && continue
+
+        #
+        # skip ourselves
+        #
+
+        [ $(basename ${i}) = ${release_directory} ] && continue;
+
+        #
+        # remove everything else
+        #
+
+        rm -r ${i} || { echo "failed to remove older release ${i}" 1>&2; exit 1; }
+
+    done
+}
+
+main $@
+

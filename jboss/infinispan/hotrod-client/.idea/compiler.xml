@@ -27,6 +27,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hotrod-client" target="1.8" />
+      <module name="hotrod-client-release" target="1.5" />
+      <module name="hotrod-client-root" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

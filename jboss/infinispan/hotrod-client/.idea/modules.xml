@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/hotrod-client.iml" filepath="$PROJECT_DIR$/hotrod-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/main/hotrod-client.iml" filepath="$PROJECT_DIR$/main/hotrod-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/release/hotrod-client-release.iml" filepath="$PROJECT_DIR$/release/hotrod-client-release.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hotrod-client-root.iml" filepath="$PROJECT_DIR$/hotrod-client-root.iml" />
     </modules>
   </component>
 </project>

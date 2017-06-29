@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# https://kb.novaordis.com/index.php/Bash-wrapper-functions
+#
+# Import with:
+#
+# [ -f $(dirname $0)/bash-wrapper-functions ] && .  $(dirname $0)/bash-wrapper-functions || { echo "$(dirname $0)/bash-wrapper-functions not found" 1>&2; exit 1; }
+#
+#
+
+bash_wrapper_functions_version=1
+
+#
+# Inspects the content of the given directory and produces a ":" separated classpath containing all JAR files found
+# in the directory. All classpath elements start with the path provided as argument of the function. The function
+# does NOT recursively descend in the sub-directories.
+#
+# The result is returned at stdout.
+#
+# Sends an error message at stderr and exits with an exit code of 1.
+#
+# Usage:
+#
+# local classpath
+# classpath=$(classpath-from-directory ./some-dir) || exit 1
+# [ -z "${classpath}" ] && { # nothing was generated, react accordingly }
+#
+#
+function classpath-from-directory() {
+
+    local dir=$1
+
+    [ -z "${dir}" ] && { echo "target directory not provided" 1>&2; exit 1; }
+    [ -d ${dir} ] || { echo "${dir} is not a valid directory" 1>&2; exit 1; }
+
+    first=true
+    for i in $(find ${dir} -mindepth 1 -maxdepth 1 -name *.jar); do
+        ${first} && first=false || echo -n ":"
+        echo -n ${i}
+    done
+
+}
+
+
+
