@@ -96,6 +96,15 @@ public class QueueDepths {
             }
 
             //
+            // drop "ignorable" lines
+            //
+
+            if (line.startsWith("==")) {
+
+                continue;
+            }
+
+            //
             // queue depths
             //
 
