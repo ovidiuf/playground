@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.novaordis.playground.wildfly.infinispan.hotrod-client</groupId>
         <artifactId>hotrod-client-root</artifactId>
-        <version>1.0.0-SNAPSHOT-3</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>hotrod-client-release</artifactId>
