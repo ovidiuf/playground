@@ -11,13 +11,39 @@
 bash_wrapper_functions_version=1
 
 #
+# Attempts to identify JAVA_HOME and returns the path to the java binary based on that, while verifying the presence
+# and the executability of the binary. If JAVA_HOME is not found, then the method simply returns "java" with the
+# assumption the path to it is declared in PATH and warn.
+#
+function get-java-binary() {
+
+    if [ -z "${JAVA_HOME}" ]; then
+
+            echo "java"
+            echo "[warn]: no JAVA_HOME environment variable found, using 'java'" 1>&2
+            return 0
+    fi
+
+    [ -d ${JAVA_HOME} ] || \
+        { echo "JAVA_HOME points to an invalid directory: ${JAVA_HOME}" 1>&2; exit 1; }
+
+    [ -d ${JAVA_HOME}/bin ] || \
+        { echo "JAVA_HOME points to a directory that does not contain a 'bin' subdirectory: ${JAVA_HOME}" 1>&2; exit 1; }
+
+    [ -f ${JAVA_HOME}/bin/java ] || \
+        { echo "invalid JAVA_HOME, ${JAVA_HOME}/bin/java does not exist" 1>&2; exit 1; }
+
+    [ -x ${JAVA_HOME}/bin/java ] || \
+        { echo "invalid JAVA_HOME, ${JAVA_HOME}/bin/java exists but is not executable" 1>&2; exit 1; }
+
+    echo ${JAVA_HOME}/bin/java
+}
+
+#
 # Inspects the content of the given directory and produces a ":" separated classpath containing all JAR files found
 # in the directory. All classpath elements start with the path provided as argument of the function. The function
-# does NOT recursively descend in the sub-directories.
-#
-# The result is returned at stdout.
-#
-# Sends an error message at stderr and exits with an exit code of 1.
+# does NOT recursively descend in the sub-directories. The result is returned at stdout. If a failure of any kind is
+# encountered, the corresponding error message will be sent to stderr and the current shell will *exit* with 1.
 #
 # Usage:
 #
@@ -26,7 +52,7 @@ bash_wrapper_functions_version=1
 # [ -z "${classpath}" ] && { # nothing was generated, react accordingly }
 #
 #
-function classpath-from-directory() {
+function get-classpath-from-directory() {
 
     local dir=$1
 
