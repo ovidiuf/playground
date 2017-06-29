@@ -11,7 +11,7 @@
     <parent>
         <groupId>io.novaordis.playground.wildfly.infinispan.hotrod-client</groupId>
         <artifactId>hotrod-client-root</artifactId>
-        <version>1.0.0-SNAPSHOT-2</version>
+        <version>1.0.0-SNAPSHOT-3</version>
     </parent>
 
     <artifactId>hotrod-client</artifactId>
@@ -27,12 +27,14 @@
     <profiles>
         <profile>
             <id>jdg6</id>
+            <!--
             <repositories>
                 <repository>
                     <id>jboss-datagrid-6.6.0-maven-repository</id>
                     <url>file:///Users/ovidiu/runtime/jboss-datagrid-6.6.0-maven-repository</url>
                 </repository>
             </repositories>
+            -->
             <properties>
                 <infinispan-version>6.4.0.Final-redhat-4</infinispan-version>
             </properties>
@@ -42,10 +44,11 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <!--
+                Note that JDG repository should be used in conjunction with the EAP repository
+            -->
+            <!--
             <repositories>
-                <!--
-                    Note that JDG repository should be used in conjunction with the EAP repository
-                -->
                 <repository>
                     <id>jboss-eap-7.0.0.GA-maven</id>
                     <url>file:///Users/ovidiu/runtime/jboss-eap-7.0.0.GA-maven-repository/maven-repository</url>
@@ -55,6 +58,7 @@
                     <url>file:///Users/ovidiu/runtime/jboss-datagrid-7.0.0-maven-repository/maven-repository</url>
                 </repository>
             </repositories>
+            -->
             <properties>
                 <infinispan-version>8.3.0.Final-redhat-1</infinispan-version>
             </properties>
