@@ -1,5 +1,6 @@
-#!/bin/bahs
-# installation script. To be executed on initial installation or upgrade, from the bin directory.
+#!/bin/bash
+#
+# Installation script. To be executed on initial installation or upgrade, from the bin directory.
 #
 
 application_name=hotrod-client
