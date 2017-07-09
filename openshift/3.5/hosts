@@ -147,8 +147,7 @@ openshift_master_cluster_hostname=lb.openshift35.local
 # resolve correctly to a publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift
 # cluster.
 #
-#openshift_master_cluster_public_hostname=loadbalancer.rdu20.example.opentlc.com
-openshift_master_cluster_public_hostname=master.openshift35.external
+openshift_master_cluster_public_hostname=master.openshift.novaordis.io
 
 #
 # In case of the "pacemaker" method, the environment must be able to self provision the configured VIP and
@@ -163,8 +162,7 @@ openshift_master_cluster_public_hostname=master.openshift35.external
 # correctly to a publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift cluster.
 #
 
-#openshift_master_default_subdomain=apps.rdu20.example.opentlc.com
-openshift_master_default_subdomain=apps.openshift35.external
+openshift_master_default_subdomain=apps.openshift.novaordis.io
 
 #
 # NOTE: 'openshift_master_named_certificates' is cached on masters and is an additive fact, meaning that each run with
