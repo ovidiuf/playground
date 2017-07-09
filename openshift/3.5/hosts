@@ -482,8 +482,7 @@ openshift_metrics_duration=1
 # cluster.
 #
 
-#openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.rdu20.example.opentlc.com/hawkular/metrics
-openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35.external/hawkular/metrics
+openshift_hosted_metrics_public_url=https://hawkular-metrics.apps.openshift.novaordis.io/hawkular/metrics
 
 #
 # The metrics URL propagates to master-config.yaml assetConfig.metricsPublicURL
@@ -499,15 +498,15 @@ openshift_hosted_metrics_public_url=https://hawkular-metrics.openshift35.externa
 # This value could be further adjusted by the start script based on available memory of the node on which it is
 # scheduled. The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #
-openshift_metrics_cassandra_request_memory=500Mi
-openshift_metrics_cassandra_limits_memory=500Mi
+openshift_metrics_cassandra_request_memory=1Gi
+openshift_metrics_cassandra_limits_memory=1Gi
 
 #
 # The CPU request and limit for the Cassandra pod. For example, a value of 4000m (4000 millicores) would limit
 # Cassandra to 4 CPUs.
 #
-openshift_metrics_cassandra_limits_cpu=500m
-openshift_metrics_cassandra_request_cpu=500m
+openshift_metrics_cassandra_limits_cpu=1000m
+openshift_metrics_cassandra_request_cpu=1000m
 
 #
 # The number of Cassandra nodes for the metrics stack. This value dictates the number of Cassandra replication
@@ -549,7 +548,8 @@ openshift_hosted_metrics_storage_access_modes=['ReadWriteOnce']
 # The storage directory specified below must exist on the NFS server and must be backed by a device with sufficient
 # storage. Ansible will configure the NFS server to export nfs_director/volume_name.
 #
-openshift_hosted_metrics_storage_nfs_directory=/storage
+openshift_hosted_metrics_storage_nfs_directory=/support-nfs-storage
+
 openshift_hosted_metrics_storage_volume_name=metrics
 openshift_hosted_metrics_storage_nfs_options='*(rw,root_squash)'
 # The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
@@ -607,14 +607,14 @@ openshift_hosted_metrics_storage_volume_size=10Gi
 # Requests and limits for Hawkular memory. A value of 2Gi would request 2 GB of memory. The quantity must match the
 # regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
 #
-openshift_metrics_hawkular_request_memory=500Mi
-openshift_metrics_hawkular_limits_memory=500Mi
+openshift_metrics_hawkular_request_memory=1Gi
+openshift_metrics_hawkular_limits_memory=1Gi
 
 #
 # Requests and limits for Hawkular CPU. A value of 4000m (4000 millicores) would request 4 CPUs.
 #
-openshift_metrics_hawkular_request_cpu=500m
-openshift_metrics_hawkular_limits_cpu=500m
+openshift_metrics_hawkular_request_cpu=1000m
+openshift_metrics_hawkular_limits_cpu=1000m
 
 #
 # A comma-separated list of CN to accept. By default, this is set to allow the OpenShift service proxy to connect.
@@ -687,11 +687,8 @@ openshift_hosted_logging_deploy=true
 # publicly accessible IP address both 1) externally and 2) by the DNS serving the OpenShift cluster.
 #
 
-#openshift_hosted_logging_hostname=kibana.apps.rdu20.example.opentlc.com
-openshift_hosted_logging_hostname=kibana.openshift35.external
-
-#openshift_master_logging_public_url=https://kibana.apps.rdu20.example.opentlc.com
-openshift_master_logging_public_url=https://kibana.openshift35.external
+openshift_hosted_logging_hostname=kibana.apps.openshift.novaordis.io
+openshift_master_logging_public_url=https://kibana.apps.openshift.novaordis.io
 
 #
 # Configure the number of elasticsearch nodes, unless you're using dynamic provisioning this value must be 1
@@ -721,7 +718,7 @@ openshift_hosted_logging_storage_access_modes=['ReadWriteOnce']
 #
 # The exported file system will be created on the NFS server
 #
-openshift_hosted_logging_storage_nfs_directory=/storage
+openshift_hosted_logging_storage_nfs_directory=/support-nfs-storage
 openshift_hosted_logging_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_logging_storage_volume_name=logging
 # The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
@@ -892,7 +889,7 @@ openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
 #
 # The exported file system will be created on the NFS server
 #
-openshift_hosted_registry_storage_nfs_directory=/storage
+openshift_hosted_registry_storage_nfs_directory=/support-nfs-storage
 openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_registry_storage_volume_name=registry
 # The quantity must match the regular expression '^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
