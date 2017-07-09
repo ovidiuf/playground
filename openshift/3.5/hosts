@@ -8,6 +8,7 @@
 #
 #
 # https://kb.novaordis.com/index.php/OpenShift_3.5_Installation
+# https://kb.novaordis.com/index.php/OpenShift_hosts
 # https://docs.openshift.com/container-platform/3.5/install_config/index.html
 #
 # Original inventory file: https://github.com/openshift/openshift-ansible/blob/master/inventory/byo/hosts.ose.example
@@ -25,51 +26,28 @@
 
 timeout=60
 
-#
-# If 'ansible_ssh_user' is not root, ansible_become must be set to true and the user must be configured for passwordless
-# sudo
+# https://kb.novaordis.com/index.php/OpenShift_hosts#ansible_become
 
 ansible_become=yes
 
-#
-# The ssh user used by Ansible to connect to hosts. This user should allow ssh based authentication without requiring a
-# password, and also it should allow passwordless sudo to root. If using ssh key based authentication, then the key
-# should be managed by an ssh agent. Also see 'ansible_become'
-#
+# https://kb.novaordis.com/index.php/OpenShift_hosts#ansible_ssh_user
 
 #ansible_ssh_user=root
-#ansible_ssh_user=ec2-user
 ansible_ssh_user=ansible
 
-#
-# Describes which INFO messages are logged to the systemd-journald.service. Set one of the following:
-#
-#  0 to log errors and warnings only
-#
-#  2 to log normal information (default)
-#
-#  4 to log debugging-level information
-#
-#  6 to log API-level (request/response) debugging information
-#
-#  8 to log body-level API debugging information
-#
+#######################################################################################################################
+# General Settings
+#######################################################################################################################
+
+# https://kb.novaordis.com/index.php/OpenShift_hosts#debug_level
 
 debug_level=2
 
-#
-# If set to true, containerized OpenShift services (instead of RPM-based) are run on all nodes. The default is "false"
-# which means the default RPM method is used. RHEL Atomic Host requires the containerized method, which is automatically
-# selected for you based on the detection of the /run/ostree-booted file. Since 3.1.1.
-#
+# https://kb.novaordis.com/index.php/OpenShift_hosts#containerized
 
 containerized=false
 
-#
-# Deployment type ("origin" or "openshift-enterprise")
-#
-# https://docs.openshift.com/container-platform/3.5/install_config/install/advanced_install.html#advanced-install-deployment-types
-#
+# https://kb.novaordis.com/index.php/OpenShift_hosts#deployment_type
 
 deployment_type=openshift-enterprise
 
