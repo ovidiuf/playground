@@ -22,13 +22,8 @@ import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -44,7 +39,7 @@ public class Top {
 
     // Static ----------------------------------------------------------------------------------------------------------
 
-    public static void queueDepths(String[] args) throws Exception {
+    public static void parse(String[] args) throws Exception {
 
         String filename = args[0];
 
@@ -70,6 +65,7 @@ public class Top {
             line = line.trim();
 
             if (line.isEmpty()) {
+
                 continue;
             }
 
@@ -99,27 +95,22 @@ public class Top {
             // drop "ignorable" lines
             //
 
-            if (line.startsWith("==")) {
+            if (!line.startsWith("KiB Swap:")) {
 
                 continue;
             }
 
             //
-            // queue depths
+            // swap data
             //
 
-            int i = line.indexOf(' ');
+            if (crt == null) {
 
-            if (i == -1) {
-
-                throw new IllegalArgumentException("invalid line " + lineNumber + ", missing space");
+                throw new IllegalStateException("swap line occurred before timestamp");
             }
 
-            String cs = line.substring(0, i);
-            String queueName = line.substring(i + 1);
-            int depth = Integer.parseInt(cs);
+            crt.addSwapReading(lineNumber, line);
 
-            crt.addDepth(queueName, depth);
         }
 
         br.close();
@@ -142,50 +133,53 @@ public class Top {
 
     private static void processReadings(List<Reading> readings) {
 
-        Set<String> queueNames = new HashSet<>();
+//        Set<String> queueNames = new HashSet<>();
+//
+        System.out.println("timestamp, Total Swap (MB), Free Swap (MB), Used Swap (MB)");
 
         for(Reading r: readings) {
 
-            queueNames.addAll(r.depths.keySet());
+            System.out.println(OUTPUT_DATE_FORMAT.format(r.date) + ", " + (r.totalSwapKb / 1024) + ", " + (r.freeSwapKb / 1024) + ", " + (r.usedSwapKb / 1024));
+
         }
-
-        List<String> queueNameList = new ArrayList<>(queueNames);
-        Collections.sort(queueNameList);
-
-        String headers = "timestamp, ";
-        for(String name: queueNameList) {
-
-            headers += name + ", ";
-        }
-
-        System.out.println(headers);
-
-        for(Reading r: readings) {
-
-            String csvLine = "";
-
-            Date d = r.date;
-
-            csvLine += OUTPUT_DATE_FORMAT.format(d) + ", ";
-
-            for(String name: queueNameList) {
-
-                QueueDepth qd = r.depths.get(name);
-
-                if (qd == null) {
-
-                    csvLine += "0";
-                }
-                else {
-
-                    csvLine += qd.depth;
-                }
-
-                csvLine += ", ";
-            }
-
-            System.out.println(csvLine);
-        }
+//
+//        List<String> queueNameList = new ArrayList<>(queueNames);
+//        Collections.sort(queueNameList);
+//
+//        String headers = "timestamp, ";
+//        for(String name: queueNameList) {
+//
+//            headers += name + ", ";
+//        }
+//
+//        System.out.println(headers);
+//
+//        for(Reading r: readings) {
+//
+//            String csvLine = "";
+//
+//            Date d = r.date;
+//
+//            csvLine += OUTPUT_DATE_FORMAT.format(d) + ", ";
+//
+//            for(String name: queueNameList) {
+//
+//                QueueDepth qd = r.depths.get(name);
+//
+//                if (qd == null) {
+//
+//                    csvLine += "0";
+//                }
+//                else {
+//
+//                    csvLine += qd.depth;
+//                }
+//
+//                csvLine += ", ";
+//            }
+//
+//            System.out.println(csvLine);
+//        }
 
     }
 
@@ -195,28 +189,59 @@ public class Top {
 
         public Date date;
 
-        private Map<String, QueueDepth> depths = new HashMap<>();
+        private int totalSwapKb;
+        private int freeSwapKb;
+        private int usedSwapKb;
 
         public Reading(Date d) {
 
             this.date = d;
         }
 
-        public void addDepth(String queueName, int depth) {
+        public void addSwapReading(int lineNumber, String swapLine) {
 
-            depths.put(queueName, new QueueDepth(queueName, depth));
-        }
-    }
+            if (!swapLine.startsWith("KiB Swap: ")) {
 
-    private static class QueueDepth {
+                throw new IllegalArgumentException("not a swap line: " + swapLine);
+            }
 
-        public String name;
-        public int depth;
+            String line = swapLine;
 
-        public QueueDepth(String name, int depth) {
+            line = line.substring("KiB Swap: ".length());
 
-            this.name = name;
-            this.depth = depth;
+            int i = line.indexOf("total,");
+
+            if (i == -1) {
+
+                throw new IllegalArgumentException("'total,' not found on line " + lineNumber);
+            }
+
+            String s = line.substring(0, i).trim();
+            totalSwapKb = Integer.parseInt(s);
+
+            line = line.substring(i + "total,".length());
+
+            i = line.indexOf("free,");
+
+            if (i == -1) {
+
+                throw new IllegalArgumentException("'free,' not found on line " + lineNumber);
+            }
+
+            s = line.substring(0, i).trim();
+            freeSwapKb = Integer.parseInt(s);
+
+            line = line.substring(i + "free,".length());
+
+            i = line.indexOf("used.");
+
+            if (i == -1) {
+
+                throw new IllegalArgumentException("'used.' not found on line " + lineNumber);
+            }
+
+            s = line.substring(0, i).trim();
+            usedSwapKb = Integer.parseInt(s);
         }
     }
 }

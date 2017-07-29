@@ -36,7 +36,7 @@ public class Main {
 
         // Util.hist(args);
 
-        QueueDepths.queueDepths(args);
+        Top.parse(args);
 
     }
 
