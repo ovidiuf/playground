@@ -22,7 +22,7 @@
 
     <servlet>
         <servlet-name>ServletExample</servlet-name>
-        <servlet-class>io.novaordis.playground.jboss.bom.eap6.ServletExample</servlet-class>
+        <servlet-class>io.novaordis.playground.jboss.bom.eap7.ServletExample</servlet-class>
     </servlet>
 
     <servlet-mapping>
