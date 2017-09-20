@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -41,6 +40,8 @@ public class ServletExample extends HttpServlet {
     // Static ----------------------------------------------------------------------------------------------------------
 
     // Attributes ------------------------------------------------------------------------------------------------------
+
+    private static String version = "2.0";
 
     // Constructors ----------------------------------------------------------------------------------------------------
 
@@ -65,7 +66,7 @@ public class ServletExample extends HttpServlet {
         PrintWriter out = res.getWriter();
 
         out.println("<html>");
-        out.println("GET handled by " + getHostName());
+        out.println("GET handled by " + getHostName() + ", version " + version);
         out.println("</html>");
     }
 
