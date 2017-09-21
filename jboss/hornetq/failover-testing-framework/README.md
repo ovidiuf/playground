@@ -1,11 +1,11 @@
-#HornetQ Failover Testing Framework
+# HornetQ Failover Testing Framework
 
 A multi-component framework that can be used to test HornetQ failover. It consists in a remote client that
 sends and records message IDs on file storage and various receivers (MDBs, remote receivers, etc.) that receive and 
 record the IDs of the received messages. The framework comes with reconciliation utilities that can tell whether
 messages have not been delivered, or duplicate messages have been delivered.
 
-##Client
+## Client
 
 A simple JMS client that sends messages in a loop, while recording their IDs and failures
 (if they occur), so the set of messages that was effectively sent can be compared with the set of 
@@ -30,7 +30,7 @@ https://github.com/NovaOrdis/playground/tree/master/jboss/hornetq/simplest-clien
 
 Note that the client can also be used to receive messages. 
 
-##MDB
+## MDB
 
 The output file is configured with -Dplayground.failover.testing.framework.output.file in the JBoss configuration. 
 Once common option is to set it in its .conf file:
@@ -41,7 +41,7 @@ Alternatively it can be set in the standalone.xml <properties> section.
 
 The MDB is deployed as an EAR (built by the 'ear' module).
 
-##Tools
+## Tools
 
 The "tools" module contains various command line script to reconcile the results the framework generates.
 

@@ -19,7 +19,7 @@ function build-classpath()
     short_name=${name%%.*}
 
     if [ "${short_name}" = "NOMBP2" ]; then
-        jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4
+        jboss_home=/Users/ovidiu/runtime/jboss-eap-6.4.15
     else
         #
         # we try JBOSS_HOME and if not set, we bail out
