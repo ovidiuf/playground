@@ -1,5 +1,7 @@
 # Session EJB invoked from a Standalone Application
 
+<font color=red>TODO: the example is not fully implemented and may be confusing, though it can be used as a base for the second iteration. Re-iterate next time I need it.</font>
+
 https://kb.novaordis.com/index.php/Standalone_Application_Invocation_into_a_Remote_Session_EJB#GitHub_Example
  
 # To Build
