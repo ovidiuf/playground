@@ -1,0 +1,62 @@
+Fri 10/27/2017 
+06:15 AM
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State
+  TCP    10.0.2.15:49671        db5sch101102015:https  ESTABLISHED
+  TCP    10.0.2.15:49747        52.179.189.71:https    CLOSE_WAIT
+  TCP    10.0.2.15:49749        157.55.56.172:40016    CLOSE_WAIT
+  TCP    10.0.2.15:49753        91.190.218.51:12350    CLOSE_WAIT
+  TCP    10.0.2.15:49763        db5sch101101535:https  ESTABLISHED
+  TCP    10.0.2.15:49769        db5sch101110428:https  ESTABLISHED
+  TCP    10.0.2.15:49909        204.79.197.229:https   ESTABLISHED
+Fri 10/27/2017 
+06:15 AM
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State
+  TCP    10.0.2.15:49671        db5sch101102015:https  ESTABLISHED
+  TCP    10.0.2.15:49747        52.179.189.71:https    CLOSE_WAIT
+  TCP    10.0.2.15:49749        157.55.56.172:40016    CLOSE_WAIT
+  TCP    10.0.2.15:49753        91.190.218.51:12350    CLOSE_WAIT
+  TCP    10.0.2.15:49763        db5sch101101535:https  ESTABLISHED
+  TCP    10.0.2.15:49769        db5sch101110428:https  ESTABLISHED
+  TCP    10.0.2.15:49909        204.79.197.229:https   ESTABLISHED
+Fri 10/27/2017 
+06:15 AM
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State
+  TCP    10.0.2.15:49671        db5sch101102015:https  ESTABLISHED
+  TCP    10.0.2.15:49747        52.179.189.71:https    CLOSE_WAIT
+  TCP    10.0.2.15:49749        157.55.56.172:40016    CLOSE_WAIT
+  TCP    10.0.2.15:49753        91.190.218.51:12350    CLOSE_WAIT
+  TCP    10.0.2.15:49763        db5sch101101535:https  ESTABLISHED
+  TCP    10.0.2.15:49769        db5sch101110428:https  ESTABLISHED
+Fri 10/27/2017 
+06:16 AM
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State
+  TCP    10.0.2.15:49671        db5sch101102015:https  ESTABLISHED
+  TCP    10.0.2.15:49747        52.179.189.71:https    CLOSE_WAIT
+  TCP    10.0.2.15:49749        157.55.56.172:40016    CLOSE_WAIT
+  TCP    10.0.2.15:49753        91.190.218.51:12350    CLOSE_WAIT
+  TCP    10.0.2.15:49763        db5sch101101535:https  ESTABLISHED
+  TCP    10.0.2.15:49769        db5sch101110428:https  ESTABLISHED
+Fri 10/27/2017 
+06:16 AM
+
+Active Connections
+
+  Proto  Local Address          Foreign Address        State
+  TCP    10.0.2.15:49671        db5sch101102015:https  ESTABLISHED
+  TCP    10.0.2.15:49747        52.179.189.71:https    CLOSE_WAIT
+  TCP    10.0.2.15:49749        157.55.56.172:40016    CLOSE_WAIT
+  TCP    10.0.2.15:49753        91.190.218.51:12350    CLOSE_WAIT
+  TCP    10.0.2.15:49763        db5sch101101535:https  ESTABLISHED
+  TCP    10.0.2.15:49769        db5sch101110428:https  ESTABLISHED
