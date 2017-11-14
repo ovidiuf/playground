@@ -653,9 +653,7 @@ openshift_metrics_heapster_limits_cpu=500m
 # Logging Configuration
 ########################################################################################################################
 
-#
-# Currently logging deployment is disabled by default, enable it by setting openshift_hosted_logging_deploy=true
-#
+# https://kb.novaordis.com/index.php/OpenShift_hosts#openshift_hosted_logging_deploy
 
 openshift_hosted_logging_deploy=true
 
@@ -729,6 +727,26 @@ openshift_hosted_logging_storage_volume_size=10Gi
 # Other Logging Options -- Common items you may wish to reconfigure, for the complete list of options please see
 # roles/openshift_logging/README.md
 #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ########################################################################################################################
 # Router Options
