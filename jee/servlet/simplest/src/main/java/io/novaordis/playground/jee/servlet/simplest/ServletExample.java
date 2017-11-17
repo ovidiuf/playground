@@ -16,16 +16,17 @@
 
 package io.novaordis.playground.jee.servlet.simplest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
@@ -62,6 +63,15 @@ public class ServletExample extends HttpServlet {
         log.info(this + " handling GET");
 
         res.setContentType("text/html");
+
+//        try {
+//
+//            throw new Exception("SYNTHETIC");
+//        }
+//        catch(Exception e) {
+//
+//            log.error("a message that accompanies an exception", e);
+//        }
 
         PrintWriter out = res.getWriter();
 
