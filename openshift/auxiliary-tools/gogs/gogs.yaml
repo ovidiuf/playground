@@ -1,5 +1,7 @@
 #
 # Gogs template based on https://github.com/OpenShiftDemos/openshift-cd-demo/blob/ocp-3.6/cicd-template.yaml
+# Deploys a Gogs instance and the associated Postgresql instance.
+#
 #
 # Tested with OpenShift 3.6
 #
@@ -7,13 +9,11 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: cicd
-  group: cicd
+  template: novaordis-gogs
 metadata:
+  name: novaordis-gogs
   annotations:
     description: Creates the Gogs OpenShift infrastructure.
-    tags: instant-app,jenkins,gogs,nexus,cicd
-  name: cicd
 message: The Gogs infrastructure has been initialized for your project. Gogs username/password are gogs/${GOGS_PASSWORD}.
 parameters:
 - description: Password for the Gogs user.
@@ -31,284 +31,18 @@ parameters:
   generate: expression
   name: GOGS_POSTGRESQL_PASSWORD
   required: true
-- description: Webhook secret
-  from: '[a-zA-Z0-9]{8}'
-  generate: expression
-  name: WEBHOOK_SECRET
-  required: true
 objects:
 - apiVersion: v1
-  groupNames: null
-  kind: RoleBinding
-  metadata:
-    name: default_edit
-  roleRef:
-    name: edit
-  subjects:
-  - kind: ServiceAccount
-    name: default
-# Pipeline
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    annotations:
-      pipeline.alpha.openshift.io/uses: '[{"name": "jenkins", "namespace": "", "kind": "DeploymentConfig"}]'
-    labels:
-      app: cicd-pipeline
-      name: cicd-pipeline
-    name: tasks-pipeline
-  spec:
-    triggers:
-      - type: GitHub
-        github:
-          secret: ${WEBHOOK_SECRET}
-      - type: Generic
-        generic:
-          secret: ${WEBHOOK_SECRET}
-    runPolicy: Serial
-    source:
-      type: None
-    strategy:
-      jenkinsPipelineStrategy:
-        jenkinsfile: |-
-          node('mvn') {
-             // define commands
-             def mvnCmd = "mvn -s configuration/cicd-settings.xml"
-
-             stage ('Build') {
-               git branch: 'eap-7', url: 'http://gogs:3000/gogs/openshift-tasks.git'
-               sh "${mvnCmd} clean install -DskipTests=true"
-             }
-
-             stage ('Test') {
-               sh "${mvnCmd} test"
-               step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-             }
-
-             stage ('Analysis (Security, Bugs, etc)') {
-               sh "${mvnCmd} site -DskipTests=true"
-
-               step([$class: 'CheckStylePublisher', unstableTotalAll:'300'])
-               step([$class: 'PmdPublisher', unstableTotalAll:'20'])
-               step([$class: 'FindBugsPublisher', pattern: '**/findbugsXml.xml', unstableTotalAll:'20'])
-               step([$class: 'JacocoPublisher'])
-               publishHTML (target: [keepAll: true, reportDir: 'target/site', reportFiles: 'project-info.html', reportName: "Site Report"])
-             }
-
-             stage ('Push to Nexus') {
-              sh "${mvnCmd} deploy -DskipTests=true"
-             }
-
-             stage ('Deploy DEV') {
-               sh "rm -rf oc-build && mkdir -p oc-build/deployments"
-               sh "cp target/openshift-tasks.war oc-build/deployments/ROOT.war"
-               // clean up. keep the image stream
-               sh "oc delete bc,dc,svc,route -l app=tasks -n ${DEV_PROJECT}"
-               // create build. override the exit code since it complains about exising imagestream
-               sh "oc new-build --name=tasks --image-stream=jboss-eap70-openshift:1.5 --binary=true --labels=app=tasks -n ${DEV_PROJECT} || true"
-               // build image
-               sh "oc start-build tasks --from-dir=oc-build --wait=true -n ${DEV_PROJECT}"
-               // deploy image
-               sh "oc new-app tasks:latest -n ${DEV_PROJECT}"
-               sh "oc expose svc/tasks -n ${DEV_PROJECT}"
-             }
-
-             stage ('Deploy STAGE') {
-               timeout(time:5, unit:'MINUTES') {
-                  input message: "Promote to STAGE?", ok: "Promote"
-               }
-
-               def v = version()
-               // tag for stage
-               sh "oc tag ${DEV_PROJECT}/tasks:latest ${STAGE_PROJECT}/tasks:${v}"
-               // clean up. keep the imagestream
-               sh "oc delete bc,dc,svc,route -l app=tasks -n ${STAGE_PROJECT}"
-               // deploy stage image
-               sh "oc new-app tasks:${v} -n ${STAGE_PROJECT}"
-               sh "oc expose svc/tasks -n ${STAGE_PROJECT}"
-             }
-          }
-
-          def version() {
-            def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
-            matcher ? matcher[0][1] : null
-          }
-      type: JenkinsPipeline
-- apiVersion: v1
-  kind: ConfigMap
-  metadata:
-    labels:
-      app: cicd-pipeline
-      role: jenkins-slave
-    name: jenkins-slaves
-  data:
-    maven-template: |-
-      <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
-        <inheritFrom></inheritFrom>
-        <name>mvn</name>
-        <privileged>false</privileged>
-        <alwaysPullImage>false</alwaysPullImage>
-        <instanceCap>2147483647</instanceCap>
-        <idleMinutes>0</idleMinutes>
-        <label>mvn</label>
-        <serviceAccount>jenkins</serviceAccount>
-        <nodeSelector></nodeSelector>
-        <customWorkspaceVolumeEnabled>false</customWorkspaceVolumeEnabled>
-        <workspaceVolume class="org.csanchez.jenkins.plugins.kubernetes.volumes.workspace.EmptyDirWorkspaceVolume">
-          <memory>false</memory>
-        </workspaceVolume>
-        <volumes />
-        <containers>
-          <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-            <name>jnlp</name>
-            <image>registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7</image>
-            <privileged>false</privileged>
-            <alwaysPullImage>false</alwaysPullImage>
-            <workingDir>/tmp</workingDir>
-            <command></command>
-            <args>${computer.jnlpmac} ${computer.name}</args>
-            <ttyEnabled>false</ttyEnabled>
-            <resourceRequestCpu>200m</resourceRequestCpu>
-            <resourceRequestMemory>1Gi</resourceRequestMemory>
-            <resourceLimitCpu>1</resourceLimitCpu>
-            <resourceLimitMemory>4Gi</resourceLimitMemory>
-            <envVars/>
-          </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-        </containers>
-        <envVars/>
-        <annotations/>
-        <imagePullSecrets/>
-      </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
-# Sonatype Nexus
-- apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      description: Sonatype Nexus repository manager's http port
-    labels:
-      app: nexus
-    name: nexus
-  spec:
-    ports:
-    - name: web
-      port: 8081
-      protocol: TCP
-      targetPort: 8081
-    selector:
-      app: nexus
-      deploymentconfig: nexus
-    sessionAffinity: None
-    type: ClusterIP
-- apiVersion: v1
-  kind: Route
-  metadata:
-    labels:
-      app: nexus
-    name: nexus
-  spec:
-    port:
-      targetPort: web
-    to:
-      kind: Service
-      name: nexus
-- apiVersion: v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: nexus
-    name: nexus
-  spec:
-    tags:
-    - annotations:
-        description: The Nexus Docker image
-        tags: nexus
-      from:
-        kind: DockerImage
-        name: openshiftdemos/nexus:2.13.0-01
-      importPolicy: {}
-      name: "2.13.0-01"
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    labels:
-      app: nexus
-    name: nexus
-  spec:
-    replicas: 1
-    selector:
-      app: nexus
-      deploymentconfig: nexus
-    strategy:
-      type: Recreate
-    template:
-      metadata:
-        labels:
-          app: nexus
-          deploymentconfig: nexus
-      spec:
-        containers:
-        - image: ' '
-          imagePullPolicy: Always
-          name: nexus
-          ports:
-          - containerPort: 8081
-            protocol: TCP
-          livenessProbe:
-            failureThreshold: 5
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            successThreshold: 1
-            httpGet:
-              port: 8081
-              path: /content/groups/public
-            timeoutSeconds: 5
-          readinessProbe:
-            failureThreshold: 5
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            successThreshold: 1
-            httpGet:
-              port: 8081
-              path: /content/groups/public
-            timeoutSeconds: 5
-          resources:
-            requests:
-              memory: 512Mi
-              cpu: 200m
-            limits:
-              memory: 2Gi
-              cpu: 500m
-          terminationMessagePath: /dev/termination-log
-          volumeMounts:
-          - mountPath: /opt/nexus-work
-            name: nexus-data
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - emptyDir: {}
-          name: nexus-data
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - nexus
-        from:
-          kind: ImageStreamTag
-          name: nexus:2.13.0-01
-      type: ImageChange
-  status: {}
-# Gogs
-- apiVersion: v1
-  kind: Service
-  metadata:
+    name: gogs
     annotations:
       description: The Gogs server's http port
     labels:
       app: gogs
-    name: gogs
   spec:
+    type: ClusterIP
+    sessionAffinity: None
     ports:
     - name: web
       port: 3000
@@ -317,8 +51,6 @@ objects:
     selector:
       app: gogs
       deploymentconfig: gogs
-    sessionAffinity: None
-    type: ClusterIP
 - apiVersion: v1
   kind: Service
   metadata:
@@ -327,6 +59,8 @@ objects:
     labels:
       app: gogs
   spec:
+    type: ClusterIP
+    sessionAffinity: None
     ports:
     - name: postgresql
       port: 5432
@@ -335,8 +69,6 @@ objects:
     selector:
       app: gogs
       deploymentconfig: postgresql-gogs
-    sessionAffinity: None
-    type: ClusterIP
 - apiVersion: v1
   kind: Route
   metadata:
