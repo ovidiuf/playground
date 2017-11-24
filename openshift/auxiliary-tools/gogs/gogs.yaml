@@ -33,6 +33,16 @@ parameters:
   required: true
 objects:
 - apiVersion: v1
+  groupNames: null
+  kind: RoleBinding
+  metadata:
+    name: default_edit
+  roleRef:
+    name: edit
+  subjects:
+  - kind: ServiceAccount
+    name: default
+- apiVersion: v1
   kind: Service
   metadata:
     name: gogs
@@ -369,14 +379,18 @@ objects:
 
       set -x
 
-      # Use the oc client to get the url for the gogs and jenkins route and service
+      # Use the oc client to get the url for the gogs route and service
       GOGSSVC=$(oc get svc gogs -o template --template='{{.spec.clusterIP}}')
-      GOGSROUTE=$(oc get route gogs -o template --template='{{.spec.host}}')
-      JENKINSSVC=$(oc get svc jenkins -o template --template='{{.spec.clusterIP}}')
 
-      # Use the oc client to get the postgres and jenkins variables into the current shell
+      echo "GOGSSVC: ${GOGSSVC}"
+
+      GOGSROUTE=$(oc get route gogs -o template --template='{{.spec.host}}')
+
+      echo "GOGSROUTE: ${GOGSROUTE}"
+
+      # Use the oc client to get the postgres variables into the current shell
       eval $(oc env dc/postgresql-gogs --list | grep -v \#)
-      eval $(oc env dc/jenkins --list | grep -v \#)
+      #eval $(oc env dc/jenkins --list | grep -v \#)
 
       # postgres has a readiness probe, so checking if there is at least one
       # endpoint means postgres is alive and ready, so we can then attempt to install gogs
