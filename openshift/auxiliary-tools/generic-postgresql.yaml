@@ -1,3 +1,14 @@
+#
+# Generic Postgresql template that creates the service, the deployment configuration, and the persistent volume
+# claim. To be run as follows:
+#
+# oc process -f ./generic-postgresql.yaml \
+#   --param APPLICATION_NAME=someapp \
+#   --param POSTGRESQL_USER=someuser \
+#   --param POSTGRESQL_PASSWORD=somepasswd \
+#   --param POSTGRESQL_DATABASE=somedb \
+#  | oc create -f -
+#
 apiVersion: v1
 kind: Template
 labels:
@@ -32,7 +43,7 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: postgresql
+    name: ${APPLICATION_NAME}-postgresql
     labels:
       app: ${APPLICATION_NAME}
   spec:

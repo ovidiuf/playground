@@ -1,7 +1,9 @@
 #
-# Gogs template based on https://github.com/OpenShiftDemos/openshift-cd-demo/blob/ocp-3.6/cicd-template.yaml
-# Deploys a Gogs instance and the associated Postgresql instance.
+# Gogs template that creates the ...
+# A Postgresql database must be created before running this template, see:
+# https://kb.novaordis.com/index.php/OpenShift_Postgres#Installation
 #
+# Based on https://github.com/OpenShiftDemos/openshift-cd-demo/blob/ocp-3.6/cicd-template.yaml
 #
 # Tested with OpenShift 3.6
 #
@@ -13,23 +15,42 @@ labels:
 metadata:
   name: novaordis-gogs
   annotations:
-    description: Creates the Gogs OpenShift infrastructure.
+    description: Creates the Gogs OpenShift infrastructure, assuming that Postgresql is already installed.
 message: The Gogs infrastructure has been initialized for your project. Gogs username/password are gogs/${GOGS_PASSWORD}.
 parameters:
+- description: Gogs admin user.
+  displayName: Gogs admin user
+  value: gogs
+  name: GOGS_USER
+  required: true
 - description: Password for the Gogs user.
   displayName: Gogs Password
   value: password
   name: GOGS_PASSWORD
   required: true
+- description: Gogs administrator e-mail.
+  displayName: Gogs administrator e-mail
+  value: admin@gogs.com
+  name: GOGS_ADMIN_EMAIL
+  required: true
 - displayName: Gogs version
   value: "0.11.29"
   name: GOGS_VERSION
   required: true
-- description: Password for Gogs Git Server PostgreSQL backend
-  displayName: Gogs' PostgreSQL Password
-  from: '[a-zA-Z0-9]{16}'
-  generate: expression
-  name: GOGS_POSTGRESQL_PASSWORD
+- name: POSTGRESQL_USER
+  value: gogs
+  description: The Postgresql user for Gogs.
+  displayName: The Postgresql user.
+  required: true
+- name: POSTGRESQL_PASSWORD
+  value: CHANGE_THIS!
+  description: The password of the Postgresql user for Gogs.
+  displayName: The Postgresql user's password.
+  required: true
+- name: POSTGRESQL_DATABASE
+  value: gogs
+  description: The Gogs Postgresql database.
+  displayName: The Gogs Postgresql database.
   required: true
 objects:
 - apiVersion: v1
@@ -61,24 +82,6 @@ objects:
     selector:
       app: gogs
       deploymentconfig: gogs
-- apiVersion: v1
-  kind: Service
-  metadata:
-    creationTimestamp: null
-    name: postgresql-gogs
-    labels:
-      app: gogs
-  spec:
-    type: ClusterIP
-    sessionAffinity: None
-    ports:
-    - name: postgresql
-      port: 5432
-      protocol: TCP
-      targetPort: 5432
-    selector:
-      app: gogs
-      deploymentconfig: postgresql-gogs
 - apiVersion: v1
   kind: Route
   metadata:
@@ -194,97 +197,6 @@ objects:
           name: gogs:${GOGS_VERSION}
       type: ImageChange
   status: {}
-- apiVersion: v1
-  kind: DeploymentConfig
-  metadata:
-    creationTimestamp: null
-    labels:
-      app: gogs
-      deploymentconfig: postgresql-gogs
-    name: postgresql-gogs
-  spec:
-    replicas: 1
-    selector:
-      app: gogs
-      deploymentconfig: postgresql-gogs
-    strategy:
-      recreateParams:
-        timeoutSeconds: 600
-      type: Recreate
-    template:
-      metadata:
-        labels:
-          app: gogs
-          deploymentconfig: postgresql-gogs
-      spec:
-        containers:
-        - env:
-          - name: POSTGRESQL_USER
-            value: gogs
-          - name: POSTGRESQL_PASSWORD
-            value: ${GOGS_POSTGRESQL_PASSWORD}
-          - name: POSTGRESQL_DATABASE
-            value: gogs
-          image: ' '
-          imagePullPolicy: IfNotPresent
-          livenessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            tcpSocket:
-              port: 5432
-            timeoutSeconds: 1
-          name: postgresql
-          ports:
-          - containerPort: 5432
-            protocol: TCP
-          readinessProbe:
-            exec:
-              command:
-              - /bin/sh
-              - -i
-              - -c
-              - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
-            failureThreshold: 3
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 200m
-              memory: 256Mi
-          securityContext:
-            capabilities: {}
-            privileged: false
-          terminationMessagePath: /dev/termination-log
-          volumeMounts:
-          - mountPath: /var/lib/pgsql/data
-            name: postgresql-data
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - name: postgresql-data
-          persistentVolumeClaim:
-            claimName: postgresql-gogs-data
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - postgresql
-        from:
-          kind: ImageStreamTag
-          name: postgresql:9.5
-          namespace: openshift
-      type: ImageChange
-    - type: ConfigChange
-  status: {}
 - kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
@@ -301,18 +213,6 @@ objects:
   apiVersion: v1
   metadata:
     name: gogs-config
-    labels:
-      app: gogs
-  spec:
-    accessModes:
-      - ReadWriteOnce
-    resources:
-      requests:
-        storage: 1Gi
-- kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: postgresql-gogs-data
     labels:
       app: gogs
   spec:
@@ -359,7 +259,7 @@ objects:
   data:
     app.ini: |
       RUN_MODE = prod
-      RUN_USER = gogs
+      RUN_USER = ${GOGS_USER}
 
       [security]
       INSTALL_LOCK = false
@@ -389,14 +289,14 @@ objects:
       echo "GOGSROUTE: ${GOGSROUTE}"
 
       # Use the oc client to get the postgres variables into the current shell
-      eval $(oc env dc/postgresql-gogs --list | grep -v \#)
+      eval $(oc env dc/gogs-postgresql --list | grep -v \#)
       #eval $(oc env dc/jenkins --list | grep -v \#)
 
       # postgres has a readiness probe, so checking if there is at least one
       # endpoint means postgres is alive and ready, so we can then attempt to install gogs
       # we're willing to wait 60 seconds for it, otherwise something is wrong.
       x=1
-      oc get ep postgresql-gogs -o yaml | grep "\- addresses:"
+      oc get ep postgresql -o yaml | grep "\- addresses:"
       while [ ! $? -eq 0 ]
       do
         sleep 10
@@ -407,7 +307,7 @@ objects:
           exit 255
         fi
 
-        oc get ep postgresql-gogs -o yaml | grep "\- addresses:"
+        oc get ep postgresql -o yaml | grep "\- addresses:"
       done
 
       # now we wait for gogs to be ready in the same way
@@ -426,16 +326,16 @@ objects:
         oc get ep gogs -o yaml | grep "\- addresses:"
       done
 
-      # we might catch the router before it's been updated, so wait just a touch
-      # more
+      echo "We might catch the router before it's been updated, so wait 10 more seconds ..."
+
       sleep 10
 
       RETURN=$(curl -o /dev/null -sL --post302 -w "%{http_code}" http://$GOGSSVC:3000/install \
       --form db_type=PostgreSQL \
-      --form db_host=postgresql-gogs:5432 \
-      --form db_user=gogs \
-      --form db_passwd=$POSTGRESQL_PASSWORD \
-      --form db_name=gogs \
+      --form db_host=gogs-postgresql:5432 \
+      --form db_user=${POSTGRESQL_USER} \
+      --form db_passwd=${POSTGRESQL_PASSWORD} \
+      --form db_name=${POSTGRESQL_DATABASE} \
       --form ssl_mode=disable \
       --form db_path=data/gogs.db \
       --form "app_name=Gogs: Go Git Service" \
@@ -446,10 +346,10 @@ objects:
       --form http_port=3000 \
       --form app_url=http://${GOGSROUTE}/ \
       --form log_root_path=/opt/gogs/log \
-      --form admin_name=gogs \
+      --form admin_name=${GOGS_USER} \
       --form admin_passwd=${GOGS_PASSWORD} \
       --form admin_confirm_passwd=${GOGS_PASSWORD} \
-      --form admin_email=admin@gogs.com)
+      --form admin_email=${GOGS_ADMIN_EMAIL})
 
       if [ $RETURN != "200" ] && [ $RETURN != "302" ]
       then
@@ -469,7 +369,7 @@ objects:
       EOF
 
       RETURN=$(curl -o /dev/null -sL -w "%{http_code}" -H "Content-Type: application/json" \
-      -u gogs:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/migrate -d @/tmp/data.json)
+      -u ${GOGS_USER}:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/migrate -d @/tmp/data.json)
 
       if [ $RETURN != "201" ] && [ $RETURN != "200" ]
       then
@@ -495,7 +395,7 @@ objects:
       EOF
 
       RETURN=$(curl -o /dev/null -sL -w "%{http_code}" -H "Content-Type: application/json" \
-      -u gogs:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/gogs/openshift-tasks/hooks -d @/tmp/data.json)
+      -u ${GOGS_USER}:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/gogs/openshift-tasks/hooks -d @/tmp/data.json)
 
       if [ $RETURN != "201" ] && [ $RETURN != "200" ]
       then
