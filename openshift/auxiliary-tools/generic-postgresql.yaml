@@ -115,15 +115,15 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /var/lib/pgsql/data
-            name: ${APPLICATION_NAME}-postgresql-data-volume
+            name: ${APPLICATION_NAME}-postgresql-data
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - name: ${APPLICATION_NAME}-postgresql-data-volume
+        - name: ${APPLICATION_NAME}-postgresql-data
           persistentVolumeClaim:
-            claimName: ${APPLICATION_NAME}-postgresql-data-volume-claim
+            claimName: ${APPLICATION_NAME}-postgresql
     triggers:
     - imageChangeParams:
         automatic: true
@@ -139,7 +139,7 @@ objects:
 - kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
-    name: ${APPLICATION_NAME}-postgresql-data-volume-claim
+    name: ${APPLICATION_NAME}-postgresql
     labels:
       app: ${APPLICATION_NAME}
   spec:
