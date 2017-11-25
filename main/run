@@ -1,21 +1,37 @@
 #!/bin/bash
 
 #GC_LOGGING_ARGS="-Xloggc:./$(date +'%y-%m-%d-%H.%M.%S')-gc.log -XX:+PrintGCDateStamps";
-
-#java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main $@
-
-
-debug_args=""
 args=""
+separator=$'\x1f' # US - unit separator
 
 while [ -n "$1" ]; do
 
     if [ "$1" = "-d" ]; then
+
+        #
+        # process arguments that make sense at this layer
+        #
         debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+
     else
-        args="${args} $1"
+
+        #
+        # ... and accumulate the rest between special separator characters
+        #
+        [ -z "${args}" ] && args="$1" || args="${args}${separator}$1"
     fi
     shift
 done
 
-java ${debug_args} -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main ${args}
+#
+# re-assemble the command line, by re-initializing the positional parameters, and pass it to the underlying process
+#
+IFS=${separator}
+set - ${args}
+IFS="$(printf ' \t\n')" # restore the standard separators
+
+#
+# Use "$@" built-in variable, which encloses each positional parameter in its own set of double quotes
+#
+
+java ${debug_args} -cp $(dirname $0)/target/main-1.jar io.novaordis.playground.Main "$@"

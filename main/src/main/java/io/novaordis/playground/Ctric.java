@@ -34,7 +34,7 @@ public class Ctric {
     // Constants -------------------------------------------------------------------------------------------------------
 
     // Wed May 24 18:59:08 EDT 2017
-    private static final DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    private static final DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
     private static final DateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 
     // Static ----------------------------------------------------------------------------------------------------------
@@ -58,6 +58,8 @@ public class Ctric {
 
         int lineNumber = 0;
 
+        Date last = null;
+
         while((line = br.readLine()) != null) {
 
             lineNumber ++;
@@ -69,47 +71,63 @@ public class Ctric {
                 continue;
             }
 
-            try {
+            //[2017-10-17 09:42:17,577]
 
-                Date d = INPUT_DATE_FORMAT.parse(line);
-
-                if (d != null) {
-
-                    if (crt != null) {
-
-                        readings.add(crt);
-                    }
-
-                    crt = new Reading(d);
-                    continue;
-                }
-            }
-            catch(Exception e) {
-
-                //
-                // ignore
-                //
-            }
-
-            //
-            // drop "ignorable" lines
-            //
-
-            if (!line.startsWith("KiB Swap:")) {
+            if (!line.startsWith("[")) {
 
                 continue;
             }
 
-            //
-            // swap data
-            //
+            String ts = line.substring(1);
 
-            if (crt == null) {
+            int i = ts.indexOf(']');
 
-                throw new IllegalStateException("swap line occurred before timestamp");
+            if (i == -1) {
+
+                throw new Exception("invalid format");
             }
 
-            crt.addSwapReading(lineNumber, line);
+            ts = ts.substring(0, i);
+
+            Date d = INPUT_DATE_FORMAT.parse(ts);
+
+            if (last == null) {
+
+                last = d;
+            }
+            else if (last.getTime() > d.getTime()) {
+
+                throw new Exception("date overlap");
+            }
+
+            System.out.println(OUTPUT_DATE_FORMAT.format(d));
+
+//            if (crt != null) {
+//
+//                readings.add(crt);
+//            }
+//
+//            crt = new Reading(d);
+//
+//            //
+//            // drop "ignorable" lines
+//            //
+//
+//            if (!line.startsWith("KiB Swap:")) {
+//
+//                continue;
+//            }
+//
+//            //
+//            // swap data
+//            //
+//
+//            if (crt == null) {
+//
+//                throw new IllegalStateException("swap line occurred before timestamp");
+//            }
+//
+//            crt.addSwapReading(lineNumber, line);
 
         }
 
@@ -119,17 +137,17 @@ public class Ctric {
 
     }
 
-    // Attributes ------------------------------------------------------------------------------------------------------
+// Attributes ------------------------------------------------------------------------------------------------------
 
-    // Constructors ----------------------------------------------------------------------------------------------------
+// Constructors ----------------------------------------------------------------------------------------------------
 
-    // Public ----------------------------------------------------------------------------------------------------------
+// Public ----------------------------------------------------------------------------------------------------------
 
-    // Package protected -----------------------------------------------------------------------------------------------
+// Package protected -----------------------------------------------------------------------------------------------
 
-    // Protected -------------------------------------------------------------------------------------------------------
+// Protected -------------------------------------------------------------------------------------------------------
 
-    // Private ---------------------------------------------------------------------------------------------------------
+// Private ---------------------------------------------------------------------------------------------------------
 
     private static void processReadings(List<Reading> readings) {
 
@@ -183,7 +201,7 @@ public class Ctric {
 
     }
 
-    // Inner classes ---------------------------------------------------------------------------------------------------
+// Inner classes ---------------------------------------------------------------------------------------------------
 
     private static class Reading {
 
