@@ -1,0 +1,47 @@
+#
+# A template for creating persistent volumes.
+#
+# Usage:
+#
+# oc process -f ./pv-template.yaml --param NAME=pv9 --param SIZE_GB=2 | oc create -f -
+#
+# The path under the /nfs export point is assumed to be the same as the volume name.
+#
+#
+apiVersion: v1
+kind: Template
+labels:
+  template: novaordis-pv-template
+metadata:
+  name: novaordis-pv-template
+  annotations:
+    description: A template to create persistent volumes.
+message: A new persistent volume has been created.
+parameters:
+- name: NAME
+  description: The name of the presistent volume.
+  displayName: The name of the presistent volume
+  required: true
+- name: SIZE_GB
+  description: The size in GiB.
+  displayName: The size in GiB
+  required: true
+- name: NFS_SERVER
+  value: support.ocp36.local
+  description: The IP address of the hostname of the NFS server.
+  displayName: The NFS server
+  required: true
+objects:
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: ${NAME}
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: ${SIZE_GB}Gi
+    nfs:
+      path: /nfs/${NAME}
+      server: ${NFS_SERVER}
+    persistentVolumeReclaimPolicy: Retain

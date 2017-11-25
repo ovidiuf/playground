@@ -37,21 +37,10 @@ parameters:
   value: "0.11.29"
   name: GOGS_VERSION
   required: true
-- name: POSTGRESQL_USER
-  value: gogs
-  description: The Postgresql user for Gogs.
-  displayName: The Postgresql user.
-  required: true
-- name: POSTGRESQL_PASSWORD
-  value: CHANGE_THIS!
-  description: The password of the Postgresql user for Gogs.
-  displayName: The Postgresql user's password.
-  required: true
-- name: POSTGRESQL_DATABASE
-  value: gogs
-  description: The Gogs Postgresql database.
-  displayName: The Gogs Postgresql database.
-  required: true
+#
+# POSTGRESQL_USER, POSTGRESQL_PASSWORD and POSTGRESQL_DATABASE are not defined there because they are extracted from
+# the database pod's environment
+#
 objects:
 - apiVersion: v1
   groupNames: null
@@ -296,7 +285,7 @@ objects:
       # endpoint means postgres is alive and ready, so we can then attempt to install gogs
       # we're willing to wait 60 seconds for it, otherwise something is wrong.
       x=1
-      oc get ep gogs-postgresq -o yaml | grep "\- addresses:"
+      oc get ep gogs-postgresql -o yaml | grep "\- addresses:"
       while [ ! $? -eq 0 ]
       do
         sleep 10
@@ -307,7 +296,7 @@ objects:
           exit 255
         fi
 
-        oc get ep gogs-postgresq -o yaml | grep "\- addresses:"
+        oc get ep gogs-postgresql -o yaml | grep "\- addresses:"
       done
 
       # now we wait for gogs to be ready in the same way
