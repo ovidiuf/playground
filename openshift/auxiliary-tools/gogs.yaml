@@ -1,5 +1,5 @@
 #
-# Gogs template that creates the ...
+# Gogs template that creates a Gogs instance.
 # A Postgresql database must be created before running this template, see:
 # https://kb.novaordis.com/index.php/OpenShift_Postgres#Installation
 #

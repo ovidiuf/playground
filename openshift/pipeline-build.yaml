@@ -1,0 +1,154 @@
+#
+# A pipeline build template.
+#
+apiVersion: v1
+kind: Template
+labels:
+  template: novaordis-pipeline-build
+metadata:
+  name: novaordis-pipeline-build
+  annotations:
+    description: A pipeline build template.
+objects:
+- apiVersion: v1
+  groupNames: null
+  kind: RoleBinding
+  metadata:
+    name: default_edit
+  roleRef:
+    name: edit
+  subjects:
+  - kind: ServiceAccount
+    name: default
+# Pipeline
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "jenkins", "namespace": "", "kind": "DeploymentConfig"}]'
+    labels:
+      app: cicd-pipeline
+      name: cicd-pipeline
+    name: tasks-pipeline
+  spec:
+    triggers:
+      - type: GitHub
+        github:
+          secret: ${WEBHOOK_SECRET}
+      - type: Generic
+        generic:
+          secret: ${WEBHOOK_SECRET}
+    runPolicy: Serial
+    source:
+      type: None
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfile: |-
+          node('mvn') {
+             // define commands
+             def mvnCmd = "mvn -s configuration/cicd-settings.xml"
+
+             stage ('Build') {
+               git branch: 'eap-7', url: 'http://gogs:3000/gogs/openshift-tasks.git'
+               sh "${mvnCmd} clean install -DskipTests=true"
+             }
+
+             stage ('Test') {
+               sh "${mvnCmd} test"
+               step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+             }
+            
+             stage ('Analysis (Security, Bugs, etc)') {
+               sh "${mvnCmd} site -DskipTests=true"
+              
+               step([$class: 'CheckStylePublisher', unstableTotalAll:'300'])
+               step([$class: 'PmdPublisher', unstableTotalAll:'20'])
+               step([$class: 'FindBugsPublisher', pattern: '**/findbugsXml.xml', unstableTotalAll:'20'])
+               step([$class: 'JacocoPublisher'])
+               publishHTML (target: [keepAll: true, reportDir: 'target/site', reportFiles: 'project-info.html', reportName: "Site Report"])
+             }
+
+             stage ('Push to Nexus') {
+              sh "${mvnCmd} deploy -DskipTests=true"
+             }
+
+             stage ('Deploy DEV') {
+               sh "rm -rf oc-build && mkdir -p oc-build/deployments"
+               sh "cp target/openshift-tasks.war oc-build/deployments/ROOT.war"
+               // clean up. keep the image stream
+               sh "oc delete bc,dc,svc,route -l app=tasks -n ${DEV_PROJECT}"
+               // create build. override the exit code since it complains about exising imagestream
+               sh "oc new-build --name=tasks --image-stream=jboss-eap70-openshift:1.5 --binary=true --labels=app=tasks -n ${DEV_PROJECT} || true"
+               // build image
+               sh "oc start-build tasks --from-dir=oc-build --wait=true -n ${DEV_PROJECT}"
+               // deploy image
+               sh "oc new-app tasks:latest -n ${DEV_PROJECT}"
+               sh "oc expose svc/tasks -n ${DEV_PROJECT}"
+             }
+
+             stage ('Deploy STAGE') {
+               timeout(time:5, unit:'MINUTES') {
+                  input message: "Promote to STAGE?", ok: "Promote"
+               }
+
+               def v = version()
+               // tag for stage
+               sh "oc tag ${DEV_PROJECT}/tasks:latest ${STAGE_PROJECT}/tasks:${v}"
+               // clean up. keep the imagestream
+               sh "oc delete bc,dc,svc,route -l app=tasks -n ${STAGE_PROJECT}"
+               // deploy stage image
+               sh "oc new-app tasks:${v} -n ${STAGE_PROJECT}"
+               sh "oc expose svc/tasks -n ${STAGE_PROJECT}"
+             }
+          }
+
+          def version() {
+            def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+            matcher ? matcher[0][1] : null
+          }
+      type: JenkinsPipeline
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: cicd-pipeline
+      role: jenkins-slave
+    name: jenkins-slaves
+  data:
+    maven-template: |-
+      <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+        <inheritFrom></inheritFrom>
+        <name>mvn</name>
+        <privileged>false</privileged>
+        <alwaysPullImage>false</alwaysPullImage>
+        <instanceCap>2147483647</instanceCap>
+        <idleMinutes>0</idleMinutes>
+        <label>mvn</label>
+        <serviceAccount>jenkins</serviceAccount>
+        <nodeSelector></nodeSelector>
+        <customWorkspaceVolumeEnabled>false</customWorkspaceVolumeEnabled>
+        <workspaceVolume class="org.csanchez.jenkins.plugins.kubernetes.volumes.workspace.EmptyDirWorkspaceVolume">
+          <memory>false</memory>
+        </workspaceVolume>
+        <volumes />
+        <containers>
+          <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+            <name>jnlp</name>
+            <image>registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7</image>
+            <privileged>false</privileged>
+            <alwaysPullImage>false</alwaysPullImage>
+            <workingDir>/tmp</workingDir>
+            <command></command>
+            <args>${computer.jnlpmac} ${computer.name}</args>
+            <ttyEnabled>false</ttyEnabled>
+            <resourceRequestCpu>200m</resourceRequestCpu>
+            <resourceRequestMemory>1Gi</resourceRequestMemory>
+            <resourceLimitCpu>1</resourceLimitCpu>
+            <resourceLimitMemory>4Gi</resourceLimitMemory>
+            <envVars/>
+          </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+        </containers>
+        <envVars/>
+        <annotations/>
+        <imagePullSecrets/>
+      </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
