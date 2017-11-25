@@ -296,7 +296,7 @@ objects:
       # endpoint means postgres is alive and ready, so we can then attempt to install gogs
       # we're willing to wait 60 seconds for it, otherwise something is wrong.
       x=1
-      oc get ep postgresql -o yaml | grep "\- addresses:"
+      oc get ep gogs-postgresq -o yaml | grep "\- addresses:"
       while [ ! $? -eq 0 ]
       do
         sleep 10
@@ -307,7 +307,7 @@ objects:
           exit 255
         fi
 
-        oc get ep postgresql -o yaml | grep "\- addresses:"
+        oc get ep gogs-postgresq -o yaml | grep "\- addresses:"
       done
 
       # now we wait for gogs to be ready in the same way
