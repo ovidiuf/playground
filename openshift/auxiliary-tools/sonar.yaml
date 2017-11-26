@@ -120,14 +120,15 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
-    - imageChangeParams:
+    - type: ImageChange
+      imageChangeParams:
         automatic: true
         containerNames:
         - sonar
         from:
           kind: ImageStreamTag
           name: sonar:${SONARQUBE_VERSION}
-      type: ImageChange
+
   status:
     availableReplicas: 0
     latestVersion: 0
