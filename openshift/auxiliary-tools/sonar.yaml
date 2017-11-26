@@ -8,7 +8,7 @@
 #   --param POSTGRESQL_DATABASE=sonar \
 #   --param POSTGRESQL_SERVICE=sonar-postgresql \
 #   --param STORAGE_SIZE_GB=2 \
-#   --param SONARQUBE_IMAGE_TAG=9.5 \
+#   --param SONARQUBE_VERSION=9.5 \
 #  | oc create -f -
 #
 apiVersion: v1
@@ -50,8 +50,8 @@ parameters:
   description: The size of the persistent volume claim in Gi.
   displayName: The size of the persistent volume claim.
   required: true
-- name: SONARQUBE_IMAGE_TAG
-  value: "6.5"
+- name: SONARQUBE_VERSION
+  value: "6.7"
   description: The version to be used.
   displayName: The version to be used.
   required: true
@@ -63,19 +63,13 @@ objects:
     labels:
       app: ${APPLICATION_NAME}
   spec:
-    lookupPolicy:
-      local: false
     tags:
     - from:
         kind: DockerImage
-        name: wkulhanek/sonarqube:${SONARQUBE_IMAGE_TAG}
+        name: openshiftdemos/sonarqube:${SONARQUBE_VERSION}
       generation: null
       importPolicy: {}
-      name: ${SONARQUBE_IMAGE_TAG}
-      referencePolicy:
-        type: ""
-  status:
-    dockerImageRepository: ""
+      name: ${SONARQUBE_VERSION}
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -99,12 +93,13 @@ objects:
         - name: sonar
           env:
           - name: SONARQUBE_JDBC_USERNAME
-            value: sonar
+            value: ${SONARQUBE_JDBC_USERNAME}
           - name: SONARQUBE_JDBC_PASSWORD
-            value: none
+            value: ${SONARQUBE_JDBC_PASSWORD}
           - name: SONARQUBE_JDBC_URL
             value: jdbc:postgresql://${POSTGRESQL_SERVICE}/${POSTGRESQL_DATABASE}
-          image: wkulhanek/sonarqube:${SONARQUBE_IMAGE_TAG}
+          image: ' '
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 9000
             protocol: TCP
@@ -131,7 +126,7 @@ objects:
         - sonar
         from:
           kind: ImageStreamTag
-          name: sonarqube:${SONARQUBE_IMAGE_TAG}
+          name: sonar:${SONARQUBE_VERSION}
       type: ImageChange
   status:
     availableReplicas: 0
