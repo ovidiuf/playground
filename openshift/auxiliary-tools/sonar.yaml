@@ -96,7 +96,7 @@ objects:
           deploymentconfig: ${APPLICATION_NAME}
       spec:
         containers:
-        - name: sonarqube
+        - name: sonar
           env:
           - name: SONARQUBE_JDBC_USERNAME
             value: sonar
@@ -117,18 +117,18 @@ objects:
           resources: {}
           volumeMounts:
           - mountPath: /opt/sonarqube/data
-            name: sonarqube
+            name: sonar
         volumes:
-        - name: sonarqube
+        - name: sonar
           persistentVolumeClaim:
-            claimName: sonarqube
+            claimName: sonar
     test: false
     triggers:
     - type: ConfigChange
     - imageChangeParams:
         automatic: true
         containerNames:
-        - sonarqube
+        - sonar
         from:
           kind: ImageStreamTag
           name: sonarqube:${SONARQUBE_IMAGE_TAG}
@@ -145,7 +145,7 @@ objects:
   metadata:
     labels:
       app: ${APPLICATION_NAME}
-    name: sonarqube
+    name: sonar
   spec:
     ports:
     - name: 8080-tcp
@@ -172,7 +172,7 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: sonarqube
+    name: sonar
   spec:
     accessModes:
       - ReadWriteOnce
