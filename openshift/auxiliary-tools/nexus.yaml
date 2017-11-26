@@ -1,9 +1,11 @@
 #
 # Nexus template that creates a Nexus instance.
 #
-# https://kb.novaordis.com/index.php/OpenShift_Nexus#Installation
+# https://kb.novaordis.com/index.php/OpenShift_Nexus#Method_1
 #
 # Based on https://github.com/OpenShiftDemos/openshift-cd-demo/blob/ocp-3.6/cicd-template.yaml
+#
+# Alternative installation: https://kb.novaordis.com/index.php/OpenShift_Nexus#Method_2
 #
 # Tested with OpenShift 3.6
 #
@@ -159,4 +161,3 @@ objects:
     resources:
       requests:
         storage: 2Gi
-  
