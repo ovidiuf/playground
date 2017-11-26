@@ -7,6 +7,8 @@
 #   --param POSTGRESQL_USER=someuser \
 #   --param POSTGRESQL_PASSWORD=somepasswd \
 #   --param POSTGRESQL_DATABASE=somedb \
+#   --param SIZE_GB=2 \
+#   --param POSTGRESQL_IMAGE_TAG=9.5 \
 #  | oc create -f -
 #
 apiVersion: v1
@@ -38,6 +40,16 @@ parameters:
   value: blue
   description: The name of the database to be injected into the Postgresql container as 'POSTGRESQL_DATABASE'
   displayName: The Postgresql database.
+  required: true
+- name: POSTGRESQL_IMAGE_TAG
+  value: "9.5"
+  description: The version to be used.
+  displayName: The version to be used.
+  required: true
+- name: SIZE_GB
+  value: "2"
+  description: The size of the persistent volume claim in Gi.
+  displayName: The size of the persistent volume claim.
   required: true
 objects:
 - apiVersion: v1
@@ -142,7 +154,7 @@ objects:
         - postgresql
         from:
           kind: ImageStreamTag
-          name: postgresql:9.5
+          name: postgresql:${POSTGRESQL_IMAGE_TAG}
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
@@ -158,4 +170,4 @@ objects:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 1Gi
+        storage: ${SIZE_GB}Gi
