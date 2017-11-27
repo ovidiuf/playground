@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="session-servlet:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="session-servlet.war">
-      <element id="artifact" artifact-name="session-servlet:war exploded" />
-    </root>
-  </artifact>
-</component>
