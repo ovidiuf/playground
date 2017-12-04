@@ -5,6 +5,7 @@
       <w>hostnames</w>
       <w>htpasswd</w>
       <w>passwordless</w>
+      <w>sonarqube</w>
     </words>
   </dictionary>
 </component>
