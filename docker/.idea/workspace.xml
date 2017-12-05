@@ -46,8 +46,8 @@
       <file leaf-file-name="persistent-loop.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dockerfile-container-writes-its-image/persistent-loop.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22127329">
-              <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.1281056">
+              <caret line="11" column="46" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -273,12 +273,12 @@
       <option name="number" value="Default" />
       <updated>1512438643540</updated>
       <workItem from="1512438645149" duration="17000" />
-      <workItem from="1512438673585" duration="1509000" />
+      <workItem from="1512438673585" duration="1623000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1526000" />
+    <option name="totallyTimeSpent" value="1640000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="813" y="24" width="1663" height="1385" extended-state="0" />
@@ -343,8 +343,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dockerfile-container-writes-its-image/persistent-loop.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22127329">
-          <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.1281056">
+          <caret line="11" column="46" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
           <folding />
         </state>
       </provider>

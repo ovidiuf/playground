@@ -9,7 +9,7 @@
 # read the value of the counter from the filesystem
 #
 
-cnt=$(cat /tmp/counter)
+[ -f /tmp/counter ] && cnt=$(cat /tmp/counter)
 [ -z "${cnt}" ] && cnt=0
 
 while [ true ]; do
