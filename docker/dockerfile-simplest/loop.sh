@@ -10,7 +10,8 @@ echo_content=${SUBJECT_NAME}
 cnt=0
 
 while [ true ]; do
-  echo "${cnt},  ${echo_content}"
+  echo "stdout: ${cnt},  ${echo_content}"
+  echo "sterr: ${cnt},  ${echo_content}" 1>&2
   cnt=$(expr ${cnt} + 1)
   sleep 1
 done
