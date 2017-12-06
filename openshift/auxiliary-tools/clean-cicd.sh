@@ -109,16 +109,22 @@ function clean-sonarqube() {
     oc-delete is/sonarqube
 }
 
+function clean-jenkins-slaves-config-map() {
+
+    oc-delete cm/jenkins-slaves
+}
 
 function main() {
 
     check-project-name
 
-    clean-gogs
+#    clean-gogs
+#
+#    clean-nexus
+#
+#    clean-sonarqube
 
-    clean-nexus
-
-    clean-sonarqube
+    clean-jenkins-slaves-config-map
 }
 
 main $@
