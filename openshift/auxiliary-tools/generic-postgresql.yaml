@@ -104,7 +104,7 @@ objects:
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
-            initialDelaySeconds: 30
+            initialDelaySeconds: 90
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
@@ -113,18 +113,18 @@ objects:
           ports:
           - containerPort: 5432
             protocol: TCP
-#          readinessProbe:
-#            exec:
-#              command:
-#              - /bin/sh
-#              - -i
-#              - -c
-#              - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
-#            failureThreshold: 3
-#            initialDelaySeconds: 5
-#            periodSeconds: 10
-#            successThreshold: 1
-#            timeoutSeconds: 1
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
+            failureThreshold: 3
+            initialDelaySeconds: 100
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
           resources:
             requests:
               cpu: 100m

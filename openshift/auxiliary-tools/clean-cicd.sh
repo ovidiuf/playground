@@ -73,10 +73,10 @@ function unbind-persistent-volume() {
 
 function clean-gogs() {
 
+    oc-delete routes/gogs
     oc-delete dc/postgresql-gogs
     oc-delete svc/postgresql-gogs
 
-    oc-delete routes/gogs
     oc-delete dc/gogs
     oc-delete is/gogs
     oc-delete svc/gogs
@@ -91,11 +91,24 @@ function clean-gogs() {
     clean-storage postgresql-gogs-data
 }
 
+function clean-nexus() {
+
+    oc-delete routes/nexus
+    oc-delete dc/nexus
+    oc-delete svc/nexus
+
+    oc-delete is/nexus
+
+    clean-storage nexus
+}
+
 function main() {
 
     check-project-name
 
-    clean-gogs
+    #clean-gogs
+
+    clean-nexus
 }
 
 main $@
