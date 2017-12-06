@@ -114,6 +114,12 @@ function clean-jenkins-slaves-config-map() {
     oc-delete cm/jenkins-slaves
 }
 
+function clean-build-configuration() {
+
+    oc-delete bc/novaordis-pipeline
+}
+
+
 function main() {
 
     check-project-name
@@ -123,8 +129,10 @@ function main() {
 #    clean-nexus
 #
 #    clean-sonarqube
-
-    clean-jenkins-slaves-config-map
+#
+#    clean-jenkins-slaves-config-map
+#
+#     clean-build-configuration
 }
 
 main $@
