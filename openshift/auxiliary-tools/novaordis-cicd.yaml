@@ -12,13 +12,12 @@ parameters:
 #  required: true
 - description: Password for the Gogs user.
   displayName: Gogs Password
-  value: password
+  value: N7USH523gT55
   name: GOGS_PASSWORD
   required: true
 - description: Password for Gogs Git Server PostgreSQL backend
   displayName: Gogs' PostgreSQL Password
-  from: '[a-zA-Z0-9]{16}'
-  generate: expression
+  value: nMa27_GHE72
   name: GOGS_POSTGRESQL_PASSWORD
   required: true
 - displayName: Gogs version
@@ -44,9 +43,9 @@ metadata:
     tags: jenkins,gogs,nexus,cicd
   name: novaordis-cicd
 objects:
-########################################################################################################################
-# Give sufficient privileges to the service account
-########################################################################################################################
+#########################################################################################################################
+## Give sufficient privileges to the service account
+#########################################################################################################################
 ##
 ## Since the entire project is dedicated to CI/CD, instead of creating individual service
 ## accounts for individual services, we use the project's default service account "default"
@@ -65,24 +64,39 @@ objects:
 ########################################################################################################################
 # Gogs Postgresql service
 ########################################################################################################################
-#- apiVersion: v1
-#  kind: Service
-#  metadata:
-#    creationTimestamp: null
-#    name: postgresql-gogs
-#    labels:
-#      app: gogs
-#  spec:
-#    ports:
-#    - name: postgresql
-#      port: 5432
-#      protocol: TCP
-#      targetPort: 5432
-#    selector:
-#      app: gogs
-#      deploymentconfig: postgresql-gogs
-#    sessionAffinity: None
-#    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    name: postgresql-gogs
+    labels:
+      app: gogs
+  spec:
+    ports:
+    - name: postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: gogs
+      deploymentconfig: postgresql-gogs
+    sessionAffinity: None
+    type: ClusterIP
+########################################################################################################################
+# Gogs Postgresql persistent volume claim
+########################################################################################################################
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: postgresql-gogs-data
+    labels:
+      app: gogs
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
 ########################################################################################################################
 # Gogs Postgresql deployment configuration
 ########################################################################################################################
@@ -120,8 +134,8 @@ objects:
           image: ' '
           imagePullPolicy: IfNotPresent
           livenessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 30
+            failureThreshold: 5
+            initialDelaySeconds: 90
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
@@ -139,7 +153,7 @@ objects:
               - -c
               - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
             failureThreshold: 3
-            initialDelaySeconds: 5
+            initialDelaySeconds: 100
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
@@ -178,385 +192,399 @@ objects:
     - type: ConfigChange
   status: {}
 ########################################################################################################################
-# Gogs Postgresql persistent volume claim
-########################################################################################################################
-#- kind: PersistentVolumeClaim
-#  apiVersion: v1
-#  metadata:
-#    name: postgresql-gogs-data
-#    labels:
-#      app: gogs
-#  spec:
-#    accessModes:
-#      - ReadWriteOnce
-#    resources:
-#      requests:
-#        storage: 1Gi
-########################################################################################################################
-# Gogs image stream
-########################################################################################################################
-#- apiVersion: v1
-#  kind: ImageStream
-#  metadata:
-#    name: gogs
-#    labels:
-#      app: gogs
-#  spec:
-#    tags:
-#    - annotations:
-#        description: The Gogs git server docker image
-#        tags: gogs,go,golang
-#      from:
-#        kind: DockerImage
-#        name: openshiftdemos/gogs:${GOGS_VERSION}
-#      importPolicy: {}
-#      name: ${GOGS_VERSION}
-########################################################################################################################
-# Gogs service
-########################################################################################################################
-#- apiVersion: v1
-#  kind: Service
-#  metadata:
-#    annotations:
-#      description: The Gogs server's http port
-#    labels:
-#      app: gogs
-#    name: gogs
-#  spec:
-#    ports:
-#    - name: web
-#      port: 3000
-#      protocol: TCP
-#      targetPort: 3000
-#    selector:
-#      app: gogs
-#      deploymentconfig: gogs
-#    sessionAffinity: None
-#    type: ClusterIP
-########################################################################################################################
-# Gogs route
-########################################################################################################################
-#- apiVersion: v1
-#  kind: Route
-#  metadata:
-#    annotations:
-#      description: Route for gogs's http service.
-#    name: gogs
-#    labels:
-#      app: gogs
-#  spec:
-#    to:
-#      kind: Service
-#      name: gogs
-########################################################################################################################
-# Gogs deployment configuration
-########################################################################################################################
-#- apiVersion: v1
-#  kind: DeploymentConfig
-#  metadata:
-#    labels:
-#      app: gogs
-#    name: gogs
-#  spec:
-#    replicas: 1
-#    selector:
-#      app: gogs
-#      deploymentconfig: gogs
-#    strategy:
-#      type: Recreate
-#    template:
-#      metadata:
-#        labels:
-#          app: gogs
-#          deploymentconfig: gogs
-#      spec:
-#        containers:
-#        - image: " "
-#          imagePullPolicy: Always
-#          livenessProbe:
-#            failureThreshold: 3
-#            initialDelaySeconds: 15
-#            periodSeconds: 10
-#            successThreshold: 1
-#            httpGet:
-#              port: 3000
-#              path: /
-#            timeoutSeconds: 1
-#          name: gogs
-#          ports:
-#          - containerPort: 3000
-#            protocol: TCP
-#          resources:
-#            requests:
-#              memory: 256Mi
-#              cpu: 100m
-#            limits:
-#              memory: 512Mi
-#              cpu: 200m
-#          terminationMessagePath: /dev/termination-log
-#          readinessProbe:
-#            failureThreshold: 3
-#            initialDelaySeconds: 15
-#            periodSeconds: 10
-#            successThreshold: 1
-#            httpGet:
-#              port: 3000
-#              path: /
-#            timeoutSeconds: 1
-#          volumeMounts:
-#          - name: gogs-data
-#            mountPath: /opt/gogs/data
-#          - name: gogs-config
-#            mountPath: /etc/gogs/conf
-#          - name: gogs-custom-config
-#            mountPath: /opt/gogs/custom/conf
-#        volumes:
-#          - name: gogs-data
-#            persistentVolumeClaim:
-#              claimName: gogs-data
-#          - name: gogs-config
-#            persistentVolumeClaim:
-#              claimName: gogs-config
-#          - name: gogs-custom-config
-#            configMap:
-#              name: gogs-config
-#              items:
-#                - key: app.ini
-#                  path: app.ini
-#        dnsPolicy: ClusterFirst
-#        restartPolicy: Always
-#        securityContext: {}
-#        terminationGracePeriodSeconds: 30
-#    triggers:
-#    - type: ConfigChange
-#    - imageChangeParams:
-#        automatic: true
-#        containerNames:
-#        - gogs
-#        from:
-#          kind: ImageStreamTag
-#          name: gogs:${GOGS_VERSION}
-#      type: ImageChange
-#  status: {}
-########################################################################################################################
 # Gogs data persistent volume claim
 ########################################################################################################################
-#- kind: PersistentVolumeClaim
-#  apiVersion: v1
-#  metadata:
-#    name: gogs-data
-#    labels:
-#      app: gogs
-#  spec:
-#    accessModes:
-#      - ReadWriteOnce
-#    resources:
-#      requests:
-#        storage: 1Gi
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: gogs-data
+    labels:
+      app: gogs
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
 ########################################################################################################################
 # Gogs config persistent volume claim
 ########################################################################################################################
-#- kind: PersistentVolumeClaim
-#  apiVersion: v1
-#  metadata:
-#    name: gogs-config
-#    labels:
-#      app: gogs
-#  spec:
-#    accessModes:
-#      - ReadWriteOnce
-#    resources:
-#      requests:
-#        storage: 512Mi
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: gogs-config
+    labels:
+      app: gogs
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 512Mi
 ########################################################################################################################
-# Gogs installation pod
+# Gogs image stream
 ########################################################################################################################
-#- apiVersion: v1
-#  kind: Pod
-#  metadata:
-#    name: install-gogs
-#    labels:
-#      app: gogs
-#      job: install-gogs
-#  spec:
-#    containers:
-#    - name: oc
-#      image: docker.io/openshiftdemos/oc
-#      command: ["/bin/bash",  "/tmp/installgogs.sh"]
-#      volumeMounts:
-#      - name: gogs-install
-#        mountPath: /tmp/
-#      resources:
-#        limits:
-#          memory: 128Mi
-#      env:
-#      - name: CICD_PROJECT
-#        valueFrom:
-#          fieldRef:
-#            fieldPath: metadata.namespace
-#    volumes:
-#      - name: gogs-install
-#        configMap:
-#          name: gogs-install
-#          items:
-#          - key: installgogs.sh
-#            path: installgogs.sh
-#    restartPolicy: Never
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: gogs
+    labels:
+      app: gogs
+  spec:
+    tags:
+    - annotations:
+        description: The Gogs git server docker image
+        tags: gogs,go,golang
+      from:
+        kind: DockerImage
+        name: openshiftdemos/gogs:${GOGS_VERSION}
+      importPolicy: {}
+      name: ${GOGS_VERSION}
+########################################################################################################################
+# Gogs service
+########################################################################################################################
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: The Gogs server's http port
+    labels:
+      app: gogs
+    name: gogs
+  spec:
+    ports:
+    - name: web
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: gogs
+      deploymentconfig: gogs
+    sessionAffinity: None
+    type: ClusterIP
+########################################################################################################################
+# Gogs route
+########################################################################################################################
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for gogs's http service.
+    name: gogs
+    labels:
+      app: gogs
+  spec:
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: gogs
 ########################################################################################################################
 # Gogs Configuration ConfigMap
 ########################################################################################################################
-#- apiVersion: v1
-#  kind: ConfigMap
-#  metadata:
-#    name: gogs-config
-#  data:
-#    app.ini: |
-#      RUN_MODE = prod
-#      RUN_USER = gogs
-#
-#      [security]
-#      INSTALL_LOCK = false
-#
-#      [repository]
-#      ROOT = /opt/gogs/data/repositories
-#
-#      [webhook]
-#      SKIP_TLS_VERIFY = true
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: gogs-config
+  data:
+    app.ini: |
+      RUN_MODE = prod
+      RUN_USER = gogs
+
+      [security]
+      INSTALL_LOCK = false
+
+      [repository]
+      ROOT = /opt/gogs/data/repositories
+
+      [webhook]
+      SKIP_TLS_VERIFY = true
+########################################################################################################################
+# Gogs deployment configuration
+########################################################################################################################
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: gogs
+    name: gogs
+  spec:
+    replicas: 1
+    selector:
+      app: gogs
+      deploymentconfig: gogs
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          app: gogs
+          deploymentconfig: gogs
+      spec:
+        containers:
+        - image: " "
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 95
+            periodSeconds: 10
+            successThreshold: 1
+            httpGet:
+              port: 3000
+              path: /
+            timeoutSeconds: 1
+          name: gogs
+          ports:
+          - containerPort: 3000
+            protocol: TCP
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 200m
+          terminationMessagePath: /dev/termination-log
+          readinessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 100
+            periodSeconds: 10
+            successThreshold: 1
+            httpGet:
+              port: 3000
+              path: /
+            timeoutSeconds: 1
+          volumeMounts:
+          - name: gogs-data
+            mountPath: /opt/gogs/data
+          - name: gogs-config
+            mountPath: /etc/gogs/conf
+          - name: gogs-custom-config
+            mountPath: /opt/gogs/custom/conf
+        volumes:
+          - name: gogs-data
+            persistentVolumeClaim:
+              claimName: gogs-data
+          - name: gogs-config
+            persistentVolumeClaim:
+              claimName: gogs-config
+          - name: gogs-custom-config
+            configMap:
+              name: gogs-config
+              items:
+                - key: app.ini
+                  path: app.ini
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - gogs
+        from:
+          kind: ImageStreamTag
+          name: gogs:${GOGS_VERSION}
+      type: ImageChange
+  status: {}
 ########################################################################################################################
 # Gogs installation script ConfigMap
 ########################################################################################################################
-#- apiVersion: v1
-#  kind: ConfigMap
-#  metadata:
-#    name: gogs-install
-#  data:
-#    installgogs.sh: |
-#      #!/bin/bash
-#
-#      set -x
-#
-#      # Use the oc client to get the url for the gogs and jenkins route and service
-#      GOGSSVC=$(oc get svc gogs -o template --template='{{.spec.clusterIP}}')
-#      GOGSROUTE=$(oc get route gogs -o template --template='{{.spec.host}}')
-#      JENKINSSVC=$(oc get svc jenkins -o template --template='{{.spec.clusterIP}}')
-#
-#      # Use the oc client to get the postgres and jenkins variables into the current shell
-#      eval $(oc env dc/postgresql-gogs --list | grep -v \#)
-#      eval $(oc env dc/jenkins --list | grep -v \#)
-#
-#      # postgres has a readiness probe, so checking if there is at least one
-#      # endpoint means postgres is alive and ready, so we can then attempt to install gogs
-#      # we're willing to wait 60 seconds for it, otherwise something is wrong.
-#      x=1
-#      oc get ep postgresql-gogs -o yaml | grep "\- addresses:"
-#      while [ ! $? -eq 0 ]
-#      do
-#        sleep 10
-#        x=$(( $x + 1 ))
-#
-#        if [ $x -gt 100 ]
-#        then
-#          exit 255
-#        fi
-#
-#        oc get ep postgresql-gogs -o yaml | grep "\- addresses:"
-#      done
-#
-#      # now we wait for gogs to be ready in the same way
-#      x=1
-#      oc get ep gogs -o yaml | grep "\- addresses:"
-#      while [ ! $? -eq 0 ]
-#      do
-#        sleep 10
-#        x=$(( $x + 1 ))
-#
-#        if [ $x -gt 100 ]
-#        then
-#          exit 255
-#        fi
-#
-#        oc get ep gogs -o yaml | grep "\- addresses:"
-#      done
-#
-#      # we might catch the router before it's been updated, so wait just a touch
-#      # more
-#      sleep 10
-#
-#      RETURN=$(curl -o /dev/null -sL --post302 -w "%{http_code}" http://$GOGSSVC:3000/install \
-#      --form db_type=PostgreSQL \
-#      --form db_host=postgresql-gogs:5432 \
-#      --form db_user=gogs \
-#      --form db_passwd=$POSTGRESQL_PASSWORD \
-#      --form db_name=gogs \
-#      --form ssl_mode=disable \
-#      --form db_path=data/gogs.db \
-#      --form "app_name=Gogs: Go Git Service" \
-#      --form repo_root_path=/opt/gogs/data/repositories \
-#      --form run_user=gogs \
-#      --form domain=localhost \
-#      --form ssh_port=22 \
-#      --form http_port=3000 \
-#      --form app_url=http://${GOGSROUTE}/ \
-#      --form log_root_path=/opt/gogs/log \
-#      --form admin_name=gogs \
-#      --form admin_passwd=${GOGS_PASSWORD} \
-#      --form admin_confirm_passwd=${GOGS_PASSWORD} \
-#      --form admin_email=admin@gogs.com)
-#
-#      if [ $RETURN != "200" ]
-#      then
-#        echo "ERROR: Failed to initialize Gogs"
-#        exit 255
-#      fi
-#
-#      sleep 10
-#
-#      # import github repository
-#      cat <<EOF > /tmp/data.json
-#      {
-#        "clone_addr": "https://github.com/OpenShiftDemos/openshift-tasks.git",
-#        "uid": 1,
-#        "repo_name": "openshift-tasks"
-#      }
-#      EOF
-#
-#      RETURN=$(curl -o /dev/null -sL -w "%{http_code}" -H "Content-Type: application/json" \
-#      -u gogs:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/migrate -d @/tmp/data.json)
-#
-#      if [ $RETURN != "201" ]
-#      then
-#        echo "ERROR: Failed to imported openshift-tasks GitHub repo"
-#        exit 255
-#      fi
-#
-#      sleep 5
-#
-#      # add webhook to Gogs to trigger pipeline on push
-#      cat <<EOF > /tmp/data.json
-#      {
-#        "type": "gogs",
-#        "config": {
-#          "url": "https://openshift.default.svc.cluster.local/oapi/v1/namespaces/$CICD_PROJECT/buildconfigs/tasks-pipeline/webhooks/${WEBHOOK_SECRET}/generic",
-#          "content_type": "json"
-#        },
-#        "events": [
-#          "push"
-#        ],
-#        "active": true
-#      }
-#      EOF
-#
-#      RETURN=$(curl -o /dev/null -sL -w "%{http_code}" -H "Content-Type: application/json" \
-#      -u gogs:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/gogs/openshift-tasks/hooks -d @/tmp/data.json)
-#
-#      if [ $RETURN != "201" ]
-#      then
-#        echo "ERROR: Failed to set webhook"
-#        exit 255
-#      fi
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: gogs-install
+  data:
+    installgogs.sh: |
+      #!/bin/bash
+
+      set -x
+
+      sleep_secs=10
+
+      echo "##### waiting for ${sleep_secs} seconds ...."
+
+      sleep ${sleep_secs}
+
+      echo "##### started Gogs installation"
+
+      # Use the oc client to get the url for the gogs and jenkins route and service
+      GOGSSVC=$(oc get svc gogs -o template --template='{{.spec.clusterIP}}')
+      GOGSROUTE=$(oc get route gogs -o template --template='{{.spec.host}}')
+      JENKINSSVC=$(oc get svc jenkins -o template --template='{{.spec.clusterIP}}')
+
+      echo "##### GOGSSVC:    ${GOGSSVC}"
+      echo "##### GOGSROUTE:  ${GOGSROUTE}"
+      echo "##### JENKINSSVC: ${JENKINSSVC}"
+
+      # Use the oc client to get the postgres and jenkins variables into the current shell
+      eval $(oc env dc/postgresql-gogs --list | grep -v \#)
+      eval $(oc env dc/jenkins --list | grep -v \#)
+
+      # postgres has a readiness probe, so checking if there is at least one
+      # endpoint means postgres is alive and ready, so we can then attempt to install gogs
+      # we're willing to wait 60 seconds for it, otherwise something is wrong.
+      x=1
+      oc get ep postgresql-gogs -o yaml | grep "\- addresses:"
+      while [ ! $? -eq 0 ]
+      do
+        sleep 10
+        x=$(( $x + 1 ))
+
+        if [ $x -gt 100 ]
+        then
+          echo "##### failed, postgresql-gogs not ready"
+          exit 255
+        fi
+
+        oc get ep postgresql-gogs -o yaml | grep "\- addresses:"
+      done
+
+      echo "##### postgresql-gogs ready"
+
+      # now we wait for gogs to be ready in the same way
+      x=1
+      oc get ep gogs -o yaml | grep "\- addresses:"
+      while [ ! $? -eq 0 ]
+      do
+        sleep 10
+        x=$(( $x + 1 ))
+
+        if [ $x -gt 100 ]
+        then
+          echo "##### failed, gogs not ready"
+          exit 255
+        fi
+
+        oc get ep gogs -o yaml | grep "\- addresses:"
+      done
+
+      echo "##### gogs ready"
+
+      # we might catch the router before it's been updated, so wait just a touch
+      # more
+      sleep 10
+
+      RETURN=$(curl -o /dev/null -sL --post302 -w "%{http_code}" http://$GOGSSVC:3000/install \
+      --form db_type=PostgreSQL \
+      --form db_host=postgresql-gogs:5432 \
+      --form db_user=gogs \
+      --form db_passwd=$POSTGRESQL_PASSWORD \
+      --form db_name=gogs \
+      --form ssl_mode=disable \
+      --form db_path=data/gogs.db \
+      --form "app_name=Gogs: Go Git Service" \
+      --form repo_root_path=/opt/gogs/data/repositories \
+      --form run_user=gogs \
+      --form domain=localhost \
+      --form ssh_port=22 \
+      --form http_port=3000 \
+      --form app_url=https://${GOGSROUTE}/ \
+      --form log_root_path=/opt/gogs/log \
+      --form admin_name=gogs \
+      --form admin_passwd=${GOGS_PASSWORD} \
+      --form admin_confirm_passwd=${GOGS_PASSWORD} \
+      --form admin_email=admin@gogs.com)
+
+      if [ $RETURN != "200" -a $RETURN != "302" ]
+      then
+        echo "##### ERROR: Failed to initialize Gogs"
+        exit 255
+      fi
+
+      sleep 10
+
+      echo "##### importing https://github.com/OpenShiftDemos/openshift-tasks.git ..."
+
+      # import github repository
+      cat <<EOF > /tmp/data.json
+      {
+        "clone_addr": "https://github.com/OpenShiftDemos/openshift-tasks.git",
+        "uid": 1,
+        "repo_name": "openshift-tasks"
+      }
+      EOF
+
+      RETURN=$(curl -o /dev/null -sL -w "%{http_code}" -H "Content-Type: application/json" \
+      -u gogs:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/migrate -d @/tmp/data.json)
+
+      if [ $RETURN != "200" -a $RETURN != "201" ]
+      then
+        echo "##### ERROR: Failed to imported openshift-tasks GitHub repo"
+        exit 255
+      fi
+
+      echo "##### imported https://github.com/OpenShiftDemos/openshift-tasks.git ..."
+
+      sleep 5
+
+      echo "##### setting webhook in gogs ..."
+
+      # add webhook to Gogs to trigger pipeline on push
+      cat <<EOF > /tmp/data.json
+      {
+        "type": "gogs",
+        "config": {
+          "url": "https://openshift.default.svc.cluster.local/oapi/v1/namespaces/$CICD_PROJECT/buildconfigs/tasks-pipeline/webhooks/${WEBHOOK_SECRET}/generic",
+          "content_type": "json"
+        },
+        "events": [
+          "push"
+        ],
+        "active": true
+      }
+      EOF
+
+      RETURN=$(curl -o /dev/null -sL -w "%{http_code}" -H "Content-Type: application/json" \
+      -u gogs:${GOGS_PASSWORD} -X POST http://$GOGSSVC:3000/api/v1/repos/gogs/openshift-tasks/hooks -d @/tmp/data.json)
+
+      if [ $RETURN != "200" -a $RETURN != "201" ]
+      then
+        echo "##### ERROR: Failed to set webhook"
+        exit 255
+      fi
+
+      echo "##### all done"
+
 ########################################################################################################################
-# Nexus service
+# Gogs installation pod
 ########################################################################################################################
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: install-gogs
+    labels:
+      app: gogs
+      job: install-gogs
+  spec:
+    containers:
+    - name: oc
+      image: docker.io/openshiftdemos/oc
+      command: ["/bin/bash",  "/tmp/installgogs.sh"]
+      volumeMounts:
+      - name: gogs-install
+        mountPath: /tmp/
+      resources:
+        limits:
+          memory: 128Mi
+      env:
+      - name: CICD_PROJECT
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+    volumes:
+      - name: gogs-install
+        configMap:
+          name: gogs-install
+          items:
+          - key: installgogs.sh
+            path: installgogs.sh
+    restartPolicy: Never
+#########################################################################################################################
+## Nexus service
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: Service
 #  metadata:
@@ -576,9 +604,9 @@ objects:
 #      deploymentconfig: nexus
 #    sessionAffinity: None
 #    type: ClusterIP
-########################################################################################################################
-# Nexus route
-########################################################################################################################
+#########################################################################################################################
+## Nexus route
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: Route
 #  metadata:
@@ -588,12 +616,14 @@ objects:
 #  spec:
 #    port:
 #      targetPort: web
+#    tls:
+#      termination: edge
 #    to:
 #      kind: Service
 #      name: nexus
-########################################################################################################################
-# Nexus image stream
-########################################################################################################################
+#########################################################################################################################
+## Nexus image stream
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: ImageStream
 #  metadata:
@@ -610,9 +640,9 @@ objects:
 #        name: openshiftdemos/nexus:2.13.0-01
 #      importPolicy: {}
 #      name: "2.13.0-01"
-########################################################################################################################
-# Nexus deployment config
-########################################################################################################################
+#########################################################################################################################
+## Nexus deployment config
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: DeploymentConfig
 #  metadata:
@@ -685,9 +715,9 @@ objects:
 #          name: nexus:2.13.0-01
 #      type: ImageChange
 #  status: {}
-########################################################################################################################
-# Sonarqube image stream
-########################################################################################################################
+#########################################################################################################################
+## Sonarqube image stream
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: ImageStream
 #  metadata:
@@ -704,9 +734,9 @@ objects:
 #        name: openshiftdemos/sonarqube:${SONARQUBE_VERSION}
 #      importPolicy: {}
 #      name: ${SONARQUBE_VERSION}
-########################################################################################################################
-# Sonarqube service
-########################################################################################################################
+#########################################################################################################################
+## Sonarqube service
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: Service
 #  metadata:
@@ -726,9 +756,9 @@ objects:
 #      deploymentconfig: sonarqube
 #    sessionAffinity: None
 #    type: ClusterIP
-########################################################################################################################
-# Sonarqube route
-########################################################################################################################
+#########################################################################################################################
+## Sonarqube route
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: Route
 #  metadata:
@@ -738,12 +768,14 @@ objects:
 #    labels:
 #      app: sonarqube
 #  spec:
+#    tls:
+#      termination: edge
 #    to:
 #      kind: Service
 #      name: sonarqube
-########################################################################################################################
-# Sonarqube deployment configuration
-########################################################################################################################
+#########################################################################################################################
+## Sonarqube deployment configuration
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: DeploymentConfig
 #  metadata:
@@ -822,9 +854,9 @@ objects:
 #          kind: ImageStreamTag
 #          name: sonarqube:${SONARQUBE_VERSION}
 #      type: ImageChange
-########################################################################################################################
-# The pipeline definition
-########################################################################################################################
+#########################################################################################################################
+## The pipeline definition
+#########################################################################################################################
 #- apiVersion: v1
 #  kind: BuildConfig
 #  metadata:
