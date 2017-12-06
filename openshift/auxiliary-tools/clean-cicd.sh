@@ -96,19 +96,29 @@ function clean-nexus() {
     oc-delete routes/nexus
     oc-delete dc/nexus
     oc-delete svc/nexus
-
     oc-delete is/nexus
 
     clean-storage nexus
 }
 
+function clean-sonarqube() {
+
+    oc-delete routes/sonarqube
+    oc-delete dc/sonarqube
+    oc-delete svc/sonarqube
+    oc-delete is/sonarqube
+}
+
+
 function main() {
 
     check-project-name
 
-    #clean-gogs
+    clean-gogs
 
     clean-nexus
+
+    clean-sonarqube
 }
 
 main $@
