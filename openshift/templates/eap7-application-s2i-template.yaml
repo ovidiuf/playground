@@ -9,6 +9,26 @@ apiVersion: v1
 kind: Template
 metadata:
   name: dev-s2i-template
+parameters:
+- name: APPLICATION_NAME
+  value: noss-dev-s2i
+  displayName: The application name.
+  description: The name used when creating all the application objects and labels.
+  required: true
+- name: GOGS_WEBHOOK_SECRET
+  value: tYBBdOyncUoAPbN-pxe0
+  displayName: Gogs webhook secret.
+  description: |
+    The Gogs webhook can be configured externally when recreating the application from template, which is useful if
+    we do not want, or we cannot change the definition of the webhook already declared.
+  required: true
+- name: GITHUB_WEBHOOK_SECRET
+  value: wM_nTYnKcn-N6aMuFsFV
+  displayName: GitHub webhook secret.
+  description: |
+    The GitHub webhook can be configured externally when recreating the application from template, which is useful if
+    we do not want, or we cannot change the definition of the webhook already declared.
+  required: true
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -16,14 +36,14 @@ objects:
     annotations:
       openshift.io/generated-by: OpenShiftNewBuild
     labels:
-      build: noss-dev-s2i
-    name: noss-dev-s2i
+      build: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
     failedBuildsHistoryLimit: 5
     output:
       to:
         kind: ImageStreamTag
-        name: noss-dev-s2i:latest
+        name: ${APPLICATION_NAME}:latest
     postCommit: {}
     resources: {}
     runPolicy: Serial
@@ -39,15 +59,14 @@ objects:
         from:
           kind: ImageStreamTag
           name: eap7:latest
-          namespace: noss-dev-s2i
       type: Source
     successfulBuildsHistoryLimit: 5
     triggers:
     - github:
-        secret: wM_nTYnKcn-N6aMuFsFV
+        secret: ${GITHUB_WEBHOOK_SECRET}
       type: GitHub
     - generic:
-        secret: tYBBdOyncUoAPbN-pxe0
+        secret: ${GOGS_WEBHOOK_SECRET}
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -74,8 +93,8 @@ objects:
     annotations:
       openshift.io/generated-by: OpenShiftNewBuild
     labels:
-      build: noss-dev-s2i
-    name: noss-dev-s2i
+      build: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
     lookupPolicy:
       local: false
@@ -97,14 +116,14 @@ objects:
       openshift.io/generated-by: novaordis-deployment-configuration
     generation: 1
     labels:
-      app: noss-dev-s2i
-      application: noss-dev-s2i
+      app: ${APPLICATION_NAME}
+      application: ${APPLICATION_NAME}
       template: novaordis-deployment-configuration
-    name: noss-dev-s2i
+    name: ${APPLICATION_NAME}
   spec:
     replicas: 1
     selector:
-      deploymentConfig: noss-dev-s2i
+      deploymentConfig: ${APPLICATION_NAME}
     strategy:
       activeDeadlineSeconds: 21600
       recreateParams:
@@ -116,15 +135,15 @@ objects:
         annotations:
           openshift.io/generated-by: novaordis-deployment-configuration
         labels:
-          app: noss-dev-s2i
-          application: noss-dev-s2i
-          deploymentConfig: noss-dev-s2i
-        name: noss-dev-s2i
+          app: ${APPLICATION_NAME}
+          application: ${APPLICATION_NAME}
+          deploymentConfig: ${APPLICATION_NAME}
+        name: ${APPLICATION_NAME}
       spec:
         containers:
         - env:
           - name: OPENSHIFT_KUBE_PING_LABELS
-            value: application=noss-dev-s2i
+            value: application=${APPLICATION_NAME}
           - name: OPENSHIFT_KUBE_PING_NAMESPACE
             valueFrom:
               fieldRef:
@@ -151,7 +170,7 @@ objects:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          name: noss-dev-s2i
+          name: ${APPLICATION_NAME}
           ports:
           - containerPort: 8778
             name: jolokia
@@ -185,10 +204,10 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - noss-dev-s2i
+        - ${APPLICATION_NAME}
         from:
           kind: ImageStreamTag
-          name: noss-dev-s2i:latest
+          name: ${APPLICATION_NAME}:latest
       type: ImageChange
     - type: ConfigChange
   status:
@@ -199,19 +218,19 @@ objects:
       openshift.io/host.generated: "true"
     creationTimestamp: null
     labels:
-      app: noss-dev-s2i
-      application: noss-dev-s2i
+      app: ${APPLICATION_NAME}
+      application: ${APPLICATION_NAME}
       template: novaordis-service-template
-    name: noss-dev-s2i
+    name: ${APPLICATION_NAME}
   spec:
-    host: noss-dev-s2i.apps.openshift.novaordis.io
+    host: ${APPLICATION_NAME}.apps.openshift.novaordis.io
     port:
       targetPort: 8080
     tls:
       termination: edge
     to:
       kind: Service
-      name: noss-dev-s2i
+      name: ${APPLICATION_NAME}
       weight: 100
     wildcardPolicy: None
   status:
@@ -221,17 +240,16 @@ objects:
     annotations:
       openshift.io/generated-by: novaordis-service-template
     labels:
-      app: noss-dev-s2i
-      application: noss-dev-s2i
-      template: noss-dev-s2i
-    name: noss-dev-s2i
+      app: ${APPLICATION_NAME}
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
   spec:
     ports:
     - port: 8080
       protocol: TCP
       targetPort: 8080
     selector:
-      deploymentConfig: noss-dev-s2i
+      deploymentConfig: ${APPLICATION_NAME}
     sessionAffinity: None
     type: ClusterIP
   status:
