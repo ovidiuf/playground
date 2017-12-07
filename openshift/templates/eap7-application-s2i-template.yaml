@@ -8,7 +8,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: dev-s2i-template
+  name: eap7-s2i-template
 parameters:
 - name: APPLICATION_NAME
   value: noss-dev-s2i
