@@ -5,6 +5,8 @@ metadata:
 parameters:
 - name: APPLICATION_NAME
   value: my-app-name
+  displayName: Application Name
+  description: The application name.
   required: true
 objects:
 - apiVersion: v1
@@ -26,5 +28,5 @@ objects:
       deploymentConfig: ${APPLICATION_NAME}
     sessionAffinity: None
     type: ClusterIP
-  status:
+
 
