@@ -1,0 +1,237 @@
+#
+# This is a template that deploys all OpenShift objects required to build and run a simple JEE application.
+# The build configuration will do an S2I (source) build based on an EAP7 builder image and source code
+# available in a local gogs repository (which must be deployed separately).
+#
+#
+
+apiVersion: v1
+kind: Template
+metadata:
+  name: dev-s2i-template
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    labels:
+      build: noss-dev-s2i
+    name: noss-dev-s2i
+  spec:
+    failedBuildsHistoryLimit: 5
+    output:
+      to:
+        kind: ImageStreamTag
+        name: noss-dev-s2i:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        uri: https://gogs-cicd.apps.openshift.novaordis.io/gogs/novaordis-session-servlet.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: GIT_SSL_NO_VERIFY
+          value: "true"
+        from:
+          kind: ImageStreamTag
+          name: eap7:latest
+          namespace: noss-dev-s2i
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: wM_nTYnKcn-N6aMuFsFV
+      type: GitHub
+    - generic:
+        secret: tYBBdOyncUoAPbN-pxe0
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: eap7
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/jboss-eap-7/eap70-openshift:latest
+      name: latest
+  status:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    labels:
+      build: noss-dev-s2i
+    name: noss-dev-s2i
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/noss-dev-s2i/novaordis-session-servlet:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: novaordis-deployment-configuration
+    generation: 1
+    labels:
+      app: noss-dev-s2i
+      application: noss-dev-s2i
+      template: novaordis-deployment-configuration
+    name: noss-dev-s2i
+  spec:
+    replicas: 1
+    selector:
+      deploymentConfig: noss-dev-s2i
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: novaordis-deployment-configuration
+        labels:
+          app: noss-dev-s2i
+          application: noss-dev-s2i
+          deploymentConfig: noss-dev-s2i
+        name: noss-dev-s2i
+      spec:
+        containers:
+        - env:
+          - name: OPENSHIFT_KUBE_PING_LABELS
+            value: application=noss-dev-s2i
+          - name: OPENSHIFT_KUBE_PING_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: AUTO_DEPLOY_EXPLODED
+            value: "false"
+          image: ' '
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /opt/eap/bin/jboss-cli.sh
+                - -c
+                - :shutdown(timeout=60)
+          livenessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - /opt/eap/bin/livenessProbe.sh
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: noss-dev-s2i
+          ports:
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          - containerPort: 8888
+            name: ping
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - /opt/eap/bin/readinessProbe.sh
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 75
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - noss-dev-s2i
+        from:
+          kind: ImageStreamTag
+          name: noss-dev-s2i:latest
+      type: ImageChange
+    - type: ConfigChange
+  status:
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: null
+    labels:
+      app: noss-dev-s2i
+      application: noss-dev-s2i
+      template: novaordis-service-template
+    name: noss-dev-s2i
+  spec:
+    host: noss-dev-s2i.apps.openshift.novaordis.io
+    port:
+      targetPort: 8080
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: noss-dev-s2i
+      weight: 100
+    wildcardPolicy: None
+  status:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: novaordis-service-template
+    labels:
+      app: noss-dev-s2i
+      application: noss-dev-s2i
+      template: noss-dev-s2i
+    name: noss-dev-s2i
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentConfig: noss-dev-s2i
+    sessionAffinity: None
+    type: ClusterIP
+  status:
