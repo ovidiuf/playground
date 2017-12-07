@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# oc wrapper functions that allows it to be assembled in higher level scripts
+#
+
+#
+# Verifies that the current project matches the argument and fails if there is no match.
+#
+function verify-project-name() {
+
+    local openshift_project_name=$1
+    [ -z "$1" ] && { echo "'openshift_project_name' not provided" 1>&2; exit 1; }
+
+    local crt_project
+    crt_project=$(oc project | sed -e 's/.*Using project \"\(.*\)\" .*$/\1/') || { echo "failed to read the project name" 1>&2; exit 1; }
+    [ "${crt_project}" = "${openshift_project_name}" ] || { echo "expecting to be in the project \"${openshift_project_name}\" but the current project is \"${crt_project}\"" 1>&2; exit 1; }
+}
+
+#
+# Delete a project object. The target name should be specified in the following format:
+#
+# <bc|dc|is|...>/name
+#
+# Example:
+#
+#    oc-delete bc/test
+#
+function oc-delete() {
+
+    local target=$1
+    [ -z "${target}" ] && { echo "'target' not specified" 1>&2; exit 1; }
+
+    if ! oc get ${target} > /dev/null 2>&1; then
+        echo "no such target: ${target}"
+        return 0
+    fi
+
+    oc delete ${target} || { echo "failed to delete: ${target}" 1>&2; exit 1; }
+}
+

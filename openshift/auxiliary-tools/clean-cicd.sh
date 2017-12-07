@@ -3,27 +3,9 @@
 # Cleans the specified project
 #
 
+[ -f $(dirname $0)/../oc-bash/functions ] && . $(dirname $0)/../oc-bash/functions || { echo "$(dirname $0)/../oc-bash/functions not found" 1>&2; exit 1; }
+
 project_name=cicd
-
-function check-project-name() {
-
-    local s
-    s=$(oc project | sed -e 's/.*Using project \"\(.*\)\" .*$/\1/') || { echo "failed to read the project name" 1>&2; exit 1; }
-    [ "${s}" = "${project_name}" ] || { echo "attempting to clean project \"{project_name}\" but the current project is \"${s}\"" 1>&2; exit 1; }
-}
-
-function oc-delete() {
-
-    local target=$1
-    [ -z "${target}" ] && { echo "'target' not specified" 1>&2; exit 1; }
-
-    if oc get ${target} > /dev/null 2>&1; then
-
-        oc delete ${target} || { echo "failed to delete ${target}" 1>&2; exit 1; }
-    else
-        echo "no ${target}"
-    fi
-}
 
 function clean-storage() {
 
@@ -122,7 +104,7 @@ function clean-build-configuration() {
 
 function main() {
 
-    check-project-name
+    verify-project-name ${project_name}
 
 #    clean-gogs
 #
@@ -132,7 +114,7 @@ function main() {
 #
 #    clean-jenkins-slaves-config-map
 #
-#     clean-build-configuration
+    clean-build-configuration
 }
 
 main $@
