@@ -1,0 +1,30 @@
+#
+# A template to create a pipeline build configuration from scratch.
+#
+
+apiVersion: v1
+kind: Template
+metadata:
+  name: novaordis-pipeline-inline-build-configuration
+parameters:
+- name: APPLICATION_NAME
+  value: noss
+  displayName: The application name.
+  description: The name used when creating all the application objects and labels.
+  required: true
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: ${APPLICATION_NAME}
+  spec:
+    strategy:
+      type: JenkinsPipeline
+      jenkinsPipelineStrategy:
+        jenkinsfile: |
+         node('agent') {
+
+            echo '###'
+            echo '### Pipeline logic starts'
+            echo '###'
+         }
