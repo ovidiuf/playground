@@ -1,0 +1,18 @@
+#
+# A template that creates a simple pod which gets deployed and sits idle, waiting for attachment
+#
+apiVersion: v1
+kind: Template
+objects:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: standalone-pod
+  spec:
+    containers:
+    - name: oc
+      image: docker.io/openshiftdemos/oc
+      command: ["/bin/bash", "-c", "sleep 1000000"]
+      resources:
+        limits:
+          memory: 128Mi
