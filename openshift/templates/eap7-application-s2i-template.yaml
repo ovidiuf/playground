@@ -15,6 +15,11 @@ parameters:
   displayName: The application name.
   description: The name used when creating all the application objects and labels.
   required: true
+- name: GIT_REPOSITORY_URL
+  value: https://gogs-cicd.apps.openshift.novaordis.io/gogs/novaordis-session-servlet.git
+  displayName: The application Git repository URL.
+  description: The URL of the application source code repository.
+  required: true
 - name: GOGS_WEBHOOK_SECRET
   value: tYBBdOyncUoAPbN-pxe0
   displayName: Gogs webhook secret.
@@ -49,7 +54,7 @@ objects:
     runPolicy: Serial
     source:
       git:
-        uri: https://gogs-cicd.apps.openshift.novaordis.io/gogs/novaordis-session-servlet.git
+        uri: ${GIT_REPOSITORY_URL}
       type: Git
     strategy:
       sourceStrategy:

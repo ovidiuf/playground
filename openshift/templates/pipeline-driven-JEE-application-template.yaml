@@ -1,12 +1,12 @@
 #
-# A template to create a pipeline build configuration from scratch. The pipeline logic is specified
-# as a reference to a repository Jenkinsfile
+# A template that creates objects required to build and deploy a JEE application using a CI/CD pipeline. The template
+# assumes that the pipeline logic is specified as a reference to a repository Jenkinsfile
 #
 
 apiVersion: v1
 kind: Template
 metadata:
-  name: novaordis-pipeline-Jenkinsfile-build-configuration
+  name: novaordis-pipeline-driven-JEE-application-template
 parameters:
 - name: APPLICATION_NAME
   value: noss
@@ -14,14 +14,16 @@ parameters:
   description: The name used when creating all the application objects and labels.
   required: true
 - name: GIT_REPOSITORY_URL
+  value: https://gogs-cicd.apps.openshift.novaordis.io/gogs/novaordis-session-servlet.git
   displayName: The application Git repository URL.
   description: |
     The URL of the application source code repository. The repository must contain a Jenkinsfile in the directory
     whose path is specified as JENKINSFILE_DIR_PATH
   required: true
-- name: JENKINSFILE_DIR_PATH
-  displayName: Jenkinsfile directory path relative to the repository root.
-  description: Jenkinsfile directory path relative to the repository root.
+- name: JENKINSFILE_PATH
+  value: openshift/Jenkinsfile
+  displayName: Jenkinsfile path relative to the repository root.
+  description: Jenkinsfile path relative to the repository root.
   required: true
 objects:
 - apiVersion: v1
@@ -35,4 +37,7 @@ objects:
     strategy:
       type: JenkinsPipeline
       jenkinsPipelineStrategy:
-        jenkinsfilePath: ${JENKINSFILE_DIR_PATH}
+        env:
+          - name: GIT_SSL_NO_VERIFY
+            value: "true"
+        jenkinsfilePath: ${JENKINSFILE_PATH}
