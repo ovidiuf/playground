@@ -25,6 +25,13 @@ parameters:
   displayName: Jenkinsfile path relative to the repository root.
   description: Jenkinsfile path relative to the repository root.
   required: true
+- name: GOGS_WEBHOOK_SECRET
+  value: bMcR07ByncUod4bNC89KY
+  displayName: Gogs webhook secret.
+  description: |
+    The Gogs webhook can be configured externally when recreating the application from template, which is useful if
+    we do not want, or we cannot change the definition of the webhook already declared.
+  required: true
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -41,3 +48,8 @@ objects:
           - name: GIT_SSL_NO_VERIFY
             value: "true"
         jenkinsfilePath: ${JENKINSFILE_PATH}
+    triggers:
+    - generic:
+        secret: ${GOGS_WEBHOOK_SECRET}
+      type: Generic
+    - type: ConfigChange
