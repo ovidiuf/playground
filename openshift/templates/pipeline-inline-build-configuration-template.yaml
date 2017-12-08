@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: novaordis-pipeline-inline-build-configuration
+  name: novaordis-inline-pipeline-build-configuration
 parameters:
 - name: APPLICATION_NAME
   value: noss
@@ -22,9 +22,7 @@ objects:
       type: JenkinsPipeline
       jenkinsPipelineStrategy:
         jenkinsfile: |
-         node('agent') {
+         node {
 
-            echo '###'
-            echo '### Pipeline logic starts'
-            echo '###'
+            echo '###\n### Synthetic pipeling logic is starting ...\n###'
          }

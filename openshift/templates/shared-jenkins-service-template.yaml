@@ -1,0 +1,42 @@
+#
+# A template that creates the service associated with a shared Jenkins service deployed in a different
+# project
+#
+apiVersion: v1
+kind: Template
+metadata:
+  name: novaordis-shared-jenkins-service-template
+parameters:
+- name: SHARED_JENKINS_SERVICE_IP
+  displayName: Shared Jenkins Service IP (172.30.x.x).
+  description: |
+    The OpenShift service IP of the shared Jenkins service. It can be read by displaying the Jenkins service in
+    the shared CI/CD project. Also, this project should have internal IP connectivity to that project, which is not
+    always the case if the multi-tenant network plugin is deployed.
+  required: true
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: jenkins
+    labels:
+      template: novaordis-shared-jenkins-service-template
+  spec:
+    ports:
+    - name: jenkins
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector: {}
+- apiVersion: v1
+  kind: Endpoints
+  metadata:
+    # this must be the name of the service this endpoint will be associated with
+    name: jenkins
+  subsets:
+    - addresses:
+        - ip: "${SHARED_JENKINS_SERVICE_IP}"
+      ports:
+        # the port and name definition must match the port and name values in the service defitiond
+        - port: 80
+          name: jenkins
