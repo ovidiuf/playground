@@ -1,4 +1,5 @@
 node {
+
     stage ("Build") {
         echo '*** Build Starting ***'
         openshiftBuild apiURL: 'https://openshift.default.svc.cluster.local', authToken: '', bldCfg: 'hello-nodejs', buildName: '', checkForTriggeredDeployments: 'false', commitID: '', namespace: '', showBuildLogs: 'false', verbose: 'false', waitTime: ''
