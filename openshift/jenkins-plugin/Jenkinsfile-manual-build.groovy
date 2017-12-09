@@ -27,34 +27,36 @@ try {
                 echo "check out ok"
             }
 
-            stage("build") {
+            stage("build maven") {
+
+                echo "building maven artifacts ..."
 
                 sh "mvn clean package -Popenshift"
+
+                echo "build ok"
 
                 stash name:"war", includes:"target/ROOT.war"
             }
         }
 
-//        node("maven") {
-//            stage("Checkout") {
-//                git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
-//            }
-//            stage("Build WAR") {
-//                sh "mvn clean package -Popenshift"
-//                stash name:"war", includes:"target/ROOT.war"
-//            }
-//        }
-//
-//        node {
-//            stage("Build Image") {
-//                unstash name:"war"
-//                sh "oc start-build ${appName}-docker --from-file=target/ROOT.war -n ${project}"
-//                openshiftVerifyBuild bldCfg: "${appName}-docker", namespace: project, waitTime: '20', waitUnit: 'min'
-//            }
-//            stage("Deploy") {
-//                openshiftDeploy deploymentConfig: appName, namespace: project
-//            }
-//        }
+        node {
+
+            stage("build image") {
+
+                echo "building image ..."
+
+                unstash name:"war"
+
+                sh "oc start-build ${appName}-docker --from-file=target/ROOT.war -n ${project}"
+
+                openshiftVerifyBuild bldCfg: "${appName}-docker", namespace: project, waitTime: '20', waitUnit: 'min'
+            }
+
+            stage("Deploy") {
+
+                openshiftDeploy deploymentConfig: appName, namespace: project
+            }
+        }
     }
 }
 catch (err) {
