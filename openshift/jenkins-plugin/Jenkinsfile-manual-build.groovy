@@ -27,11 +27,12 @@ try {
                 echo "check out ok"
             }
 
+            stage("build") {
 
-//            stage("Build WAR") {
-//                sh "mvn clean package -Popenshift"
-//                stash name:"war", includes:"target/ROOT.war"
-//            }
+                sh "mvn clean package -Popenshift"
+
+                stash name:"war", includes:"target/ROOT.war"
+            }
         }
 
 //        node("maven") {
