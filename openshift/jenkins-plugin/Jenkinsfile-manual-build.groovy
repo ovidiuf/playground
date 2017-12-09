@@ -16,7 +16,7 @@ try {
 
         echo "project: ${project}"
 
-        node() {
+        node("maven") {
 
             stage("checkout") {
 
