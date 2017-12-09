@@ -2,16 +2,17 @@ try {
 
     timeout(time: 20, unit: 'MINUTES') {
 
-        def appName="${APP_NAME}"
         def project=""
 
-        echo "appName: ${appName}"
+        node {
 
-//        node {
-//            stage("Initialize") {
-//                project = env.PROJECT_NAME
-//            }
-//        }
+            stage("Initialize") {
+
+                project = env.PROJECT_NAME
+            }
+        }
+
+        echo "project: ${project}"
 //
 //        node("maven") {
 //            stage("Checkout") {
