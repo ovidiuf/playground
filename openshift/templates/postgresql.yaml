@@ -67,19 +67,16 @@ objects:
       protocol: TCP
       targetPort: 5432
     selector:
-      app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}-postgresql
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: ${APPLICATION_NAME}-postgresql
     labels:
-      app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}-postgresql
   spec:
     replicas: 1
     selector:
-      app: ${APPLICATION_NAME}
       deploymentconfig: ${APPLICATION_NAME}-postgresql
     strategy:
       recreateParams:
