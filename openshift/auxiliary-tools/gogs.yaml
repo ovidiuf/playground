@@ -5,7 +5,7 @@
 #
 # Based on https://github.com/OpenShiftDemos/openshift-cd-demo/blob/ocp-3.6/cicd-template.yaml
 #
-# Tested with OpenShift 3.6
+# Tested with OpenShift 3.6 non-HA
 #
 
 apiVersion: v1

@@ -7,7 +7,7 @@
 #
 # Alternative installation: https://kb.novaordis.com/index.php/OpenShift_Nexus#Method_2
 #
-# Tested with OpenShift 3.6
+# Tested with OpenShift 3.6 non-HA
 #
 apiVersion: v1
 kind: Template
