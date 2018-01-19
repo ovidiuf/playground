@@ -60,15 +60,18 @@ public class Main {
                 .addHeader("X-Stream-Protocol-Version", "v4.channel.k8s.io")
                 .addHeader("X-Stream-Protocol-Version", "v3.channel.k8s.io")
                 .addHeader("X-Stream-Protocol-Version", "v2.channel.k8s.io")
-                .addHeader("Connection", "Upgrade")
-                .addHeader("Upgrade", "SPDY/3.1")
                 .addHeader("Authorization", "Bearer q9pTHqWeh3bc8YK7oA6Y-lvjWpJqW_MzKt4kM4luoQU")
                 .build();
+
+//                .addHeader("Connection", "Upgrade")
+//                .addHeader("Upgrade", "SPDY/3.1")
+
         System.out.println("request built: " + request);
 
         System.out.println("sending request ...");
 
         client.newCall(request).enqueue(new Callback() {
+
             @Override
             public void onFailure(Request request, IOException e) {
                 throw new RuntimeException("onFailure() NOT YET IMPLEMENTED");
@@ -76,15 +79,20 @@ public class Main {
 
             @Override
             public void onResponse(Response response) throws IOException {
+
                 if (response.isSuccessful()) {
 
                     System.out.println("The data is POSTED successfully to the END point");
-                } else {
+                }
+                else {
 
                     System.out.println("response code:    " + response.code());
                     System.out.println("response message: " + response.message());
+
                     ResponseBody rbody = response.body();
+
                     Headers headers = response.headers();
+
                     for (String name : headers.names()) {
 
                         System.out.println(name + ": " + headers.get(name));
