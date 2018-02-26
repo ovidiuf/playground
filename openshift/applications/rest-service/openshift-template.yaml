@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: rest-service
+objects:
+- apiVersion: v1
+  kind: ImageStreamImport
+  metadata:
+    name: rest-service
+  spec:
+    import: true
+    images:
+    - from:
+        kind: DockerImage
+        name: docker.io/novaordis/rest-service:latest
+      to:
+        name: latest
+      importPolicy:
+      referencePolicy:
+        type:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: rest-service
+    name: rest-service
+  spec:
+    replicas: 1
+    selector:
+      app: rest-service
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          app: rest-service
+      spec:
+        containers:
+        - name: rest-service
+          image: docker.io/novaordis/rest-service:latest
+          imagePullPolicy: Always
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - rest-service
+        from:
+          kind: ImageStreamTag
+          name: rest-service:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: rest-service
+    labels:
+      app: rest-service
+  spec:
+    ports:
+    - name: tomcat-http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: rest-service
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: rest-service
+  spec:
+    host: rest-service.apps.openshift.novaordis.io
+    tls:
+      insecureEdgeTerminationPolicy: Allow
+      termination: edge
+    to:
+      kind: Service
+      name: rest-service
+    wildcardPolicy: None
