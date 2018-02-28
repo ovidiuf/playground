@@ -41,6 +41,24 @@ objects:
           imagePullPolicy: Always
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          livenessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 5
+            exec:
+              command:
+                - /opt/live
+          readinessProbe:
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 5
+            exec:
+              command:
+                - /opt/ready
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler

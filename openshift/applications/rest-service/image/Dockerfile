@@ -13,6 +13,8 @@ FROM registry.access.redhat.com/jboss-webserver-3/webserver31-tomcat7-openshift
 
 #COPY ./artifacts/* /opt/dsmanager/lib/
 COPY ./rest-service/target/rest-service.war /deployments/
+COPY ./root/opt/live /opt/live
+COPY ./root/opt/ready /opt/ready
 
 #COPY ./cron-launcher /opt/cron-launcher
 #ENTRYPOINT [ "/opt/cron-launcher" ]

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+function display-usage() {
+
+cat <<EOF
+
+The 'rest-service' readiness probe. Packaged as a script for ease of consumption
+from the container definition.
+
+Usage:
+
+    ./ready
+
+Returns 0 if the application is ready, 1 otherwise.
+
+EOF
+}
+
+function main() {
+
+    #
+    # we log invocations:
+    #
+
+    local result=0
+
+    echo "$0 returned ${result} on $(date)" >> /tmp/$(basename $0).log
+
+    exit ${result}
+}
+
+main "$@"

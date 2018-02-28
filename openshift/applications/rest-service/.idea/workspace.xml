@@ -12,35 +12,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Context.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Context.java">
+      <file leaf-file-name="openshift-template.yaml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/openshift-template.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+            <state relative-caret-position="522">
+              <caret line="51" column="27" lean-forward="false" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
               <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HttpException.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/HttpException.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="36" column="19" lean-forward="false" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Result.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Result.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="91" column="0" lean-forward="true" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#12#14#0" expanded="false" />
+                <element signature="e#84#86#0" expanded="false" />
+                <element signature="e#168#172#0" expanded="false" />
+                <element signature="e#211#222#0" expanded="false" />
+                <element signature="e#237#276#0" expanded="false" />
+                <element signature="e#283#307#0" expanded="false" />
+                <element signature="e#301#307#0" expanded="false" />
+                <element signature="e#334#364#0" expanded="false" />
+                <element signature="e#379#381#0" expanded="false" />
+                <element signature="e#442#454#0" expanded="false" />
+                <element signature="e#636#648#0" expanded="false" />
+                <element signature="e#835#855#0" expanded="false" />
+                <element signature="e#1575#1577#0" expanded="false" />
+                <element signature="e#1582#1817#0" expanded="false" />
+                <element signature="e#1604#1616#0" expanded="false" />
+                <element signature="e#1623#1793#0" expanded="false" />
+                <element signature="e#1661#1665#0" expanded="false" />
+                <element signature="e#1674#1712#0" expanded="false" />
+                <element signature="e#1700#1712#0" expanded="false" />
+                <element signature="e#1721#1793#0" expanded="false" />
+                <element signature="e#1743#1757#0" expanded="false" />
+                <element signature="e#1774#1793#0" expanded="false" />
+                <element signature="e#1806#1817#0" expanded="false" />
+                <element signature="e#1832#1834#0" expanded="false" />
+                <element signature="e#1890#1921#0" expanded="false" />
+                <element signature="e#1909#1921#0" expanded="false" />
+                <element signature="e#1977#1979#0" expanded="false" />
+                <element signature="e#2018#2022#0" expanded="false" />
+                <element signature="e#2048#2060#0" expanded="false" />
+                <element signature="e#2082#2086#0" expanded="false" />
+                <element signature="e#2097#2106#0" expanded="false" />
+                <element signature="e#2121#2123#0" expanded="false" />
+                <element signature="e#2132#2137#0" expanded="false" />
+                <element signature="e#2140#2172#0" expanded="false" />
+                <element signature="e#2160#2172#0" expanded="false" />
+                <element signature="e#2175#2385#0" expanded="false" />
+                <element signature="e#2191#2231#0" expanded="false" />
+                <element signature="e#2236#2307#0" expanded="false" />
+                <element signature="e#2278#2283#0" expanded="false" />
+                <element signature="e#2303#2307#0" expanded="false" />
+                <element signature="e#2312#2360#0" expanded="false" />
+                <element signature="e#2328#2335#0" expanded="false" />
+                <element signature="e#2348#2360#0" expanded="false" />
+                <element signature="e#2381#2385#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -50,8 +71,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="315">
-                <caret line="21" column="60" lean-forward="false" selection-start-line="21" selection-start-column="60" selection-end-line="21" selection-end-column="60" />
+              <first_editor relative-caret-position="165">
+                <caret line="11" column="27" lean-forward="false" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -59,123 +80,51 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="openshift-template.yaml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/openshift-template.yaml">
+      <file leaf-file-name="live" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/image/root/opt/live">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-              <folding>
-                <element signature="e#12#14#0" expanded="false" />
-                <element signature="e#21#29#0" expanded="false" />
-                <element signature="e#48#60#0" expanded="false" />
-                <element signature="e#84#86#0" expanded="false" />
-                <element signature="e#95#112#0" expanded="false" />
-                <element signature="e#115#147#0" expanded="false" />
-                <element signature="e#135#147#0" expanded="false" />
-                <element signature="e#150#364#0" expanded="false" />
-                <element signature="e#168#172#0" expanded="false" />
-                <element signature="e#177#364#0" expanded="false" />
-                <element signature="e#191#276#0" expanded="false" />
-                <element signature="e#211#222#0" expanded="false" />
-                <element signature="e#237#276#0" expanded="false" />
-                <element signature="e#283#307#0" expanded="false" />
-                <element signature="e#301#307#0" expanded="false" />
-                <element signature="e#334#364#0" expanded="false" />
-                <element signature="e#379#381#0" expanded="false" />
-                <element signature="e#390#406#0" expanded="false" />
-                <element signature="e#423#454#0" expanded="false" />
-                <element signature="e#442#454#0" expanded="false" />
-                <element signature="e#465#477#0" expanded="false" />
-                <element signature="e#506#539#0" expanded="false" />
-                <element signature="e#527#539#0" expanded="false" />
-                <element signature="e#544#574#0" expanded="false" />
-                <element signature="e#566#574#0" expanded="false" />
-                <element signature="e#595#648#0" expanded="false" />
-                <element signature="e#613#648#1" expanded="false" />
-                <element signature="e#636#648#0" expanded="false" />
-                <element signature="e#794#800#0" expanded="false" />
-                <element signature="e#892#896#0" expanded="false" />
-                <element signature="e#916#928#0" expanded="false" />
-                <element signature="e#952#958#0" expanded="false" />
-                <element signature="e#982#999#0" expanded="false" />
-                <element signature="e#1008#1027#0" expanded="false" />
-                <element signature="e#1067#1069#0" expanded="false" />
-                <element signature="e#1074#1309#0" expanded="false" />
-                <element signature="e#1096#1108#0" expanded="false" />
-                <element signature="e#1115#1285#0" expanded="false" />
-                <element signature="e#1153#1157#0" expanded="false" />
-                <element signature="e#1166#1204#0" expanded="false" />
-                <element signature="e#1192#1204#0" expanded="false" />
-                <element signature="e#1213#1285#0" expanded="false" />
-                <element signature="e#1235#1249#0" expanded="false" />
-                <element signature="e#1266#1285#0" expanded="false" />
-                <element signature="e#1298#1309#0" expanded="false" />
-                <element signature="e#1324#1326#0" expanded="false" />
-                <element signature="e#1335#1342#0" expanded="false" />
-                <element signature="e#1345#1413#0" expanded="false" />
-                <element signature="e#1365#1377#0" expanded="false" />
-                <element signature="e#1382#1413#0" expanded="false" />
-                <element signature="e#1401#1413#0" expanded="false" />
-                <element signature="e#1416#1598#0" expanded="false" />
-                <element signature="e#1488#1491#0" expanded="false" />
-                <element signature="e#1574#1578#0" expanded="false" />
-                <element signature="e#1613#1615#0" expanded="false" />
-                <element signature="e#1652#1664#0" expanded="false" />
-                <element signature="e#1770#1775#0" expanded="false" />
-                <element signature="e#1795#1799#0" expanded="false" />
-                <element signature="e#1873#1877#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Console.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Console.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="80" column="0" lean-forward="true" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StdoutLogger.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/StdoutLogger.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="603">
-              <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+            <state relative-caret-position="345">
+              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Logger.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Logger.java">
+      <file leaf-file-name="call" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bin/call">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/image/Dockerfile">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="31" column="23" lean-forward="false" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
+              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommandBase.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/CommandBase.java">
+      <file leaf-file-name="ct.shlib" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/projects/it/bin/ct.shlib">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
+            <state relative-caret-position="421">
+              <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Ping.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/Ping.java">
+      <file leaf-file-name="ready" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/image/root/opt/ready">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="55" column="64" lean-forward="true" selection-start-line="55" selection-start-column="64" selection-end-line="55" selection-end-column="64" />
+            <state relative-caret-position="360">
+              <caret line="24" column="18" lean-forward="false" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -205,7 +154,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Command.java" />
-        <option value="$PROJECT_DIR$/image/Dockerfile" />
         <option value="$USER_HOME$/projects/it/bin/it.shlib" />
         <option value="$PROJECT_DIR$/image/rest-service/src/main/webapp/WEB-INF/web.xml" />
         <option value="$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/HttpException.java" />
@@ -221,8 +169,13 @@
         <option value="$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/CommandBase.java" />
         <option value="$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/Ping.java" />
         <option value="$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Result.java" />
-        <option value="$PROJECT_DIR$/openshift-template.yaml" />
+        <option value="$USER_HOME$/projects/it/bin/ct.shlib" />
+        <option value="$PROJECT_DIR$/bin/call" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/image/root/opt/ready" />
+        <option value="$PROJECT_DIR$/image/Dockerfile" />
+        <option value="$PROJECT_DIR$/openshift-template.yaml" />
+        <option value="$PROJECT_DIR$/image/root/opt/live" />
       </list>
     </option>
   </component>
@@ -243,10 +196,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="370" />
-    <option name="y" value="41" />
-    <option name="width" value="1464" />
-    <option name="height" value="995" />
+    <option name="x" value="610" />
+    <option name="y" value="52" />
+    <option name="width" value="1265" />
+    <option name="height" value="926" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -264,20 +217,43 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="Playground OpenShift rest-service" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Playground OpenShift rest-service" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-service" type="462c0819:PsiDirectoryNode" />
+              <item name="bin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Playground OpenShift rest-service" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-service" type="462c0819:PsiDirectoryNode" />
               <item name="image" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Playground OpenShift rest-service" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-service" type="462c0819:PsiDirectoryNode" />
+              <item name="image" type="462c0819:PsiDirectoryNode" />
+              <item name="root" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Playground OpenShift rest-service" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rest-service" type="462c0819:PsiDirectoryNode" />
+              <item name="image" type="462c0819:PsiDirectoryNode" />
+              <item name="root" type="462c0819:PsiDirectoryNode" />
+              <item name="opt" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -292,6 +268,9 @@
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="io.novaordis.playground.openshift.applications.restservice.command" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/image/root/opt" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -463,47 +442,48 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1519681291258</updated>
-      <workItem from="1519681293645" duration="5435000" />
+      <workItem from="1519681293645" duration="5502000" />
+      <workItem from="1519842091250" duration="6844000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5435000" />
+    <option name="totallyTimeSpent" value="12346000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="370" y="41" width="1464" height="995" extended-state="0" />
+    <frame x="610" y="52" width="1265" height="926" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16734973" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1826087" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -524,18 +504,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="33" lean-forward="false" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/webapp/WEB-INF/jboss-web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="16" lean-forward="true" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/webapp/WEB-INF/jboss-web.xml" />
     <entry file="file://$USER_HOME$/projects/it/bin/it.shlib">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -548,15 +520,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="634">
           <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/image/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="36" lean-forward="false" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -564,7 +527,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -572,7 +534,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="22" column="24" lean-forward="false" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -580,9 +541,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="37" column="17" lean-forward="false" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -590,7 +548,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-43">
           <caret line="18" column="42" lean-forward="false" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -598,7 +555,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="24" column="40" lean-forward="false" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -606,17 +562,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="31" column="23" lean-forward="false" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Console.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="233">
-          <caret line="80" column="0" lean-forward="true" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -624,7 +576,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="603">
           <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -632,7 +583,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="36" column="19" lean-forward="false" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -640,114 +590,139 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/Ping.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="615">
-          <caret line="55" column="64" lean-forward="true" selection-start-line="55" selection-start-column="64" selection-end-line="55" selection-end-column="64" />
-          <folding />
+          <caret line="55" column="64" lean-forward="false" selection-start-line="55" selection-start-column="64" selection-end-line="55" selection-end-column="64" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Result.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
-          <caret line="91" column="0" lean-forward="true" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="315">
-            <caret line="21" column="60" lean-forward="false" selection-start-line="21" selection-start-column="60" selection-end-line="21" selection-end-column="60" />
-            <folding />
-          </first_editor>
-          <second_editor />
+          <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Context.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
-          <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="44" column="5" lean-forward="false" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/projects/it/bin/ct">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="8" lean-forward="true" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/projects/it/bin/ct.shlib">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/call">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="165">
+            <caret line="11" column="27" lean-forward="false" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/image/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/openshift-template.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="19" column="13" lean-forward="true" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        <state relative-caret-position="522">
+          <caret line="51" column="27" lean-forward="false" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
           <folding>
             <element signature="e#12#14#0" expanded="false" />
-            <element signature="e#21#29#0" expanded="false" />
-            <element signature="e#48#60#0" expanded="false" />
             <element signature="e#84#86#0" expanded="false" />
-            <element signature="e#95#112#0" expanded="false" />
-            <element signature="e#115#147#0" expanded="false" />
-            <element signature="e#135#147#0" expanded="false" />
-            <element signature="e#150#364#0" expanded="false" />
             <element signature="e#168#172#0" expanded="false" />
-            <element signature="e#177#364#0" expanded="false" />
-            <element signature="e#191#276#0" expanded="false" />
             <element signature="e#211#222#0" expanded="false" />
             <element signature="e#237#276#0" expanded="false" />
             <element signature="e#283#307#0" expanded="false" />
             <element signature="e#301#307#0" expanded="false" />
             <element signature="e#334#364#0" expanded="false" />
             <element signature="e#379#381#0" expanded="false" />
-            <element signature="e#390#406#0" expanded="false" />
-            <element signature="e#423#454#0" expanded="false" />
             <element signature="e#442#454#0" expanded="false" />
-            <element signature="e#465#477#0" expanded="false" />
-            <element signature="e#506#539#0" expanded="false" />
-            <element signature="e#527#539#0" expanded="false" />
-            <element signature="e#544#574#0" expanded="false" />
-            <element signature="e#566#574#0" expanded="false" />
-            <element signature="e#595#648#0" expanded="false" />
-            <element signature="e#613#648#1" expanded="false" />
             <element signature="e#636#648#0" expanded="false" />
-            <element signature="e#794#800#0" expanded="false" />
-            <element signature="e#892#896#0" expanded="false" />
-            <element signature="e#916#928#0" expanded="false" />
-            <element signature="e#952#958#0" expanded="false" />
-            <element signature="e#982#999#0" expanded="false" />
-            <element signature="e#1008#1027#0" expanded="false" />
-            <element signature="e#1067#1069#0" expanded="false" />
-            <element signature="e#1074#1309#0" expanded="false" />
-            <element signature="e#1096#1108#0" expanded="false" />
-            <element signature="e#1115#1285#0" expanded="false" />
-            <element signature="e#1153#1157#0" expanded="false" />
-            <element signature="e#1166#1204#0" expanded="false" />
-            <element signature="e#1192#1204#0" expanded="false" />
-            <element signature="e#1213#1285#0" expanded="false" />
-            <element signature="e#1235#1249#0" expanded="false" />
-            <element signature="e#1266#1285#0" expanded="false" />
-            <element signature="e#1298#1309#0" expanded="false" />
-            <element signature="e#1324#1326#0" expanded="false" />
-            <element signature="e#1335#1342#0" expanded="false" />
-            <element signature="e#1345#1413#0" expanded="false" />
-            <element signature="e#1365#1377#0" expanded="false" />
-            <element signature="e#1382#1413#0" expanded="false" />
-            <element signature="e#1401#1413#0" expanded="false" />
-            <element signature="e#1416#1598#0" expanded="false" />
-            <element signature="e#1488#1491#0" expanded="false" />
-            <element signature="e#1574#1578#0" expanded="false" />
-            <element signature="e#1613#1615#0" expanded="false" />
-            <element signature="e#1652#1664#0" expanded="false" />
-            <element signature="e#1770#1775#0" expanded="false" />
-            <element signature="e#1795#1799#0" expanded="false" />
-            <element signature="e#1873#1877#0" expanded="false" />
+            <element signature="e#835#855#0" expanded="false" />
+            <element signature="e#1575#1577#0" expanded="false" />
+            <element signature="e#1582#1817#0" expanded="false" />
+            <element signature="e#1604#1616#0" expanded="false" />
+            <element signature="e#1623#1793#0" expanded="false" />
+            <element signature="e#1661#1665#0" expanded="false" />
+            <element signature="e#1674#1712#0" expanded="false" />
+            <element signature="e#1700#1712#0" expanded="false" />
+            <element signature="e#1721#1793#0" expanded="false" />
+            <element signature="e#1743#1757#0" expanded="false" />
+            <element signature="e#1774#1793#0" expanded="false" />
+            <element signature="e#1806#1817#0" expanded="false" />
+            <element signature="e#1832#1834#0" expanded="false" />
+            <element signature="e#1890#1921#0" expanded="false" />
+            <element signature="e#1909#1921#0" expanded="false" />
+            <element signature="e#1977#1979#0" expanded="false" />
+            <element signature="e#2018#2022#0" expanded="false" />
+            <element signature="e#2048#2060#0" expanded="false" />
+            <element signature="e#2082#2086#0" expanded="false" />
+            <element signature="e#2097#2106#0" expanded="false" />
+            <element signature="e#2121#2123#0" expanded="false" />
+            <element signature="e#2132#2137#0" expanded="false" />
+            <element signature="e#2140#2172#0" expanded="false" />
+            <element signature="e#2160#2172#0" expanded="false" />
+            <element signature="e#2175#2385#0" expanded="false" />
+            <element signature="e#2191#2231#0" expanded="false" />
+            <element signature="e#2236#2307#0" expanded="false" />
+            <element signature="e#2278#2283#0" expanded="false" />
+            <element signature="e#2303#2307#0" expanded="false" />
+            <element signature="e#2312#2360#0" expanded="false" />
+            <element signature="e#2328#2335#0" expanded="false" />
+            <element signature="e#2348#2360#0" expanded="false" />
+            <element signature="e#2381#2385#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/image/root/opt/live">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/image/root/opt/ready">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="18" lean-forward="false" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -818,7 +793,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>image</last-edited>
+          <last-edited>rest-service</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
