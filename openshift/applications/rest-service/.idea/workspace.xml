@@ -11,126 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="openshift-template.yaml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/openshift-template.yaml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="51" column="27" lean-forward="false" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
-              <folding>
-                <element signature="e#12#14#0" expanded="false" />
-                <element signature="e#84#86#0" expanded="false" />
-                <element signature="e#168#172#0" expanded="false" />
-                <element signature="e#211#222#0" expanded="false" />
-                <element signature="e#237#276#0" expanded="false" />
-                <element signature="e#283#307#0" expanded="false" />
-                <element signature="e#301#307#0" expanded="false" />
-                <element signature="e#334#364#0" expanded="false" />
-                <element signature="e#379#381#0" expanded="false" />
-                <element signature="e#442#454#0" expanded="false" />
-                <element signature="e#636#648#0" expanded="false" />
-                <element signature="e#835#855#0" expanded="false" />
-                <element signature="e#1575#1577#0" expanded="false" />
-                <element signature="e#1582#1817#0" expanded="false" />
-                <element signature="e#1604#1616#0" expanded="false" />
-                <element signature="e#1623#1793#0" expanded="false" />
-                <element signature="e#1661#1665#0" expanded="false" />
-                <element signature="e#1674#1712#0" expanded="false" />
-                <element signature="e#1700#1712#0" expanded="false" />
-                <element signature="e#1721#1793#0" expanded="false" />
-                <element signature="e#1743#1757#0" expanded="false" />
-                <element signature="e#1774#1793#0" expanded="false" />
-                <element signature="e#1806#1817#0" expanded="false" />
-                <element signature="e#1832#1834#0" expanded="false" />
-                <element signature="e#1890#1921#0" expanded="false" />
-                <element signature="e#1909#1921#0" expanded="false" />
-                <element signature="e#1977#1979#0" expanded="false" />
-                <element signature="e#2018#2022#0" expanded="false" />
-                <element signature="e#2048#2060#0" expanded="false" />
-                <element signature="e#2082#2086#0" expanded="false" />
-                <element signature="e#2097#2106#0" expanded="false" />
-                <element signature="e#2121#2123#0" expanded="false" />
-                <element signature="e#2132#2137#0" expanded="false" />
-                <element signature="e#2140#2172#0" expanded="false" />
-                <element signature="e#2160#2172#0" expanded="false" />
-                <element signature="e#2175#2385#0" expanded="false" />
-                <element signature="e#2191#2231#0" expanded="false" />
-                <element signature="e#2236#2307#0" expanded="false" />
-                <element signature="e#2278#2283#0" expanded="false" />
-                <element signature="e#2303#2307#0" expanded="false" />
-                <element signature="e#2312#2360#0" expanded="false" />
-                <element signature="e#2328#2335#0" expanded="false" />
-                <element signature="e#2348#2360#0" expanded="false" />
-                <element signature="e#2381#2385#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="165">
-                <caret line="11" column="27" lean-forward="false" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="live" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/root/opt/live">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="call" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/call">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="12" lean-forward="false" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/Dockerfile">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ct.shlib" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/projects/it/bin/ct.shlib">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ready" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/image/root/opt/ready">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="18" lean-forward="false" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -443,16 +324,15 @@
       <option name="presentableId" value="Default" />
       <updated>1519681291258</updated>
       <workItem from="1519681293645" duration="5502000" />
-      <workItem from="1519842091250" duration="6844000" />
+      <workItem from="1519842091250" duration="7312000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12346000" />
+    <option name="totallyTimeSpent" value="12814000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="610" y="52" width="1265" height="926" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -467,7 +347,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1826087" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1826087" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -713,15 +593,15 @@
     <entry file="file://$PROJECT_DIR$/image/root/opt/live">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
-          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/image/root/opt/ready">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="18" lean-forward="false" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
+        <state relative-caret-position="390">
+          <caret line="26" column="70" lean-forward="false" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="70" />
           <folding />
         </state>
       </provider>
