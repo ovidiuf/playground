@@ -11,223 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="openshift-template.yaml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/openshift-template.yaml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-180">
-              <caret line="85" column="11" lean-forward="true" selection-start-line="85" selection-start-column="11" selection-end-line="85" selection-end-column="11" />
-              <folding>
-                <element signature="e#12#14#0" expanded="false" />
-                <element signature="e#21#29#0" expanded="false" />
-                <element signature="e#30#66#0" expanded="false" />
-                <element signature="e#48#66#0" expanded="false" />
-                <element signature="e#154#156#0" expanded="false" />
-                <element signature="e#165#182#0" expanded="false" />
-                <element signature="e#185#217#0" expanded="false" />
-                <element signature="e#205#217#0" expanded="false" />
-                <element signature="e#220#434#0" expanded="false" />
-                <element signature="e#238#242#0" expanded="false" />
-                <element signature="e#247#434#0" expanded="false" />
-                <element signature="e#261#346#0" expanded="false" />
-                <element signature="e#281#292#0" expanded="false" />
-                <element signature="e#307#346#0" expanded="false" />
-                <element signature="e#353#377#0" expanded="false" />
-                <element signature="e#371#377#0" expanded="false" />
-                <element signature="e#404#434#0" expanded="false" />
-                <element signature="e#449#451#0" expanded="false" />
-                <element signature="e#460#476#0" expanded="false" />
-                <element signature="e#479#560#0" expanded="false" />
-                <element signature="e#493#548#0" expanded="false" />
-                <element signature="e#512#530#0" expanded="false" />
-                <element signature="e#563#1444#0" expanded="false" />
-                <element signature="e#589#646#0" expanded="false" />
-                <element signature="e#610#628#0" expanded="false" />
-                <element signature="e#651#681#0" expanded="false" />
-                <element signature="e#673#681#0" expanded="false" />
-                <element signature="e#686#1204#0" expanded="false" />
-                <element signature="e#702#783#0" expanded="false" />
-                <element signature="e#720#783#1" expanded="false" />
-                <element signature="e#743#761#0" expanded="false" />
-                <element signature="e#790#1204#0" expanded="false" />
-                <element signature="e#804#1031#0" expanded="false" />
-                <element signature="e#832#844#0" expanded="false" />
-                <element signature="e#862#901#0" expanded="false" />
-                <element signature="e#929#935#0" expanded="false" />
-                <element signature="e#970#990#0" expanded="false" />
-                <element signature="e#1027#1031#0" expanded="false" />
-                <element signature="e#1051#1063#0" expanded="false" />
-                <element signature="e#1087#1093#0" expanded="false" />
-                <element signature="e#1117#1134#0" expanded="false" />
-                <element signature="e#1143#1162#0" expanded="false" />
-                <element signature="e#1202#1204#0" expanded="false" />
-                <element signature="e#1209#1444#0" expanded="false" />
-                <element signature="e#1231#1243#0" expanded="false" />
-                <element signature="e#1250#1420#0" expanded="false" />
-                <element signature="e#1288#1292#0" expanded="false" />
-                <element signature="e#1301#1339#0" expanded="false" />
-                <element signature="e#1327#1339#0" expanded="false" />
-                <element signature="e#1348#1420#0" expanded="false" />
-                <element signature="e#1370#1384#0" expanded="false" />
-                <element signature="e#1401#1420#0" expanded="false" />
-                <element signature="e#1433#1444#0" expanded="false" />
-                <element signature="e#1459#1461#0" expanded="false" />
-                <element signature="e#1470#1477#0" expanded="false" />
-                <element signature="e#1480#1561#0" expanded="false" />
-                <element signature="e#1506#1561#0" expanded="false" />
-                <element signature="e#1525#1543#0" expanded="false" />
-                <element signature="e#1564#1770#0" expanded="false" />
-                <element signature="e#1574#1662#0" expanded="false" />
-                <element signature="e#1593#1604#0" expanded="false" />
-                <element signature="e#1617#1619#0" expanded="false" />
-                <element signature="e#1636#1639#0" expanded="false" />
-                <element signature="e#1658#1662#0" expanded="false" />
-                <element signature="e#1667#1724#0" expanded="false" />
-                <element signature="e#1688#1706#0" expanded="false" />
-                <element signature="e#1746#1750#0" expanded="false" />
-                <element signature="e#1761#1770#0" expanded="false" />
-                <element signature="e#1785#1787#0" expanded="false" />
-                <element signature="e#1796#1801#0" expanded="false" />
-                <element signature="e#1876#1947#0" expanded="false" />
-                <element signature="e#1918#1923#0" expanded="false" />
-                <element signature="e#1943#1947#0" expanded="false" />
-                <element signature="e#1952#1989#0" expanded="false" />
-                <element signature="e#1968#1975#0" expanded="false" />
-                <element signature="e#2010#2014#0" expanded="false" />
-                <element signature="e#2029#2031#0" expanded="false" />
-                <element signature="e#2092#2110#0" expanded="false" />
-                <element signature="e#2190#2208#0" expanded="false" />
-                <element signature="e#2231#2261#0" expanded="false" />
-                <element signature="e#2253#2261#0" expanded="false" />
-                <element signature="e#2323#2341#0" expanded="false" />
-                <element signature="e#2607#2611#0" expanded="false" />
-                <element signature="e#3119#3131#0" expanded="false" />
-                <element signature="e#3155#3161#0" expanded="false" />
-                <element signature="e#3185#3202#0" expanded="false" />
-                <element signature="e#3211#3230#0" expanded="false" />
-                <element signature="e#3270#3272#0" expanded="false" />
-                <element signature="e#3277#3512#0" expanded="false" />
-                <element signature="e#3299#3311#0" expanded="false" />
-                <element signature="e#3318#3488#0" expanded="false" />
-                <element signature="e#3356#3360#0" expanded="false" />
-                <element signature="e#3369#3407#0" expanded="false" />
-                <element signature="e#3395#3407#0" expanded="false" />
-                <element signature="e#3416#3488#0" expanded="false" />
-                <element signature="e#3438#3452#0" expanded="false" />
-                <element signature="e#3469#3488#0" expanded="false" />
-                <element signature="e#3501#3512#0" expanded="false" />
-                <element signature="e#3527#3529#0" expanded="false" />
-                <element signature="e#3538#3545#0" expanded="false" />
-                <element signature="e#3548#3629#0" expanded="false" />
-                <element signature="e#3574#3629#0" expanded="false" />
-                <element signature="e#3593#3611#0" expanded="false" />
-                <element signature="e#3632#3838#0" expanded="false" />
-                <element signature="e#3642#3730#0" expanded="false" />
-                <element signature="e#3661#3672#0" expanded="false" />
-                <element signature="e#3685#3687#0" expanded="false" />
-                <element signature="e#3704#3707#0" expanded="false" />
-                <element signature="e#3726#3730#0" expanded="false" />
-                <element signature="e#3735#3792#0" expanded="false" />
-                <element signature="e#3756#3774#0" expanded="false" />
-                <element signature="e#3814#3818#0" expanded="false" />
-                <element signature="e#3829#3838#0" expanded="false" />
-                <element signature="e#3853#3855#0" expanded="false" />
-                <element signature="e#3864#3869#0" expanded="false" />
-                <element signature="e#3986#3991#0" expanded="false" />
-                <element signature="e#4011#4015#0" expanded="false" />
-                <element signature="e#4036#4043#0" expanded="false" />
-                <element signature="e#4078#4082#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="540">
-                <caret line="36" column="4" lean-forward="false" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Service.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Service.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="30" column="74" lean-forward="false" selection-start-line="30" selection-start-column="74" selection-end-line="30" selection-end-column="74" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="call" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/call">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="647">
-              <caret line="48" column="58" lean-forward="false" selection-start-line="48" selection-start-column="58" selection-end-line="48" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommandBase.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/CommandBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="65" column="32" lean-forward="false" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Ping.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/command/Ping.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="26" column="13" lean-forward="false" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RestServlet.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/RestServlet.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="18" column="74" lean-forward="false" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="74" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Logger.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/image/rest-service/src/main/java/io/novaordis/playground/openshift/applications/restservice/Logger.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="22" column="17" lean-forward="false" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="System.java" pinned="false" current-in-tab="false">
-        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/lang/System.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="887" column="25" lean-forward="false" selection-start-line="887" selection-start-column="25" selection-end-line="887" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -566,16 +350,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1519858172263</updated>
-      <workItem from="1519858174827" duration="5685000" />
+      <workItem from="1519858174827" duration="5834000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5685000" />
+    <option name="totallyTimeSpent" value="5834000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="374" y="52" width="1501" height="926" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -590,7 +373,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27248502" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27248502" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -742,17 +525,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="540">
-            <caret line="36" column="4" lean-forward="false" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/openshift-template.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-180">
@@ -878,6 +650,17 @@
             <element signature="e#4036#4043#0" expanded="false" />
             <element signature="e#4078#4082#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="540">
+            <caret line="36" column="4" lean-forward="false" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

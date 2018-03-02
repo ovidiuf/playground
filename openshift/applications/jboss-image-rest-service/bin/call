@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+OPENSHIFT_APPDOMAIN_DNS_NAME="apps.openshift.novaordis.io"
+ROOT_CONTEXT=rest-service
+PUBLIC_SERVICE_NAME=test
+
+function display-usage() {
+cat <<EOF
+
+A command line tool to send invocations (commands) into the REST service
+deployed in OpenShift.
+
+Usage:
+
+    call <command>-[command arguments]
+
+
+EOF
+}
+
+function call() {
+
+    local service_name=$1
+    local command=$2
+
+    [[ -z ${service_name} ]] && { echo "'service_name' not provided" 1>&2; return 1; }
+    [[ -z ${command} ]] && { echo "'service_name' not provided" 1>&2; return 1; }
+
+    curl -k https://${service_name}.${OPENSHIFT_APPDOMAIN_DNS_NAME}/${ROOT_CONTEXT}/${command}
+
+}
+function main() {
+
+    local command
+    while [[ -n $1 ]]; do
+
+        if [[ $1 == "--help" || $1 == "help" ]]; then
+
+            display-usage
+            exit 0;
+        elif [[ -z ${command} ]]; then
+            command=$1
+        fi
+        shift
+    done
+
+    [[ -z ${command} ]] && { echo "[error]: command required" 1>&2; exit 1; }
+
+    call test ${command}
+}
+
+main "$@"
