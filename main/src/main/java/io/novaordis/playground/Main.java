@@ -1,31 +1,9 @@
-/*
- * Copyright (c) 2016 Nova Ordis LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package io.novaordis.playground;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Properties;
+import java.io.FileWriter;
+import java.io.RandomAccessFile;
+import java.util.Date;
 
-/**
- * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 10/5/16
- */
 public class Main {
 
     // Constants -------------------------------------------------------------------------------------------------------
@@ -34,23 +12,20 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        if (args.length == 0) {
 
-        Properties p = System.getProperties();
+            truncateFile();
 
-        List<String> names = new ArrayList<>();
-        for (Enumeration e = p.propertyNames(); e.hasMoreElements(); ) {
-
-            names.add((String)e.nextElement());
         }
+        else if ("write".equals(args[0])) {
 
-        Collections.sort(names);
+            writeFile();
+        }
+        else {
 
-        for(String name: names) {
-
-            System.out.println(name + "=" + p.get(name));
+            throw new Exception("unknown command " + args[0]);
         }
     }
-
     // Attributes ------------------------------------------------------------------------------------------------------
 
     // Constructors ----------------------------------------------------------------------------------------------------
@@ -63,6 +38,38 @@ public class Main {
 
     // Private ---------------------------------------------------------------------------------------------------------
 
+    private static void writeFile() throws Exception {
+
+        FileWriter fw = new FileWriter("./test.txt");
+
+        while(true) {
+
+            System.out.print(".");
+            fw.write(new Date().toString() + "\n");
+            fw.flush();
+            Thread.sleep(1000L);
+        }
+
+    }
+
+    private static void truncateFile() throws Exception {
+
+
+        RandomAccessFile raf = new RandomAccessFile("./test.txt", "rws");
+
+        long pointer = raf.getFilePointer();
+
+        System.out.println("pointer: " + pointer);
+
+        raf.setLength(0L);
+        raf.close();
+
+        System.out.println("truncated");
+
+    }
+
+
     // Inner classes ---------------------------------------------------------------------------------------------------
+
 
 }
