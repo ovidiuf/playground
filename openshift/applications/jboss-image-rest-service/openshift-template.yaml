@@ -48,6 +48,12 @@ objects:
           imagePullPolicy: Always
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          env:
+          - name: REST_SERVICE_START
+            value: "true"
+          #resources:
+          #  limits:
+          #    cpu: 100m
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler

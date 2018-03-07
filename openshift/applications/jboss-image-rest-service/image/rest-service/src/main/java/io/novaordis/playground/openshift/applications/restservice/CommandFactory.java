@@ -16,6 +16,7 @@
 
 package io.novaordis.playground.openshift.applications.restservice;
 
+import io.novaordis.playground.openshift.applications.restservice.command.Getenv;
 import io.novaordis.playground.openshift.applications.restservice.command.Ping;
 import io.novaordis.playground.openshift.applications.restservice.command.Start;
 import io.novaordis.playground.openshift.applications.restservice.command.Version;
@@ -50,6 +51,11 @@ public class CommandFactory {
 
             return new Start(context);
         }
+        else if (path.startsWith("/getenv")) {
+
+            return new Getenv(context);
+        }
+
 
         throw new HttpException(404, "no known command can be inferred from " + path);
     }

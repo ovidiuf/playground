@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+#
+# echo "export TEST_SIZE=big" > /tmp/env
+#

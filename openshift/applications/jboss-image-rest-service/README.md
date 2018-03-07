@@ -28,6 +28,7 @@ This will publish the image on Docker Hub as docker.io/novaordis/rest-service:la
 
     call ping
     call start
+    call getenv <env-var-name>
     
         
 

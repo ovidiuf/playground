@@ -13,3 +13,11 @@ FROM registry.access.redhat.com/jboss-eap-6/eap64-openshift
 
 #COPY ./artifacts/* /opt/dsmanager/lib/
 COPY ./rest-service/target/rest-service.war /deployments/
+
+#
+# Optional startup wrapper, in case we need to experiment with it. If the subsequent
+# COPY and ENTRYPOINT are commented out, the image will use its default entrypoint.
+#
+#COPY ./root/opt/startup-wrapper /opt/startup-wrapper
+#COPY ./root/opt/second-level-script /opt/second-level-script
+#ENTRYPOINT /opt/startup-wrapper

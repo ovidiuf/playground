@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "executing $0 ..."
+
+#
+# setting an experimental environment variable
+#
+# $(dirname $0)/second-level-script
+#
+# [ -f /tmp/env ] && source /tmp/env
+#
+
+exec /opt/eap/bin/openshift-launch.sh
