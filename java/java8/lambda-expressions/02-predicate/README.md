@@ -1,4 +1,4 @@
-#java 8 Lambda Expression - Predicate
+# java 8 Lambda Expression - Predicate
 
 
 A lambda expression example where lambda is a Predicate<T>.
