@@ -1,7 +1,7 @@
-# java 8 Lambda Expression - Predicate
+# java 8 Lambda Expression
 
 
-A lambda expression example where lambda is a Predicate<T>.
+Examples of using various functional interfaces.
 
 https://kb.novaordis.com/index.php/Java_8_Lambda_Expressions
 
