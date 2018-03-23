@@ -19,7 +19,8 @@ package io.novaordis.playground.java.java8.lambda;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 
 import static io.novaordis.playground.java.java8.lambda.Color.GREEN;
 import static io.novaordis.playground.java.java8.lambda.Color.RED;
@@ -47,22 +48,29 @@ public class Main {
                 new Apple(YELLOW, 210),
                 new Apple(YELLOW, 150)));
 
-        List<Apple> result;
+        //
+        // Comparator
+        //
 
-        result = filter(apples,
-                (Apple apple) -> YELLOW.equals(apple.getColor()) && apple.getWeight() > 200);
+        apples.sort((Apple a1, Apple a2) -> a1.getWeight() - a2.getWeight());
 
-        System.out.println(result);
+        System.out.println(apples);
 
-        result = filter(apples,
-                (Apple apple) -> apple.getWeight() <= 150);
+        //
+        // Runnable
+        //
 
-        System.out.println(result);
+        final CountDownLatch latch = new CountDownLatch(1);
 
+        new Thread(() -> { System.out.println("from a different thread"); latch.countDown(); }).start();
 
-        List<String> strings = new ArrayList<>(Arrays.asList("something", "something else", "red"));
+        latch.await();
 
-        System.out.println(filter(strings, (String s) -> s.contains("r")));
+        //
+        // Callable
+        //
+
+        Callable
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -76,23 +84,6 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
-
-    private static <T> List<T> filter(List<T> items, Predicate<T> predicate) {
-
-        List<T> result = new ArrayList<>();
-
-        for(T i : items) {
-
-            if (predicate.test(i)) {
-
-                result.add(i);
-            }
-        }
-
-        return result;
-    }
-
-
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
