@@ -18,10 +18,10 @@ package io.novaordis.playground.java.java8.lambda;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/22/18
+ * @since 3/23/18
  */
 @FunctionalInterface
-public interface ApplePredicate {
+public interface HasDefaultMethods {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -29,6 +29,11 @@ public interface ApplePredicate {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    boolean isAcceptable(Apple apple);
+    void something(Apple a);
+
+    default String anotherMethod() {
+
+        return "blah";
+    }
 
 }

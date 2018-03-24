@@ -19,6 +19,7 @@ package io.novaordis.playground.java.java8.lambda;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static io.novaordis.playground.java.java8.lambda.Color.GREEN;
 import static io.novaordis.playground.java.java8.lambda.Color.RED;
@@ -46,17 +47,72 @@ public class Main {
                 new Apple(YELLOW, 210),
                 new Apple(YELLOW, 150)));
 
-        List<Apple> result;
+//        List<Apple> result;
+//
+//        result = filter(apples,
+//                (Apple apple) -> YELLOW.equals(apple.getColor()) && apple.getWeight() > 200);
+//
+//        System.out.println(result);
+//
+//        result = filter(apples,
+//                (Apple apple) -> apple.getWeight() <= 150);
+//
+//
+//        System.out.println(result);
+//
+//        //
+//        // block-style lambdas
+//        //
+//
+//        ApplePrettyPrint p = (Apple a) -> {
+//
+//            return a.getColor() + " (" + a.getWeight() + " grams)";
+//        };
+//
+//        prettyPrint(apples, p);
+//
+//        ApplePrettyPrint2 p2 = (Apple a) -> {
+//            System.out.println("the apple is " + a.getColor());
+//            System.out.println("the apple weighs " + a.getWeight() + " grams");
+//        };
+//
+//        prettyPrint2(apples, p2);
 
-        result = filter(apples,
-                (Apple apple) -> YELLOW.equals(apple.getColor()) && apple.getWeight() > 200);
+//        final List<String> shared = new ArrayList<>();
+//
+//        FunctionalInterfaceWhoseMethodReturnsVoid l = s -> shared.add(s);
 
-        System.out.println(result);
 
-        result = filter(apples,
-                (Apple apple) -> apple.getWeight() <= 150);
 
-        System.out.println(result);
+//
+//        //
+//        // expression-style lambdas
+//        //
+//
+//        ApplePrettyPrint p3 = (Apple a) -> a.getColor() + " (" + a.getWeight() + " GRAMS)";
+//
+//        prettyPrint(apples, p3);
+//
+//        testFunctionalInterfaceWithDefaultMethods(apples, a -> { System.out.println(a); });
+//
+//        EmptyParameterList l = () -> System.out.println("something");
+//
+//
+//        ExceptionLambda l2 =
+//                s -> {
+//
+//                    if ("blah".equals(s)) {
+//
+//                        throw new Exception("not this");
+//                    }
+//
+//                    return s.toUpperCase();
+//                };
+
+
+        SomeFunctionalInterface l = (String s, Integer i) -> s + " " + i.toString();
+        SomeFunctionalInterface l2 = (s, i) -> s + " " + i.toString();
+
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -84,6 +140,39 @@ public class Main {
         }
 
         return result;
+    }
+
+    private static void prettyPrint(List<Apple> apples, ApplePrettyPrint pp) {
+
+        List<Apple> result = new ArrayList<>();
+
+        for(Apple a: apples) {
+
+            System.out.println(pp.prettyPrint(a));
+        }
+    }
+
+    private static void prettyPrint2(List<Apple> apples, ApplePrettyPrint2 pp) {
+
+        List<Apple> result = new ArrayList<>();
+
+        for(Apple a: apples) {
+
+            pp.prettyPrint(a);
+        }
+    }
+
+    private static void testFunctionalInterfaceWithDefaultMethods(List<Apple> apples, HasDefaultMethods hdm) {
+
+        for(Apple a: apples) {
+
+            hdm.something(a);
+        }
+    }
+
+    public static Callable<String> fetch() {
+
+        return () -> "something";
     }
 
 

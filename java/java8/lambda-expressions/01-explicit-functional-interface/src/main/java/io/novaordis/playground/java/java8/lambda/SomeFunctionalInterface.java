@@ -18,10 +18,9 @@ package io.novaordis.playground.java.java8.lambda;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@novaordis.com>
- * @since 3/22/18
+ * @since 3/23/18
  */
-@FunctionalInterface
-public interface ApplePredicate {
+public interface SomeFunctionalInterface {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
@@ -29,6 +28,6 @@ public interface ApplePredicate {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    boolean isAcceptable(Apple apple);
+    String display(String s, Integer i);
 
 }

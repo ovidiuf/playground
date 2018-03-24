@@ -19,8 +19,12 @@ package io.novaordis.playground.java.java8.lambda;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static io.novaordis.playground.java.java8.lambda.Color.GREEN;
 import static io.novaordis.playground.java.java8.lambda.Color.RED;
@@ -48,29 +52,13 @@ public class Main {
                 new Apple(YELLOW, 210),
                 new Apple(YELLOW, 150)));
 
-        //
-        // Comparator
-        //
+        comparatorExample(apples);
 
-        apples.sort((Apple a1, Apple a2) -> a1.getWeight() - a2.getWeight());
+        runnableExample();
 
-        System.out.println(apples);
+        callableExample();
 
-        //
-        // Runnable
-        //
-
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        new Thread(() -> { System.out.println("from a different thread"); latch.countDown(); }).start();
-
-        latch.await();
-
-        //
-        // Callable
-        //
-
-        Callable
+        cyclicBarrierExample();
     }
 
     // Attributes ------------------------------------------------------------------------------------------------------
@@ -84,6 +72,77 @@ public class Main {
     // Protected -------------------------------------------------------------------------------------------------------
 
     // Private ---------------------------------------------------------------------------------------------------------
+
+    private static void comparatorExample(List<Apple> apples) {
+
+        apples.sort((Apple a1, Apple a2) -> a1.getWeight() - a2.getWeight());
+
+        System.out.println(apples);
+
+    }
+
+    private static void runnableExample() throws Exception {
+
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        new Thread(() -> { System.out.println("from a different thread"); latch.countDown(); }).start();
+
+        latch.await();
+    }
+
+    private static void callableExample() throws Exception {
+
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+
+        final String arg = "something";
+
+        Future<String> future = executor.submit(() -> arg.toUpperCase());
+
+        String result = future.get();
+
+        System.out.println("callable result: " + result);
+
+        executor.shutdown();
+
+    }
+
+    private static void cyclicBarrierExample() throws Exception {
+
+        int threadCount = 10;
+
+        final CyclicBarrier barrier = new CyclicBarrier(
+                threadCount, () -> System.out.print("ALL threads have finished"));
+
+        for(int i = 0; i < threadCount; i ++) {
+
+            new Thread(() ->  {
+
+                int ms = ThreadLocalRandom.current().nextInt(10000);
+
+                try {
+
+                    System.out.println("sleeping " + ms / 1000 + " seconds");
+                    Thread.sleep((long) ms);
+                }
+                catch(Exception e) {
+
+                    // OK
+                }
+
+                try {
+
+                    barrier.await();
+                }
+                catch(Exception e)  {
+
+                    System.out.println("barrier error");
+
+                    // ...
+                }
+            }, "Thread #" + i).start();
+        }
+    }
+
 
     // Inner classes ---------------------------------------------------------------------------------------------------
 
