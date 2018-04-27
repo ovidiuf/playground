@@ -1,7 +1,3 @@
-#
-# LTS - long-term support
-#
-#FROM jenkins/jenkins:lts
 FROM jenkinsci/blueocean
 
 #
