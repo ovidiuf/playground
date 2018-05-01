@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
+#
+# This command assumes that a user-defined bridge named "jenkins-cloud" was already created with
+# docker network create --driver=bridge jenkins-cloud
+#
+
 local_jenkins_home=/Users/ovidiu/tmp/jenkins_home
 
 docker run \
  --rm \
  --name jenkins \
+ --network jenkins-cloud \
  -p 8080:8080 \
  -v ${local_jenkins_home}:/var/jenkins_home \
  --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
