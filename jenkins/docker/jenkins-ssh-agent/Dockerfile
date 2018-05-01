@@ -1,0 +1,1 @@
+FROM jenkinsci/ssh-slave
