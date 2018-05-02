@@ -1,4 +1,22 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-ospackage-plugin:4.3.0'
+    }
+}
 
 apply plugin: 'java'
+apply plugin: 'nebula.ospackage-application'
 
+repositories {
+    mavenCentral()
+}
 
+dependencies {
+
+    implementation 'junit:junit:4.+'
+}
+
+mainClassName = 'io.novaordis.playground.gradle.java.Main'
