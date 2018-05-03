@@ -1,22 +1,45 @@
-buildscript {
-    repositories {
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
-    dependencies {
-        classpath 'com.netflix.nebula:gradle-ospackage-plugin:4.3.0'
-    }
-}
-
 apply plugin: 'java'
-apply plugin: 'nebula.ospackage-application'
+
+group = "io.novaordis.playground.gradle"
+version = "1.0"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
+
     mavenCentral()
+}
+
+configurations.all {
+
+    resolutionStrategy.cacheChangingModulesFor 3600, 'seconds'
 }
 
 dependencies {
 
-    implementation 'junit:junit:4.+'
+    implementation 'org.slf4j:slf4j-api:1.7.12'
+    testImplementation 'junit:junit:4.+'
 }
 
-mainClassName = 'io.novaordis.playground.gradle.java.Main'
+compileJava {
+
+    options.compilerArgs += ['-Xlint']
+}
+
+javadoc {
+
+    options.charSet = 'UTF-8'
+}
+
+configurations {
+
+    testImplementation.exclude group: 'com.example'
+}
+
+task runMain(type: JavaExec) {
+
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'io.novaordis.playground.gradle.java.Main'
+
+}
