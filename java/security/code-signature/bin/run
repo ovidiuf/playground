@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# bash script for running a generic project
+#
+# $Id: NovaOrdisWorkEnvironmentRunSh.txt,v 1.6 2007/06/20 23:55:12 wiki Exp wiki $
+#
+
+reldir=`dirname $0`
+
+cygwin=false;
+os=unix
+case "`uname`" in
+    CYGWIN*)
+        cygwin=true
+        os=windows
+        ;;
+esac
+
+#
+# We always use build.xml execution path, so this way the path information is kept in only one place
+#
+
+ant -Dexecution.classpath.file=bin/.execution.classpath -Dos=${os} -f $reldir/../build.xml get-execution-classpath
+CLASSPATH=`cat $reldir/.execution.classpath`
+
+while [ "$1" != "" ]; do
+    if [ "$1" = "-debug" ]; then
+        DEBUG_OPTS_SOCKET="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=12348"
+        DEBUG_OPTS_SHMEM="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_shmem,server=y,suspend=y,address=run"
+        JAVA_OPTS="$DEBUG_OPTS_SHMEM"
+    else
+        ARGS="$ARGS $1"
+    fi
+    shift
+    continue;
+done
+
+$JAVA_HOME/bin/java -Djava.security.manager -Djava.security.policy=$reldir/../etc/test.policy $JAVA_OPTS -cp "$CLASSPATH" org.novaordis.signature.Main $ARGS

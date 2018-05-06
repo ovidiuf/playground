@@ -1,0 +1,9 @@
+/* AUTOMATICALLY GENERATED ON Thu Jan 13 14:35:26 MST 2011*/
+/* DO NOT EDIT */
+
+keystore "file://C:/work/playground/java/security/code-signature/etc/truststore.jks", "JKS";
+
+grant signedBy "signer-certificate" {
+  permission java.security.AllPermission, signedBy "signer-certificate";
+};
+

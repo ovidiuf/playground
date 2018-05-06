@@ -1,0 +1,7 @@
+An example that shows how to symmetrically encrypt/decrypt content using PBE (Password-Based
+Encryption) and BASE64 encoding.
+
+To use it:
+
+./bin/run encrypt <password> <thing-to-encrypt>
+./bin/run decrypt <password> <thing-to-decrypt>
