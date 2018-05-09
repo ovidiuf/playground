@@ -5,10 +5,10 @@ import swim.api.SwimLane;
 import swim.api.ValueLane;
 
 /**
- * Models a simple source of data: a device of type A. Multiple physical instances of the device may be deployed.
+ * Models a simple source of data: a device of type DeviceA. Multiple physical instances of the device may be deployed.
  * Each instance of the device exposes a metric, which can be expressed as an integer.
  */
-public class A extends AbstractService {
+public class DeviceA extends AbstractService {
 
     @SwimLane("metric")
     private ValueLane<Integer> metric = valueLane().valueClass(Integer.class).

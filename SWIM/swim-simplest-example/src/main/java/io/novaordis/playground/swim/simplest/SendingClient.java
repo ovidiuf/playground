@@ -8,7 +8,7 @@ public class SendingClient {
 
     public static void main(String[] args) throws Exception {
 
-        SwimClient client = new SwimClient();
+        final SwimClient client = new SwimClient();
 
         client.start();
 
@@ -19,39 +19,20 @@ public class SendingClient {
                 downlinkValue().
                 keepSynced(true).
                 open().
+                didSet((newValue, oldValue) -> {
+
+                    //
+                    // we use this callback to close the client and exit after the first set on lane
+                    //
+
+                    System.out.println("exiting ...");
+
+                    client.stop();
+                    client.close();
+
+                }).
                 set(Value.of("something"));
 
-//        downlink.
-//                keepSynced(true).
-//                open().didSet((newValue, oldValue) -> {
-//
-//                    System.out.println("new value: " + newValue + ", old value: " + oldValue);
-//
-//                    downlink.close();
-//                    client.stop();
-//
-//                }).
-//                set(Value.of("blah"));
-
-
-//        final ValueDownlink<Value> downlink = client.
-//                hostRef("ws://localhost:9009").
-//                nodeRef("a/dev1").
-//                laneRef("metric").
-//                downlinkValue();
-//
-//        downlink.
-//                keepSynced(true).
-//                open().didSet((newValue, oldValue) -> {
-//
-//                    System.out.println("new value: " + newValue + ", old value: " + oldValue);
-//
-//
-//                }).
-//                set(Value.of("something"));
-
-
-//        Thread.sleep(10000L);
 
     }
 

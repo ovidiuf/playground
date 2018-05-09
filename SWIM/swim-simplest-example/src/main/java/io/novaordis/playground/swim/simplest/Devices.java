@@ -5,11 +5,11 @@ import swim.api.ServiceType;
 import swim.api.SwimRoute;
 
 /**
- * All devices of type A.
+ * All devices of type DeviceA.
  */
 public class Devices extends AbstractPlane {
 
     @SwimRoute("/a/:id")
-    final ServiceType<?> a = serviceClass(io.novaordis.playground.swim.simplest.A.class);
+    final ServiceType<?> a = serviceClass(DeviceA.class);
 
 }
