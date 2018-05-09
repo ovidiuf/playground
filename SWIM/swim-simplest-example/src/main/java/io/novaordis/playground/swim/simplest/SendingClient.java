@@ -22,7 +22,9 @@ public class SendingClient {
                 didSet((newValue, oldValue) -> {
 
                     //
-                    // we use this callback to close the client and exit after the first set on lane
+                    // we use this callback to close the client and exit after the first set on lane is
+                    // *guaranteed* to have reached the server and came back; the client should stay up
+                    // until then
                     //
 
                     System.out.println("exiting ...");
