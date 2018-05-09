@@ -1,0 +1,38 @@
+<project name="encryption" default="jar" basedir=".">
+
+    <property environment="ENV"/>
+
+    <path id="compilation.classpath">
+        <!--<pathelement location="./dependencies/log4j.jar"/>-->
+        <!--<pathelement location="${jboss.home}/server/${jboss.profile}/lib/servlet-api.jar"/>-->
+    </path>
+
+    <path id="execution.classpath">
+        <path refid="compilation.classpath"/>
+        <pathelement location="./target/${ant.project.name}.jar"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="./target/classes"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="./src/main/java" destdir="./target/classes" debug="on" source="1.6">
+            <classpath refid="compilation.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar jarfile="./target/${ant.project.name}.jar">
+            <zipfileset dir="target/classes" includes="**"/>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true" quiet="true">
+            <fileset dir="./target" includes="**" />
+        </delete>
+    </target>
+
+</project>
+

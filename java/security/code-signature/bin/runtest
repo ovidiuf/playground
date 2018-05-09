@@ -1,0 +1,113 @@
+#!/bin/sh
+#
+# bash script for running a single unit test case.
+#
+# It expects TARGET_CLASS and TARGET_TEST to be set. If they are not, it tries to load them
+# from ./.testrc.
+#
+# Options:
+#    -debug start the client VM in debugging mode
+#
+# $Id: NovaOrdisWorkEnvironmentRuntest.txt,v 1.1 2007/10/16 03:11:46 wiki Exp wiki $
+#
+
+
+reldir=`dirname $0`
+
+if [ -z "$TARGET_CLASS" -a -f $reldir/.testrc ]; then
+   . $reldir/.testrc
+fi
+
+if [ -z "$TARGET_CLASS" ]; then
+   echo "No TARGET_CLASS found! Set the TARGET_CLASS environment variable and try again." 1>&2
+   exit 1
+fi
+
+os=unix
+cygwin=false;
+case "`uname`" in
+    CYGWIN*)
+        cygwin=true
+        os=windows
+        ;;
+esac
+
+if [ $cygwin = true ]; then
+    SEP=";"
+else
+    SEP=":"
+fi
+
+#
+# We should use the same test execution classpath as the ant <junit> task, so we run ant to get
+# it from there.
+#
+
+ant -Dtest.execution.classpath.file=bin/.test.execution.classpath -Dos=${os} -f $reldir/../build.xml get-test-execution-classpath
+CLASSPATH=`cat $reldir/.test.execution.classpath`
+
+outputdir="$reldir/../output/test"
+
+if ! mkdir -p $outputdir/log; then
+   echo "failed to create $outputdir/log"
+fi
+
+if [ ! -d ${outputdir}/scratch ]; then
+    if !  mkdir -p ${outputdir}/scratch; then
+        echo "failed to create ${outputdir}/scratch"
+    fi
+fi
+
+# reset the log files as by default log4j is configure to append
+rm -f $outputdir/log/*.log
+
+while [ "$1" != "" ]; do
+    if [ "$1" = "-debug" ]; then
+        if [ $cygwin = false ]; then
+            if [ "$DEBUG_OPTS_SOCKET" = "" ]; then
+                echo "No configured socket debugging options. Set DEBUG_OPTS_SOCKET in your environment or .testrc" 1>&2
+                exit 1
+            fi
+            JAVA_OPTS="$DEBUG_OPTS_SOCKET"
+        else
+            if [ "$DEBUG_OPTS" = "" ]; then
+                echo "No configured debugging options. Set DEBUG_OPTS in your environment or .testrc" 1>&2
+                exit 1
+            fi
+            JAVA_OPTS="$DEBUG_OPTS"
+        fi
+        shift
+    elif [ "$1" = "-clean" ]; then
+        clean="clean"
+        shift
+    elif [ "$1" = "-jconsole" ]; then
+        if [ "$DEBUG_OPTS" = "" ]; then
+            DEBUG_OPTS="-Dcom.sun.management.jmxremote"
+        else
+            DEBUG_OPTS="$DEBUG_OPTS -Dcom.sun.management.jmxremote"
+        fi
+        shift
+    elif [ "$target_test" = "" ]; then
+        target_test=$1;
+        shift
+    else
+        echo "Error, unknown switch: $1"
+        exit 1
+    fi
+done
+
+if [ "$target_test" != "" ]; then
+    TARGET_TEST="-t $target_test"
+elif [ "$TARGET_TEST" != "" ]; then
+   TARGET_TEST="-t $TARGET_TEST"
+fi
+
+#JAVA_OPTS="$JAVA_OPTS -Dtest.scratch.directory=${outputdir}/scratch -Dtest.log.directory=${outputdir}/log -Dproject.name=$PROJECT_NAME -Dversion=$PROJECT_VERSION"
+JAVA_OPTS="$JAVA_OPTS -Dtest.scratch.directory=${outputdir}/scratch -Dtest.log.directory=${outputdir}/log"
+
+# Currently, "-clean" not used, but if we were to use maven, $clean would go to the command line
+# Also, in a future release we may want to use '-o' with maven
+
+$JAVA_HOME/bin/java $JAVA_OPTS -cp "$CLASSPATH" \
+org.novaordis.util.testing.SelectiveTestRunner $TARGET_CLASS $TARGET_TEST
+

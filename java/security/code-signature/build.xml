@@ -1,0 +1,200 @@
+<project name="generic" default="artifacts" basedir=".">
+
+    <!-- ======================================================================================= -->
+    <!-- Version                                                                                 -->
+    <!-- ======================================================================================= -->
+
+    <property name="project.vendor" value="Nova Ordis LLC"/>
+    <property name="project.url" value="http://novaordis.org"/>
+    <property name="major.version" value="1"/>
+    <property name="minor.version" value="0"/>
+    <property name="update.version" value="0"/>
+    <property name="version.qualifier" value="GA"/>
+    <property name="version"
+              value="${major.version}.${minor.version}.${update.version}.${version.qualifier}"/>
+
+    <!-- ======================================================================================= -->
+    <!-- Default properties                                                                      -->
+    <!-- ======================================================================================= -->
+
+    <property environment="ENV"/>
+    <property name="os" value="unix"/>
+    <property name="test.scratch.directory" value="./target/test/scratch"/>
+    <property name="jboss.home" value="${ENV.JBOSS_HOME}"/>
+    <property name="jboss.configuration" value="default"/>
+
+    <property name="artifact.extension" value="jar"/>
+
+    <!-- ======================================================================================= -->
+    <!-- Paths                                                                                   -->
+    <!-- ======================================================================================= -->
+
+    <path id="compilation.classpath">
+        <pathelement location="./dependencies/log4j.jar"/>
+        <pathelement location="${jboss.home}/server/${jboss.configuration}/lib/servlet-api.jar"/>
+    </path>
+
+    <path id="execution.classpath">
+        <path refid="compilation.classpath"/>
+        <pathelement location="./etc"/>
+        <pathelement location="./target/${ant.project.name}-signed.jar"/>
+    </path>
+
+    <!-- ======================================================================================= -->
+    <!-- Targets                                                                                 -->
+    <!-- ======================================================================================= -->
+
+    <!--
+         TODO 'is-docbook-support-expanded', 'expand-and-delete-docbook-support' and 'init' should
+         go away as soon as TRE will know how to unzip and do it itself.
+    -->
+
+    <property name="docbook.support.dir" value="./dependencies/docbook/snapshot"/>
+    <property name="docbook.support.file" value="${docbook.support.dir}/docbook-support.zip"/>
+
+    <target name="is-docbook-support-expanded">
+        <available file="${docbook.support.file}" property="must.expand.docbook.support"/>
+    </target>
+
+    <target name="expand-and-delete-docbook-support" if="must.expand.docbook.support">
+        <unzip src="${docbook.support.file}" dest="${docbook.support.dir}"/>
+        <delete file="${docbook.support.file}"/>
+    </target>
+
+    <target name="init" depends="is-docbook-support-expanded, expand-and-delete-docbook-support">
+        <mkdir dir="./target/classes"/>
+        <available property="manifest.template.available" file="./etc/META-INF/MANIFEST.MF"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="./src" destdir="./target/classes" debug="on" source="1.6">
+            <classpath refid="compilation.classpath"/>
+        </javac>
+    </target>
+
+    <target name="generate-manifest" depends="init" if="manifest.template.available">
+        <mkdir dir="./target/etc/META-INF"/>
+        <copy file="./etc/META-INF/MANIFEST.MF" todir="./target/etc/META-INF" filtering="yes">
+            <filterset>
+                <filter token="JAVA_VM_VERSION" value="${java.vm.version}"/>
+                <filter token="JAVA_VM_VENDOR" value="${java.vm.vendor}"/>
+                <filter token="NAME" value="${ant.project.name}"/>
+                <filter token="VERSION" value="${version}"/>
+                <filter token="VENDOR" value="${project.vendor}"/>
+                <filter token="URL" value="${project.url}"/>
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile, generate-manifest">
+        <jar jarfile="./target/${ant.project.name}.${artifact.extension}">
+            <zipfileset dir="target/classes" includes="**"/>
+        </jar>
+    </target>
+
+    <target name="sign-jar" depends="jar">
+          <exec executable="jarsigner">
+            <arg value="-keystore"/>
+            <arg value="./etc/private.jks"/>
+            <arg value="-storepass"/>
+            <arg value="password"/>
+            <arg value="-keypass"/>
+            <arg value="password"/>
+            <arg value="-signedjar"/>
+            <arg value="./target/${ant.project.name}-signed.jar"/>
+            <arg value="./target/${ant.project.name}.jar"/>
+            <arg value="private-key"/>
+          </exec>
+    </target>
+
+    <target name="src-jar">
+        <jar jarfile="./target/${ant.project.name}-src.jar">
+            <zipfileset dir="src" includes="**"/>
+        </jar>
+    </target>
+
+    <!-- ======================================================================================= -->
+    <!-- Variouse other deployment archives                                                      -->
+    <!-- ======================================================================================= -->
+    
+    <target name="war" depends="compile, generate-manifest">
+        <war warfile="./target/${ant.project.name}.war"
+             webxml="./etc/WEB-INF/web.xml"
+             manifest="./target/etc/META-INF/MANIFEST.MF">
+            <webinf dir="./etc/WEB-INF">
+                <include name="jboss-web.xml"/>
+            </webinf>
+            <zipfileset dir="target/classes" includes="org/novaordis/timesnap/servlet/**"/>
+        </war>
+    </target>
+
+    <target name="sar" depends="compile">
+        <jar destfile="./target/${ant.project.name}.sar">
+            <fileset dir="./target/classes" includes="org/novaordis/timesnap/**"
+                     excludes="org/novaordis/timesnap/servlet/**"/>
+            <fileset dir="./etc" includes="META-INF/jboss-service.xml"/>
+            <fileset dir="./etc" includes="xmdesc/**"/>
+        </jar>
+    </target>
+
+    <target name="ear" depends="war, sar">
+        <ear earfile="./target/${ant.project.name}.ear"
+             appxml="./etc/META-INF/application.xml"
+             basedir="./target"
+             includes="${ant.project.name}.war, ${ant.project.name}.sar">
+            <metainf file="./etc/META-INF/jboss-app.xml"/>
+        </ear>
+    </target>
+
+    <target name="buildable-zip">
+        <mkdir dir="./target"/>
+        <zip destfile="./target/${ant.project.name}-${version}.zip">
+            <zipfileset dir="." prefix="${ant.project.name}-${version}"
+                        excludes="target/**, ./bin/.*.classpath, .IntelliJ/*.iws, **/.svn"/>
+        </zip>
+    </target>
+
+    <target name="artifacts" depends="jar, src-jar"/>
+
+    <!-- ======================================================================================= -->
+    <!-- Tests                                                                                   -->
+    <!-- ======================================================================================= -->
+
+    <!-- ======================================================================================= -->
+    <!-- Deployment/Undeployment                                                                 -->
+    <!-- ======================================================================================= -->
+
+    <target name="deploy" depends="ear">
+        <copy todir="${jboss.home}/server/${jboss.configuration}/deploy"
+              file="./target/${ant.project.name}.${artifact.extension}"/>
+    </target>
+
+    <target name="undeploy">
+        <delete file="${jboss.home}/server/${jboss.configuration}/deploy/${ant.project.name}.${artifact.extension}"/>
+    </target>
+
+    <!-- ======================================================================================= -->
+    <!-- Clean                                                                                   -->
+    <!-- ======================================================================================= -->
+
+    <target name="clean">
+        <delete includeEmptyDirs="true" quiet="true">
+            <fileset dir="./target" includes="**" />
+        </delete>
+    </target>
+
+    <!-- ======================================================================================= -->
+    <!-- Command line execution scripts helpers                                                  -->
+    <!-- ======================================================================================= -->
+
+    <property name="execution.classpath.file" value=".execution.classpath"/>
+
+    <target name="get-execution-classpath" depends="sign-jar">
+        <pathconvert refid="execution.classpath" property="execution.classpath.unix" targetOS="${os}"/>
+        <echo message="${execution.classpath.unix}" file="${execution.classpath.file}"/>
+    </target>
+
+    <property name="test.execution.classpath.file" value=".test.execution.classpath"/>
+
+</project>
+

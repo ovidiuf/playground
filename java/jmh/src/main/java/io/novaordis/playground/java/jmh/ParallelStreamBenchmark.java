@@ -17,7 +17,7 @@
 package io.novaordis.playground.java.jmh;
 
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
+import java.util.stream.LongStream;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -36,7 +36,7 @@ public class ParallelStreamBenchmark {
 
     // Constants -------------------------------------------------------------------------------------------------------
 
-    private static final long N = 10_000_000L;
+    private static final long N = 20_000_000L;
 
     // Static ----------------------------------------------------------------------------------------------------------
 
@@ -46,12 +46,43 @@ public class ParallelStreamBenchmark {
 
     // Public ----------------------------------------------------------------------------------------------------------
 
-    @Benchmark
-    public long sequentialSum() {
+//    @Benchmark
+//    public long sequentialSumNoBoxing() {
+//
+//        return LongStream.iterate(1L, i -> i + 1).limit(N).reduce(0L, Long::sum);
+//    }
 
-        return Stream.iterate(1L, i -> i + 1).limit(N).reduce(0L, Long::sum);
+    @Benchmark
+    public long parallelSumNoBoxing() {
+
+        return LongStream.rangeClosed(1L, N).parallel().reduce(0L, Long::sum);
     }
 
+
+//    @Benchmark
+//    public long parallelSum() {
+//
+//        return Stream.iterate(1L, i -> i + 1).limit(N).parallel().reduce(0L, Long::sum);
+//    }
+
+//    @Benchmark
+//    public long parallelSum2() {
+//
+//        return LongStream.rangeClosed(1L, N).parallel().reduce(0L, Long::sum);
+//    }
+
+//    @Benchmark
+//    public long iterativeSum() {
+//
+//        long sum = 0L;
+//
+//        for(long i = 1; i < N; i ++) {
+//
+//            sum += i;
+//        }
+//
+//        return sum;
+//    }
 
     // Package protected -----------------------------------------------------------------------------------------------
 
