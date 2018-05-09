@@ -5,7 +5,7 @@ import swim.client.SwimClient;
 
 public class SynchronouslySendingClient {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         final SwimClient client = new SwimClient();
 
@@ -45,9 +45,6 @@ public class SynchronouslySendingClient {
 
                 }).
                 set(Value.of("something"));
-
-
-//        Thread.sleep(10000L);
 
     }
 

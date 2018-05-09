@@ -10,7 +10,7 @@ Starts a client that sends data to a lane.
 
 Usage:
 
-    ./sending-client [-d] [-v] [--rebuild-classpath]
+    ./$(basename $0) [-d] [-v] [--rebuild-classpath]
 
 Options:
 
@@ -26,7 +26,7 @@ EOF
 
 function get-main-class() {
 
-    echo "io.novaordis.playground.swim.simplest.SendingClient"
+    echo "io.novaordis.playground.swim.simplest.SynchronouslySendingClient"
 }
 
 main "$@"

@@ -20,18 +20,17 @@ public class ReceivingClient {
         //
 
         HostRef host = client.hostRef("ws://localhost:9009");
-
         NodeRef node = host.nodeRef("a/device1");
-
         LaneRef lane = node.laneRef("metric");
+        ValueDownlink<Value> link = lane.downlinkValue();
 
-        ValueDownlink<Value> downlink = lane.downlinkValue();
+        link.keepSynced(true);
 
-        downlink.keepSynced(true);
-        downlink.open();
-        downlink.didReceive(value -> System.out.println("received " + value + ": " + value.toRecon()));
+        link.open();
 
-        downlink.didSet((newValue, oldValue) -> {
+        link.didReceive(value -> System.out.println("received " + value + ": " + value.toRecon()));
+
+        link.didSet((newValue, oldValue) -> {
 
             System.out.println("set new: " + newValue + " (" + newValue.toRecon() + ")" + ", old: " + oldValue + " (" + oldValue.toRecon() + ")" );
         });
