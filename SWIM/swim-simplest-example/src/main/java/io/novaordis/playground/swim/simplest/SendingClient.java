@@ -6,7 +6,7 @@ import swim.client.SwimClient;
 
 public class SendingClient {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         final SwimClient client = new SwimClient();
 
@@ -34,7 +34,6 @@ public class SendingClient {
 
                 }).
                 set(Value.of("something"));
-
 
     }
 
