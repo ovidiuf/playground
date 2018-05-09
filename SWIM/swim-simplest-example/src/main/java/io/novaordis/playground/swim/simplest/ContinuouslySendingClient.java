@@ -5,6 +5,7 @@ import swim.api.ValueDownlink;
 import swim.client.SwimClient;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ContinuouslySendingClient {
@@ -24,9 +25,11 @@ public class ContinuouslySendingClient {
                 open();
 
 
-        //
-        // stdin loop
-        //
+        stdinLoop(client, link);
+
+    }
+
+    private static void stdinLoop(SwimClient client,  ValueDownlink<Value> link) throws IOException  {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -51,8 +54,28 @@ public class ContinuouslySendingClient {
                 break;
             }
 
-            link.set(Value.of(line));
+            processAndSendContent(link, line);
         }
+    }
+
+    private static void processAndSendContent(ValueDownlink<Value> link, String line) {
+
+        Object v;
+
+        try {
+
+            v = Integer.parseInt(line);
+
+            // sending as Integer
+        }
+        catch(Exception e) {
+
+            // that's fine, sending as String
+
+            v = line;
+        }
+
+        link.set(Value.of(v));
     }
 
 }

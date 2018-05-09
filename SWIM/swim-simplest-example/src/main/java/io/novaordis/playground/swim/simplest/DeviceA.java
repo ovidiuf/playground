@@ -12,7 +12,7 @@ public class DeviceA extends AbstractService {
 
     @SwimLane("metric")
     private ValueLane<Integer> metric = valueLane().valueClass(Integer.class).
-            didSet((newValue, oldValue) -> {
+            didSet((Integer newValue, Integer oldValue) -> {
 
                 System.out.println("metric value changed from " + oldValue + " to " + newValue);
             });

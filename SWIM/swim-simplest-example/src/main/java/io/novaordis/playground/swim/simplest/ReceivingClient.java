@@ -19,18 +19,18 @@ public class ReceivingClient {
         // link to a service instance
         //
 
-        HostRef host = client.hostRef("ws://localhost:9009");
-        NodeRef node = host.nodeRef("a/device1");
-        LaneRef lane = node.laneRef("metric");
-        ValueDownlink<Value> link = lane.downlinkValue();
+        ValueDownlink<Value> link = client.
+                hostRef("ws://localhost:9009").
+                nodeRef("a/device1").
+                laneRef("metric").
+                downlinkValue().
+                keepSynced(true).
+                open();
 
-        link.keepSynced(true);
+        link.didReceive(
+                (Value v) -> System.out.println("received " + v + ": " + v.toRecon()));
 
-        link.open();
-
-        link.didReceive(value -> System.out.println("received " + value + ": " + value.toRecon()));
-
-        link.didSet((newValue, oldValue) -> {
+        link.didSet((Value newValue, Value oldValue) -> {
 
             System.out.println("set new: " + newValue + " (" + newValue.toRecon() + ")" + ", old: " + oldValue + " (" + oldValue.toRecon() + ")" );
         });
