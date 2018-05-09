@@ -3,9 +3,9 @@ package io.novaordis.playground.swim.simplest;
 import recon.Value;
 import swim.client.SwimClient;
 
-public class SendingClient {
+public class SynchronouslySendingClient {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         final SwimClient client = new SwimClient();
 
@@ -23,10 +23,22 @@ public class SendingClient {
                     //
                     // we use this callback to close the client and exit after the first set on lane is
                     // *guaranteed* to have reached the server and came back; the client should stay up
-                    // until then
+                    // until then. Because other data may come over the line in the mean time, make sure
+                    // to exit on the data *we* send
                     //
 
-                    System.out.println("exiting ...");
+                    if (!Value.of("something").equals(newValue)) {
+
+                        //
+                        // uninteresting
+                        //
+
+                        System.out.println("got " + newValue + ", this is not our data, won't exit");
+
+                        return;
+                    }
+
+                    System.out.println("got " + newValue + ", exiting ...");
 
                     client.stop();
                     client.close();
@@ -34,6 +46,10 @@ public class SendingClient {
                 }).
                 set(Value.of("something"));
 
+
+//        Thread.sleep(10000L);
+
     }
+
 
 }
