@@ -28,6 +28,11 @@ publishing {
 
                 classifier "sources"
             }
+
+            pom.withXml {
+
+                asNode().appendNode('description', 'Something that will be inserted as description')
+            }
         }
     }
 
