@@ -6,3 +6,45 @@
  */
 
 apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group = 'io.example'
+version = '1.0'
+
+task srcJar(type: Jar) {
+
+    from sourceSets.main.allJava
+}
+
+publishing {
+
+    publications {
+
+        multiart(MavenPublication) {
+
+            from components.java
+
+            artifact srcJar {
+
+                classifier "sources"
+            }
+        }
+    }
+
+    repositories {
+
+        mavenLocal()
+
+//        maven {
+//            url experimentalRepositoryUrl
+//            credentials {
+//                username experimentalRepositoryUser
+//                password experimentalRepositoryPassword
+//            }
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//        }
+    }
+}
+
