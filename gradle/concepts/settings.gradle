@@ -7,8 +7,15 @@
  * in the user guide at https://docs.gradle.org/4.7/userguide/multi_project_builds.html
  */
 
-println 'in settings.gradle, executed during initialization phase'
+println 'initialization phase, starting to execute settings.gradle'
 
-rootProject.name = 'java-publishing-multiprojects-multipubs'
+rootProject.name = 'concepts'
 
-include 'api-one', 'api-two', 'rt-one', 'rt-two'
+println 'before include: ' + rootProject.children
+
+include 'subproject-A'
+
+println 'after include: ' + rootProject.children
+
+println 'initialization phase ended'
+

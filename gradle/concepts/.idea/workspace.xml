@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1c7326a4-f85d-48a0-bfaf-a42abebf634e" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.gradle/4.7/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/4.7/taskHistory/taskHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/4.7/taskHistory/taskHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/ovidiu.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/subproject-A/src/main/java/io/example/a/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/settings.gradle" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path="$PROJECT_DIR$/subproject-A/.gradle/" />
+    <ignored path="$PROJECT_DIR$/subproject-A/build/" />
+    <ignored path="$PROJECT_DIR$/subproject-A/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="843">
+              <caret line="76" selection-start-line="76" selection-end-line="76" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/settings.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" selection-start-line="9" selection-end-line="10" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Project.class" pinned="false" current-in-tab="false">
+        <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/Project.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="370">
+              <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>apply</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="myGradleHomes">
+      <map>
+        <entry key="$PROJECT_DIR$" value="/usr/local/Cellar/gradle/4.7/libexec" />
+      </map>
+    </option>
+    <option name="myGradleVersions">
+      <map>
+        <entry key="$PROJECT_DIR$" value="4.7" />
+      </map>
+    </option>
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="concepts" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="concepts" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+              <ExternalProjectPojo>
+                <option name="name" value=":subproject-A" />
+                <option name="path" value="$PROJECT_DIR$/subproject-A" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="availableTasks">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Initializes a new Gradle build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="init" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by root project 'concepts'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of root project 'concepts'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the dependent components of components in root project 'concepts'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependentComponents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in root project 'concepts'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildEnvironment" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in root project 'concepts'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Gradle wrapper files." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="wrapper" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="sample" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in root project 'concepts'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of root project 'concepts'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of root project 'concepts'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from root project 'concepts' (some of the displayed tasks may belong to subprojects)." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/subproject-A">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by project ':subproject-A'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of project ':subproject-A'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the dependent components of components in project ':subproject-A'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="dependentComponents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in project ':subproject-A'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="buildEnvironment" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in project ':subproject-A'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in project ':subproject-A'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of project ':subproject-A'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of project ':subproject-A'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from project ':subproject-A'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$USER_HOME$/.gradle/gradle.properties" value="657054795" />
+        <entry key="$PROJECT_DIR$" value="6106288135000" />
+        <entry key="$PROJECT_DIR$/.gradle" value="0" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="1513921545" />
+        <entry key="$PROJECT_DIR$/settings.gradle" value="1641377036" />
+      </map>
+    </option>
+    <option name="projectBuildClasspath">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <ExternalProjectBuildClasspathPojo>
+              <option name="modulesBuildClasspath">
+                <map>
+                  <entry key="$PROJECT_DIR$">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="path" value="$PROJECT_DIR$" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                  <entry key="$PROJECT_DIR$/subproject-A">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="path" value="$PROJECT_DIR$/subproject-A" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="name" value="concepts" />
+              <option name="projectBuildClasspath">
+                <list>
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-logging-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-wrapper-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-runtime-api-info-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-native-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-process-services-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-kotlin-dsl-tooling-builders-0.16.3.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-build-cache-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/groovy-all-2.4.12.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-model-core-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-base-services-groovy-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/ant-launcher-1.9.9.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-installation-beacon-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/ant-1.9.9.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-launcher-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-jvm-services-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-messaging-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-build-option-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-base-services-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-persistent-cache-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-docs-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-cli-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-tooling-api-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-kotlin-dsl-tooling-models-0.16.3.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-model-groovy-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-resources-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/gradle-kotlin-dsl-0.16.3.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-plugin-use-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-announce-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-tooling-api-builders-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-ide-play-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-language-scala-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-javascript-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-version-control-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-language-native-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-build-comparison-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-plugins-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-jacoco-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-platform-native-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-ide-native-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-diagnostics-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-plugin-development-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-workers-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-build-cache-http-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-testing-native-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-dependency-management-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-composite-builds-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-testing-junit-platform-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-publish-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-ear-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-language-jvm-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-platform-base-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-resources-gcs-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-ide-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-platform-play-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-resources-http-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-scala-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-language-java-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-language-groovy-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-osgi-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-reporting-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-antlr-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-code-quality-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-resources-s3-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-signing-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-resources-sftp-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-ivy-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-test-kit-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-build-init-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-testing-jvm-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-testing-base-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-platform-jvm-4.7.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/ivy-2.2.0.jar" />
+                  <option value="/usr/local/Cellar/gradle/4.7/libexec/lib/plugins/gradle-maven-4.7.jar" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/java" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/groovy" />
+                </list>
+              </option>
+            </ExternalProjectBuildClasspathPojo>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="projectSyncType">
+      <map>
+        <entry key="$USER_HOME$/SWIM/projects/swim-academy" value="PREVIEW" />
+        <entry key="$USER_HOME$/SWIM/projects/swim-academy/basics" value="PREVIEW" />
+        <entry key="$USER_HOME$/SWIM/projects/swim-academy/basics/services" value="PREVIEW" />
+        <entry key="$USER_HOME$/SWIM/projects/swim-getting-started" value="PREVIEW" />
+        <entry key="$USER_HOME$/SWIM/projects/swim-smartcity" value="PREVIEW" />
+        <entry key="$USER_HOME$/SWIM/projects/swim/java" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../SWIM/swim-simplest-example" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
+        <entry key="$PROJECT_DIR$/../java" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/settings.gradle" />
+        <option value="$PROJECT_DIR$/subproject-A/src/main/java/io/example/a/Main.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="2627" />
+    <option name="y" value="23" />
+    <option name="width" value="1348" />
+    <option name="height" value="1057" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="concepts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="concepts" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="concepts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="concepts" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="subproject-A" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="concepts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="concepts" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="subproject-A" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <listeners />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1c7326a4-f85d-48a0-bfaf-a42abebf634e" name="Default" comment="" />
+      <created>1526509284212</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1526509284212</updated>
+      <workItem from="1526509287470" duration="995000" />
+      <workItem from="1526578500057" duration="598000" />
+      <workItem from="1526581316580" duration="8853000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="10446000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="2627" y="23" width="1348" height="1057" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" order="3" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info id="Designer" order="2" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2633531" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24979591" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.26" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info id="Learn" order="2" />
+      <window_info anchor="right" id="Gradle" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="11" column="1" selection-start-line="8" selection-end-line="11" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/groovy-all-2.4.12.jar!/groovy/lang/Closure.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/initialization/Settings.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="40" column="2" selection-start-line="40" selection-start-column="2" selection-end-line="40" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/invocation/Gradle.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/plugins/ExtensionAware.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/plugins/PluginAware.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/subproject-A/src/main/java/io/example/a/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="6" lean-forward="true" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/Project.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" selection-start-line="9" selection-end-line="10" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="843">
+          <caret line="76" selection-start-line="76" selection-end-line="76" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

@@ -14,9 +14,24 @@ allprojects {
     apply plugin: 'maven-publish'
 }
 
-subprojects {
+task classJar(type: Jar) {
+    
+    println "executing classJar"
 }
 
+task sourceJar(type: Jar) {
+
+    println "executing sourceJar"
+}
+
+task obfuscatedClassJar(type: Jar) {
+
+    println "executing obfuscatedClassJar"
+}
+
+//
+// Artifact aggregation and publishing is done at the root project level only
+//
 publishing {
 
     publications {
@@ -26,59 +41,36 @@ publishing {
             groupId 'io.example.dual.api'
             artifactId 'dual-api'
 
-            from subprojects.components.java
+            artifact classJar
+            artifact sourceJar {
 
-//            artifact srcJar {
-//
-//                classifier "sources"
-//            }
-//
-//            pom.withXml {
-//
-//                asNode().appendNode('description', 'Something that will be inserted as description')
-//            }
+                classifier "sources"
+                extension "jar"
+            }
         }
 
         runtime(MavenPublication) {
 
             groupId 'io.example.dual.rt'
             artifactId 'dual-rt'
-
-//            from components.java
-//
-//            artifact srcJar {
-//
-//                classifier "sources"
-//            }
-//
-//            pom.withXml {
-//
-//                asNode().appendNode('description', 'Something that will be inserted as description')
-//            }
+            artifact obfuscatedClassJar
         }
-
     }
 
     repositories {
 
         mavenLocal()
-
-//        maven {
-//            url experimentalRepositoryUrl
-//            credentials {
-//                username experimentalRepositoryUser
-//                password experimentalRepositoryPassword
-//            }
-//            authentication {
-//                basic(BasicAuthentication)
-//            }
-//        }
     }
 }
 
-task util {
-
-    sourceSets.each { println it.name }
-    subprojects.each { println it.name }
-
-}
+//task util {
+//
+//    subprojects {
+//
+//        it.sourceSets.main.java {
+//
+//            println it
+//
+//        }
+//    }
+//}
