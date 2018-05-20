@@ -5,72 +5,62 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
 
-group = 'io.example.dual'
+group = 'io.example'
 version = '1.0'
 
 allprojects {
+}
+
+subprojects {
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
 }
 
-task classJar(type: Jar) {
-    
-    println "executing classJar"
-}
-
-task sourceJar(type: Jar) {
-
-    println "executing sourceJar"
-}
-
-task obfuscatedClassJar(type: Jar) {
-
-    println "executing obfuscatedClassJar"
-}
-
+//task classJar(type: Jar) {
 //
-// Artifact aggregation and publishing is done at the root project level only
+//    println "executing classJar"
+//}
 //
-publishing {
-
-    publications {
-
-        api(MavenPublication) {
-
-            groupId 'io.example.dual.api'
-            artifactId 'dual-api'
-
-            artifact classJar
-            artifact sourceJar {
-
-                classifier "sources"
-                extension "jar"
-            }
-        }
-
-        runtime(MavenPublication) {
-
-            groupId 'io.example.dual.rt'
-            artifactId 'dual-rt'
-            artifact obfuscatedClassJar
-        }
-    }
-
-    repositories {
-
-        mavenLocal()
-    }
-}
-
-//task util {
+//task sourceJar(type: Jar) {
 //
-//    subprojects {
+//    println "executing sourceJar"
+//}
 //
-//        it.sourceSets.main.java {
+//task obfuscatedClassJar(type: Jar) {
 //
-//            println it
+//    println "executing obfuscatedClassJar"
+//}
 //
+////
+//// Artifact aggregation and publishing is done at the root project level only
+////
+//publishing {
+//
+//    publications {
+//
+//        api(MavenPublication) {
+//
+//            groupId 'io.example.dual.api'
+//            artifactId 'dual-api'
+//
+//            artifact classJar
+//            artifact sourceJar {
+//
+//                classifier "sources"
+//                extension "jar"
+//            }
 //        }
+//
+//        runtime(MavenPublication) {
+//
+//            groupId 'io.example.dual.rt'
+//            artifactId 'dual-rt'
+//            artifact obfuscatedClassJar
+//        }
+//    }
+//
+//    repositories {
+//
+//        mavenLocal()
 //    }
 //}

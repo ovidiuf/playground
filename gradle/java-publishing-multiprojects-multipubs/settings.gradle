@@ -7,8 +7,6 @@
  * in the user guide at https://docs.gradle.org/4.7/userguide/multi_project_builds.html
  */
 
-println 'in settings.gradle, executed during initialization phase'
-
 rootProject.name = 'java-publishing-multiprojects-multipubs'
 
 include 'api-one', 'api-two', 'rt-one', 'rt-two'
