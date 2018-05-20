@@ -9,4 +9,5 @@
 
 rootProject.name = 'playground-gradle-concepts'
 
-include 'subproject-A'
+include 'subproject-A', 'subproject-B'
+

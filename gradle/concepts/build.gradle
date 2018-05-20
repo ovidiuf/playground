@@ -33,6 +33,18 @@ subprojects {
     }
 
     apply plugin:'java'
+
+    project.ext.isApi = true;
+
+    task report {
+
+        doFirst {
+
+            println isApi
+        }
+
+
+    }
 }
 
 task displayconfigs {
@@ -40,14 +52,6 @@ task displayconfigs {
     doFirst {
         println "project dependency configurations: "
         configurations.each { println '  ' + it.name }
-    }
-}
-
-task a {
-
-    doFirst {
-
-        println "executing task a"
     }
 }
 

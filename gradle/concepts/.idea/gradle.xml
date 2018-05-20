@@ -11,6 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/subproject-A" />
+            <option value="$PROJECT_DIR$/subproject-B" />
           </set>
         </option>
         <option name="useAutoImport" value="true" />
