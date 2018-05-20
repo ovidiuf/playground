@@ -5,74 +5,51 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
 
-println 'configuration phase, starting to execute build.gradle'
 
+project.group = 'io.example'
+version = '1.0'
 
 allprojects {
 
-    println "'allprojects' configuration closure applied to " + it
+    beforeEvaluate {
+
+        println "before evaluate $it"
+    }
+
+    afterEvaluate {
+
+        println "afer evaluate $it"
+    }
 }
 
 subprojects {
 
-    println "'subprojects' configuration closure applied to " + it
+    group = parent.group;
+    version = rootProject.version;
 
-    //apply plugin:'java'
+    repositories {
+
+        mavenLocal()
+    }
+
+    apply plugin:'java'
 }
 
-//artifacts {
-//
-//    println it
-//}
-//
-//buildscript {
-//
-//    println it
-//}
-//
-//configurations {
-//
-//    println it
-//}
-//
-//dependencies {
-//
-//    println it
-//}
-//
-//repositories {
-//
-//    println it
-//}
-//
-//sourceSets {
-//
-//    println it
-//}
-//
-//publishing {
-//
-//    println it
-//}
+task displayconfigs {
 
-task sample {
+    doFirst {
+        println "project dependency configurations: "
+        configurations.each { println '  ' + it.name }
+    }
+}
 
-    println 'this is not an action, but a statement to be executed when the task is declared, in the build configuration phase'
+task a {
 
     doFirst {
 
-        println 'action executed second'
-    }
-
-    doFirst {
-
-        println 'action executed first'
-    }
-
-    doLast {
-
-        println 'action executed last'
+        println "executing task a"
     }
 }
 
 println 'configuration phase ended'
+

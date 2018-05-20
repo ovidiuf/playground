@@ -7,15 +7,6 @@
  * in the user guide at https://docs.gradle.org/4.7/userguide/multi_project_builds.html
  */
 
-println 'initialization phase, starting to execute settings.gradle'
-
-rootProject.name = 'concepts'
-
-println 'before include: ' + rootProject.children
+rootProject.name = 'playground-gradle-concepts'
 
 include 'subproject-A'
-
-println 'after include: ' + rootProject.children
-
-println 'initialization phase ended'
-
