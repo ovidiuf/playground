@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd63573e-3918-4b00-b577-8d80c45d0d1b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subproject-A/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/subproject-A/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/api-one/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/api-one/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../java-publishing-multiprojects-multipubs/build.gradle" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/subproject-A/.gradle/" />
@@ -63,14 +61,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="true" current-in-tab="true">
+      <file leaf-file-name="build.gradle" pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
+            <state relative-caret-position="285">
+              <caret line="19" column="48" selection-start-line="19" selection-end-line="19" selection-end-column="48" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/subproject-A/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -216,10 +223,6 @@
                 <option name="name" value="dependencyInsight" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="displayconfigs" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Runs all checks." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="check" />
@@ -263,10 +266,6 @@
                 <option name="description" value="Assembles and tests this project and all projects it depends on." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="buildNeeded" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="report" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of root project 'playground-gradle-concepts'." />
@@ -400,10 +399,6 @@
                 <option name="name" value="buildNeeded" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
-                <option name="name" value="report" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':subproject-A'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-A" />
                 <option name="name" value="properties" />
@@ -535,10 +530,6 @@
                 <option name="name" value="buildNeeded" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-B" />
-                <option name="name" value="report" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':subproject-B'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/subproject-B" />
                 <option name="name" value="properties" />
@@ -551,11 +542,11 @@
     <option name="modificationStamps">
       <map>
         <entry key="$USER_HOME$/.gradle/gradle.properties" value="657054795" />
-        <entry key="$PROJECT_DIR$" value="7633736242000" />
+        <entry key="$PROJECT_DIR$" value="7633990439000" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="3717817728" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="4139178617" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="3520195136" />
-        <entry key="$PROJECT_DIR$/subproject-A/build.gradle" value="221837426" />
+        <entry key="$PROJECT_DIR$/subproject-A/build.gradle" value="4267357965" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -686,6 +677,7 @@
       <list>
         <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/subproject-A/build.gradle" />
       </list>
     </option>
   </component>
@@ -699,8 +691,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="895" />
-    <option name="y" value="160" />
+    <option name="x" value="2699" />
+    <option name="y" value="217" />
     <option name="width" value="1553" />
     <option name="height" value="1181" />
   </component>
@@ -709,7 +701,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -717,11 +709,16 @@
               <item name="playground-gradle-concepts" type="b2602c69:ProjectViewProjectNode" />
               <item name="concepts" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
+            <path>
+              <item name="playground-gradle-concepts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="concepts" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="subproject-A" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -793,15 +790,16 @@
       <option name="presentableId" value="Default" />
       <updated>1526780360541</updated>
       <workItem from="1526780361907" duration="2318000" />
-      <workItem from="1526848901474" duration="485000" />
+      <workItem from="1526848901474" duration="1096000" />
+      <workItem from="1526851818491" duration="222000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2803000" />
+    <option name="totallyTimeSpent" value="3636000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="895" y="160" width="1553" height="1181" extended-state="0" />
+    <frame x="2699" y="217" width="1553" height="1181" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -838,6 +836,40 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/initialization/Settings.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/Cellar/gradle/4.7/libexec/lib/gradle-core-api-4.7.jar!/org/gradle/api/invocation/Gradle.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -912,11 +944,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
+        <state relative-caret-position="285">
+          <caret line="19" column="48" selection-start-line="19" selection-end-line="19" selection-end-column="48" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/subproject-A/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
         </state>
       </provider>
     </entry>

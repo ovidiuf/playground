@@ -6,26 +6,7 @@
  */
 
 
-project.group = 'io.example'
-version = '1.0'
-
-allprojects {
-
-    beforeEvaluate {
-
-        println "before evaluate $it"
-    }
-
-    afterEvaluate {
-
-        println "afer evaluate $it"
-    }
-}
-
 subprojects {
-
-    group = parent.group;
-    version = rootProject.version;
 
     repositories {
 
@@ -34,26 +15,7 @@ subprojects {
 
     apply plugin:'java'
 
-    project.ext.isApi = true;
-
-    task report {
-
-        doFirst {
-
-            println isApi
-        }
-
-
-    }
 }
 
-task displayconfigs {
-
-    doFirst {
-        println "project dependency configurations: "
-        configurations.each { println '  ' + it.name }
-    }
-}
-
-println 'configuration phase ended'
+println 'exiting root project build.gradle ....'
 
