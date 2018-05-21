@@ -39,7 +39,12 @@ configurations {
 task runMain(type: JavaExec) {
 
     classpath = sourceSets.main.runtimeClasspath
-
     main = 'io.novaordis.playground.gradle.java.Main'
+}
 
+task displayconfigs {
+    doFirst {
+        println "project dependency configurations: "
+        configurations.each { println '  ' + it.name }
+    }
 }
