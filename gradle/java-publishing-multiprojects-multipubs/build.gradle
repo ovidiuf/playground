@@ -63,9 +63,33 @@ subprojects {
     }
 }
 
+def subProjectCopySourcesTasks = { Task t ->
+
+    Set<Task> tasks = new HashSet<>()
+
+    subprojects.each {
+
+        tasks.add(it.tasks.findByName('copySources'))
+    }
+
+    return tasks;
+}
+
+def subProjectCopyClassesTasks = { Task t ->
+
+    Set<Task> tasks = new HashSet<>()
+
+    subprojects.each {
+
+        tasks.add(it.tasks.findByName('copyClasses'))
+    }
+
+    return tasks;
+}
+
 task apiSources(type: Jar) {
 
-    dependsOn ':api-one:copySources', ':api-two:copySources'
+    dependsOn subProjectCopySourcesTasks
 
     destinationDir = buildDir
     baseName = apiArtifactBasename
@@ -75,7 +99,7 @@ task apiSources(type: Jar) {
 
 task apiClasses(type: Jar) {
 
-    dependsOn ':api-one:copyClasses', ':api-two:copyClasses'
+    dependsOn subProjectCopyClassesTasks
 
     destinationDir = buildDir
     baseName = apiArtifactBasename
@@ -84,7 +108,7 @@ task apiClasses(type: Jar) {
 
 task runtimeSources(type: Jar) {
 
-    dependsOn ':rt-one:copySources', ':rt-two:copySources'
+    dependsOn subProjectCopySourcesTasks
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
@@ -94,7 +118,7 @@ task runtimeSources(type: Jar) {
 
 task runtimeClasses(type: Jar) {
 
-    dependsOn ':rt-one:copyClasses', ':rt-two:copyClasses'
+    dependsOn subProjectCopyClassesTasks
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
@@ -129,11 +153,4 @@ publishing {
 task clean(type: Delete) {
 
     delete 'build'
-}
-
-task debugPublish {
-    dependsOn 'publish'
-    doFirst {
-        println "Tasks in Task Execution Graph, in execution order: " + gradle.taskGraph.allTasks
-    }
 }
