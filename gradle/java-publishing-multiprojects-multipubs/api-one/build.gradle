@@ -1,6 +1,0 @@
-
-ext {
-
-    isApi = true;
-
-}

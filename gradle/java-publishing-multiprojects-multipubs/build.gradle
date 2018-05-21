@@ -7,7 +7,10 @@ version = '1.0'
 
 def apiArtifactBasename = "blue-api"
 def runtimeArtifactBasename = "blue-rt"
-
+def allApiSourcesDirName = "tmp-api-sources"
+def allApiClassesDirName = "tmp-api-classes"
+def allRuntimeSourcesDirName = "tmp-rt-sources"
+def allRuntimeClassesDirName = "tmp-rt-classes"
 
 apply plugin: 'maven-publish'
 
@@ -20,39 +23,44 @@ subprojects {
 
     apply plugin: 'java'
 
+    //
+    // Copy the sub-project's sources into a common location in the root project's build directory.
+    // All sub-projects will contribute their sources and a root project JAR task will build the
+    // corresponding artifact. There's no dependency on anything, since nothing has to be built to
+    // copy.
+    //
     task copySources(type: Copy) {
 
+        def path = parent.buildDir.path + '/' + (project.isApi ? allApiSourcesDirName : allRuntimeSourcesDirName)
+
         from 'src/main/java'
-        into parent.buildDir.path + (project.isApi ? "/api-sources" : "/rt-sources")
+        into path
 
         doLast {
 
-            println "copied from src/main/java to " + parent.buildDir.path + (project.isApi ? "/api-sources" : "/rt-sources")
+            println "copied from src/main/java to $path"
         }
     }
 
+    //
+    // Copy the sub-project's compiled classes into a common location in the root project's build directory.
+    // All sub-projects will contribute their classes and a root project JAR task will build the corresponding
+    // artifact. The task depends on 'build', as we need to compile the classes first.
+    //
     task copyClasses(type: Copy) {
-
-        //
-        // we need to build to get classes
-        //
 
         dependsOn 'build'
 
+        def path = parent.buildDir.path + '/' + (project.isApi ? allApiClassesDirName : allRuntimeClassesDirName)
+
         from 'build/classes/java/main'
-        into parent.buildDir.path + (project.isApi ? "/api-classes" : "/rt-classes")
+        into path
 
         doLast {
 
-            println "copied from src/main/java to " + parent.buildDir.path + (project.isApi ? "/api-sources" : "/rt-sources")
+            println "copied from src/main/java to $path"
         }
     }
-
-    task copyArtifacts {
-
-        dependsOn 'copySources', 'copyClasses'
-    }
-
 }
 
 task apiSources(type: Jar) {
@@ -60,14 +68,14 @@ task apiSources(type: Jar) {
     destinationDir = buildDir
     baseName = apiArtifactBasename
     classifier = 'sources'
-    from buildDir.path + "/api-sources"
+    from buildDir.path + '/' + allApiSourcesDirName
 }
 
 task apiClasses(type: Jar) {
 
     destinationDir = buildDir
     baseName = apiArtifactBasename
-    from buildDir.path + "/api-classes"
+    from buildDir.path + '/' + allApiClassesDirName
 }
 
 task runtimeSources(type: Jar) {
@@ -75,14 +83,14 @@ task runtimeSources(type: Jar) {
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
     classifier = 'sources'
-    from buildDir.path + "/rt-sources"
+    from buildDir.path + '/' + allRuntimeSourcesDirName
 }
 
 task runtimeClasses(type: Jar) {
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
-    from buildDir.path + "/rt-classes"
+    from buildDir.path + '/' + allRuntimeClassesDirName
 }
 
 publishing {
@@ -113,4 +121,11 @@ publishing {
 task clean(type: Delete) {
 
     delete 'build'
+}
+
+task debugPublish {
+    dependsOn 'publish'
+    doFirst {
+        println "Tasks in Task Execution Graph, in execution order: " + gradle.taskGraph.allTasks
+    }
 }
