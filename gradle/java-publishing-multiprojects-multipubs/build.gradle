@@ -63,7 +63,7 @@ subprojects {
     }
 }
 
-def subProjectCopySourcesTasks = { Task t ->
+def tasksThatCopySourcesInSubProjects = { Task t ->
 
     Set<Task> tasks = new HashSet<>()
 
@@ -75,7 +75,7 @@ def subProjectCopySourcesTasks = { Task t ->
     return tasks;
 }
 
-def subProjectCopyClassesTasks = { Task t ->
+def tasksThatCopyClassesInSubProjects = { Task t ->
 
     Set<Task> tasks = new HashSet<>()
 
@@ -87,9 +87,9 @@ def subProjectCopyClassesTasks = { Task t ->
     return tasks;
 }
 
-task apiSources(type: Jar) {
+task apiSourceJar(type: Jar) {
 
-    dependsOn subProjectCopySourcesTasks
+    dependsOn tasksThatCopySourcesInSubProjects
 
     destinationDir = buildDir
     baseName = apiArtifactBasename
@@ -97,18 +97,18 @@ task apiSources(type: Jar) {
     from buildDir.path + '/' + allApiSourcesDirName
 }
 
-task apiClasses(type: Jar) {
+task apiClassJar(type: Jar) {
 
-    dependsOn subProjectCopyClassesTasks
+    dependsOn tasksThatCopyClassesInSubProjects
 
     destinationDir = buildDir
     baseName = apiArtifactBasename
     from buildDir.path + '/' + allApiClassesDirName
 }
 
-task runtimeSources(type: Jar) {
+task runtimeSourceJar(type: Jar) {
 
-    dependsOn subProjectCopySourcesTasks
+    dependsOn tasksThatCopySourcesInSubProjects
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
@@ -116,9 +116,9 @@ task runtimeSources(type: Jar) {
     from buildDir.path + '/' + allRuntimeSourcesDirName
 }
 
-task runtimeClasses(type: Jar) {
+task runtimeClassJar(type: Jar) {
 
-    dependsOn subProjectCopyClassesTasks
+    dependsOn tasksThatCopyClassesInSubProjects
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
@@ -132,15 +132,15 @@ publishing {
         api(MavenPublication) {
 
             artifactId apiArtifactBasename
-            artifact apiSources
-            artifact apiClasses
+            artifact apiSourceJar
+            artifact apiClassJar
         }
 
         runtime(MavenPublication) {
 
             artifactId runtimeArtifactBasename
-            artifact runtimeSources
-            artifact runtimeClasses
+            artifact runtimeSourceJar
+            artifact runtimeClassJar
         }
     }
 
