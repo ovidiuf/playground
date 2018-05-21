@@ -11,9 +11,21 @@ subprojects {
     }
 }
 
+def allTasks = { Task t ->
+
+    Set<Task> tasks = new HashSet<>();
+
+    subprojects.each {
+
+        tasks.add(it.tasks.findByName('t'))
+    }
+
+    return tasks;
+}
+
 task allt {
 
-    dependsOn ':subproject-A:t', ':subproject-B:t'
+    dependsOn allTasks
 
     doFirst {
 
