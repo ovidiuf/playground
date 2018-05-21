@@ -2,8 +2,12 @@
 //
 //
 
-group = 'io.example'
+group = 'io.example.blue'
 version = '1.0'
+
+def apiArtifactBasename = "blue-api"
+def runtimeArtifactBasename = "blue-rt"
+
 
 apply plugin: 'maven-publish'
 
@@ -29,10 +33,14 @@ subprojects {
 
     task copyClasses(type: Copy) {
 
-        from 'build/classes/java/main'
-        into parent.buildDir.path + (project.isApi ? "/api-classes" : "/rt-classes")
+        //
+        // we need to build to get classes
+        //
 
         dependsOn 'build'
+
+        from 'build/classes/java/main'
+        into parent.buildDir.path + (project.isApi ? "/api-classes" : "/rt-classes")
 
         doLast {
 
@@ -47,38 +55,33 @@ subprojects {
 
 }
 
-task archive {
-
-    dependsOn 'apiSources', 'apiClasses', 'archiveRtSources', 'runtimeClasses'
-}
-
 task apiSources(type: Jar) {
 
-    baseName = 'blue-api'
-    classifier = 'sources'
     destinationDir = buildDir
+    baseName = apiArtifactBasename
+    classifier = 'sources'
     from buildDir.path + "/api-sources"
 }
 
 task apiClasses(type: Jar) {
 
-    baseName = 'blue-api'
     destinationDir = buildDir
+    baseName = apiArtifactBasename
     from buildDir.path + "/api-classes"
 }
 
 task runtimeSources(type: Jar) {
 
-    baseName = 'blue-rt'
-    classifier = 'sources'
     destinationDir = buildDir
+    baseName = runtimeArtifactBasename
+    classifier = 'sources'
     from buildDir.path + "/rt-sources"
 }
 
 task runtimeClasses(type: Jar) {
 
-    baseName = 'blue-rt'
     destinationDir = buildDir
+    baseName = runtimeArtifactBasename
     from buildDir.path + "/rt-classes"
 }
 
@@ -88,16 +91,14 @@ publishing {
 
         api(MavenPublication) {
 
-            groupId 'io.example.blue'
-            artifactId 'blue-api'
+            artifactId apiArtifactBasename
             artifact apiSources
             artifact apiClasses
         }
 
         runtime(MavenPublication) {
 
-            groupId 'io.example.blue'
-            artifactId 'blue-rt'
+            artifactId runtimeArtifactBasename
             artifact runtimeSources
             artifact runtimeClasses
         }
