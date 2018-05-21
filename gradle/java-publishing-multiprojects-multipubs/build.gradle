@@ -65,6 +65,8 @@ subprojects {
 
 task apiSources(type: Jar) {
 
+    dependsOn ':api-one:copySources', ':api-two:copySources'
+
     destinationDir = buildDir
     baseName = apiArtifactBasename
     classifier = 'sources'
@@ -73,12 +75,16 @@ task apiSources(type: Jar) {
 
 task apiClasses(type: Jar) {
 
+    dependsOn ':api-one:copyClasses', ':api-two:copyClasses'
+
     destinationDir = buildDir
     baseName = apiArtifactBasename
     from buildDir.path + '/' + allApiClassesDirName
 }
 
 task runtimeSources(type: Jar) {
+
+    dependsOn ':rt-one:copySources', ':rt-two:copySources'
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
@@ -87,6 +93,8 @@ task runtimeSources(type: Jar) {
 }
 
 task runtimeClasses(type: Jar) {
+
+    dependsOn ':rt-one:copyClasses', ':rt-two:copyClasses'
 
     destinationDir = buildDir
     baseName = runtimeArtifactBasename
