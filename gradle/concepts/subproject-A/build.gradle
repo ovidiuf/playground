@@ -1,3 +1,15 @@
+task t {
 
-println "entering $project.name build.gradle ...."
-println "exiting $project.name build.gradle ...."
+    doFirst {
+
+        println "executing " + name + " in " + project.name
+    }
+}
+
+task x {
+
+    doFirst {
+
+        println "executing " + name + " in " + project.name
+    }
+}

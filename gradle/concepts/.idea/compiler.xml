@@ -4,6 +4,10 @@
     <bytecodeTargetLevel>
       <module name="playground-gradle-concepts_main" target="1.8" />
       <module name="playground-gradle-concepts_test" target="1.8" />
+      <module name="subproject-A_main" target="1.8" />
+      <module name="subproject-A_test" target="1.8" />
+      <module name="subproject-B_main" target="1.8" />
+      <module name="subproject-B_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

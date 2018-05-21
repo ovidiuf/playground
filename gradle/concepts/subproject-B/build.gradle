@@ -1,0 +1,8 @@
+task t {
+
+    doFirst {
+
+        println "executing " + name + " in " + project.name
+
+    }
+}
