@@ -1,36 +1,9 @@
 
+apply plugin: "java"
 
-subprojects {
+task experimental(type: Jar) {
 
-    task t {
-
-        doFirst {
-
-            println "executing " + name + " in " + project.name
-        }
-    }
-}
-
-def allTasks = { Task t ->
-
-    Set<Task> tasks = new HashSet<>();
-
-    subprojects.each {
-
-        tasks.add(it.tasks.findByName('t'))
-    }
-
-    return tasks;
-}
-
-task allt {
-
-    dependsOn allTasks
-
-    doFirst {
-
-        println "Tasks in Task Execution Graph, in execution order: " + gradle.taskGraph.allTasks
-
-        println "executing " + name + " in " + project.name
-    }
+    List<String> locs = new ArrayList<>();
+    subprojects { locs.add(it.name + "/src/main/java") }
+    from locs.toArray()
 }
