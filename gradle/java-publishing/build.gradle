@@ -38,18 +38,22 @@ publishing {
 
     repositories {
 
-        mavenLocal()
+        //mavenLocal()
 
-//        maven {
-//            url experimentalRepositoryUrl
-//            credentials {
-//                username experimentalRepositoryUser
-//                password experimentalRepositoryPassword
-//            }
-//            authentication {
-//                basic(BasicAuthentication)
-//            }
-//        }
+        maven {
+
+            url experimentalRepositoryUrl
+
+            credentials {
+
+                username experimentalRepositoryUser
+                password experimentalRepositoryPassword
+            }
+
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
     }
 }
 
