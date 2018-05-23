@@ -1,9 +1,8 @@
 
-apply plugin: "java"
+task printProp {
 
-task experimental(type: Jar) {
+    doLast {
 
-    List<String> locs = new ArrayList<>();
-    subprojects { locs.add(it.name + "/src/main/java") }
-    from locs.toArray()
+        println 'mySysProp: ' + System.properties['mySysProp']
+    }
 }
