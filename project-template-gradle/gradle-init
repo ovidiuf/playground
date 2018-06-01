@@ -12,6 +12,10 @@ Usage:
 
     gradle-init <project-root-path>
 
+Example:
+
+    gradle-init ./spdy-okhttp
+
 The <project-root-path> is the absolute or relative project root path and the directory
 that will be created. The command will fail if the directory exists. The initialization
 script will interactively query for project elements, such as the initial package name,
