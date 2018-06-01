@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+VERBOSE=false
+
+#
+# relies on the VERBOSE global variable, which could be true or false
+#
+function debug() {
+
+    ${VERBOSE} && echo "$@" 1>&2
+}
+
+function error() {
+
+    echo "[error]: $@" 1>&2
+}
+

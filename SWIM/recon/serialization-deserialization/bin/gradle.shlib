@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+#
+# return classpath at stdout. Gradle needs to be configured with a printClasspath task:
+#
+# task printClasspath {
+#        doLast {
+#            configurations.runtimeClasspath.each { print it; print ':' }
+#        }
+# }
+#
+function get-gradle-runtime-classpath() {
+
+    (cd $(dirname $0)/..; gradle -q printClasspath)
+}
+
+#
+# The calling script must set MAIN_CLASS. See 'gradle-run-wrapper-template' for an example of such a calling script.
+#
+function main() {
+
+    [ -z "${MAIN_CLASS}" ] && { echo "MAIN_CLASS variable not defined by the calling script" 1>&2; exit 1; }
+
+    local classpath=$(dirname $0)/../build/classes/java/main
+    classpath=${classpath}:$(get-gradle-runtime-classpath) || exit 1
+
+    java -cp ${classpath} ${MAIN_CLASS} "$@"
+}
