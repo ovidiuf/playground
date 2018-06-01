@@ -1,0 +1,208 @@
+#!/usr/bin/env bash
+
+VERBOSE=false
+
+function display-help() {
+
+cat <<EOF
+
+Utility that initializes a Gradle playground project.
+
+Usage:
+
+    gradle-init <project-root-path>
+
+The <project-root-path> is the absolute or relative project root path and the directory
+that will be created. The command will fail if the directory exists. The initialization
+script will interactively query for project elements, such as the initial package name,
+etc.
+
+The initialization script will create the initial package and a simple Main class, will
+initialize build.gradle with the minimal configuration required to build a Java project
+and it will put in place the run wrapper.
+
+EOF
+}
+
+function error() {
+
+    echo "[error]: $@" 1>&2
+}
+
+function debug() {
+
+    ${VERBOSE} && echo "$@" 1>&2;
+}
+
+function main() {
+
+    local project_root_dir
+
+    while [ -n "$1" ]; do
+
+        if [ "$1" = "--help" -o "$1" = "help" ]; then
+
+            display-help
+            exit 0
+        elif [ -z "${project_root_dir}" ]; then
+
+            project_root_dir=$1
+        else
+
+            error "unknown option $1"
+            exit 1
+        fi
+        shift
+    done
+
+    [ -z "${project_root_dir}" ] && { display-help; exit 1; }
+
+    [ -d ${project_root_dir} ] && { error "project root directory ${project_root_dir} exists"; exit 1; }
+
+    create-project-root ${project_root_dir}
+    run-gradle-init ${project_root_dir}
+    remove-unnecessary-gradle-init-files ${project_root_dir}
+    initialize-gitignore ${project_root_dir}
+
+    local main_java_dir
+    main_java_dir=$(create-main-java-dir ${project_root_dir}) || exit 1
+
+    local package_name
+    package_name=$(initialize-code ${main_java_dir}) || exit 1
+
+    add-minimal-build-gradle-config ${project_root_dir}
+    setup-bash-wrapper ${project_root_dir} ${package_name}
+}
+
+function create-project-root() {
+
+    local project_root_dir=$1
+
+    mkdir -p ${project_root_dir} && debug "created ${project_root_dir}"
+}
+
+function run-gradle-init() {
+
+    local project_root_dir=$1
+
+    (cd ${project_root_dir}; gradle -q init) && debug "ran gradle init"
+}
+
+function remove-unnecessary-gradle-init-files() {
+
+    local project_root_dir=$1
+
+    rm ${project_root_dir}/gradlew && debug "removed gradlew"
+    rm ${project_root_dir}/gradlew.bat && debug "removed gradlew.bat"
+    rm -r ${project_root_dir}/.gradle && debug "removed .gradle"
+    rm -r ${project_root_dir}/gradle && debug "removed gradle"
+}
+
+function initialize-gitignore(){
+
+    local project_root_dir=$1
+
+    (cd ${project_root_dir}; \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/reference-gitignore)
+
+    mv ${project_root_dir}/reference-gitignore ${project_root_dir}/.gitignore && debug "installed reference .gitignore"
+}
+
+#
+# returns the path of the main source directory created at stdout
+#
+function create-main-java-dir(){
+
+    local project_root_dir=$1
+
+    local main_java_dir=${project_root_dir}/src/main/java
+
+    mkdir -p ${main_java_dir} && debug "created src/main/java" 1>&2
+
+    echo ${main_java_dir}
+}
+
+#
+# Returns the name of initialized package at stdout or nothing if no package was initialized.
+#
+function initialize-code() {
+
+    local main_java_dir=$1
+    local package_name
+    read -p "name of the package to initialize (leave empty if no initialization required): " package_name
+
+    [ -z "${package_name}" ] && return 0
+
+    local relative_dir=${package_name//./\/}
+    local dir=${main_java_dir}/${relative_dir}
+
+    mkdir -p ${dir} && debug "created ${dir}"
+
+    (cat << EOF
+package ${package_name};
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(".");
+    }
+}
+EOF
+) > ${dir}/Main.java && debug "created ${dir}/Main.java"
+
+    echo "${package_name}"
+
+}
+
+function add-minimal-build-gradle-config() {
+
+    local project_root_dir=$1
+
+    (cat << EOF
+
+apply plugin: 'java'
+
+task printClasspath {
+        doLast {
+            configurations.runtimeClasspath.each { print it; print ':' }
+        }
+}
+
+EOF
+) >> ${project_root_dir}/build.gradle && debug "updated ${project_root_dir}/build.gradle"
+}
+
+function setup-bash-wrapper() {
+
+    local project_root_dir=$1
+    local package_name=$2
+
+    mkdir ${project_root_dir}/bin && debug "created ${project_root_dir}/bin"
+
+    (cd ${project_root_dir}/bin; \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/bash.shlib; \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/gradle.shlib)
+
+    (cat << EOF
+#!/usr/bin/env bash
+
+[ -f \$(dirname \$0)/bash.shlib ] && . \$(dirname \$0)/bash.shlib || { echo "\$(dirname \$0)/bash.shlib not found" 1>&2; exit 1; }
+[ -f \$(dirname \$0)/gradle.shlib ] && . \$(dirname \$0)/gradle.shlib || { echo "\$(dirname \$0)/gradle.shlib not found" 1>&2; exit 1; }
+
+MAIN_CLASS=${package_name}.Main
+
+main "\$@"
+EOF
+) > ${project_root_dir}/bin/run && debug "created ${project_root_dir}/run"
+
+    chmod a+x ${project_root_dir}/bin/run && debug "made ${project_root_dir}/run executable"
+}
+
+main "$@"
+
+
+
+
+
+

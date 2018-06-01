@@ -1,31 +1,32 @@
 package io.novaordis.playground;
 
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
 
 
     public static void main(String[] args) throws Exception {
 
-
-        System.out.println(sumFirstNNumbers(Integer.parseInt(args[0])));
-
+        new Main().example();
     }
 
+    private void example() {
 
 
 
-    public static long sumFirstNNumbers(int n) {
 
-        Optional<Long> result =
-                Stream.
-                        iterate(1L, prev -> prev + 1).
-                        limit(n).
-                        parallel().
-                        reduce(Long::sum);
-
-        return result.get();
+//        var names = new ArrayList<String>();
+//
+//        names.add("alice");
+//        names.add("bob");
+//
+//        for(String n: names) {
+//
+//            System.out.println(n);
+//        }
     }
 
 
