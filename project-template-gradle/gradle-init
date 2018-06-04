@@ -19,7 +19,7 @@ Example:
 The <project-root-path> is the absolute or relative project root path and the directory
 that will be created. The command will fail if the directory exists. The initialization
 script will interactively query for project elements, such as the initial package name,
-etc.
+user-friendly project name to be used by IntelliJ IDEA, etc.
 
 The initialization script will create the initial package and a simple Main class, will
 initialize build.gradle with the minimal configuration required to build a Java project
@@ -48,6 +48,11 @@ function main() {
 
             display-help
             exit 0
+
+        elif [ "$1" = "-v" ]; then
+
+            VERBOSE=true
+
         elif [ -z "${project_root_dir}" ]; then
 
             project_root_dir=$1
@@ -75,6 +80,13 @@ function main() {
     package_name=$(initialize-code ${main_java_dir}) || exit 1
 
     add-minimal-build-gradle-config ${project_root_dir}
+    setup-maven-coordinates ${project_root_dir}
+
+    #
+    # TODO temporarily abandoned, as setting .idea/.name prevents IDEA from correctly initially importing the project
+    #
+    #setup-intellij-idea-project-name ${project_root_dir}
+
     setup-bash-wrapper ${project_root_dir} ${package_name}
 }
 
@@ -132,10 +144,11 @@ function create-main-java-dir(){
 function initialize-code() {
 
     local main_java_dir=$1
+    local proposed_package_name=$(get-proposed-package-name $(dirname $(dirname $(dirname ${main_java_dir}))))
     local package_name
-    read -p "name of the package to initialize (leave empty if no initialization required): " package_name
+    read -p "name of the package to initialize [${proposed_package_name}]: " package_name
 
-    [ -z "${package_name}" ] && return 0
+    [ -z "${package_name}" ] && package_name=${proposed_package_name}
 
     local relative_dir=${package_name//./\/}
     local dir=${main_java_dir}/${relative_dir}
@@ -156,7 +169,28 @@ EOF
 ) > ${dir}/Main.java && debug "created ${dir}/Main.java"
 
     echo "${package_name}"
+}
 
+#
+# returns the fully qualified proposed package name at stdout
+#
+function get-proposed-package-name() {
+
+    local project_root_dir=$1
+
+    debug "get-proposed-package-name() project_root_dir: ${project_root_dir}"
+
+    local absolute_project_root_dir=$(cd ${project_root_dir}; pwd)
+
+    debug "absolute project root dir: ${absolute_project_root_dir}"
+
+    local proposed_name=${absolute_project_root_dir}
+    proposed_name=${proposed_name#/Users/ovidiu/}
+    proposed_name="io.novaordis.${proposed_name}"
+    proposed_name=${proposed_name//-/}
+    proposed_name=${proposed_name//\//.}
+    debug "proposed name: ${proposed_name}"
+    echo ${proposed_name}
 }
 
 function add-minimal-build-gradle-config() {
@@ -175,6 +209,38 @@ task printClasspath {
 
 EOF
 ) >> ${project_root_dir}/build.gradle && debug "updated ${project_root_dir}/build.gradle"
+}
+
+function setup-maven-coordinates() {
+
+    local project_root_dir=$1
+    local build_gradle_file=${project_root_dir}/build.gradle
+    [ ! -f ${build_gradle_file} ] && { error "the Gradle build file ${build_gradle_file} not found, it should have been initialized by one of the previous steps"; exit 1; }
+
+    #
+    # TODO
+    #
+}
+
+function setup-intellij-idea-project-name() {
+
+    #
+    # TODO temporarily abandoned, as setting .idea/.name prevents IDEA from correctly initially importing the project
+    #
+
+    local project_root_dir=$1
+
+    local idea_dir=${project_root_dir}/.idea
+
+    [ ! -d ${idea_dir} ] && mkdir -p ${idea_dir}
+
+    local crt=$(basename ${project_root_dir})
+    local idea_project_name
+    read -p "name of the IntelliJ IDEA project name [${crt}]: " idea_project_name
+
+    [ -z "${idea_project_name}" ] && return 0
+
+    echo "${idea_project_name}" > ${idea_dir}/.name
 }
 
 function setup-bash-wrapper() {
