@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="serialization-deserialization_main" target="1.8" />
       <module name="serialization-deserialization_test" target="1.8" />
+      <module name="text-structured-recon-java-primitives_main" target="1.8" />
+      <module name="text-structured-recon-java-primitives_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

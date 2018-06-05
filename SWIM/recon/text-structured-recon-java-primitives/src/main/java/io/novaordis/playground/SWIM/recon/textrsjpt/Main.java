@@ -1,4 +1,4 @@
-package io.novaordis.playground.SWIM.recon.serializationdeserialization;
+package io.novaordis.playground.SWIM.recon.textrsjpt;
 
 import recon.Value;
 
