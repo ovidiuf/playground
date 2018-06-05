@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 VERBOSE=false
+DEBUG=false
 
 #
 # relies on the VERBOSE global variable, which could be true or false
@@ -14,4 +15,3 @@ function error() {
 
     echo "[error]: $@" 1>&2
 }
-
