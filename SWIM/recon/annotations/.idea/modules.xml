@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/annotations.iml" filepath="$PROJECT_DIR$/annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/recon-annotations.iml" filepath="$PROJECT_DIR$/.idea/modules/recon-annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/recon-annotations_main.iml" filepath="$PROJECT_DIR$/.idea/modules/recon-annotations_main.iml" group="recon-annotations" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/recon-annotations_test.iml" filepath="$PROJECT_DIR$/.idea/modules/recon-annotations_test.iml" group="recon-annotations" />
+    </modules>
+  </component>
+</project>
