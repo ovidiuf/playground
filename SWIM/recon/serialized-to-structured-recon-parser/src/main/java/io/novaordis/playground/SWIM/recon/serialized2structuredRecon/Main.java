@@ -5,7 +5,6 @@ import recon.Item;
 import recon.Record;
 import recon.Slot;
 import recon.Value;
-import recon.Number;
 
 import java.util.Arrays;
 
@@ -41,7 +40,7 @@ public class Main {
             // iterate
             //
 
-            for(Item i: (Record) item) {
+            for(Item i: item) {
 
                 display(i, indentation + 2);
             }
@@ -56,21 +55,7 @@ public class Main {
 
                 System.out.println(leader + "EXTANT");
             }
-            else if (item.isBool()) {
-
-                System.out.println(leader + item.getClass().getName() + ": " + item.stringValue());
-            }
-            else if (item.isText()) {
-
-                System.out.println(leader + item.getClass().getName() + ": " + item.stringValue());
-            }
-            else if (item.isData()) {
-
-                System.out.println(leader + item.getClass().getName() + ": " + item.stringValue());
-            }
-            else if (item.isNumber()) {
-
-                Number n = (Number) item;
+            else if (item.isBool() || item.isText() || item.isData() || item.isNumber()) {
 
                 System.out.println(leader + item.getClass().getName() + ": " + item.stringValue());
             }
@@ -79,14 +64,12 @@ public class Main {
                 Attr attr = (Attr)item;
 
                 System.out.println(leader + attr.getClass().getName() + ": " + attr.getName() + "=" + attr.getValue());
-
             }
             else if (item.isSlot()) {
 
                 Slot slot = (Slot)item;
 
                 System.out.println(leader + slot.getClass().getName() + ": " + slot.getKey() + "=" + slot.getValue());
-
             }
             else {
 
