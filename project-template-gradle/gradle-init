@@ -68,6 +68,8 @@ function main() {
 
     [ -d ${project_root_dir} ] && { error "project root directory ${project_root_dir} exists"; exit 1; }
 
+    check-prerequisites
+
     create-project-root ${project_root_dir}
     run-gradle-init ${project_root_dir}
     remove-unnecessary-gradle-init-files ${project_root_dir}
@@ -88,6 +90,21 @@ function main() {
     #setup-intellij-idea-project-name ${project_root_dir}
 
     setup-bash-wrapper ${project_root_dir} ${package_name}
+}
+
+function check-prerequisites() {
+
+    #
+    # we need GNU sed
+    #
+
+    local test
+    test=$(echo "a" | sed -e 's/\(.\)/\U\1/')
+
+    if [ "${test}" != "A" ]; then
+        error "We detected a BDS sed, and we need GNU sed. Consider installing the GNU sed.";
+        exit 1
+    fi
 }
 
 function create-project-root() {
@@ -186,8 +203,14 @@ function get-proposed-package-name() {
 
     local proposed_name=${absolute_project_root_dir}
     proposed_name=${proposed_name#/Users/ovidiu/}
+
+    #
+    # replace each -<char> with <UpperCaseChar> - turn it in camel case. We need GNU sed for this.
+    #
+    proposed_name=$(echo ${proposed_name} | sed -e 's/-\(.\)/\U\1/g')
+
     proposed_name="io.novaordis.${proposed_name}"
-    proposed_name=${proposed_name//-/}
+
     proposed_name=${proposed_name//\//.}
     debug "proposed name: ${proposed_name}"
     echo ${proposed_name}
@@ -270,9 +293,5 @@ EOF
 }
 
 main "$@"
-
-
-
-
 
 
