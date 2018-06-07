@@ -1,9 +1,11 @@
 package io.novaordis.playground.SWIM.recon.record;
 
+import recon.Attr;
 import recon.Bool;
 import recon.Data;
 import recon.Item;
 import recon.Record;
+import recon.Slot;
 import recon.Text;
 import recon.Value;
 
@@ -26,7 +28,9 @@ public class Main {
                 item(Data.wrap("blue".getBytes())).
                 item(Value.of(10)).
                 item(Value.of(1.1f)).
-                item(Value.of(1.1d));
+                item(Value.of(1.1d)).
+                item(Attr.of("color", "blue")).
+                item(Slot.of("color", "blue"));
 
         String reconText = record.toRecon();
 
@@ -54,14 +58,5 @@ public class Main {
         Record record3 = Record.of(true, "some string", 10, 1.1);
 
         System.out.println(record3.toRecon());
-
-//        System.out.println("");
-//        System.out.println("#");
-//        System.out.println("# Text special cases");
-//        System.out.println("#");
-//        System.out.println("");
-//        Value v = Value.parseRecon("\\\"1.1\\\"");
-//        System.out.println(v.getClass() + ": " + ((Text)v).stringValue());
-
     }
 }

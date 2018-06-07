@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/field.iml" filepath="$PROJECT_DIR$/field.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/field_main.iml" filepath="$PROJECT_DIR$/.idea/modules/field_main.iml" group="field" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/field_test.iml" filepath="$PROJECT_DIR$/.idea/modules/field_test.iml" group="field" />
+    </modules>
+  </component>
+</project>
