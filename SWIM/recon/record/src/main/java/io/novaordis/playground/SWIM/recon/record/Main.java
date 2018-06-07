@@ -23,7 +23,7 @@ public class Main {
                 item(Bool.TRUE).
                 item(Text.valueOf("something")).
                 item(Value.of("something else")).
-                item(Data.wrap("will be turned into Base64".getBytes())).
+                item(Data.wrap("blue".getBytes())).
                 item(Value.of(10)).
                 item(Value.of(1.1f)).
                 item(Value.of(1.1d));
@@ -54,6 +54,14 @@ public class Main {
         Record record3 = Record.of(true, "some string", 10, 1.1);
 
         System.out.println(record3.toRecon());
+
+//        System.out.println("");
+//        System.out.println("#");
+//        System.out.println("# Text special cases");
+//        System.out.println("#");
+//        System.out.println("");
+//        Value v = Value.parseRecon("\\\"1.1\\\"");
+//        System.out.println(v.getClass() + ": " + ((Text)v).stringValue());
 
     }
 }
