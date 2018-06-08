@@ -2,8 +2,6 @@ package io.novaordis.playground.SWIM.recon.structuredReconToSerializedWorkbench;
 
 import recon.Attr;
 import recon.Record;
-import recon.Slot;
-import recon.Value;
 
 public class Main {
 
