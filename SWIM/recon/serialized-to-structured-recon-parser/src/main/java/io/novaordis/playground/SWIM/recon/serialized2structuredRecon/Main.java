@@ -8,6 +8,10 @@ import recon.Value;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
 
 public class Main {
 
@@ -16,6 +20,30 @@ public class Main {
         Configuration c = new Configuration(args);
 
         String serializedInput = c.getSerializedInput();
+
+        displayInputForReference(serializedInput);
+
+        Value reconValue = Value.parseRecon(serializedInput);
+
+        System.out.println("\nstructured RECON:\n");
+
+        recursivelyDisplayOfStructuredReconOnMultipleLines(reconValue, 4);
+
+//        String serialized = reconValue.toRecon();
+//
+//        System.out.println("\nre-serialized RECON: >" + serialized + "<\n");
+
+        Gson gson = new Gson();
+
+        Object o = gson.fromJson(serializedInput, Object.class);
+
+        System.out.println("\nJava from JSON via Gson:\n");
+
+        recursivelyDisplayOfJavaParsedByGson(o, 4);
+
+    }
+
+    private static void displayInputForReference(String serializedInput) {
 
         String s = "input: ";
 
@@ -27,20 +55,9 @@ public class Main {
         s += serializedInput;
 
         System.out.println("\n" + s);
-
-        Value value = Value.parseRecon(serializedInput);
-
-        System.out.println("\nstructured RECON:\n");
-
-        recursivelyDisplayOnMultipleLines(value, 4);
-
-        String serialized = value.toRecon();
-
-        System.out.println("\nre-serialized RECON: >" + serialized + "<\n");
-
     }
 
-    private static void recursivelyDisplayOnMultipleLines(Item item, int indentation) {
+    private static void recursivelyDisplayOfStructuredReconOnMultipleLines(Item item, int indentation) {
 
         String leader = getLeader(indentation);
 
@@ -58,21 +75,21 @@ public class Main {
 
             for(Item i: item) {
 
-                recursivelyDisplayOnMultipleLines(i, indentation + 2);
+                recursivelyDisplayOfStructuredReconOnMultipleLines(i, indentation + 2);
             }
 
             System.out.println(leader + "}");
         }
         else {
 
-            System.out.println(leader + toLiteral(item));
+            System.out.println(leader + reconItemToLiteral(item));
         }
     }
 
     /**
      * A "literal" representation of the Item.
      */
-    private static String toLiteral(Item item) {
+    private static String reconItemToLiteral(Item item) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -92,7 +109,7 @@ public class Main {
 
                 Item i = it.next();
 
-                sb.append(toLiteral(i));
+                sb.append(reconItemToLiteral(i));
 
                 if (it.hasNext()) {
 
@@ -134,7 +151,7 @@ public class Main {
                     append(" ").
                     append(attr.getName()).
                     append(" (").
-                    append(toLiteral(attr.getValue())).
+                    append(reconItemToLiteral(attr.getValue())).
                     append(")");
         }
         else if (item.isSlot()) {
@@ -142,9 +159,9 @@ public class Main {
             Slot slot = (Slot)item;
             sb.append(slot.getClass().getSimpleName()).
                     append(" ").
-                    append(toLiteral(slot.getKey())).
+                    append(reconItemToLiteral(slot.getKey())).
                     append(": ").
-                    append(toLiteral(slot.getValue()));
+                    append(reconItemToLiteral(slot.getValue()));
         }
         else {
 
@@ -159,5 +176,89 @@ public class Main {
         char[] c = new char[indentationCharacters];
         Arrays.fill(c, ' ');
         return new String(c);
+    }
+
+    private static void recursivelyDisplayOfJavaParsedByGson(Object o, int indentation) {
+
+        String leader = getLeader(indentation);
+
+        if (o instanceof Map) {
+
+            Map m = (Map)o;
+
+            System.out.println(leader + "Map { ");
+
+            //
+            // iterate
+            //
+
+            for(Iterator i = m.keySet().iterator(); i.hasNext(); ) {
+
+                Object key = i.next();
+
+                System.out.print(leader + "  " + key + ": " + javaObjectParsedFromJSONtoLiteral(m.get(key)));
+                System.out.println();
+            }
+
+            System.out.println(leader + "}");
+        }
+        else {
+
+            System.out.println(leader + javaObjectParsedFromJSONtoLiteral(o));
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * A "literal" representation of a Java Object parsed from JSON
+     */
+    private static String javaObjectParsedFromJSONtoLiteral(Object o) {
+
+        StringBuilder sb = new StringBuilder();
+
+        if (o instanceof List) {
+
+            List list = (List)o;
+
+            sb.append("[");
+
+            for(Iterator i = list.iterator(); i.hasNext(); ) {
+
+                Object li = i.next();
+
+                sb.append(javaObjectParsedFromJSONtoLiteral(li));
+
+                if (i.hasNext()) {
+
+                    sb.append(", ");
+                }
+            }
+
+            sb.append("]");
+        }
+        else if (o instanceof Map) {
+
+            throw new RuntimeException("NYE: Map");
+
+        }
+        else if (o == null) {
+
+            sb.append("null");
+        }
+        else if (o instanceof String) {
+
+            sb.append("String: '").
+                    append(o.toString()).append("'");
+        }
+
+        else {
+
+            sb.append(o.getClass().getSimpleName()).
+                    append(": ").
+                    append(o.toString());
+        }
+
+        return sb.toString();
     }
 }

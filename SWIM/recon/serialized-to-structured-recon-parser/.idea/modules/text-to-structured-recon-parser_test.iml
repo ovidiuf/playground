@@ -11,6 +11,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="text-to-structured-recon-parser_main" />
     <orderEntry type="library" name="Gradle: ai.swim:swim-all:1.2.0.master.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.5" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="text-to-structured-recon-parser_main" />
 </module>

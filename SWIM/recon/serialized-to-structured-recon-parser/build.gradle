@@ -22,11 +22,14 @@ repositories {
             basic(BasicAuthentication)
         }
     }
+
+    mavenCentral()
 }
 
 dependencies {
 
     implementation "ai.swim:swim-all:1.2.0.master.1"
+    implementation "com.google.code.gson:gson:2.8.5"
 }
 
 task printClasspath {
