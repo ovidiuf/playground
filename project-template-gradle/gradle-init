@@ -6,11 +6,12 @@ function display-help() {
 
 cat <<EOF
 
-Utility that initializes a Gradle playground project.
+Utility that initializes a Gradle playground project, optionally using another project
+as template.
 
 Usage:
 
-    gradle-init <project-root-path>
+    gradle-init <project-root-path> [path-to-project-to-use-as-template]
 
 Example:
 
@@ -25,12 +26,23 @@ The initialization script will create the initial package and a simple Main clas
 initialize build.gradle with the minimal configuration required to build a Java project
 and it will put in place the run wrapper.
 
+If a path to a "template project" is provided, the infrastructure of that project will
+be used to borrow some of the configuration elements:
+
+* Gradle build.gradle repositories and dependencies.
+
+
 EOF
 }
 
 function error() {
 
     echo "[error]: $@" 1>&2
+}
+
+function warn() {
+
+    echo "[warn]: $@" 1>&2
 }
 
 function debug() {
@@ -41,6 +53,7 @@ function debug() {
 function main() {
 
     local project_root_dir
+    local template_project_root_dir
 
     while [ -n "$1" ]; do
 
@@ -56,6 +69,11 @@ function main() {
         elif [ -z "${project_root_dir}" ]; then
 
             project_root_dir=$1
+
+        elif [ -z "${template_project_root_dir}" ]; then
+
+            template_project_root_dir=$1
+
         else
 
             error "unknown option $1"
@@ -67,6 +85,11 @@ function main() {
     [ -z "${project_root_dir}" ] && { display-help; exit 1; }
 
     [ -d ${project_root_dir} ] && { error "project root directory ${project_root_dir} exists"; exit 1; }
+
+    if [ -n "${template_project_root_dir}" ]; then
+
+        [ -d ${template_project_root_dir} ] || { error "the template project '${template_project_root_dir}' does not seem to exist"; exit 1; }
+    fi
 
     check-prerequisites
 
@@ -81,7 +104,7 @@ function main() {
     local package_name
     package_name=$(initialize-code ${main_java_dir}) || exit 1
 
-    add-minimal-build-gradle-config ${project_root_dir}
+    add-minimal-build-gradle-config ${project_root_dir} ${template_project_root_dir}
     setup-maven-coordinates ${project_root_dir}
 
     #
@@ -219,10 +242,36 @@ function get-proposed-package-name() {
 function add-minimal-build-gradle-config() {
 
     local project_root_dir=$1
+    local template_project_root_dir=$2 # optional, if provided we'll try to borrow configuration from this project
 
     (cat << EOF
 
 apply plugin: 'java'
+
+EOF
+) >> ${project_root_dir}/build.gradle && debug "updated ${project_root_dir}/build.gradle"
+
+    #
+    # this is the place where we place repositories
+    #
+
+    local repositories_from_template=$(get-repositories-from-project-template ${template_project_root_dir})
+
+    [ -n "${repositories_from_template}" ] && echo "${repositories_from_template}" >> ${project_root_dir}/build.gradle
+
+    #
+    # this is the place where we place dependencies
+    #
+
+    local dependencies_from_template=$(get-dependencies-from-project-template ${template_project_root_dir})
+
+    [ -n "${dependencies_from_template}" ] && echo "${dependencies_from_template}" >> ${project_root_dir}/build.gradle
+
+    #
+    # we always need this
+    #
+
+    (cat << EOF
 
 task printClasspath {
         doLast {
@@ -232,6 +281,55 @@ task printClasspath {
 
 EOF
 ) >> ${project_root_dir}/build.gradle && debug "updated ${project_root_dir}/build.gradle"
+}
+
+#
+# return the path of build.gradle for the given project directory. If something is returned, it means the file
+# exists. Otherwise, we warn at stderr and return 1
+#
+function get-build-gradle-that-exists() {
+
+    local template_project_root_dir=$1
+
+    [ -z "${template_project_root_dir}" ] && return 0
+
+    [ -d ${template_project_root_dir} ] || { warn "the template project directory '${template_project_root_dir}' does not exist so no configuration will be borrowed"; return 1; }
+
+    local source_build_gradle=${template_project_root_dir}/build.gradle
+
+    [ -f ${source_build_gradle} ] || { warn "the template project directory '${template_project_root_dir}' does not have a build.gradle file, so no configuration will be borrowed"; return 1; }
+
+    echo "${source_build_gradle}"
+}
+
+#
+# returns an empty string if the repositories section does not exist or there's something wrong with the project
+# template; otherwise returns the multi-line repositories { ... } section at stdout.
+#
+function get-repositories-from-project-template() {
+
+    local template_project_root_dir=$1
+
+    local source_build_gradle=$(get-build-gradle-that-exists ${template_project_root_dir})
+
+    [ -z "${source_build_gradle}" ] && return 0
+
+    cat ${source_build_gradle} | awk '/^repositories/ { print_on = 1 } /^}/ { if (print_on) { print "}" }; print_on = 0; } { if (print_on) { print $0 } }'
+}
+
+#
+# returns an empty string if the dependencies section does not exist or there's something wrong with the project
+# template; otherwise returns the multi-line dependencies { ... } section at stdout.
+#
+function get-dependencies-from-project-template() {
+
+    local template_project_root_dir=$1
+
+    local source_build_gradle=$(get-build-gradle-that-exists ${template_project_root_dir})
+
+    [ -z "${source_build_gradle}" ] && return 0
+
+    cat ${source_build_gradle} | awk '/^dependencies/ { print_on = 1 } /^}/ { if (print_on) { print "}" }; print_on = 0; } { if (print_on) { print $0 } }'
 }
 
 function setup-maven-coordinates() {
@@ -293,5 +391,3 @@ EOF
 }
 
 main "$@"
-
-
