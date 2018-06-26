@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+[ -f $(dirname $0)/bash.shlib ] && . $(dirname $0)/bash.shlib || { echo "$(dirname $0)/bash.shlib not found" 1>&2; exit 1; }
+[ -f $(dirname $0)/gradle.shlib ] && . $(dirname $0)/gradle.shlib || { echo "$(dirname $0)/gradle.shlib not found" 1>&2; exit 1; }
+
+MAIN_CLASS=io.novaordis.playground.java.utf16.Main
+
+main "$@"
