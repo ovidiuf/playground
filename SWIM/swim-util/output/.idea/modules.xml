@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/output.iml" filepath="$PROJECT_DIR$/output.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/output_main.iml" filepath="$PROJECT_DIR$/.idea/modules/output_main.iml" group="output" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/output_test.iml" filepath="$PROJECT_DIR$/.idea/modules/output_test.iml" group="output" />
+    </modules>
+  </component>
+</project>
