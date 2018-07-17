@@ -1,0 +1,85 @@
+SP ::= #x20 | #x9
+
+NL ::= #xA | #xD
+
+WS ::= SP | NL
+
+Char ::= [#x1-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+
+NameStartChar ::=
+  [A-Z] | "_" | [a-z] |
+  [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] |
+  [#x370-#x37D] | [#x37F-#x1FFF] | [#x200C-#x200D] |
+  [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] |
+  [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+
+NameChar ::=  NameStartChar | '-' | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
+
+MarkupChar ::= Char - ('\\' | '@' | '{' | '}' | '[' | ']')
+
+StringChar ::= Char - ('"' | '\\' | '@' | '{' | '}' | '[' | ']' | '\b' | '\f' | '\n' | '\r' | '\t')
+
+CharEscape ::= '\\' ('"' | '\\' | '/' | '@' | '{' | '}' | '[' | ']' | 'b' | 'f' | 'n' | 'r' | 't')
+
+Base64Char ::= [A-Za-z0-9+/]
+
+Block ::= WS* Slots WS*
+
+Slots ::= Slot SP* ((',' | ';' | NL) WS* Slots)?
+
+Slot ::= BlockValue (SP* ':' SP* BlockValue?)?
+
+Attr ::= '@' (Ident | String) ('(' Block ')')?
+
+Literal ::= Record | Markup | Data | Ident | String | Number | Boolean | Selector
+
+BlockValue ::= Literal SP* (Attr SP* BlockValue?)? | Attr SP* BlockValue? | Comment
+
+InlineValue ::= Attr (Record | Markup)? | Record | Markup
+
+Record ::= '{' Block '}'
+
+Markup ::= '[' (MarkupChar* | CharEscape | InlineValue)* ']'
+
+Data ::= '%' (Base64Char{4})* (Base64Char Base64Char ((Base64Char '=') | ('=' '=')))?
+
+Ident ::= NameStartChar NameChar*
+
+String ::= '"' (StringChar* | CharEscape)* '"'
+
+Number ::= '-'? (([1-9] [0-9]*) | [0-9]) ('.' [0-9]+)? (('E' | 'e') ('+' | '-')? [0-9]+)?
+
+Boolean ::= 'true' | 'false'
+
+Comment ::= '#' [^\n]*
+
+Selector ::= '$' (Literal | '*' | '**' | '*:' | '#' Integer | Filter)
+             ('.' (Literal | '*' | '**' | '*:') | '#' Integer | Filter | '(' Block ')')*
+
+Filter ::= '[' BlockExpr ']'
+
+BlockExpr ::= CondExpr
+
+CondExpr ::= LorExpr SP* ('?' SP* CondExpr SP* ':' SP* CondExpr)?
+
+LorExpr ::= LandExpr SP* ('||' SP* LandExpr)*
+
+LandExpr ::= BorExpr SP* ('&&' SP* BorExpr)*
+
+BorExpr ::= BxorExpr SP* ('|' SP* BxorExpr)*
+
+BxorExpr ::= BandExpr SP* ('^' SP* BandExpr)*
+
+BandExpr ::= CompExpr SP* ('&' SP* CompExpr)*
+
+CompExpr ::= AttrExpr SP* (('<' | '<=' | '==' | '>=' | '>') SP* AttrExpr)?
+
+AttrExpr ::= AddSubExpr SP* (Attr SP* AttrExpr?)? | Attr SP* AttrExpr?
+
+AddSubExpr ::= MulDivExpr SP* (('+' | '-') SP* MulDivExpr)*
+
+MulDivExpr ::= PrefixExpr SP* (('*' | '/' | '%') SP* PrefixExpr)*
+
+PrefixExpr ::= PrimaryExpr SP* || ('!' | '~' | '-' | '+') SP* PrefixExpr
+
+PrimaryExpr ::= Literal || '(' BlockExpr ')'

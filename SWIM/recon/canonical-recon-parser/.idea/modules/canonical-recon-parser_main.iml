@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="canonical-recon-parser:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../out/production/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/main" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="main_main" />
+    <orderEntry type="module" module-name="antlr-grammar_main" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr4:4.7.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr4-runtime:4.7.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:ST4:4.0.8" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr-runtime:3.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.abego.treelayout:org.abego.treelayout.core:1.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish:javax.json:1.0.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.ibm.icu:icu4j:58.2" level="project" />
+  </component>
+</module>

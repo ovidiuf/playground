@@ -1,0 +1,17 @@
+allprojects {
+
+    repositories {
+
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'application'
+
+mainClassName = "playground.swim.recon.Main"
+
+dependencies {
+
+    implementation project(':main')
+}

@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+dependencies {
+
+    implementation project(':antlr-grammar')
+}
+
+

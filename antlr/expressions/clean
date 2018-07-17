@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+for i in $(ls *.java); do
+    if [ ${i} = "Main.java" ]; then continue; fi
+    if [ ${i} = "EvalVisitor.java" ]; then continue; fi
+    rm ${i}
+done
+rm *.tokens
+rm *.interp
+rm *.class

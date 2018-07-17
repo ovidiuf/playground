@@ -1,0 +1,4 @@
+#!/bin/bash
+
+javac -cp .:/Users/ovidiu/runtime/antlr/lib/antlr-4.7.1-complete.jar *.java
+

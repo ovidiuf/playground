@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar.iml" filepath="$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar.iml" group="antlr-grammar" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar_main.iml" filepath="$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar_main.iml" group="antlr-grammar" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar_test.iml" filepath="$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar_test.iml" group="antlr-grammar" />
+      <module fileurl="file://$PROJECT_DIR$/canonical-recon-parser.iml" filepath="$PROJECT_DIR$/canonical-recon-parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/canonical-recon-parser_main.iml" filepath="$PROJECT_DIR$/.idea/modules/canonical-recon-parser_main.iml" group="canonical-recon-parser" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/canonical-recon-parser_test.iml" filepath="$PROJECT_DIR$/.idea/modules/canonical-recon-parser_test.iml" group="canonical-recon-parser" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main_main.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main_main.iml" group="main" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main/main_test.iml" filepath="$PROJECT_DIR$/.idea/modules/main/main_test.iml" group="main" />
+    </modules>
+  </component>
+</project>
