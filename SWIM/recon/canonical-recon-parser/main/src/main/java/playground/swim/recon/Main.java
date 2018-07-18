@@ -3,9 +3,12 @@ package playground.swim.recon;
 import playground.swim.recon.antlr.ReconLexer;
 import playground.swim.recon.antlr.ReconParser;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,11 +23,19 @@ import org.antlr.v4.runtime.tree.ParseTree;
  */
 public class Main {
 
+    private static final String HELP_FILE_NAME = "Help.txt";
+
     public static void main(String[] args) throws Exception {
 
         try {
 
             Configuration c = new Configuration(args);
+
+            if (c.isHelp()) {
+
+                displayHelp();
+                System.exit(0);
+            }
 
             File file = c.getFile();
 
@@ -34,7 +45,7 @@ public class Main {
 
             if (c.isGraphic()) {
 
-                List<String> testRigArgs = new ArrayList<>(Arrays.asList("Recon", "record", "-gui"));
+                List<String> testRigArgs = new ArrayList<>(Arrays.asList("playground.swim.recon.antlr.Recon", "record", "-gui"));
 
                 if (file != null) {
 
@@ -81,4 +92,30 @@ public class Main {
         }
     }
 
+    private static void displayHelp() throws UserErrorException {
+
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("HELP.txt");
+
+        if (is == null) {
+
+            throw new UserErrorException("in-line help content not found, was the program installed correctly?");
+        }
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+
+        try {
+
+            while ((line = br.readLine()) != null) {
+
+                System.out.println(line);
+            }
+
+        }
+        catch(IOException e) {
+
+            throw new UserErrorException("failed to read " + HELP_FILE_NAME, e);
+        }
+    }
 }

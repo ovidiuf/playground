@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gradle distZip; cp ./main/build/libs/main.jar ~/tmp/canonical-recon-parser/lib/main.jar
+gradle distZip; cp ./main/build/libs/main.jar ~/tmp/canonical-recon-parser/lib/; cp ./antlr-grammar/build/libs/antlr-grammar.jar ~/tmp/canonical-recon-parser/lib/;

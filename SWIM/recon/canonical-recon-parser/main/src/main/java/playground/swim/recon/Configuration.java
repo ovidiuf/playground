@@ -12,14 +12,29 @@ class Configuration {
     private File file;
 
     private boolean graphic;
+    private boolean help;
 
     Configuration(String[] args) throws Exception {
 
         for(int i = 0; i < args.length; i ++) {
 
-            if ("-g".equals(args[i]) || "--graphic".equals(args[i])) {
+            if ("-h".equals(args[i]) || "--help".equals(args[i])) {
+
+                help = true;
+
+                //
+                // if help requested, shortcut processing and get out without a sanity check
+                //
+
+                return;
+            }
+            else if ("-g".equals(args[i]) || "--graphic".equals(args[i])) {
 
                 graphic = true;
+            }
+            else if (args[i].startsWith("-")){
+
+                throw new UserErrorException("unknown command line option: '" + args[i] + "'");
             }
             else if (fileName == null) {
 
@@ -36,6 +51,11 @@ class Configuration {
     File getFile() {
 
         return file;
+    }
+
+    boolean isHelp() {
+
+        return help;
     }
 
     boolean isGraphic() {

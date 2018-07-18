@@ -1,8 +1,12 @@
 
 Usage:
 
-    canonical-recon-parser [options] <file>
+    canonical-recon-parser [options] <recon-file>
 
 Options:
 
-    -g|--graphic
+    -g|--graphic - graphically display the parse tree.
+
+    -h|--help - display in-line help and exit.
+
+

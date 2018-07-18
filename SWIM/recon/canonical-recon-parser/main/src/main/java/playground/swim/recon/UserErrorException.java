@@ -9,4 +9,9 @@ public class UserErrorException extends Exception {
     public UserErrorException(String msg) {
         super(msg);
     }
+
+    public UserErrorException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+
 }
