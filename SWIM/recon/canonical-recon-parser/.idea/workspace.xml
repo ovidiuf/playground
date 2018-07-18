@@ -2,32 +2,53 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1273bebb-e3c4-4900-a462-0dcf8f4f9c6a" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_ibm_icu_icu4j_58_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_abego_treelayout_org_abego_treelayout_core_1_0_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_antlr_ST4_4_0_8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_antlr_antlr4_4_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_antlr_antlr4_runtime_4_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_antlr_antlr_runtime_3_5_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_glassfish_javax_json_1_0_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar_main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/antlr-grammar/antlr-grammar_test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/canonical-recon-parser_main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/canonical-recon-parser_test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/main/main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/main/main_main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/main/main_test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canonical-recon-parser.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../antlr/array-init/.idea/libraries/antlr_4_7_1_complete.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../antlr/array-init/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../antlr/array-init/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../antlr/array-init/Translator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../swim-io/generic-swim-io-stack/src/main/java/io/novaordis/playground/SWIM/swimIo/genericSwimIoStack/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../swim-io/generic-swim-io-stack/src/main/java/io/novaordis/playground/SWIM/swimIo/genericSwimIoStack/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Configuration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/UserErrorException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/src/main/resources/HELP.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileContent/annotation-processors.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileContent/annotation-processors.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.7/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.7/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/main/main_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/main/main_main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antlr-grammar/build/libs/antlr-grammar.jar" beforeDir="false" afterPath="$PROJECT_DIR$/antlr-grammar/build/libs/antlr-grammar.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/antlr-grammar/src/main/antlr/Recon.g4" beforeDir="false" afterPath="$PROJECT_DIR$/antlr-grammar/src/main/antlr/Recon.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/canonical-recon-parser.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/bin/canonical-recon-parser" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/bin/canonical-recon-parser.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/ST4-4.0.8.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/antlr-grammar.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/antlr-runtime-3.5.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/antlr4-4.7.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/antlr4-runtime-4.7.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/canonical-recon-parser.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/icu4j-58.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/javax.json-1.0.4.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/main.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/canonical-recon-parser/lib/org.abego.treelayout.core-1.0.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/canonical-recon-parser.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/canonical-recon-parser.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/build/classes/java/main/playground/swim/recon/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/main/build/classes/java/main/playground/swim/recon/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/build/libs/main.jar" beforeDir="false" afterPath="$PROJECT_DIR$/main/build/libs/main.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$AddSubContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$AddSubContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$AssignContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$AssignContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$BlankContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$BlankContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$ExprContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$ExprContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$IdContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$IdContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$IntContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$IntContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$MulDivContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$MulDivContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$ParensContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$ParensContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$PrintExprContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$PrintExprContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$ProgContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$ProgContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$StatContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser$StatContext.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/LabeledExprParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../antlr/expressions/build" beforeDir="false" afterPath="$PROJECT_DIR$/../../../antlr/expressions/build" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -52,16 +73,76 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
+      <file leaf-file-name="Configuration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="630">
+              <caret line="42" column="23" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="36" column="82" selection-start-line="36" selection-start-column="82" selection-end-line="36" selection-end-column="82" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Arrays.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/Arrays.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="257">
+              <caret line="4307" column="30" selection-start-line="4307" selection-start-column="30" selection-end-line="4307" selection-end-column="30" />
+              <folding>
+                <element signature="e#200641#200642#0" expanded="true" />
+                <element signature="e#200682#200683#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="recon.ebnf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/antlr-grammar/recon.ebnf">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="Recon.g4" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/antlr-grammar/src/main/antlr/Recon.g4">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HELP.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main/src/main/resources/HELP.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>APP_HOME</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
@@ -721,6 +802,11 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/UserErrorException.java" />
+        <option value="$PROJECT_DIR$/antlr-grammar/src/main/antlr/Recon.g4" />
+        <option value="$PROJECT_DIR$/main/src/main/resources/HELP.txt" />
+        <option value="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Configuration.java" />
+        <option value="$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Main.java" />
       </list>
     </option>
   </component>
@@ -753,6 +839,70 @@
               <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
               <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="antlr-grammar" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="antlr-grammar" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="antlr-grammar" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="antlr-grammar" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="canonical-recon-parser" type="b2602c69:ProjectViewProjectNode" />
+              <item name="canonical-recon-parser" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -766,8 +916,8 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="RunDashboard">
@@ -835,12 +985,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1531868188311</updated>
-      <workItem from="1531868191476" duration="703000" />
+      <workItem from="1531868191476" duration="3016000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="703000" />
+    <option name="totallyTimeSpent" value="3016000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="769" y="34" width="1583" height="1269" extended-state="0" />
@@ -889,12 +1039,159 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/antlr-grammar/Recon-orig.g4">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/src/main/java/playground/swim/recon/UserErrorException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding>
+            <element signature="e#201#202#0" expanded="true" />
+            <element signature="e#223#224#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/antlr-grammar/build/classes/java/main/playground/swim/recon/antlr/ReconLexer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15215#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/scripts/canonical-recon-parser">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="58" column="10" lean-forward="true" selection-start-line="58" selection-start-column="10" selection-end-line="58" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/antlr-grammar/recon.ebnf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/antlr-grammar/src/main/antlr/Recon.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/src/main/resources/HELP.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Configuration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="42" column="23" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/Arrays.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="4307" column="30" selection-start-line="4307" selection-start-column="30" selection-end-line="4307" selection-end-column="30" />
+          <folding>
+            <element signature="e#200641#200642#0" expanded="true" />
+            <element signature="e#200682#200683#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main/src/main/java/playground/swim/recon/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="36" column="82" selection-start-line="36" selection-start-column="82" selection-end-line="36" selection-end-column="82" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>canonical-recon-parser</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
       <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Gradle: com.ibm.icu:icu4j:58.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

@@ -1,4 +1,6 @@
 #!/bin/bash
 
+antlr -visitor LabeledExpr.g4
+
 javac -cp .:/Users/ovidiu/runtime/antlr/lib/antlr-4.7.1-complete.jar *.java
 

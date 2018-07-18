@@ -1,0 +1,8 @@
+
+Usage:
+
+    canonical-recon-parser [options] <file>
+
+Options:
+
+    -g|--graphic

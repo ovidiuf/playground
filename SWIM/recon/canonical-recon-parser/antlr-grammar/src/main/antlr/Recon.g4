@@ -30,4 +30,3 @@ NUMBER: '-'? (([1-9] [0-9]*) | [0-9]);
 STRING: '"' [a-zA-Z0-9_]* '"';
 
 IDENTIFIER: [a-zA-Z] [a-zA-Z0-9_]*;
-
