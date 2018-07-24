@@ -8,10 +8,10 @@ It consists of:
 (ws://localhost:9000/service-example/<service-id>/map-lane-example). Note that multiple service
 instances may be created, each of them holding onto its own map lane.
 
-* An interactive client that allows execution of multiple instances, so we can interact with
-the map lane concurrently. The client supports linking to the map lane, putting key/value 
-pairs on the lane, asynchronously receiving updates when the lane is modified and closing the
-downlink.
+* An interactive client that allows concurrent execution of multiple instances, which may interact 
+with the map lane of the same service instance. The client reports asynchronous events such as
+"connect", "link", "sync", "disconnect", etc. that arrive on the link. The client also allows
+putting putting key/value on the map lane.
 
 # Build
 
@@ -26,16 +26,21 @@ It will deploy (then update) ~/tmp/map-lane
 Start the server:
 
 ````
-./bin/server
+cd ~/tmp
+./map-lane/bin/server
 ````
 
 Multiple clients can be executing in parallel.
 
 ````
-./bin/client
+cd ~/tmp
+./map-lane/bin/client
 ````
 
-Create a downlink to the map lane (note that different services maintain different map lanes):
+Create a downlink to the map lane (note that different services maintain different map lanes). 
+When the downlink is created, various callbacks are registered:
+* link status reporting callback 
+* map state change reporting callback
 
 ````
 > open <service-id>

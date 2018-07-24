@@ -13,12 +13,15 @@ import swim.api.SwimLane;
 class ServiceExample extends AbstractService {
 
     @SwimLane("map-lane-example")
-    private final MapLane<Long, Value> map =
+    private final MapLane mapLane =
             mapLane().
-                    keyForm(Form.LONG).
-                    didUpdate((Long key, Value newValue, Value oldValue) -> {
+                    didUpdate((Value key, Value newValue, Value oldValue) -> {
 
-                        System.out.println(key + ": " + oldValue + " -> " + newValue);
+                        //
+                        // we assume that both the key and the values are Strings
+                        //
+
+                        System.out.println(key.stringValue() + ": " + oldValue.stringValue() + " replaced by " + newValue.stringValue());
 
             });
 

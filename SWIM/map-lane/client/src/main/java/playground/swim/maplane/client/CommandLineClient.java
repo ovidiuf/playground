@@ -2,9 +2,7 @@ package playground.swim.maplane.client;
 
 import recon.Value;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,21 +17,25 @@ import swim.client.SwimClient;
 class CommandLineClient {
 
     private String hostUri;
-    private String serviceName;
+    private String serviceTypeName;
     private String mapLaneName;
     private SwimClient swimClient;
 
     private Map<String, MapDownlink> downlinksPerServiceId;
 
-    CommandLineClient(String hostUri, String serviceName, String mapLaneName) {
+    private CommandLine commandLine;
+
+    CommandLineClient(String hostUri, String serviceTypeName, String mapLaneName) {
 
         this.hostUri = hostUri;
-        this.serviceName = serviceName;
+        this.serviceTypeName = serviceTypeName;
         this.mapLaneName = mapLaneName;
 
         this.downlinksPerServiceId = new HashMap<>();
 
         this.swimClient = new SwimClient();
+
+        this.commandLine = new CommandLine();
 
         swimClient.start();
     }
@@ -47,7 +49,7 @@ class CommandLineClient {
 
     private void open(String commaSeparatedArguments) throws UserErrorException {
 
-        String serviceId = Util.getArg(0, commaSeparatedArguments, 1);
+        final String serviceId = Util.getArg(0, commaSeparatedArguments, 1);
 
         if (downlinksPerServiceId.containsKey(serviceId)) {
 
@@ -62,23 +64,80 @@ class CommandLineClient {
                         laneUri(mapLaneName);
 
 
-        downlink.open();
+        //
+        // register various callbacks
+        //
+
+        //noinspection unchecked
+        downlink.
+                didLink(() -> {
+
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link linked on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didUnlink(() -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link unlinked on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didConnect(() -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link connected on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didDisconnect(() -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link disconnected on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didClear(() -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link cleared on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didClose(() -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link closed on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didDrop((int i) -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link dropped (" + i + ") on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didFail((Throwable t) -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link failed (" + t + ") on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didReceive((Value body) -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link received body " + body + " on thread " +
+                            Thread.currentThread().getName());
+                }).
+                didRemove((Object key, Object oldValue) -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link removed key " +
+                            ((Value)key).stringValue() + ", old value: " + ((Value)oldValue).stringValue() +
+                            " on thread " + Thread.currentThread().getName());
+                }).
+                didSync(() -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link synced");
+                }).
+                didUpdate((Object key, Object newValue, Object oldValue) -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link updated key " +
+                            ((Value)key).stringValue() + ", " + ((Value)oldValue).stringValue() +
+                            " replaced by " + ((Value)newValue).stringValue() +
+                            " on thread " + Thread.currentThread().getName());
+                }).
+                didTake((int upper) -> {
+                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link did take (" + upper + ") on thread " + Thread.currentThread().getName());
+                });
 
         //
-        // remember it
+        // open the link
+        //
+
+        downlink.open();
+
+        commandLine.info("downlink to " + toMapLaneUri(serviceId) + " opening initiated");
+
+        //
+        // remember it locally
         //
 
         downlinksPerServiceId.put(serviceId, downlink);
-
-        System.out.println("> downlink to " + toMapLaneUri(serviceId) + " opened");
-
-//        link.didLink(() -> {
-//
-//            System.out.println("linked");
-//
-//            link.put(1L, Value.of("blah"));
-//        });
-
     }
 
     private void put(String spaceSeparatedArguments) throws UserErrorException {
@@ -175,14 +234,15 @@ class CommandLineClient {
 
     private void commandLineLoop() {
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+        try {
+
+            commandLine.start();
 
             boolean keepRunning = true;
 
             while(keepRunning) {
 
-                System.out.print("> ");
-                String line = br.readLine();
+                String line = commandLine.readLine();
 
                 try {
 
@@ -190,13 +250,17 @@ class CommandLineClient {
                 }
                 catch(UserErrorException e) {
 
-                    System.out.println("> [error]: " + e.getMessage());
+                    commandLine.error(e.getMessage());
                 }
             }
         }
         catch(IOException e) {
 
-            System.err.println("> [error]: command line loop failed");
+            commandLine.error("command line loop failed");
+        }
+        finally {
+
+            commandLine.close();
         }
     }
 
@@ -239,7 +303,7 @@ class CommandLineClient {
 
     private String toNodeUri(String serviceId) {
 
-        return serviceName + "/" + serviceId;
+        return serviceTypeName + "/" + serviceId;
     }
 
 }

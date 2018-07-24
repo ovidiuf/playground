@@ -49,6 +49,11 @@ class Util {
 
         }
 
-        return null;
+        if (argIndex >= args.size()) {
+
+            throw new UserErrorException("invalid argument count");
+        }
+
+        return args.get(argIndex);
     }
 }
