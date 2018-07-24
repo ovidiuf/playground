@@ -45,76 +45,13 @@ class CommandLineClient {
         swimClient.stop();
     }
 
+    private void open(String commaSeparatedArguments) throws UserErrorException {
 
-    private void commandLineLoop() {
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-
-            boolean keepRunning = true;
-
-            while(keepRunning) {
-
-                System.out.print("> ");
-                String line = br.readLine();
-
-                try {
-
-                    keepRunning = processCommandLine(line);
-                }
-                catch(UserErrorException e) {
-
-                    System.out.println("> [error]: " + e.getMessage());
-                }
-            }
-        }
-        catch(IOException e) {
-
-            System.err.println("> [error]: command line loop failed");
-        }
-    }
-
-    /**
-     * @return true if we should keep the command line loop running, false otherwise.
-     */
-    private boolean processCommandLine(String line) throws UserErrorException {
-
-        line = line.trim();
-
-        if ("exit".equals(line)) {
-
-            return false;
-        }
-
-        if (line.startsWith("open")) {
-
-            open(line.substring("open".length()).trim());
-        }
-        else if (line.startsWith("put")) {
-
-            put(line.substring("put".length()).trim());
-        }
-        else if (line.startsWith("close")) {
-
-            close(line.substring("close".length()).trim());
-        }
-        else if (!line.isEmpty()) {
-
-            throw new UserErrorException("unknown command \"" + line + "\"");
-        }
-
-        return true;
-    }
-
-    private void open(String serviceId) throws UserErrorException {
+        String serviceId = Util.getArg(0, commaSeparatedArguments, 1);
 
         if (downlinksPerServiceId.containsKey(serviceId)) {
 
             throw new UserErrorException("downlink to " + toMapLaneUri(serviceId) + " already open");
-        }
-
-        if (serviceId.contains(" ")) {
-
-            throw new UserErrorException("invalid argument count");
         }
 
         MapDownlink downlink =
@@ -135,7 +72,7 @@ class CommandLineClient {
 
         System.out.println("> downlink to " + toMapLaneUri(serviceId) + " opened");
 
-        //        link.didLink(() -> {
+//        link.didLink(() -> {
 //
 //            System.out.println("linked");
 //
@@ -146,12 +83,12 @@ class CommandLineClient {
 
     private void put(String spaceSeparatedArguments) throws UserErrorException {
 
-        List<String> args = Util.toArgList(spaceSeparatedArguments);
-
         if (downlinksPerServiceId.isEmpty()) {
 
             throw new UserErrorException("no open downlink available, use 'open <service-id>' first");
         }
+
+        List<String> args = Util.toArgList(spaceSeparatedArguments);
 
         String serviceId = null;
         String key;
@@ -234,6 +171,65 @@ class CommandLineClient {
 
         downlink.close();
         downlinksPerServiceId.remove(serviceId);
+    }
+
+    private void commandLineLoop() {
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+
+            boolean keepRunning = true;
+
+            while(keepRunning) {
+
+                System.out.print("> ");
+                String line = br.readLine();
+
+                try {
+
+                    keepRunning = processCommandLine(line);
+                }
+                catch(UserErrorException e) {
+
+                    System.out.println("> [error]: " + e.getMessage());
+                }
+            }
+        }
+        catch(IOException e) {
+
+            System.err.println("> [error]: command line loop failed");
+        }
+    }
+
+    /**
+     * @return true if we should keep the command line loop running, false otherwise.
+     */
+    private boolean processCommandLine(String line) throws UserErrorException {
+
+        line = line.trim();
+
+        if ("exit".equals(line)) {
+
+            return false;
+        }
+
+        if (line.startsWith("open")) {
+
+            open(line.substring("open".length()).trim());
+        }
+        else if (line.startsWith("put")) {
+
+            put(line.substring("put".length()).trim());
+        }
+        else if (line.startsWith("close")) {
+
+            close(line.substring("close".length()).trim());
+        }
+        else if (!line.isEmpty()) {
+
+            throw new UserErrorException("unknown command \"" + line + "\"");
+        }
+
+        return true;
     }
 
     private String toMapLaneUri(String serviceId) {

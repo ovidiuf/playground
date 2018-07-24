@@ -32,4 +32,23 @@ class Util {
 
         return result;
     }
+
+    /**
+     * @param expectedArgumentCount if null, we don't check the argument count. If not null, and the number of
+     *                              arguments does not match, we throw exception
+     */
+    static String getArg(int argIndex, String spaceSeparatedArgumentList, Integer expectedArgumentCount)
+            throws UserErrorException {
+
+        List<String> args = toArgList(spaceSeparatedArgumentList);
+
+        if (expectedArgumentCount != null && expectedArgumentCount != args.size()) {
+
+                throw new UserErrorException(
+                        "expecting " + expectedArgumentCount + " arguments, but got " + args.size());
+
+        }
+
+        return null;
+    }
 }
