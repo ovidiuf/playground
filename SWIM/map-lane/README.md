@@ -4,11 +4,14 @@ An example that allows experimenting with a map lane.
 
 It consists of:
  
-* A server process that declares a plane and a service which exposes the map lane 
-(ws://localhost:9000/service-example/<service-id>/map-lane-example)
-* An interactive client that allows execution of multiple instances and supports linking
-to a map lane, asynchronously receiving updates on the lane and sending updates to the 
-lane.
+* A server process that declares a plane and a service, which in turn exposes the map lane 
+(ws://localhost:9000/service-example/<service-id>/map-lane-example). Note that multiple service
+instances may be created, each of them holding onto its own map lane.
+
+* An interactive client that allows execution of multiple instances, so we can interact with
+the map lane concurrently. The client supports linking to the map lane, putting key/value 
+pairs on the lane, asynchronously receiving updates when the lane is modified and closing the
+downlink.
 
 # Build
 
