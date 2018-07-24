@@ -20,6 +20,7 @@ It will deploy (then update) ~/tmp/map-lane
 
 # Run
 
+Start the server:
 
 ````
 ./bin/server
@@ -33,11 +34,24 @@ Multiple clients can be executing in parallel.
 
 Create a downlink to the map lane (note that different services maintain different map lanes):
 
+````
 > open <service-id>
+````
 
-Put a key/value pair in the map
+Put a key/value pair in the map lane, assuming there is just one downlink opened:
 
-
+````
 > put <key> <value>
->
+````
+
+If there is more than one downlink opened, the service id must also be specified:
+
+````
+> put <service-id> <key> <value>
+````
+
+Close the downlink to the map lane maintained by the specified service.
+
+````
+> close <service-id>
 ````

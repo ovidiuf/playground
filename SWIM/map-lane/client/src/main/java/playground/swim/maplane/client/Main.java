@@ -1,10 +1,6 @@
 package playground.swim.maplane.client;
 
-import recon.Form;
-import recon.Value;
-
-import swim.api.MapDownlink;
-import swim.client.SwimClient;
+import java.util.List;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@swim.ai>
@@ -12,29 +8,16 @@ import swim.client.SwimClient;
  */
 public class Main {
 
+    private static final String HOST_URI = "ws://localhost:9000";
+    private static final String SERVICE_NAME = "service-example";
+    private static final String MAP_LANE_NAME = "map-lane-example";
+
     public static void main(String[] args) throws Exception {
 
-        String hostUri = "ws://localhost:9000";
-        String nodeUri = "service-example/1";
-        String laneUri = "map";
+        CommandLineClient c = new CommandLineClient(HOST_URI, SERVICE_NAME, MAP_LANE_NAME);
 
-        final SwimClient swimClient = new SwimClient();
+        c.run();
 
-        swimClient.start();
-
-        final MapDownlink<Long, Value> link = swimClient.
-                downlinkMap().
-                keyForm(Form.LONG).
-                hostUri(hostUri).
-                nodeUri(nodeUri).
-                laneUri(laneUri).
-                open();
-
-        link.didLink(() -> {
-
-            System.out.println("linked");
-
-            link.put(1L, Value.of("blah"));
-        });
+        System.exit(0);
     }
 }

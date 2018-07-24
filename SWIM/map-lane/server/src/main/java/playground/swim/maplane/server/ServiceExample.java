@@ -12,7 +12,7 @@ import swim.api.SwimLane;
  */
 class ServiceExample extends AbstractService {
 
-    @SwimLane("map")
+    @SwimLane("map-lane-example")
     private final MapLane<Long, Value> map =
             mapLane().
                     keyForm(Form.LONG).
