@@ -9,5 +9,6 @@
     <orderEntry type="library" name="Gradle: ai.swim:swim-all:1.2.1.experimental.1" level="project" />
     <orderEntry type="module" module-name="server_main" />
     <orderEntry type="module" module-name="client_main" />
+    <orderEntry type="library" name="Gradle: ai.swim:swim-all:1.2.1.experimental.1" level="project" />
   </component>
 </module>

@@ -14,22 +14,27 @@ allprojects {
         mavenLocal()
         mavenCentral()
 
+//        maven {
+//            url 'https://repo.swim.it/swim-test/'
+//            credentials {
+//               username testRepositoryUser
+//               password testRepositoryPassword
+//            }
+//            authentication {
+//                digest(BasicAuthentication)
+//            }
+//        }
+
         maven {
-            url 'https://repo.swim.it/swim-test/'
-            credentials {
-               username testRepositoryUser
-               password testRepositoryPassword
-            }
-            authentication {
-                digest(BasicAuthentication)
-            }
+            url 'https://repo.swim.it/swim-public/'
         }
-   }
+    }
 
     dependencies {
 
 
-        implementation "ai.swim:swim-all:1.2.1.experimental.1"
+//        implementation "ai.swim:swim-all:1.2.1.experimental.1"
+        implementation "ai.swim:swim-server-client:1.2.1"
 
     }
 }
