@@ -52,10 +52,22 @@ Put a key/value pair in the map lane, assuming there is just one downlink opened
 > put <key> <value>
 ````
 
-If there is more than one downlink opened, the service id must also be specified:
+If there are more than one downlink opened, the service id must also be specified:
 
 ````
 > put <service-id> <key> <value>
+````
+
+Get the value associated with the provided key, assuming there is just one downlink opened:
+
+````
+> get <key>
+````
+
+If there are more than one downlink opened, the service id must also be specified:
+
+````
+> get <service-id> <key>
 ````
 
 Close the downlink to the map lane maintained by the specified service:

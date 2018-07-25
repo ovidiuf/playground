@@ -192,6 +192,68 @@ class CommandLineClient {
         downlink.put(Value.of(key), Value.of(value));
     }
 
+    private void get(String spaceSeparatedArguments) throws UserErrorException {
+
+        if (downlinksPerServiceId.isEmpty()) {
+
+            throw new UserErrorException("no open downlink available, use 'open <service-id>' first");
+        }
+
+        List<String> args = Util.toArgList(spaceSeparatedArguments);
+
+        String serviceId = null;
+        String key;
+
+        if (args.size() < 1 || args.size() > 2) {
+
+            throw new UserErrorException("invalid get command, use 'get [service-id] <key>'");
+        }
+
+        if (args.size() == 1) {
+
+            key = args.get(0);
+        }
+        else {
+
+            serviceId = args.get(0);
+            key = args.get(1);
+        }
+
+        if (downlinksPerServiceId.size() > 1 && serviceId == null) {
+
+            throw new UserErrorException(
+                    "more than one downlink currently opened, use 'get <service-id> <key>' syntax");
+        }
+
+        MapDownlink downlink =
+                serviceId == null ?
+                        downlinksPerServiceId.values().iterator().next() :
+                        downlinksPerServiceId.get(serviceId);
+
+        if (downlink == null) {
+
+            throw new UserErrorException("no downlink opened for service ID \"" + serviceId + "\"");
+        }
+
+        Object o = downlink.get(Value.of(key));
+        String s;
+
+        if (o instanceof Value) {
+
+            s = ((Value)o).stringValue();
+        }
+        else if (o == null) {
+
+            s = "null";
+        }
+        else {
+
+            s = o.toString();
+        }
+
+        commandLine.info(s);
+    }
+
     private void close(String spaceSeparatedArguments) throws UserErrorException {
 
         if (downlinksPerServiceId.isEmpty()) {
@@ -271,6 +333,12 @@ class CommandLineClient {
                 "      one map lanes are linked to, the service id of the service whose map lane we want\n" +
                 "      to access must be specified.\n" +
                 "\n" +
+                "  get [service-id] <key>\n" +
+                "\n" +
+                "      Returns the value associated with the specified key, as maintained in the only map\n" +
+                "      lane currently linked to. If more than one map lanes are linked to, the service id\n" +
+                "      of the service whose map lane we want to access must be specified.\n" +
+                "\n" +
                 "  close <service-id>\n" +
                 "\n" +
                 "      Close the corresponding map lane downlink.\n" +
@@ -340,6 +408,10 @@ class CommandLineClient {
         else if (line.startsWith("put")) {
 
             put(line.substring("put".length()).trim());
+        }
+        else if (line.startsWith("get")) {
+
+            get(line.substring("get".length()).trim());
         }
         else if (line.startsWith("close")) {
 
