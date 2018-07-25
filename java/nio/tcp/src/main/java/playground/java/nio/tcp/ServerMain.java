@@ -7,6 +7,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -16,7 +19,9 @@ import java.util.Set;
  */
 public class ServerMain {
 
-    public static final int PORT = 9002;
+    static final int PORT = 9002;
+
+    static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 
     public static void main(String[] args) throws Exception {
 
@@ -31,13 +36,11 @@ public class ServerMain {
 
         SelectionKey key = ssc.register(selector, SelectionKey.OP_ACCEPT);
 
-        System.out.println("TCP server bound to port " + PORT);
+        System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": TCP server bound to port " + PORT);
 
         while(true) {
 
             int selectedKeyCount = selector.select();
-
-            System.out.println(selectedKeyCount + " keys selected");
 
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
 
@@ -55,17 +58,22 @@ public class ServerMain {
                     // new connection
                     //
 
-                    System.out.println("new connection");
+                    System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": new connection");
 
                     //
                     // remove the key from the set
                     //
+
                     i.remove();
 
                     ServerSocketChannel c = (ServerSocketChannel)k.channel();
                     SocketChannel sc = c.accept();
                     sc.configureBlocking(false);
                     sc.register(selector, SelectionKey.OP_READ);
+
+                    //
+                    // TODO this is where we pass the channel to a console subsystem to send data back on it
+                    //
 
                 }
                 else if ((k.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
@@ -82,11 +90,6 @@ public class ServerMain {
 
                     SocketChannel sc = (SocketChannel)k.channel();
 
-                    //
-                    // TODO: Do I need to do that?
-                    //
-                    sc.configureBlocking(false);
-
                     ByteBuffer buffer = ByteBuffer.allocate(1024);
 
                     int bytesRead = sc.read(buffer);
@@ -97,7 +100,7 @@ public class ServerMain {
                         // TCP connection is closed
                         //
 
-                        System.out.println("TCP connection closed");
+                        System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": TCP connection closed");
 
                         //
                         // unregister the channel, by canceling the key. If we don't we'll always get a selection event
@@ -115,14 +118,10 @@ public class ServerMain {
 
                         buffer.get(content, 0, bytesRead);
 
-                        System.out.println(new String(content));
+                        System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": " + new String(content));
                     }
-
                 }
             }
         }
-
-
     }
-
 }

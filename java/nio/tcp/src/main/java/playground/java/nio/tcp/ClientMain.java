@@ -1,5 +1,7 @@
 package playground.java.nio.tcp;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -14,26 +16,37 @@ public class ClientMain {
 
         SocketChannel socketChannel = SocketChannel.open();
         socketChannel.connect(new InetSocketAddress("localhost", ServerMain.PORT));
-
         System.out.println("socket connected");
 
-        String s = "something";
+        //
+        // enter the command line loop
+        //
 
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
-        buffer.clear();
-        buffer.put(s.getBytes());
-        buffer.flip();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        while(buffer.hasRemaining()) {
+        while(true) {
 
-            socketChannel.write(buffer);
+            System.out.print("> ");
+            String line = br.readLine();
+
+            if (line.startsWith("exit")) {
+
+                break;
+            }
+
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            buffer.clear();
+            buffer.put(line.getBytes());
+            buffer.flip();
+
+            while(buffer.hasRemaining()) {
+
+                socketChannel.write(buffer);
+            }
         }
-
-        System.out.println("data sent");
 
         socketChannel.close();
 
         System.out.println("socket channel closed");
-
     }
 }
