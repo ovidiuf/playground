@@ -3,6 +3,8 @@ package playground.swim.maplane.client;
 import recon.Value;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,57 +74,57 @@ class CommandLineClient {
         downlink.
                 didLink(() -> {
 
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link linked on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink linked on thread " +
                             Thread.currentThread().getName());
                 }).
                 didUnlink(() -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link unlinked on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink unlinked on thread " +
                             Thread.currentThread().getName());
                 }).
                 didConnect(() -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link connected on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink connected on thread " +
                             Thread.currentThread().getName());
                 }).
                 didDisconnect(() -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link disconnected on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink disconnected on thread " +
                             Thread.currentThread().getName());
                 }).
                 didClear(() -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link cleared on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink cleared on thread " +
                             Thread.currentThread().getName());
                 }).
                 didClose(() -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link closed on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink closed on thread " +
                             Thread.currentThread().getName());
                 }).
                 didDrop((int i) -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link dropped (" + i + ") on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink dropped (" + i + ") on thread " +
                             Thread.currentThread().getName());
                 }).
                 didFail((Throwable t) -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link failed (" + t + ") on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink failed (" + t + ") on thread " +
                             Thread.currentThread().getName());
                 }).
                 didReceive((Value body) -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link received body " + body + " on thread " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink received body " + body + " on thread " +
                             Thread.currentThread().getName());
                 }).
                 didRemove((Object key, Object oldValue) -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link removed key " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink removed key " +
                             ((Value)key).stringValue() + ", old value: " + ((Value)oldValue).stringValue() +
                             " on thread " + Thread.currentThread().getName());
                 }).
                 didSync(() -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link synced");
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink synced");
                 }).
                 didUpdate((Object key, Object newValue, Object oldValue) -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link updated key " +
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink updated key " +
                             ((Value)key).stringValue() + ", " + ((Value)oldValue).stringValue() +
                             " replaced by " + ((Value)newValue).stringValue() +
                             " on thread " + Thread.currentThread().getName());
                 }).
                 didTake((int upper) -> {
-                    commandLine.info("service " + serviceTypeName + "/" + serviceId + "'s map lane link did take (" + upper + ") on thread " + Thread.currentThread().getName());
+                    commandLine.info(toMapLaneUri(serviceId) + "'s downlink did take (" + upper + ") on thread " + Thread.currentThread().getName());
                 });
 
         //
@@ -232,6 +234,53 @@ class CommandLineClient {
         downlinksPerServiceId.remove(serviceId);
     }
 
+    private void list() {
+
+        if (downlinksPerServiceId.isEmpty()) {
+
+            commandLine.info("no downlinks opened");
+        }
+        else {
+
+            StringBuilder sb = new StringBuilder("\n");
+
+            List<String> serviceIds = new ArrayList<>(downlinksPerServiceId.keySet());
+            Collections.sort(serviceIds);
+
+            for(String serviceId: serviceIds) {
+
+                sb.append(serviceId).append(": ").append(downlinksPerServiceId.get(serviceId)).append("\n");
+            }
+
+            commandLine.multiLineWithoutPrompt(sb.toString());
+        }
+    }
+
+    private void help() {
+
+        commandLine.multiLineWithoutPrompt("\n" +
+                "Commands:\n" +
+                "\n" +
+                "  open <service-id>\n" +
+                "\n" +
+                "      Open a downlink to the map lane of the service whose service id is specified.\n" +
+                "\n" +
+                "  put [service-id] <key> <value>\n" +
+                "\n" +
+                "      Place a key/value pair into the only map lane currently linked to. If more than\n" +
+                "      one map lanes are linked to, the service id of the service whose map lane we want\n" +
+                "      to access must be specified.\n" +
+                "\n" +
+                "  close <service-id>\n" +
+                "\n" +
+                "      Close the corresponding map lane downlink.\n" +
+                "\n" +
+                "  list\n" +
+                "\n" +
+                "      List the active downlinks.\n");
+
+    }
+
     private void commandLineLoop() {
 
         try {
@@ -276,9 +325,17 @@ class CommandLineClient {
             return false;
         }
 
-        if (line.startsWith("open")) {
+        if (line.startsWith("help")) {
+
+            help();
+        }
+        else if (line.startsWith("open")) {
 
             open(line.substring("open".length()).trim());
+        }
+        else if (line.startsWith("list")) {
+
+            list();
         }
         else if (line.startsWith("put")) {
 

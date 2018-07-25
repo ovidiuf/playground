@@ -63,3 +63,11 @@ Close the downlink to the map lane maintained by the specified service.
 ````
 > close <service-id>
 ````
+
+In-line help is available with:
+
+````
+> help
+````
+
+

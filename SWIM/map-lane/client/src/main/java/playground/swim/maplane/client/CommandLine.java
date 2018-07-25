@@ -39,7 +39,7 @@ class CommandLine {
         }
     }
 
-    void info(String s) {
+    synchronized void info(String s) {
 
         handlePrompt();
         System.out.println("[info]: " + s);
@@ -51,6 +51,14 @@ class CommandLine {
 
         handlePrompt();
         System.out.println("[error]: " + s);
+        promptRequired = true;
+        handlePrompt();
+    }
+
+    void multiLineWithoutPrompt(String multiLineString){
+
+        System.out.println();
+        System.out.println(multiLineString);
         promptRequired = true;
         handlePrompt();
     }

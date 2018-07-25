@@ -1,5 +1,8 @@
 package playground.swim.maplane.client;
 
+import playground.swim.maplane.server.PlaneExample;
+import playground.swim.maplane.server.ServiceExample;
+
 import java.util.List;
 
 /**
@@ -9,12 +12,11 @@ import java.util.List;
 public class Main {
 
     private static final String HOST_URI = "ws://localhost:9000";
-    private static final String SERVICE_NAME = "service-example";
-    private static final String MAP_LANE_NAME = "map-lane-example";
 
     public static void main(String[] args) throws Exception {
 
-        CommandLineClient c = new CommandLineClient(HOST_URI, SERVICE_NAME, MAP_LANE_NAME);
+        CommandLineClient c =
+                new CommandLineClient(HOST_URI, PlaneExample.SERVICE_TYPE_NAME, ServiceExample.MAP_LANE_NAME);
 
         c.run();
 

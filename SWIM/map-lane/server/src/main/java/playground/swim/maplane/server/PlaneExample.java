@@ -10,7 +10,9 @@ import swim.api.SwimRoute;
  */
 public class PlaneExample extends AbstractPlane {
 
-    @SwimRoute("/service-example/:id")
+    public static final String SERVICE_TYPE_NAME = "service-example";
+
+    @SwimRoute("/" + SERVICE_TYPE_NAME + "/:id")
     private final ServiceType<?> s = serviceClass(ServiceExample.class);
 
 }
