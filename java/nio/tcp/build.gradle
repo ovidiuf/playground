@@ -41,12 +41,32 @@ task clientStartScript(type: CreateStartScripts) {
 }
 
 //
+// this generates the aux wrapper script
+//
+
+task auxStartScript(type: CreateStartScripts) {
+
+    applicationName = 'aux'
+    mainClassName = 'playground.java.nio.tcp.CommandLine'
+
+    //
+    // get the rest of the configuration from the already configured 'startScripts' task;
+    // except 'applicationName' and 'mainClassName', the rest of the configuration should
+    // be similar
+    //
+    def t = rootProject.tasks.getByPath('startScripts');
+    classpath = t.classpath;
+    outputDir = t.outputDir;
+}
+
+//
 // this configures the main 'startScript' task to generate the server script
 //
 def t = rootProject.tasks.getByPath('startScripts');
 t.applicationName = 'server';
 t.mainClassName = 'playground.java.nio.tcp.ServerMain';
 t.dependsOn(clientStartScript); // trigger 'clientStartScript' execution automatically
+t.dependsOn(auxStartScript); // trigger 'aux' execution automatically
 
 
 defaultTasks 'distZip'

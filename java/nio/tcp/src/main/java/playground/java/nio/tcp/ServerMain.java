@@ -25,29 +25,60 @@ public class ServerMain {
 
     public static void main(String[] args) throws Exception {
 
+        final CommandLine c = new CommandLine();
+
+        c.start();
+
+        //
+        // command line loop
+        //
+
+        final ServerCommandLineLoop commandLineLoop = new ServerCommandLineLoop(c);
+
+        new Thread(commandLineLoop, "Command Line Loop").start();
+
+        //
+        // Main selector multiplexer. We use the main thread as selector thread.
+        //
+
         Selector selector = Selector.open();
 
-        ServerSocketChannel ssc = ServerSocketChannel.open();
-        ssc.configureBlocking(false);
+        //
+        // The ServerSocketChannel used to accept new TCP connections
+        //
 
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.configureBlocking(false);
         InetSocketAddress address = new InetSocketAddress(PORT);
-        ServerSocket ss = ssc.socket();
+        ServerSocket ss = serverSocketChannel.socket();
         ss.bind(address);
 
-        SelectionKey key = ssc.register(selector, SelectionKey.OP_ACCEPT);
+        //
+        // Register the ServerSocketChannel with the selector
+        //
 
-        System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": TCP server bound to port " + PORT);
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+        c.info(TIMESTAMP_FORMAT.format(new Date()) + ": TCP server bound to port " + PORT);
+
+        //
+        // The main event loop
+        //
 
         while(true) {
 
-            int selectedKeyCount = selector.select();
+            //
+            // This call blocks until at least one I/O event occurs
+            //
+
+            selector.select();
 
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
 
             for(Iterator<SelectionKey> i = selectedKeys.iterator(); i.hasNext(); ) {
 
                 //
-                // figure out what kind of I/O event was selected
+                // Figure out what kind of I/O event was selected
                 //
 
                 SelectionKey k = i.next();
@@ -55,56 +86,67 @@ public class ServerMain {
                 if ((k.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
 
                     //
-                    // new connection
+                    // New connection
                     //
 
-                    System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": new connection");
+                    c.info(TIMESTAMP_FORMAT.format(new Date()) + ": new TCP connection");
 
                     //
-                    // remove the key from the set
+                    // Remove the key from the set
                     //
 
                     i.remove();
 
-                    ServerSocketChannel c = (ServerSocketChannel)k.channel();
-                    SocketChannel sc = c.accept();
+                    //
+                    // Retrieve the SocketChannel for the new connection, make it non-blocking, and register
+                    // it with the same selector so now we can handle incoming data events on the same event
+                    // loop
+                    //
+
+                    ServerSocketChannel ssc = (ServerSocketChannel)k.channel();
+                    SocketChannel sc = ssc.accept();
                     sc.configureBlocking(false);
                     sc.register(selector, SelectionKey.OP_READ);
 
                     //
-                    // TODO this is where we pass the channel to a console subsystem to send data back on it
+                    // Pass the channel to the command line loop subsystem to send data back on it
                     //
 
+                    commandLineLoop.setClientSocketChannel(sc);
                 }
                 else if ((k.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
 
                     //
-                    // remove the key from the set
+                    // New data available, read it
+                    //
+
+                    //
+                    // Remove the key from the set
                     //
 
                     i.remove();
 
-                    //
-                    // read the data
-                    //
-
                     SocketChannel sc = (SocketChannel)k.channel();
-
                     ByteBuffer buffer = ByteBuffer.allocate(1024);
-
                     int bytesRead = sc.read(buffer);
 
                     if (bytesRead == -1) {
 
                         //
-                        // TCP connection is closed
+                        // TCP connection was closed
                         //
 
-                        System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": TCP connection closed");
+                        c.info(TIMESTAMP_FORMAT.format(new Date()) + ": TCP connection closed");
 
                         //
-                        // unregister the channel, by canceling the key. If we don't we'll always get a selection event
-                        // on a closed channel
+                        // remove the socket channel from the command line loop
+                        //
+
+                        commandLineLoop.setClientSocketChannel(null);
+
+                        //
+                        // Unregister the channel, by canceling the key. If we don't do this, data availability
+                        // events for zero-length data will keep popping up.
                         //
 
                         k.cancel();
@@ -112,13 +154,17 @@ public class ServerMain {
                     }
                     else {
 
+                        //
+                        // Read data
+                        //
+
                         buffer.flip();
+                        byte[] contentBuffer = new byte[bytesRead];
+                        buffer.get(contentBuffer, 0, bytesRead);
 
-                        byte[] content = new byte[bytesRead];
+                        String content = new String(contentBuffer);
 
-                        buffer.get(content, 0, bytesRead);
-
-                        System.out.println(TIMESTAMP_FORMAT.format(new Date()) + ": " + new String(content));
+                        c.info(TIMESTAMP_FORMAT.format(new Date()) + ": " + content);
                     }
                 }
             }
