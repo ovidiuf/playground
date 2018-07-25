@@ -30,7 +30,7 @@ if [ ! -d ${DEPLOYMENT_DIR} ]; then
     echo "${APPLICATION_NAME} installed in $(dirname ${DEPLOYMENT_DIR})"
 
 else
-    cp $(dirname $0)/../build/libs/java-nio-tcp.jar.jar ${DEPLOYMENT_DIR}/lib && echo "java-nio-tcp.jar deployed"
+    cp $(dirname $0)/../build/libs/java-nio-tcp.jar ${DEPLOYMENT_DIR}/lib && echo "java-nio-tcp.jar deployed"
 fi
 
 
