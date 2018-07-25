@@ -58,10 +58,16 @@ If there is more than one downlink opened, the service id must also be specified
 > put <service-id> <key> <value>
 ````
 
-Close the downlink to the map lane maintained by the specified service.
+Close the downlink to the map lane maintained by the specified service:
 
 ````
 > close <service-id>
+````
+
+List active downlinks:
+
+````
+> list
 ````
 
 In-line help is available with:
