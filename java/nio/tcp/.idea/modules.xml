@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-nio-tcp.iml" filepath="$PROJECT_DIR$/.idea/modules/java-nio-tcp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-nio-tcp_main.iml" filepath="$PROJECT_DIR$/.idea/modules/java-nio-tcp_main.iml" group="java-nio-tcp" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/java-nio-tcp_test.iml" filepath="$PROJECT_DIR$/.idea/modules/java-nio-tcp_test.iml" group="java-nio-tcp" />
+    </modules>
+  </component>
+</project>
