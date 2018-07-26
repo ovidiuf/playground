@@ -5,7 +5,7 @@ An example that allows experimenting with a map lane.
 It consists of:
  
 * A server process that declares a plane and a service, which in turn exposes the map lane 
-(ws://localhost:9000/service-example/<service-id>/map-lane-example). Note that multiple service
+(ws://localhost:9000/service-example/&lt;service-id&gt;/map-lane-example). Note that multiple service
 instances may be created, each of them holding onto its own map lane.
 
 * An interactive client that allows concurrent execution of multiple instances, which may interact 

@@ -6,10 +6,10 @@
     <content url="file://$MODULE_DIR$/../../src/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: ai.swim:swim-all:1.2.1.experimental.1" level="project" />
+    <orderEntry type="module" module-name="map-lane_main" />
+    <orderEntry type="library" name="Gradle: ai.swim:swim-server-client:1.2.1" level="project" />
     <orderEntry type="module" module-name="server_main" />
     <orderEntry type="module" module-name="client_main" />
-    <orderEntry type="library" name="Gradle: ai.swim:swim-all:1.2.1.experimental.1" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="map-lane_main" />
 </module>
