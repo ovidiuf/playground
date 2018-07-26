@@ -3,6 +3,9 @@ package playground.java.nio.tcp;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import static playground.java.nio.tcp.Util.set;
+import static playground.java.nio.tcp.Util.reportSocketConfiguration;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@swim.ai>
  * @since 7/25/18
@@ -41,6 +44,16 @@ public class ServerCommandLineLoop implements Runnable {
 
                     commandLine.info("server is exiting");
                     System.exit(0);
+                }
+                else if (command.startsWith("config")) {
+
+                    reportSocketConfiguration(command, commandLine, clientSocketChannel);
+
+                }
+                else if (command.startsWith("set-")) {
+
+                    set(command, commandLine, clientSocketChannel);
+
                 }
                 else {
 

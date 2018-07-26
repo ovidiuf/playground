@@ -10,6 +10,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
+import static playground.java.nio.tcp.Util.reportSocketConfig;
+import static playground.java.nio.tcp.Util.set;
+import static playground.java.nio.tcp.Util.reportSocketConfiguration;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@swim.ai>
  * @since 7/24/18
@@ -18,7 +22,9 @@ public class ClientMain {
 
     public static void main(String[] args) throws Exception {
 
-        CommandLine c = new CommandLine();
+        Configuration config = new Configuration(args);
+
+        final CommandLine c = new CommandLine();
         c.start();
 
         //
@@ -32,10 +38,10 @@ public class ClientMain {
         //
 
         SocketChannel socketChannel = SocketChannel.open();
-        socketChannel.connect(new InetSocketAddress("localhost", ServerMain.PORT));
+        socketChannel.connect(new InetSocketAddress(config.getAddress(), config.getPort()));
         socketChannel.configureBlocking(false);
 
-        c.info("socket connected");
+        c.info("socket connected, " + reportSocketConfig(socketChannel));
 
         //
         // Register the ServerSocketChannel with the selector
@@ -131,19 +137,32 @@ public class ClientMain {
 
                 break;
             }
+            else if (line.startsWith("config")) {
 
-            //
-            // Send data
-            //
+                reportSocketConfiguration(line, c, socketChannel);
 
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            buffer.clear();
-            buffer.put(line.getBytes());
-            buffer.flip();
+            }
+            else if (line.startsWith("set-")) {
 
-            while(buffer.hasRemaining()) {
+                set(line, c, socketChannel);
 
-                socketChannel.write(buffer);
+            }
+            else //noinspection Duplicates
+            {
+
+                //
+                // Send the content as data on the connection
+                //
+
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                buffer.clear();
+                buffer.put(line.getBytes());
+                buffer.flip();
+
+                while (buffer.hasRemaining()) {
+
+                    socketChannel.write(buffer);
+                }
             }
         }
 
@@ -153,4 +172,7 @@ public class ClientMain {
 
         System.exit(0);
     }
+
+
+
 }

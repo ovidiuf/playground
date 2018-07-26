@@ -13,17 +13,19 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
+import static playground.java.nio.tcp.Util.reportSocketConfig;
+
 /**
  * @author Ovidiu Feodorov <ovidiu@swim.ai>
  * @since 7/24/18
  */
 public class ServerMain {
 
-    static final int PORT = 9002;
-
     static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 
     public static void main(String[] args) throws Exception {
+
+        Configuration config = new Configuration(args);
 
         final CommandLine c = new CommandLine();
 
@@ -49,7 +51,7 @@ public class ServerMain {
 
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         serverSocketChannel.configureBlocking(false);
-        InetSocketAddress address = new InetSocketAddress(PORT);
+        InetSocketAddress address = new InetSocketAddress(config.getAddress(), config.getPort());
         ServerSocket ss = serverSocketChannel.socket();
         ss.bind(address);
 
@@ -59,7 +61,8 @@ public class ServerMain {
 
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-        c.info(TIMESTAMP_FORMAT.format(new Date()) + ": TCP server bound to port " + PORT);
+        c.info(TIMESTAMP_FORMAT.format(new Date()) + ": TCP server bound to " +
+                serverSocketChannel.getLocalAddress().toString());
 
         //
         // The main event loop
@@ -89,8 +92,6 @@ public class ServerMain {
                     // New connection
                     //
 
-                    c.info(TIMESTAMP_FORMAT.format(new Date()) + ": new TCP connection");
-
                     //
                     // Remove the key from the set
                     //
@@ -113,6 +114,9 @@ public class ServerMain {
                     //
 
                     commandLineLoop.setClientSocketChannel(sc);
+
+                    c.info(TIMESTAMP_FORMAT.format(new Date()) + ": new TCP connection, " + reportSocketConfig(sc));
+
                 }
                 else if ((k.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
 

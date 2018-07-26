@@ -20,18 +20,22 @@ It will deploy (then update) ~/tmp/java-nio-tcp
 
 # Run
 
-Start the server:
+Start the server (by default binds on localhost:9002):
 
 ````
 cd ~/tmp
-./java-nio-tcp/bin/server
+./java-nio-tcp/bin/server [-a <network-interface-address>] [-p <port>]
 ````
 
-Start then client:
+Start then client (by default connects to localhost:9002):
 
 ````
 cd ~/tmp
-./java-nio-tcp/bin/client
+./java-nio-tcp/bin/client [-a <network-interface-address>] [-p <port>]
 ````
 
 After establishing the connection, both client and server can send text typed into their consoles to each other.
+
+Available commands:
+* config - reports socket configuration
+* set-keep-alive on|off
