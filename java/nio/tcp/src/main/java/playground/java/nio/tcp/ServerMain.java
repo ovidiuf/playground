@@ -167,6 +167,10 @@ public class ServerMain {
                         c.info(TIMESTAMP_FORMAT.format(new Date()) + ": " + content);
                     }
                 }
+                else {
+
+                    c.info("unexpected selection key " + k);
+                }
             }
         }
     }

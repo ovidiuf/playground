@@ -106,6 +106,10 @@ public class ClientMain {
                                 c.info(ServerMain.TIMESTAMP_FORMAT.format(new Date()) + ": " + new String(content));
                             }
                         }
+                        else {
+
+                            c.info("unexpected selection key " + k);
+                        }
                     }
                 }
                 catch(IOException e) {
