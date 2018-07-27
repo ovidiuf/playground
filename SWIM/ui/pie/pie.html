@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Hierarchical Lab Pie</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" type="image/png" href="http://localhost:8080/assets/favicon_x128.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <link href="http://localhost:8080/assets/fonts.css" rel="stylesheet" type="text/css" />
+
+    <link href="http://localhost:8080/assets/style.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
+
+    <style>
+  .components-doc > section:nth-child(even) {
+    background: #fbfbfb;
+  }
+
+  .components-doc section:not(:first-child) {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .components-doc .hero-cover {
+    flex-direction: column;
+  }
+
+  .components-doc h1 {
+    display: flex;
+  }
+
+  .components-doc .subnav-wrap ul {
+    margin-left: 0;
+  }
+
+  .components-doc .subnav {
+    align-items: center;
+  }
+
+  .properties-content {
+    margin-bottom: 25px;
+  }
+
+  .doc-subnav ul {
+  border-color: #d09aff;
+}
+
+.doc-subnav a:hover, .doc-subnav li.active a{
+  color: #d09aff;
+}
+
+.graph-wrap .graph {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.section-py {
+  margin-top: 50px;
+}
+</style>
+
+    <script src="http://localhost:8080/assets/js/swim-app.js"></script>
+</head>
+
+  <body>
+
+    <main class="components-doc" id="hero">
+
+      <section class="hero-cover">
+
+        <h1 class="page-title">Hierarchy Lab Pie</h1>
+
+        <div class="container">
+          <div class="row graph-wrap">
+            <div class="col offset-0 col-12 offset-lg-3 col-lg-6">
+              <div class="graph">
+                <script type="text/recon">@pie {
+
+  transition: @transition(500, linear)
+
+  host: 'ws://localhost:9031'
+  node: 'test-hierarchy-service/1'
+  lane0: @link(lane: 'test-lane-0', type: value)
+  lane1: @link(lane: 'test-lane-1', type: value)
+
+  @wedge {
+
+    value: $max(0.1, $lane0.metric1)
+
+    label: @text($percent($value, $total))
+    legend: @text([lane0/METRIC1 {$round( $eager($value) )}])
+    legendColor: '#81758c'
+    tickColor: '#81758c'
+    arcColor: '#81758c'
+  }
+
+  @wedge {
+
+    value: $max(0.1, $lane0.metric2)
+
+    label: @text($percent($value, $total))
+    legend: @text([lane0/METRIC2 {$round( $eager($value) )}])
+    legendColor: '#81758c'
+    tickColor: '#81758c'
+    arcColor: '#81758c'
+  }
+
+  @wedge {
+
+    value: $max(0.1, $lane0.metric3)
+
+    label: @text($percent($value, $total))
+    legend: @text([lane0/METRIC3  {$round( $eager($value) )}])
+    legendColor: '#d09aff'
+    tickColor: '#d09aff'
+    arcColor: '#d09aff'
+
+  }
+
+  @wedge {
+
+    value: $max(0.1, $lane1.metric1)
+
+    label: @text($percent($value, $total))
+    legend: @text([lane1/METRIC1 {$round( $eager($value) )}])
+    legendColor: '#81758c'
+    tickColor: '#81758c'
+    arcColor: '#81758c'
+  }
+}
+            </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <style>
+        .swimLogo {
+          width: 49px;
+          height: 14px;
+          margin: 3px 15px 3px 15px;
+        }
+        #demoMenu {
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 0px;
+          left: 0px;
+          width: 48px;
+          height: 48px;
+          background-color: rgba(255,255,255,0);
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0), 0 2px 4px 0 rgba(0, 0, 0, 0);
+          color: #4a4a4a;
+          font-size: 20px;
+          overflow: hidden;
+          z-index: 9999;
+          transition: width 150ms ease-in-out, height 150ms ease-in-out, background-color 150ms ease-in-out;
+        }
+        .open {
+          background-color: rgba(255,255,255,1) !important;
+          width: 260px !important;
+          height: 100% !important;
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+      
+        .demoMenuToggle {
+          width: 48px;
+          height: 48px;
+          cursor: pointer;
+          text-align: center;
+          flex-shrink: 0;
+          padding: 18px 0 0 0;
+          margin: 0px;
+        }
+        #menuHeader {
+          display: flex;
+          flex-direction: row;
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: 260px;
+          height: 62px;
+          border-bottom: solid 1px #ececec;
+        }
+        .demoMenuButtonContainer{
+         overflow: auto;
+         margin-bottom: 20px;
+        }
+        .menuHeaderLogo {
+          display: flex;
+          flex-grow: 1;
+          font-size: 18px;
+          padding-top: 12px;
+          line-height: 50px;
+          color: #7fbaff;
+        }
+        .menuHeaderLogo img{
+          margin: 5px;
+        }
+        .dropdown {
+          margin: 21px 0 0 24px;
+        }
+        .demoMenuSection {
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 900;
+          line-height: 21px;
+          color: #000;
+          text-transform: capitalize;
+          transition: color 150ms ease-in-out;
+        }
+        .demoMenuButton {
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 400;
+          padding: 21px 0 0 24px;
+        }
+        .demoMenuSection:hover, .demoMenuButton:hover a {
+          color: #7fbaff;
+          transition: color 150ms ease-in-out;
+        }
+        #modalCover {
+          position: fixed;
+          top: 0px;
+          left: 0px;
+          width: 0px;
+          height: 0px;
+          background-color: #4a4a4a;
+          opacity: 0;
+          transition: opacity 150ms ease-in-out;
+          z-index: 9999;
+        }
+        .dropdown {
+          overflow: hidden;
+          transition: height 500ms ease-in-out;
+        }
+    </style>
+    <style type="text/css">
+        .main-footer nav {
+          background: #f4f4f4;
+        }
+        .main-footer nav a {
+          display: inline-block;
+          padding-top: 28px;
+          padding-bottom: 28px;
+          color: #4a4a4a;
+        }
+        
+        .main-footer .tip {
+          font-size: 14px;
+          font-weight: lighter;
+          padding: 0 39px;
+        }
+      
+        .main-footer .prev-arrow img {
+          margin-top: 24px;
+        }
+      
+        .main-footer h4 {
+          position: relative;
+          font-weight: normal;
+          background: url('/assets/images/icon/ic-arrow-back-black-24-px.svg') no-repeat left center;
+          background-size: 24px 24px;
+          padding: 0 39px;
+        }
+      
+        .main-footer .text-right h4 {
+          background-image: url('/assets/images/icon/ic-arrow-forward-black-24-px.svg');
+          background-position: right center;
+        }
+      
+        .main-footer section {
+          background: #fbfbfb;
+          padding: 16px 21px;
+        }
+      
+        .main-footer section .policy{
+          padding-top: 30px;
+          text-decoration: underline;
+        }
+      
+        .main-footer section .policy a {
+          margin: 0;
+          display: block;
+          padding-top: 10px;
+          padding-bottom: 2px;
+        }
+      
+        .main-footer section .social-media {
+          align-items: center;
+          justify-content: center;
+        }
+      
+        .main-footer section .social-media ul{
+          display: flex;
+          margin: 0;
+          padding: 20px;
+          list-style: none;
+          align-items: center;
+          justify-content: center;
+          flex-grow: 1;
+          height: 100%;
+        }
+      
+        .main-footer section .social-media li{
+          display: flex;
+          padding: 0 11px;
+        }
+      
+        .main-footer section .copyright {
+          align-self: flex-end;
+        }
+      </style>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function (event) {
+
+    let contentUpdateTimeout = null;
+
+    function updateSample(source) {
+
+      // remove the existing swim component
+      const sampleContainer = document.body.querySelector(".graph-wrap .graph");
+      try {
+        const swimComponent = swim.NodeView.create(sampleContainer.children[0]).removeAll();
+        swimComponent.parentView.appView.removeDescendantViews(swimComponent, swimComponent.parentView);
+      } catch(err) {
+        // ignore any errors here. They are not important.
+      }
+      sampleContainer.innerHTML = "";
+
+      if(contentUpdateTimeout !== null) {
+        clearTimeout(contentUpdateTimeout);
+      }
+      
+      // create the new swim component
+      contentUpdateTimeout = setTimeout(() => {
+        const scriptTag = document.createElement('script');
+        scriptTag.type = 'text/recon';
+        scriptTag.innerText = `${source}`;
+        sampleContainer.appendChild(scriptTag);
+        swim.UiForm.Global.materializeScript(scriptTag); 
+        clearTimeout(contentUpdateTimeout);
+      }, 150);
+
+    }
+
+    function setupEditor(elem, i) {
+      const editor = ace.edit(elem);
+      editor.setTheme("ace/theme/monokai");
+      editor.session.setMode("ace/mode/javascript");
+      editor.session.setUseWrapMode(true);
+      editor.setShowPrintMargin(false);
+      editor.setHighlightActiveLine(false);
+      editor.renderer.setShowGutter(false);
+      
+      // no edit
+      if(i !== 0) { editor.setReadOnly(true); }
+
+      let trackTimeout;
+      editor.on("change", (obj) => {
+        if (trackTimeout) { clearTimeout(trackTimeout); }
+        trackTimeout = setTimeout(() => {
+          updateSample(editor.getSession().getValue());
+        }, 500);
+      })
+    }
+
+    const element = document.querySelectorAll('.editor');
+    element.forEach((elem, i)=> {
+      setupEditor(elem, i);
+    });
+
+  });
+    </script>
+
+  </body>
+
+</html>
+
