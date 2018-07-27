@@ -4,6 +4,9 @@ import recon.Attr;
 import recon.Record;
 import recon.Value;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import swim.api.ValueDownlink;
 import swim.client.SwimClient;
 
@@ -13,12 +16,15 @@ import swim.client.SwimClient;
  */
 public class Main {
 
+
+    private static final Pattern ALL_METRICS_PATTERN = Pattern.compile("^ *([0-9]+|-) +([0-9]+|-) +([0-9]+|-) *$");
+    private static final Pattern INDIVIDUAL_METRIC_PATTERN = Pattern.compile("^ *([1234]): +([0-9]+) *$");
+
     public static void main(String[] args) throws Exception {
 
         String hostUri = "ws://localhost:9031";
         String nodeUri = "pie-service/1";
-        String laneUri = "test-lane-0";
-        String laneUri2 = "test-lane-1";
+        String laneUri = "pie-value-lane";
 
         final CommandLine commandLine = new CommandLine();
 
@@ -33,20 +39,9 @@ public class Main {
                         nodeUri(nodeUri).
                         laneUri(laneUri);
 
-        link.didConnect(() -> commandLine.info("link to " + laneUri + " connected"));
+        link.didConnect(() -> commandLine.info("link to " + hostUri + "/" + nodeUri + "/" + laneUri + " connected"));
 
         link.open();
-
-        ValueDownlink<Value> link2 =
-                swimClient.
-                        downlinkValue().
-                        hostUri(hostUri).
-                        nodeUri(nodeUri).
-                        laneUri(laneUri2);
-
-        link2.didConnect(() ->  commandLine.info("link to " + laneUri2 + " connected"));
-
-        link2.open();
 
         while(true) {
 
@@ -70,7 +65,7 @@ public class Main {
                 }
                 else {
 
-                    executeCommand(command, link, link2);
+                    executeCommand(commandLine, command, link);
                 }
             }
             catch(UserErrorException e) {
@@ -80,82 +75,79 @@ public class Main {
         }
     }
 
-    private static void executeCommand(String command, ValueDownlink<Value> link, ValueDownlink<Value> link2)
+    private static void executeCommand(CommandLine commandLine, String command, ValueDownlink<Value> link)
             throws UserErrorException{
 
-        String[] tokens = command.split(" ");
+        Integer[] metrics = null;
 
-        Integer laneId = null;
-        Integer metric1 = null;
-        Integer metric2 = null;
-        Integer metric3 = null;
+        Matcher m = ALL_METRICS_PATTERN.matcher(command);
 
-        for(String t: tokens) {
+        if (m.matches()) {
 
-            if (t.isEmpty()) {
+            metrics = new Integer[3];
 
-                continue;
+            for(int i = 0; i < 3; i ++) {
+
+                String s = m.group(i + 1);
+
+                if (!"-".equals(s)) {
+
+                    metrics[i] = Integer.parseInt(s);
+                }
             }
-
-            if (laneId == null) {
-
-                laneId = Integer.parseInt(t);
-            }
-            else if (metric1 == null) {
-
-                metric1 = Integer.parseInt(t);
-            }
-            else if (metric2 == null) {
-
-                metric2 = Integer.parseInt(t);
-            }
-            else if (metric3 == null) {
-
-                metric3 = Integer.parseInt(t);
-            }
-        }
-
-        if (laneId == null) {
-
-            return;
-        }
-
-        ValueDownlink<Value> currentLink;
-
-        if (laneId == 0) {
-
-            currentLink = link;
-        }
-        else if (laneId == 1) {
-
-            currentLink = link2;
         }
         else {
 
-            throw new UserErrorException("unknown lane ID (" + laneId + "), valid values are 0 and 1");
+            m = INDIVIDUAL_METRIC_PATTERN.matcher(command);
+
+            if (m.matches()) {
+
+                metrics = new Integer[3];
+
+                String s = m.group(1);
+
+                int metricId = Integer.parseInt(s);
+
+                s = m.group(2);
+
+                metrics[metricId - 1] = Integer.parseInt(s);
+            }
         }
 
-        sendData(currentLink, metric1, metric2, metric3);
+        if (metrics == null) {
+
+            throw new UserErrorException("cannot understand the command line");
+        }
+
+        sendData(link, metrics);
     }
 
-    private static void sendData(ValueDownlink<Value> link, Integer metric1, Integer metric2, Integer metric3) {
+    private static void sendData(ValueDownlink<Value> link, Integer[] metrics) {
 
+        Value oldRecord = link.get();
 
         Record record = Record.of();
 
-        if (metric1 != null) {
+        for(int i = 0; i < 3; i ++) {
 
-            record.add(Attr.of("metric1", metric1));
-        }
+            String name = "metric" + (i + 1);
 
-        if (metric2 != null) {
+            Integer m = metrics[i];
 
-            record.add(Attr.of("metric2", metric2));
-        }
+            if (m == null) {
 
-        if (metric3 != null) {
+                //
+                // send the old value
+                //
 
-            record.add(Attr.of("metric3", metric3));
+                if (!oldRecord.isAbsent()) {
+
+                    Value v = oldRecord.getAttr(name);
+                    m = v.intValue();
+                }
+            }
+
+            record.add(Attr.of(name, m));
         }
 
         link.set(Value.of(record));
@@ -171,8 +163,10 @@ public class Main {
                         "\n" +
                         "  exit - close the client and exit\n" +
                         "\n" +
-                        "  <lane-id> <metric1> [metric2] [metric3] - send up to three integer metrics to the\n" +
-                        "         lane whose numeric id is specified as the first argument\n" +
+                        "  <metric1-value|-> <metric2-value|-> <metric3-value|-> - send all three integer metrics simultaneously.\n" +
+                        "    To send less than a full set, use '-' for missing metrics.\n" +
+                        "\n" +
+                        "  <1-based-metricID:> <value>\n" +
                         "\n";
 
         commandLine.multiLineOutput(help);

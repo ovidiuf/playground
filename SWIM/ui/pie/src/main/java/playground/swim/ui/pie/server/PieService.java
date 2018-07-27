@@ -11,15 +11,9 @@ import swim.api.ValueLane;
  */
 class PieService extends AbstractService {
 
-    @SwimLane("test-lane-0")
-    private final ValueLane testLane0 = valueLane().didSet((Value old, Value news) -> {
+    @SwimLane("pie-value-lane")
+    private final ValueLane pieValueLane = valueLane().didSet((Value old, Value news) -> {
 
-        System.out.println("test-lane-0: " + old + " -> " + news);
-    });
-
-    @SwimLane("test-lane-1")
-    private final ValueLane testLane1 = valueLane().didSet((Value old, Value news) -> {
-
-        System.out.println("test-lane-1: " + old + " -> " + news);
+        System.out.println("pie-value-lane: " + old + " -> " + news);
     });
 }

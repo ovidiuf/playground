@@ -37,6 +37,30 @@ Update the pie state in the client:
 ````
 cd tmp
 ./swim-pie/bin/client
-0 10 20 30
-1 40
+````
+
+Update all values expected by the pie, on an individual lane, in bulk:
+
+````
+> 10 20 30
+````
+
+To update just some of the values, provide - for the ones not to be updated. 
+For example, the following will only update metric2:
+
+````
+> - 20 -
+````
+
+To update an individual value and leaven the other unchanges, use the following syntax,
+where the metrics are 1-indexed:
+
+````
+> <metric-id>: <value>
+````
+
+Example: 
+
+````
+> 2: 80
 ````

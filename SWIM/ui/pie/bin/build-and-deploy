@@ -29,8 +29,7 @@ if [ ! -d ${DEPLOYMENT_DIR} ]; then
     echo "${APPLICATION_NAME} installed in $(dirname ${DEPLOYMENT_DIR})"
 
 else
-    cp $(dirname $0)/../server/build/libs/server.jar ${DEPLOYMENT_DIR}/lib && echo "server.jar deployed"
-    cp $(dirname $0)/../client/build/libs/client.jar ${DEPLOYMENT_DIR}/lib && echo "client.jar deployed"
+    cp $(dirname $0)/../build/libs/swim-pie.jar ${DEPLOYMENT_DIR}/lib && echo "swim-pie.jar deployed"
 fi
 
 

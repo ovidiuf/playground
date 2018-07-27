@@ -87,15 +87,14 @@
 
   host: 'ws://localhost:9031'
   node: 'pie-service/1'
-  lane0: @link(lane: 'test-lane-0', type: value)
-  lane1: @link(lane: 'test-lane-1', type: value)
+  lane: @link(lane: 'pie-value-lane', type: value)
 
   @wedge {
 
-    value: $max(0.1, $lane0.metric1)
+    value: $max(0.1, $lane.metric1)
 
     label: @text($percent($value, $total))
-    legend: @text([lane0/METRIC1 {$round( $eager($value) )}])
+    legend: @text([PIE-VALUE-LANE/METRIC1 {$round( $eager($value) )}])
     legendColor: '#81758c'
     tickColor: '#81758c'
     arcColor: '#81758c'
@@ -103,10 +102,10 @@
 
   @wedge {
 
-    value: $max(0.1, $lane0.metric2)
+    value: $max(0.1, $lane.metric2)
 
     label: @text($percent($value, $total))
-    legend: @text([lane0/METRIC2 {$round( $eager($value) )}])
+    legend: @text([PIE-VALUE-LANE/METRIC2 {$round( $eager($value) )}])
     legendColor: '#81758c'
     tickColor: '#81758c'
     arcColor: '#81758c'
@@ -114,25 +113,14 @@
 
   @wedge {
 
-    value: $max(0.1, $lane0.metric3)
+    value: $max(0.1, $lane.metric3)
 
     label: @text($percent($value, $total))
-    legend: @text([lane0/METRIC3  {$round( $eager($value) )}])
+    legend: @text([PIE-VALUE-LANE/METRIC3  {$round( $eager($value) )}])
     legendColor: '#d09aff'
     tickColor: '#d09aff'
     arcColor: '#d09aff'
 
-  }
-
-  @wedge {
-
-    value: $max(0.1, $lane1.metric1)
-
-    label: @text($percent($value, $total))
-    legend: @text([lane1/METRIC1 {$round( $eager($value) )}])
-    legendColor: '#81758c'
-    tickColor: '#81758c'
-    arcColor: '#81758c'
   }
 }
             </script>
