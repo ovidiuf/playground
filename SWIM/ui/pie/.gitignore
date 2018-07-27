@@ -2,3 +2,4 @@ gradle
 gradlew
 gradlew.bat
 .idea/workspace.xml
+.gradle

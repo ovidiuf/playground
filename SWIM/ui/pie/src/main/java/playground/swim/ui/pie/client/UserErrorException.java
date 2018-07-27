@@ -1,4 +1,4 @@
-package swim.ai.hierarchies.client;
+package playground.swim.ui.pie.client;
 
 /**
  * @author Ovidiu Feodorov <ovidiu@swim.ai>
