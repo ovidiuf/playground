@@ -7,7 +7,7 @@
 # found, the script will perform an installation.
 
 
-APPLICATION_NAME=hierarchy-lab-backend
+APPLICATION_NAME=swim-pie
 DEPLOYMENT_DIR=~/tmp/${APPLICATION_NAME}
 
 if !(cd $(dirname $0)/..; gradle distZip); then

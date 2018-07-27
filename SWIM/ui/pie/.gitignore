@@ -1,5 +1,28 @@
-gradle
-gradlew
-gradlew.bat
-.idea/workspace.xml
+# Gradle
+build
 .gradle
+
+# Maven
+target
+
+# IntelliJ IDEA
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/libraries
+.idea/**/gradle.xml
+out/
+
+# Mac
+.DS_Store
+
+# Microsoft Word
+~$*.docx
+
+# OpenOffice
+.~lock.*.odg#
+
+# vi
+.*.swp
+

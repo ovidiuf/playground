@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/pie.iml" filepath="$PROJECT_DIR$/pie.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pie_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pie_main.iml" group="pie" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pie_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pie_test.iml" group="pie" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swim-pie.iml" filepath="$PROJECT_DIR$/.idea/modules/swim-pie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swim-pie_main.iml" filepath="$PROJECT_DIR$/.idea/modules/swim-pie_main.iml" group="swim-pie" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/swim-pie_test.iml" filepath="$PROJECT_DIR$/.idea/modules/swim-pie_test.iml" group="swim-pie" />
     </modules>
   </component>
 </project>

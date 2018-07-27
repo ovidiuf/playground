@@ -9,7 +9,7 @@ import swim.api.ValueLane;
  * @author Ovidiu Feodorov <ovidiu@swim.ai>
  * @since 7/23/18
  */
-class HierarchyService extends AbstractService {
+class PieService extends AbstractService {
 
     @SwimLane("test-lane-0")
     private final ValueLane testLane0 = valueLane().didSet((Value old, Value news) -> {

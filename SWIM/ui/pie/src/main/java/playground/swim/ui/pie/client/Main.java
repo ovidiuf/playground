@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         String hostUri = "ws://localhost:9031";
-        String nodeUri = "test-hierarchy-service/1";
+        String nodeUri = "pie-service/1";
         String laneUri = "test-lane-0";
         String laneUri2 = "test-lane-1";
 

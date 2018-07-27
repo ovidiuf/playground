@@ -11,13 +11,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String planeName = "hierarchy-plane";
+        String planeName = "pie-plane";
         String address = "localhost";
         int port = 9031;
 
         SwimServer swimServer = new SwimServer();
 
-        SwimPlane plane = swimServer.materializePlane(planeName, HierarchyPlane.class);
+        SwimPlane plane = swimServer.materializePlane(planeName, PiePlane.class);
 
         plane.bind(address, port);
 
