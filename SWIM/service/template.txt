@@ -1,0 +1,7 @@
+
+
+$applicationName
+
+$mainClassName
+
+$classpath

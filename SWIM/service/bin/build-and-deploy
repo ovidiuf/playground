@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+#
+# This script assumes that an older version of the application built from the sources of this project
+# is deployed in DEPLOYMENT_DIR. It will rebuild the code and deploy relevant JARs in the appropriate
+# locations under DEPLOYMENT_DIR, so they can be tested. If no previously deployed application is
+# found, the script will perform an installation.
+
+APPLICATION_NAME=service
+DEPLOYMENT_DIR=~/tmp/${APPLICATION_NAME}
+
+if !(cd $(dirname $0)/..; gradle distZip); then
+    exit 1;
+fi
+
+if [ ! -d ${DEPLOYMENT_DIR} ]; then
+
+    echo "installing ..."
+
+    source_dir=$(cd $(dirname $0)/../build/distributions; pwd)
+    source_file=${source_dir}/${APPLICATION_NAME}.zip
+
+    [ -f ${source_file} ] || { echo "source file ${source_file} not found" 1>&2; exit 1; }
+
+    (cd $(dirname ${DEPLOYMENT_DIR}); unzip ${source_file})
+
+    echo "${APPLICATION_NAME} installed in $(dirname ${DEPLOYMENT_DIR})"
+
+else
+    cp $(dirname $0)/../build/libs/service.jar ${DEPLOYMENT_DIR}/lib && echo "service.jar deployed"
+fi
