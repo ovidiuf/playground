@@ -13,7 +13,7 @@ import swim.util.Uri;
  */
 public class ClientMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         SwimClient client = new SwimClient();
 
@@ -21,10 +21,14 @@ public class ClientMain {
 
         client.command(
                 Uri.parse("ws://localhost:" + ServerMain.DEFAULT_PORT),
-                Uri.parse("simple-service/1"),
+                Uri.parse("simple-service/78"),
                 Uri.parse("command"),
                 Value.of("something"));
 
         System.out.println("command sent");
+
+        Thread.sleep(2000L);
+
+        System.exit(0);
     }
 }
