@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/common.iml" filepath="$PROJECT_DIR$/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsa-common.iml" filepath="$PROJECT_DIR$/.idea/modules/dsa-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsa-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dsa-common_main.iml" group="dsa-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dsa-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dsa-common_test.iml" group="dsa-common" />
     </modules>
   </component>
 </project>
