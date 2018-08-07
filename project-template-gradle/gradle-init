@@ -11,7 +11,7 @@ as template.
 
 Usage:
 
-    gradle-init <project-root-path> [path-to-project-to-use-as-template]
+    gradle-init [-v] <project-root-path> [path-to-project-to-use-as-template]
 
 Example:
 
@@ -373,20 +373,17 @@ function setup-bash-wrapper() {
 
     (cd ${project_root_dir}/bin; \
         curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/bash.shlib; \
-        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/gradle.shlib)
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/gradle.shlib; \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/gradle-run-wrapper-template) || \
+        { error "failed to download templates from https://raw.githubusercontent.com/ovidiuf/templates/master"; exit 1; }
 
-    (cat << EOF
-#!/usr/bin/env bash
+    #
+    # substitute the value of MAIN_CLASS
+    #
 
-[ -f \$(dirname \$0)/bash.shlib ] && . \$(dirname \$0)/bash.shlib || { echo "\$(dirname \$0)/bash.shlib not found" 1>&2; exit 1; }
-[ -f \$(dirname \$0)/gradle.shlib ] && . \$(dirname \$0)/gradle.shlib || { echo "\$(dirname \$0)/gradle.shlib not found" 1>&2; exit 1; }
-
-MAIN_CLASS=${package_name}.Main
-
-main "\$@"
-EOF
-) > ${project_root_dir}/bin/run && debug "created ${project_root_dir}/run"
-
+    sed 's/^MAIN_CLASS=.*$/MAIN_CLASS='${package_name}.Main'/' ${project_root_dir}/bin/gradle-run-wrapper-template > ${project_root_dir}/bin/run && \
+        debug "created ${project_root_dir}/bin/run from template ${project_root_dir}/bin/gradle-run-wrapper-template"
+    rm ${project_root_dir}/bin/gradle-run-wrapper-template && debug "removed ${project_root_dir}/bin/gradle-run-wrapper-template"
     chmod a+x ${project_root_dir}/bin/run && debug "made ${project_root_dir}/run executable"
 }
 

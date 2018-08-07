@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/selection-sort.iml" filepath="$PROJECT_DIR$/selection-sort.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/selection-sort_main.iml" filepath="$PROJECT_DIR$/.idea/modules/selection-sort_main.iml" group="selection-sort" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/selection-sort_test.iml" filepath="$PROJECT_DIR$/.idea/modules/selection-sort_test.iml" group="selection-sort" />
+    </modules>
+  </component>
+</project>
