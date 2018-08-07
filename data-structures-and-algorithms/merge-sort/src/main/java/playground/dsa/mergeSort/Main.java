@@ -15,6 +15,5 @@ public class Main {
         DSA.printArray(a);
 
         DSA.test(1000, 100, 50, new MergeSort(), false);
-
     }
 }

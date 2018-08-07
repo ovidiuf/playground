@@ -17,7 +17,7 @@ public class MergeSort implements SortingAlgorithm {
      * @param to indicates the first array element outside the area to sort. It may be equal with the
      *           array length, if we want to sort the entire array.
      */
-    private void mergeSort(int[] a, int from, int to) {
+    public static void mergeSort(int[] a, int from, int to) {
 
         //
         // divide
@@ -52,7 +52,7 @@ public class MergeSort implements SortingAlgorithm {
     /**
      * Combines in place. Assumes that the sub-arrays [i, j) and [j, k) are sorted and merges them in-place.
      */
-    private void merge(int[] a, int i, int j, int k) {
+    public static void merge(int[] a, int i, int j, int k) {
 
         //
         // make copies
