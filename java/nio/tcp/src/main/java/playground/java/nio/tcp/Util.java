@@ -94,5 +94,4 @@ class Util {
             throw new IllegalArgumentException("unknown set command '" + line + "'");
         }
     }
-
 }
