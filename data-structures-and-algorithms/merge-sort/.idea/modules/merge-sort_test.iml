@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="merge-sort:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_10">
+    <output-test url="file://$MODULE_DIR$/../../out/test/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/test" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="merge-sort_main" />
+    <orderEntry type="library" name="Gradle: playground.dsa:dsa-common:1.0" level="project" />
+  </component>
+  <component name="TestModuleProperties" production-module="merge-sort_main" />
+</module>
