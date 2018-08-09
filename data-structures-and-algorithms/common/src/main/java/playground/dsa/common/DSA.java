@@ -7,24 +7,61 @@ public class DSA {
     private DSA() {
     }
 
+    /**
+     * Return an unsorted array of the given length, populated with integers between 0 and maxValue.
+     */
     @SuppressWarnings("WeakerAccess")
-    public static int[] unsortedArray(int size, int maxValue) {
+    public static int[] unsortedNonNegativeArray(int length, int maxValue) {
 
         Random random = new Random();
 
-        int[] result = new int[size];
+        int[] result = new int[length];
 
         for(int i = 0; i < result.length; i ++) {
 
-            result[i] = random.nextInt(maxValue);
+            result[i] = random.nextInt(maxValue + 1);
         }
 
         return result;
     }
 
+    /**
+     * Return an unsorted array of the given length, populated with integers between -maxValue and maxValue.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static int[] unsortedArray(int length, int maxValue) {
+
+        Random random = new Random();
+
+        int[] result = new int[length];
+
+        for(int i = 0; i < result.length; i ++) {
+
+            result[i] = random.nextInt(2 * maxValue + 1) - maxValue;
+        }
+
+        return result;
+    }
+
+    public static int[] fromCommandLine(String[] args) {
+
+        int[] result = new int[args.length];
+
+        for(int i = 0; i < args.length; i ++) {
+
+            result[i] = Integer.parseInt(args[i]);
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Return a sorted array of the given length, populated with integers between 0 and maxValue.
+     */
     public static int[] sortedArray(int size, int maxValue) {
 
-        int[] a = unsortedArray(size, maxValue);
+        int[] a = unsortedNonNegativeArray(size, maxValue);
 
         List<Integer> list = new ArrayList<>();
 
@@ -69,7 +106,7 @@ public class DSA {
 
             while((size = random.nextInt(maxSize + 1)) == 0) {};
 
-            int[] a = unsortedArray(size, maxValue);
+            int[] a = unsortedNonNegativeArray(size, maxValue);
 
             //
             // make a copy in case we sort in place
