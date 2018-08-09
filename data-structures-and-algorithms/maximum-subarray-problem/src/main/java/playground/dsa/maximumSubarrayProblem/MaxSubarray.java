@@ -4,18 +4,49 @@ public class MaxSubarray {
 
     public int[] recursiveMaxSubarray(int[] a, int s, int e) {
 
-         if (s + 1 == e) {
+        //
+        // detect the bottom and exit the recurrence
+        //
 
-            // bottom
+        if (s + 1 == e) {
+
+            //
+            // one element array, the trivial case of the maximum subarray problem
+            //
 
             return new int[] {s, e, a[s]};
         }
 
+        //
+        // we're at an intermediary level in the recurrence
+        //
+
+
         int c = s + (e - s)/2;
 
+        //
+        // Find the maximum subarray in the left half
+        //
+
         int[] left = recursiveMaxSubarray(a, s, c);
+
+        //
+        // Find the maximum subarray in the right half
+        //
+
         int[] right = recursiveMaxSubarray(a, c, e);
-        int[] center = determineMaxSubarraySpanningCenter(a, s, e, c);
+
+        //
+        // The contiguous maximum subarray can be either in the left half,
+        // right half or straddle the center. Luckily, we can figure out the
+        // maximum subarray straddling the center in O(n)
+        //
+
+        int[] center = determineMaxSubarrayStraddlingTheCenter(a, s, e, c);
+
+        //
+        // we have three candidates, pick the one with the biggest sum. This method is O(1)
+        //
 
         int[] max = determineMax(left, right, center);
 
@@ -28,48 +59,47 @@ public class MaxSubarray {
      *
      * @return int[3] {maxStart, maxEnd, max}
      */
-    private int[] determineMaxSubarraySpanningCenter(int[] a, int s, int e, int c) {
+    private int[] determineMaxSubarrayStraddlingTheCenter(int[] a, int s, int e, int c) {
 
-        int ms = -1;
-        int me = c;
-
+        //
         // expand left
+        //
+
         int l = c - 1;
         int sumLeft = 0;
-        int sumLeftMax = Integer.MIN_VALUE;
-
+        int maxSumLeft = Integer.MIN_VALUE;
+        int maxStart = -1;
         while(l >= s) {
-
             sumLeft += a[l];
-
-            if (sumLeft > sumLeftMax) {
-
-                sumLeftMax = sumLeft;
-                ms = l;
+            if (sumLeft > maxSumLeft) {
+                maxSumLeft = sumLeft;
+                maxStart = l;
             }
-
             l --;
         }
 
+        //
         // expand right
+        //
+
         int r = c;
         int sumRight = 0;
-        int sumRightMax = Integer.MIN_VALUE;
-
+        int maxSumRight = Integer.MIN_VALUE;
+        int maxEnd = -1;
         while(r < e) {
-
             sumRight += a[r];
-
-            if (sumRight > sumRightMax) {
-
-                sumRightMax = sumRight;
-                me = r + 1;
+            if (sumRight > maxSumRight) {
+                maxSumRight = sumRight;
+                maxEnd = r + 1;
             }
-
             r ++;
         }
 
-        return new int[] {ms, me, sumLeftMax + sumRightMax};
+        //
+        // combine local maximums
+        //
+
+        return new int[] {maxStart, maxEnd, maxSumLeft + maxSumRight};
     }
 
     private int[] determineMax(int[] a, int[] b, int[] c) {
