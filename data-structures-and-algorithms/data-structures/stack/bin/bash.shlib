@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+VERBOSE=false
+DEBUG=false
+
+#
+# relies on the VERBOSE global variable, which could be true or false
+#
+function debug() {
+
+    ${VERBOSE} && echo "$@" 1>&2
+}
+
+function error() {
+
+    echo "[error]: $@" 1>&2
+}
+
+#
+# The calling script must set MAIN_CLASS and CLASSPATH. See 'gradle-run-wrapper-template' for an example of such
+# calling script.
+#
+function main() {
+
+    local args
+    local separator=$'\x1f' # US - unit separator
+
+    while [ -n "$1" ]; do
+
+        if [ "$1" = "-v" -o "$1" = "--verbose" ]; then
+
+            VERBOSE=true
+
+        elif [ "$1" = "-d" -o "$1" = "--debug" ]; then
+
+            VERBOSE=true
+            DEBUG=true
+
+        else
+            #
+            # ... and accumulate the rest of the arguments, separated by the special separator character
+            #
+            [ -z "${args}" ] && args="$1" || args="${args}${separator}$1"
+        fi
+        shift
+    done
+
+    #
+    # re-assemble the command line, by re-initializing the positional parameters, and pass it to the underlying process
+    #
+    IFS=${separator}
+    set - ${args}
+    IFS="$(printf ' \t\n')" # restore the standard separators
+
+    [ -z "${MAIN_CLASS}" ] && { echo "MAIN_CLASS variable not defined by the calling script" 1>&2; exit 1; }
+    [ -z "${CLASSPATH}" ] && { echo "CLASSPATH variable not defined by the calling script" 1>&2; exit 1; }
+
+    ${DEBUG} && debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005";
+
+    java ${debug_args} -cp ${CLASSPATH} ${MAIN_CLASS} "$@"
+}
