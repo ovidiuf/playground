@@ -6,10 +6,6 @@
  */
 
 apply plugin: 'java'
-apply plugin: 'maven-publish'
-
-group = "playground.dsa"
-version = "1.0"
 
 repositories {
 
@@ -18,20 +14,7 @@ repositories {
 dependencies {
 
     implementation 'playground.dsa:dsa-common:1.0'
-}
-
-publishing {
-
-    publications {
-        main(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-
-        mavenLocal()
-    }
+    implementation 'playground.dsa:stack:1.0'
 }
 
 task printClasspath {
