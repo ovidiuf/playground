@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/queue.iml" filepath="$PROJECT_DIR$/queue.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/queue_main.iml" filepath="$PROJECT_DIR$/.idea/modules/queue_main.iml" group="queue" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/queue_test.iml" filepath="$PROJECT_DIR$/.idea/modules/queue_test.iml" group="queue" />
+    </modules>
+  </component>
+</project>
