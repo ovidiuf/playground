@@ -43,6 +43,4 @@ public class Stack {
 
         return top == storage.length;
     }
-
-
 }
