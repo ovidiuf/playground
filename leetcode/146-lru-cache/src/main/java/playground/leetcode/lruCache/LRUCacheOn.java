@@ -3,7 +3,10 @@ package playground.leetcode.lruCache;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LRUCache {
+/**
+ * An implementation where put(key, value) is O(n)
+ */
+public class LRUCacheOn {
     // TODO what if it goes over?
 
     private int clock;
@@ -12,7 +15,7 @@ public class LRUCache {
     private Map<Integer, int[]> cache;
     private int capacity;
 
-    public LRUCache(int capacity) {
+    public LRUCacheOn(int capacity) {
 
         this.capacity = capacity;
         cache = new HashMap<>();
@@ -33,6 +36,9 @@ public class LRUCache {
         return payload[1];
     }
 
+    /**
+     * This is O(n). We can do better.
+     */
     public void put(int key, int value) {
 
         if (value < 0) {
