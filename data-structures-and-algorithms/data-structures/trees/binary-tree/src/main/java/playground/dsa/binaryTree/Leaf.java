@@ -1,11 +1,11 @@
 package playground.dsa.binaryTree;
 
-public class InternalNode implements Node {
+
+
+public class Leaf implements Node {
 
     private Object key;
     private Node parent;
-    private Node left;
-    private Node right;
 
     @Override
     public Object getKey() {
@@ -34,25 +34,36 @@ public class InternalNode implements Node {
     @Override
     public Node getLeftChild() {
 
-        return left;
+        return null;
     }
 
     @Override
     public void setLeftChild(Node n) {
 
-        this.left = n;
-
+        throw new OperationNotSupportedException();
     }
 
     @Override
     public Node getRightChild() {
 
-        return right;
+        return null;
     }
 
     @Override
     public void setRightChild(Node n) {
 
-        this.right = n;
+        throw new OperationNotSupportedException();
+    }
+
+    @Override
+    public boolean isLeaf() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isInternalNode() {
+
+        return false;
     }
 }

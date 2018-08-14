@@ -1,4 +1,4 @@
 package playground.dsa.binaryTree;
 
-public class OperationNotSupportedException {
+public class OperationNotSupportedException extends RuntimeException {
 }
