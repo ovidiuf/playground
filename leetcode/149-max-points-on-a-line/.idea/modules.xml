@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/149-max-points-on-a-line.iml" filepath="$PROJECT_DIR$/149-max-points-on-a-line.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/149-max-points-on-a-line_main.iml" filepath="$PROJECT_DIR$/.idea/modules/149-max-points-on-a-line_main.iml" group="149-max-points-on-a-line" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/149-max-points-on-a-line_test.iml" filepath="$PROJECT_DIR$/.idea/modules/149-max-points-on-a-line_test.iml" group="149-max-points-on-a-line" />
+    </modules>
+  </component>
+</project>
