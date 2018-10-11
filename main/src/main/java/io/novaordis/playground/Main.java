@@ -10,24 +10,10 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        new Main().example();
+        A a = new AImpl();
+
+        a.something();
+
     }
-
-    private void example() {
-
-
-
-
-//        var names = new ArrayList<String>();
-//
-//        names.add("alice");
-//        names.add("bob");
-//
-//        for(String n: names) {
-//
-//            System.out.println(n);
-//        }
-    }
-
 
 }
