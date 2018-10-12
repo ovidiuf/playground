@@ -2,12 +2,14 @@ package playground.spring.sia.chaptertwo.tacocloud;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import playground.spring.sia.chaptertwo.tacocloud.model.Ingredient;
 import playground.spring.sia.chaptertwo.tacocloud.model.Taco;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,17 +41,22 @@ public class TacoDesignController {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
         }
 
-        model.addAttribute("design", new Taco());
+        model.addAttribute("taco", new Taco());
 
         return "design";
     }
 
     @PostMapping
-    public String processTacoDesign(Taco tacoDesign) {
+    public String processTacoDesign(@Valid Taco taco, Errors errors) {
 
-        // save the taco design
+        if (errors.hasErrors()) {
 
-        System.out.println("processing taco design " + tacoDesign);
+            return "design";
+        }
+
+        // save the taco taco
+
+        System.out.println("processing taco taco " + taco);
 
         return "redirect:/orders/current";
     }
