@@ -1,4 +1,4 @@
-package playground.spring.sia.chapterthree.tacocloud;
+package playground.spring.sia.chapterthree.tacocloud.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
