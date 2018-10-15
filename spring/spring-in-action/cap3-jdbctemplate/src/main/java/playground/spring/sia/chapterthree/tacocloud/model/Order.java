@@ -6,7 +6,9 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Order {
@@ -39,8 +41,10 @@ public class Order {
     @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
 
+    private List<Taco> tacos = new ArrayList<>();
+
     public void addTacoDesign(Taco taco) {
 
-        throw new RuntimeException("NYE");
+        tacos.add(taco);
     }
 }

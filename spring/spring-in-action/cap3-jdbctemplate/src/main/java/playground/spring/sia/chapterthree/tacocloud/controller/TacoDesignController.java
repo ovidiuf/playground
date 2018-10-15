@@ -67,6 +67,8 @@ public class TacoDesignController {
 
         if (errors.hasErrors()) {
 
+            System.out.println("we have errors in the taco design!");
+
             return "design";
         }
 
