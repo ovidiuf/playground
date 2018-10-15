@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/deep-copy.iml" filepath="$PROJECT_DIR$/deep-copy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/deep-copy_main.iml" filepath="$PROJECT_DIR$/.idea/modules/deep-copy_main.iml" group="deep-copy" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/deep-copy_test.iml" filepath="$PROJECT_DIR$/.idea/modules/deep-copy_test.iml" group="deep-copy" />
+    </modules>
+  </component>
+</project>
