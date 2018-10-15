@@ -69,6 +69,4 @@ public class SomethingElse implements Cloneable {
 
         return color == null ? 0 : color.hashCode();
     }
-
-
 }
