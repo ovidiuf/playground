@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS INGREDIENT (
 
   id varchar(4) not null,
