@@ -15,7 +15,7 @@ public class Order {
 
     private Long id;
 
-    private Date placedAd;
+    private Date placedAt;
 
     @NotBlank(message = "Name is required")
     private String name;

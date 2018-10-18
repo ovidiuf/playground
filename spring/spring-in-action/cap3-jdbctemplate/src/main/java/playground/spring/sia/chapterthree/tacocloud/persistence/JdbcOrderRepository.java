@@ -3,18 +3,11 @@ package playground.spring.sia.chapterthree.tacocloud.persistence;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import playground.spring.sia.chapterthree.tacocloud.model.Ingredient;
 import playground.spring.sia.chapterthree.tacocloud.model.Order;
 import playground.spring.sia.chapterthree.tacocloud.model.Taco;
 
-import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.*;
 
 @Repository
@@ -50,7 +43,7 @@ public class JdbcOrderRepository implements OrderRepository {
     @Override
     public Order save(Order order) {
 
-        order.setPlacedAd(new Date());
+        order.setPlacedAt(new Date());
 
         long orderId = saveOrderDetails(order);
         order.setId(orderId);
@@ -70,7 +63,7 @@ public class JdbcOrderRepository implements OrderRepository {
         //noinspection unchecked
         Map<String, Object> values = objectMapper.convertValue(order, Map.class);
 
-        values.put("placedAt", order.getPlacedAd());
+        values.put("placedAt", order.getPlacedAt());
 
         return orderInserter.executeAndReturnKey(values).longValue();
     }
