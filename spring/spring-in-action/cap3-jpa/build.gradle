@@ -34,7 +34,8 @@ dependencies {
 
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
 
-    //runtimeOnly('org.postgresql:postgresql')
+    runtimeOnly('org.postgresql:postgresql')
+
     implementation('com.h2database:h2')
     //runtimeOnly('com.h2database:h2')
 }
