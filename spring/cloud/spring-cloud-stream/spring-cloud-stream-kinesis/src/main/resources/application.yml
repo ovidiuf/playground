@@ -17,12 +17,12 @@ spring:
   cloud:
     stream:
       bindings:
-        dataOut:
+        channel-to-kinesis:
           destination: dev-ovidiu-stream
           content-type: application/json
           producer:
             partitionKeyExpression: "1"
-        dataIn:
+        channel-from-kinesis:
           destination: dev-ovidiu-stream
           content-type: application/json
 cloud:

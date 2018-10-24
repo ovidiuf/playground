@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
-public class GenericData {
+public class KinesisEvent {
 
     @NonNull
     private String text;
