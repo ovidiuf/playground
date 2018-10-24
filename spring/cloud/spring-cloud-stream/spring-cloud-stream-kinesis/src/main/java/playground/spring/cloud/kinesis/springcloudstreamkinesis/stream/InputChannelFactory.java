@@ -5,8 +5,8 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface InputChannelFactory {
 
-    String INPUT_CHANNEL_BEAN_NAME = "channel-from-kinesis";
+    String INPUT_CHANNEL_NAME = "channel-from-kinesis";
 
-    @Input(INPUT_CHANNEL_BEAN_NAME)
+    @Input(INPUT_CHANNEL_NAME)
     SubscribableChannel inputChannel();
 }

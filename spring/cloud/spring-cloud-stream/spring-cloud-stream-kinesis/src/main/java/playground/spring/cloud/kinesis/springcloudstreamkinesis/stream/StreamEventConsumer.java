@@ -7,7 +7,7 @@ import playground.spring.cloud.kinesis.springcloudstreamkinesis.data.KinesisEven
 @Component
 public class StreamEventConsumer {
 
-    @StreamListener(InputChannelFactory.INPUT_CHANNEL_BEAN_NAME)
+    @StreamListener(InputChannelFactory.INPUT_CHANNEL_NAME)
     public void handle(KinesisEvent e) {
 
         System.out.println("> received '" + e.getText() + "'");

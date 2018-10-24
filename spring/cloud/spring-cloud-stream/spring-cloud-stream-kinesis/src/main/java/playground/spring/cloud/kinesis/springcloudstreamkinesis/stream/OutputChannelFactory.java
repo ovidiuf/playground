@@ -5,8 +5,8 @@ import org.springframework.messaging.MessageChannel;
 
 public interface OutputChannelFactory {
 
-    String OUTPUT_CHANNEL_BEAN_NAME = "channel-to-kinesis";
+    String OUTPUT_CHANNEL_NAME = "channel-to-kinesis";
 
-    @Output(OUTPUT_CHANNEL_BEAN_NAME)
+    @Output(OUTPUT_CHANNEL_NAME)
     MessageChannel outputChannel();
 }
