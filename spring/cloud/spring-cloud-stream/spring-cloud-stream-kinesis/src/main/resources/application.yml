@@ -28,7 +28,7 @@ spring:
 cloud:
   aws:
     region:
-      static: us-west-1
+      static: us-west-2
 
 
 logging:

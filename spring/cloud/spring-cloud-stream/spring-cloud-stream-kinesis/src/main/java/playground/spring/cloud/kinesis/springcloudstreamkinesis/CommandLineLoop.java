@@ -29,6 +29,11 @@ public class CommandLineLoop {
 
             String line = br.readLine();
 
+            if (line.trim().isEmpty()) {
+
+                continue;
+            }
+
             producer.sendData(line);
 
             System.out.println(": '" + line + "' sent");
