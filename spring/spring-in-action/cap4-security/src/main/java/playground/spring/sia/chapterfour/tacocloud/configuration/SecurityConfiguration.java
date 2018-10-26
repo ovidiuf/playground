@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -14,7 +15,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private DataSource dataSource;
 
-    public SecurityConfiguration(@Autowired DataSource dataSource) {
+    public SecurityConfiguration(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+                                 @Autowired DataSource dataSource) {
 
         this.dataSource = dataSource;
     }
@@ -32,6 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                password("bob123").
 //                authorities("ROLE_USER");
 
+        //auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance());
         auth.jdbcAuthentication().dataSource(dataSource);
     }
 
