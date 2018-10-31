@@ -5,3 +5,4 @@ spring:
     platform: h2
   jpa:
     generate-ddl: true
+    show-sql: true
