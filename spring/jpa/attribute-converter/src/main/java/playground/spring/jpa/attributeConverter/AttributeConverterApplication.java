@@ -1,30 +1,39 @@
-package playground.spring.jpa.h2;
+package playground.spring.jpa.attributeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import playground.spring.jpa.attributeConverter.model.A;
+import playground.spring.jpa.attributeConverter.repository.ARepository;
 
 @SpringBootApplication
-public class H2CommandLinePlaygroundApplication implements CommandLineRunner {
+public class AttributeConverterApplication implements CommandLineRunner {
 
     @Autowired
-    private CommandLineLoop loop;
+    private ARepository aRepository;
 
     public static void main(String[] args) throws Exception {
 
         org.h2.tools.Server server = org.h2.tools.Server.createTcpServer().start();
 
-        SpringApplication.run(H2CommandLinePlaygroundApplication.class, args);
+        SpringApplication.run(AttributeConverterApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        loop.run();
 
-        System.out.println("exiting ...");
+        A a = new A();
+        a.setName("alice");
+        a.setPayload("something");
 
-        System.exit(0);
+        aRepository.save(a);
+
+        System.in.read();
+
+
+
+
     }
 }

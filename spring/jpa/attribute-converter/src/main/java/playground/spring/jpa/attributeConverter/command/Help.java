@@ -1,6 +1,6 @@
-package playground.spring.jpa.h2.command;
+package playground.spring.jpa.attributeConverter.command;
 
-import playground.spring.jpa.h2.repository.ARepository;
+import playground.spring.jpa.attributeConverter.repository.ARepository;
 
 public class Help implements Command {
 

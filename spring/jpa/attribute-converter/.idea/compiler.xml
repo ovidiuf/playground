@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+    </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="playground-spring-jpa-attribute-converter_main" target="1.8" />
+      <module name="playground-spring-jpa-attribute-converter_test" target="1.8" />
       <module name="playground-spring-jpa-h2_main" target="1.8" />
       <module name="playground-spring-jpa-h2_test" target="1.8" />
     </bytecodeTargetLevel>
