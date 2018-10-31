@@ -1,5 +1,7 @@
 Changes while copying the projects:
 
+0. settings.gradle taco-cloud-cap2
+
 1. ./idea/.name taco-cloud-cap2
 
 2. build.gradle 
