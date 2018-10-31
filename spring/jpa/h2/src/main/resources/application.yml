@@ -1,4 +1,7 @@
 spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/mem:default
+    username: sa
+    platform: h2
   jpa:
-    hibernate:
-      ddl-auto: create
+    generate-ddl: true
