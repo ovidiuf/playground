@@ -2,7 +2,9 @@ package playground.spring.jpa.attributeConverter.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import playground.spring.jpa.attributeConverter.PayloadConverter;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +21,7 @@ public class A {
 
     private String name;
 
+    @Convert(converter = PayloadConverter.class)
     private String payload;
 
 }

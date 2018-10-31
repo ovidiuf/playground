@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import playground.spring.jpa.attributeConverter.model.A;
 import playground.spring.jpa.attributeConverter.repository.ARepository;
 
+import java.util.Optional;
+
 @SpringBootApplication
 public class AttributeConverterApplication implements CommandLineRunner {
 
@@ -23,17 +25,28 @@ public class AttributeConverterApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
         A a = new A();
         a.setName("alice");
         a.setPayload("something");
 
         aRepository.save(a);
 
-        System.in.read();
+        System.out.println(a + " saved");
+
+        long id = a.getId();
 
 
+        Optional<A> o = aRepository.findById(id);
 
+        if (o.isPresent()) {
 
+            A a2 = o.get();
+
+            System.out.println("retrieved from DB: " + a2);
+        }
+        else {
+
+            System.out.println("id " + id + " not found");
+        }
     }
 }
