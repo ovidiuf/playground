@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringFacetInspection -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="blue" class="io.novaordis.playground.spring.iocContainer.explicitApplicationContext.DependencyAImpl">
+        <constructor-arg value = "something" />
+        <constructor-arg ref = "red" />
+    </bean>
+
+    <bean name="red" class="io.novaordis.playground.spring.iocContainer.explicitApplicationContext.DependencyBImpl">
+        <constructor-arg value = "something else" />
+    </bean>
+
+</beans>

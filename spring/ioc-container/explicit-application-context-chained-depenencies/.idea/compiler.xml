@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="explicit-application-context-chained-dependencies_main" target="1.10" />
+      <module name="explicit-application-context-chained-dependencies_test" target="1.10" />
+      <module name="explicit-application-context_main" target="1.10" />
+      <module name="explicit-application-context_test" target="1.10" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
