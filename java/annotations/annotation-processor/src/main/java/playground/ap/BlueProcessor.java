@@ -9,6 +9,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import java.util.Set;
 
 /**
@@ -47,6 +48,10 @@ public class BlueProcessor extends AbstractProcessor {
                     Name name = e.getSimpleName();
                     String s = name.toString();
                     System.out.println("name: " + s);
+
+                    TypeMirror m = e.asType();
+
+                    m.
                 }
             }
         }
