@@ -4,6 +4,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(".");
+        MainComponent mc = new MainComponent();
+
+        mc.run();
     }
 }

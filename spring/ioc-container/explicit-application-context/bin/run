@@ -4,6 +4,8 @@
 [ -f $(dirname $0)/gradle.shlib ] && . $(dirname $0)/gradle.shlib || { echo "$(dirname $0)/gradle.shlib not found" 1>&2; exit 1; }
 
 MAIN_CLASS=io.novaordis.playground.spring.iocContainer.explicitApplicationContext.Main
-CLASSPATH=$(dirname $0)/../build/classes/java/main:$(get-gradle-runtime-classpath) || exit 1
+CLASSPATH=$(dirname $0)/../build/classes/java/main:$(dirname $0)/../build/resources/main:$(get-gradle-runtime-classpath) || exit 1
+
+#echo classpath: ${CLASSPATH}
 
 main "$@"

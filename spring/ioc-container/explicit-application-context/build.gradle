@@ -37,3 +37,10 @@ dependencies {
     implementation('org.springframework:spring-context')
     implementation('org.springframework:spring-beans')
 }
+
+task printClasspath {
+
+    doLast {
+        configurations.runtimeClasspath.each { print it; print ':' }
+    }
+}
