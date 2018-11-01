@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+#
+# return classpath at stdout. Gradle needs to be configured with a printClasspath task:
+#
+# task printClasspath {
+#        doLast {
+#            configurations.runtimeClasspath.each { print it; print ':' }
+#        }
+# }
+#
+# Note that the returned classpath does not include ./build/classes/java/main, if you need
+# it you will have to add in in the upper layer
+#
+function get-gradle-runtime-classpath() {
+
+    (cd $(dirname $0)/..; gradle -q printClasspath)
+}
