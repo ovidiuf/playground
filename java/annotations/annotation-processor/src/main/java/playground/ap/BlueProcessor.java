@@ -49,9 +49,6 @@ public class BlueProcessor extends AbstractProcessor {
                     String s = name.toString();
                     System.out.println("name: " + s);
 
-                    TypeMirror m = e.asType();
-
-                    m.
                 }
             }
         }
