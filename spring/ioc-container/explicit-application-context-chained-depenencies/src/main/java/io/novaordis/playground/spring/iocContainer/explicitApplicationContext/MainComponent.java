@@ -3,7 +3,7 @@ package io.novaordis.playground.spring.iocContainer.explicitApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal"})
 public class MainComponent {
 
     private DependencyA dependency;
