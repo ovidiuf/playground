@@ -1,26 +1,32 @@
+#
+# Reference .gitignore
+#
+
+# Gradle
+build
 .gradle
-/build/
-!gradle/wrapper/gradle-wrapper.jar
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Maven
+target
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-/out/
+# IntelliJ IDEA
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/libraries
+.idea/**/gradle.xml
+out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Mac
+.DS_Store
+
+# Microsoft Word
+~$*.docx
+
+# OpenOffice
+.~lock.*.odg#
+
+# vi
+.*.swp
+
