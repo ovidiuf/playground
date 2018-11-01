@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/annotation-processor-user.iml" filepath="$PROJECT_DIR$/annotation-processor-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotation-processor-user_main.iml" filepath="$PROJECT_DIR$/.idea/modules/annotation-processor-user_main.iml" group="annotation-processor-user" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/annotation-processor-user_test.iml" filepath="$PROJECT_DIR$/.idea/modules/annotation-processor-user_test.iml" group="annotation-processor-user" />
+    </modules>
+  </component>
+</project>

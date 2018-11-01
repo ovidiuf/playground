@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/playground-annotation-processor.iml" filepath="$PROJECT_DIR$/.idea/modules/playground-annotation-processor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/playground-annotation-processor_main.iml" filepath="$PROJECT_DIR$/.idea/modules/playground-annotation-processor_main.iml" group="playground-annotation-processor" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/playground-annotation-processor_test.iml" filepath="$PROJECT_DIR$/.idea/modules/playground-annotation-processor_test.iml" group="playground-annotation-processor" />
+    </modules>
+  </component>
+</project>
