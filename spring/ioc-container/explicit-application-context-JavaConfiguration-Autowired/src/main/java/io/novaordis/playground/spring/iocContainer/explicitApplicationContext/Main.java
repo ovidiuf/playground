@@ -1,5 +1,6 @@
 package io.novaordis.playground.spring.iocContainer.explicitApplicationContext;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -9,7 +10,7 @@ public class Main {
 
         ApplicationContext applicationContext =  new ClassPathXmlApplicationContext("blue-beans.xml");
 
-        MainComponent mc = (MainComponent)applicationContext.getBean(MainComponent.class);
+        MainComponent mc = applicationContext.getBean(MainComponent.class);
 
         mc.run();
     }
