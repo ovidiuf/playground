@@ -21,6 +21,6 @@ public class SpringApplicationContextConfiguratorForDependencies {
 
         log.info("{} is configuring the dependency with ApplicationContext access ...", this);
 
-        SpringApplicationContextAccess.APPLICATION_CONTEXT = applicationContext;
+        SpringApplicationContextAccess.installApplicationContext(applicationContext);
     }
 }
