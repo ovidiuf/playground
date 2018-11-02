@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import playground.springboot.dependency.SpringApplicationContextAccess;
+import playground.dependency.SpringApplicationContextAccess;
 
 /**
  * This component should be used early in the life cycle of the SpringBoot runtime to configure the dependency's
  * SpringApplicationContextAccess.
  *
- * @see playground.springboot.dependency.SpringApplicationContextAccess
+ * @see SpringApplicationContextAccess
  */
 @Component
 @Slf4j
