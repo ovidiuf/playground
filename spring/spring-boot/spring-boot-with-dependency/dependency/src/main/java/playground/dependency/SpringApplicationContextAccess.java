@@ -16,6 +16,7 @@ public class SpringApplicationContextAccess {
   public static void installApplicationContext(ApplicationContext ac) {
 
     APPLICATION_CONTEXT = ac;
+
   }
 
   /**
@@ -32,6 +33,6 @@ public class SpringApplicationContextAccess {
       throw new IllegalStateException("access to Spring ApplicationContext has not been configured");
     }
 
-    return SpringApplicationContextAccess.APPLICATION_CONTEXT.getBean(type);
+    return APPLICATION_CONTEXT.getBean(type);
   }
 }
