@@ -16,7 +16,6 @@ public class SpringApplicationContextAccess {
   public static void installApplicationContext(ApplicationContext ac) {
 
     APPLICATION_CONTEXT = ac;
-
   }
 
   /**
