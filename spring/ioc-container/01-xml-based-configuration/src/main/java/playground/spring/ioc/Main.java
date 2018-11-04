@@ -10,8 +10,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Blue blue = APPLICATION_CONTEXT.getBean(Blue.class);
+        Blue blue = (Blue)APPLICATION_CONTEXT.getBean("blue");
 
         blue.run();
+
+        Green green = (Green) APPLICATION_CONTEXT.getBean("green");
+
+        green.run();
+
+        Green unmanagedGreen = new Green("something");
+
+        unmanagedGreen.run();
     }
 }
