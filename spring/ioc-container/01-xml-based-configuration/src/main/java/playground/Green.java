@@ -1,4 +1,4 @@
-package playground.spring.ioc;
+package playground;
 
 @SuppressWarnings("WeakerAccess")
 public class Green {
