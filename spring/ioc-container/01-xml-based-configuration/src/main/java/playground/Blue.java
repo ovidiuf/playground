@@ -13,11 +13,9 @@ public class Blue {
         this.payload = payload;
     }
 
-
     public void run() {
 
         System.out.println(this + " running ...");
-
         red.run();
     }
 
