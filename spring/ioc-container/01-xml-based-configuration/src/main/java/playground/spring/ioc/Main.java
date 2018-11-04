@@ -5,11 +5,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
 
-    static ApplicationContext APPLICATION_CONTEXT;
+    static ApplicationContext APPLICATION_CONTEXT = new ClassPathXmlApplicationContext("blue-beans.xml");
 
     public static void main(String[] args) {
-
-        APPLICATION_CONTEXT = new ClassPathXmlApplicationContext("blue-beans.xml");
 
         MainComponent mc = new MainComponent();
 
