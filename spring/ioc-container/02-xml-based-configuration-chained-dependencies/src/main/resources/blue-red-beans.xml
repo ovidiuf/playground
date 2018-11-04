@@ -5,12 +5,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="blue" class="io.novaordis.playground.spring.iocContainer.explicitApplicationContext.DependencyAImpl">
+    <bean name="blue" class="playground.spring.ioc.DependencyAImpl">
         <constructor-arg value = "something" />
         <constructor-arg ref = "red" />
     </bean>
 
-    <bean name="red" class="io.novaordis.playground.spring.iocContainer.explicitApplicationContext.DependencyBImpl">
+    <bean name="red" class="playground.spring.ioc.DependencyBImpl">
         <constructor-arg value = "something else" />
     </bean>
 

@@ -1,4 +1,4 @@
-package io.novaordis.playground.spring.iocContainer.explicitApplicationContext;
+package playground.spring.ioc;
 
 public interface DependencyA {
 
