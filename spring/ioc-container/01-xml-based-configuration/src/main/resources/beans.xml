@@ -5,8 +5,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="blue" class="playground.spring.ioc.DependencyImpl">
+    <bean name="blue" class="playground.spring.ioc.Blue">
         <constructor-arg value = "something" />
+        <constructor-arg ref = "red" />
+    </bean>
+
+    <bean name="red" class="playground.spring.ioc.Red">
+        <constructor-arg value = "something else" />
     </bean>
 
 </beans>
