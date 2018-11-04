@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="blue" class="io.novaordis.playground.spring.iocContainer.explicitApplicationContext.DependencyImpl">
+    <bean name="blue" class="playground.spring.ioc.DependencyImpl">
         <constructor-arg value = "something" />
     </bean>
 

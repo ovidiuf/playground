@@ -1,4 +1,6 @@
-package io.novaordis.playground.spring.iocContainer.explicitApplicationContext;
+package playground.spring.ioc;
+
+import playground.spring.ioc.Dependency;
 
 public class DependencyImpl implements Dependency {
 
