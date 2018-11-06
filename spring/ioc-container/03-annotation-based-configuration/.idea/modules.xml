@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/03-annotation-based-configuration.iml" filepath="$PROJECT_DIR$/03-annotation-based-configuration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/03-annotation-based-configuration_main.iml" filepath="$PROJECT_DIR$/.idea/modules/03-annotation-based-configuration_main.iml" group="03-annotation-based-configuration" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/03-annotation-based-configuration_test.iml" filepath="$PROJECT_DIR$/.idea/modules/03-annotation-based-configuration_test.iml" group="03-annotation-based-configuration" />
+    </modules>
+  </component>
+</project>
