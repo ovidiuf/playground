@@ -8,6 +8,11 @@ public class Red {
 
     private String payload;
 
+    public Red() {
+
+        this("bright");
+    }
+
     public Red(String payload) {
 
         this.payload = payload;

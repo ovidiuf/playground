@@ -12,6 +12,11 @@ public class Blue {
     private String payload;
 
     @Autowired
+    public Blue(Red red) {
+
+        this(red, "pale");
+    }
+
     public Blue(Red red, String payload) {
 
         this.red = red;

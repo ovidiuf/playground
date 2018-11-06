@@ -11,6 +11,12 @@ public class Green {
 
     private String payload;
 
+    public Green() {
+
+        this("fresh");
+    }
+
+
     public Green(String payload) {
 
         this.payload = payload;
