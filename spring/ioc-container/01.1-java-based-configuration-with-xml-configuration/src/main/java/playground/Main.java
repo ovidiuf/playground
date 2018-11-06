@@ -15,6 +15,5 @@ public class Main {
 
         blue.run();
 
-
     }
 }
