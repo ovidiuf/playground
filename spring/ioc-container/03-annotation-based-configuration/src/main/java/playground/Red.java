@@ -1,5 +1,6 @@
 package playground;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @SuppressWarnings("WeakerAccess")
@@ -8,12 +9,7 @@ public class Red {
 
     private String payload;
 
-    public Red() {
-
-        this("bright");
-    }
-
-    public Red(String payload) {
+    public Red(@Value("bright") String payload) {
 
         this.payload = payload;
     }

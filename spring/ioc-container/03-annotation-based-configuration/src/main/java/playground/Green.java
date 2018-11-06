@@ -1,6 +1,7 @@
 package playground;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @SuppressWarnings("WeakerAccess")
@@ -11,13 +12,8 @@ public class Green {
 
     private String payload;
 
-    public Green() {
 
-        this("fresh");
-    }
-
-
-    public Green(String payload) {
+    public Green(@Value("fresh") String payload) {
 
         this.payload = payload;
     }

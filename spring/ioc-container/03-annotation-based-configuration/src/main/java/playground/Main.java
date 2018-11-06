@@ -13,12 +13,12 @@ public class Main {
 
         blue.run();
 
-        Green green = (Green) APPLICATION_CONTEXT.getBean("green");
-
-        green.run();
-
-        Green unmanagedGreen = new Green("something");
-
-        unmanagedGreen.run();
+//        Green green = APPLICATION_CONTEXT.getBean(Green.class);
+//
+//        green.run();
+//
+//        Green unmanagedGreen = new Green("something");
+//
+//        unmanagedGreen.run();
     }
 }
