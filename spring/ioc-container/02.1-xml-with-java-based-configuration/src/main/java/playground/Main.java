@@ -7,7 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 
     static ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(
-            ApplicationConfiguration.class, XmlConfiguration.class);
+            ApplicationConfiguration.class, SupplementalXmlConfiguration.class);
 
     public static void main(String[] args) {
 
