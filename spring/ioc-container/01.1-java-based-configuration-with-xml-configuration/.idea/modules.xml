@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/explicit-application-context.iml" filepath="$PROJECT_DIR$/.idea/modules/explicit-application-context.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/explicit-application-context_main.iml" filepath="$PROJECT_DIR$/.idea/modules/explicit-application-context_main.iml" group="explicit-application-context" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/explicit-application-context_test.iml" filepath="$PROJECT_DIR$/.idea/modules/explicit-application-context_test.iml" group="explicit-application-context" />
+    </modules>
+  </component>
+</project>
