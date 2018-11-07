@@ -4,14 +4,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import playground.dependency.Dependency;
+import org.springframework.context.annotation.ComponentScans;
+import some.experimental.dependency.Dependency;
 
-@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @SpringBootApplication
-//
-// this is necessary to enable component scan in the dependency package
-//
-@ComponentScan(basePackageClasses = {MainApplication.class, Dependency.class})
+@ComponentScans(@ComponentScan(basePackages = "some.experimental.dependency"))
 public class MainApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
