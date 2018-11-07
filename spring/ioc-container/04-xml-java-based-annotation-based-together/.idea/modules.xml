@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/04-xml-java-based-annotation-based-together.iml" filepath="$PROJECT_DIR$/04-xml-java-based-annotation-based-together.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/04-xml-java-based-annotation-based-together_main.iml" filepath="$PROJECT_DIR$/.idea/modules/04-xml-java-based-annotation-based-together_main.iml" group="04-xml-java-based-annotation-based-together" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/04-xml-java-based-annotation-based-together_test.iml" filepath="$PROJECT_DIR$/.idea/modules/04-xml-java-based-annotation-based-together_test.iml" group="04-xml-java-based-annotation-based-together" />
     </modules>
   </component>
 </project>

@@ -3,21 +3,21 @@ package playground;
 @SuppressWarnings("WeakerAccess")
 public class Red {
 
-    private String payload;
+    private Green green;
 
-    public Red(String payload) {
+    public Red(Green green) {
 
-        this.payload = payload;
+        this.green = green;
     }
 
-    public void run() {
+    public String run() {
 
-        System.out.println(this + " running ...");
+        return this + " -> " + green.run();
     }
 
     @Override
     public String toString() {
 
-        return "Red[" + payload + "]";
+        return "Red[]";
     }
 }

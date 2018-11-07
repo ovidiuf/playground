@@ -6,18 +6,21 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @SuppressWarnings("WeakerAccess")
 public class Main {
 
-    static ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(
-            ApplicationConfiguration.class, SupplementalXmlConfiguration.class);
+    static AnnotationConfigApplicationContext APPLICATION_CONTEXT;
+
+    static {
+
+        APPLICATION_CONTEXT = new AnnotationConfigApplicationContext("playground");
+        APPLICATION_CONTEXT.register(ApplicationConfiguration.class);
+        APPLICATION_CONTEXT.register(SupplementalXmlConfiguration.class);
+    }
 
     public static void main(String[] args) {
 
-        Blue blue = (Blue)APPLICATION_CONTEXT.getBean("blue");
+        Blue blue = APPLICATION_CONTEXT.getBean(Blue.class);
 
-        blue.run();
+        String s =  blue.run();
 
-        Yellow yellow = (Yellow)APPLICATION_CONTEXT.getBean("yellow");
-
-        yellow.run();
-
+        System.out.println(s);
     }
 }

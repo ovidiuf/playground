@@ -1,27 +1,28 @@
 package playground;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 @SuppressWarnings("WeakerAccess")
+@Component
 public class Blue {
 
     private Red red;
 
-    private String payload;
-
-    public Blue(Red red, String payload) {
+    @Autowired
+    public Blue(Red red) {
 
         this.red = red;
-        this.payload = payload;
     }
 
-    public void run() {
+    public String run() {
 
-        System.out.println(this + " running ...");
-        red.run();
+        return this + " -> " + red.run();
     }
 
     @Override
     public String toString() {
 
-        return "Blue[" + payload + "]";
+        return "Blue[]";
     }
 }

@@ -7,14 +7,9 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfiguration {
 
     @Bean
-    public Red red() {
+    public Red red(Green green) {
 
-        return new Red("washed out");
+        return new Red(green);
     }
 
-    @Bean
-    public Blue blue(Red red) {
-
-        return new Blue(red, "strong");
-    }
 }

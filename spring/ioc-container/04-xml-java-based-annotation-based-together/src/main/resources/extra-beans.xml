@@ -8,9 +8,6 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean name="yellow" class="playground.Yellow">
-        <constructor-arg ref = "red" />
-        <constructor-arg value = "pale" />
-    </bean>
+    <bean name="green" class="playground.Green"/>
 
 </beans>
