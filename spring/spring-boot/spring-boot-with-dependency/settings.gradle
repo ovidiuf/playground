@@ -1,4 +1,0 @@
-
-rootProject.name = 'spring-boot-with-dependencies'
-
-include 'spring-boot-main', 'dependency'
