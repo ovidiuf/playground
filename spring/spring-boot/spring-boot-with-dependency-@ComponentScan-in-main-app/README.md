@@ -8,4 +8,6 @@ The dependency and main package are different, so
 ```
 was used.
 
-NOKB: https://kb.novaordis.com/index.php?title=Enabling_Non-Spring_Libraries_to_Access_Spring_Boot_Components
+NOKB: 
+* [Enabling Non-Spring Libraries to Access Spring Boot Components](https://kb.novaordis.com/index.php?title=Enabling_Non-Spring_Libraries_to_Access_Spring_Boot_Components)
+* [SpringBoot Component Scanning](https://kb.novaordis.com/index.php/Spring_Boot_Concepts#Component_Scanning)
