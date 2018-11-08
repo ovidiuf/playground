@@ -1,5 +1,6 @@
 package playground.springboot;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,9 @@ import some.experimental.dependency.Dependency;
 @ComponentScans(@ComponentScan(basePackages = "some.experimental.dependency"))
 public class MainApplication implements CommandLineRunner {
 
+    @Autowired
+    private MainApplicationComponent mainApplicationComponent;
+
     public static void main(String[] args) {
 
         SpringApplication.run(MainApplication.class, args);
@@ -20,5 +24,7 @@ public class MainApplication implements CommandLineRunner {
     public void run(String... args) {
 
         new Dependency().run();
+
+        mainApplicationComponent.run();
     }
 }

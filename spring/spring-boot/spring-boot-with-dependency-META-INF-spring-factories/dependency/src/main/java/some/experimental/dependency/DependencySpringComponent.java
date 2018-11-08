@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * This is a Spring bean that is identified by component scanning performed by the main application and is installed
- * into the Spring application context. As part of its initialization cycle, it retains a reference to the application
- * context and it is exposing itself via a static method that has access to the application context.
+ * into the Spring application context. As part of its initialization cycle, it retains a reference to the application]
+ * context. The Spring-managed instance is exposed to the rest of the library code via a static method that has access
+ * to the application context.
  */
 @SuppressWarnings("WeakerAccess")
 @Component
