@@ -20,6 +20,13 @@ public class SpringbootLoggingApplication implements CommandLineRunner {
 
         log.debug("this is in debug {}", "red");
 
-        new SomeClass().run();
+        try {
+
+            new SomeClass().run();
+        }
+        catch(Exception e) {
+
+            log.error("failure", e);
+        }
     }
 }

@@ -8,5 +8,7 @@ public class SomeClass {
     public void run() {
 
         log.debug(this + " is running");
+
+        throw new IllegalStateException("we are in an illegal state");
     }
 }

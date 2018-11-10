@@ -1,5 +1,5 @@
 
 logging:
   level:
-    root: INFO
-    playground.springboot.logging: DEBUG
+    root: WARN
+    playground.springboot.logging.subpack: DEBUG
