@@ -1,41 +1,38 @@
 package playground.spring.sia.chapterfour.tacocloud.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-
-import javax.sql.DataSource;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import playground.spring.sia.chapterfour.tacocloud.security.UserRepositoryUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private DataSource dataSource;
+    private UserDetailsService userDetailsService;
 
-    public SecurityConfiguration(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-                                 @Autowired DataSource dataSource) {
+    @Autowired
+    public SecurityConfiguration(UserRepositoryUserDetailsService userDetailsService) {
 
-        this.dataSource = dataSource;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-//        auth.
-//           inMemoryAuthentication().
-//                withUser("alice").
-//                password("alice123").
-//                authorities("ROLE_USER").
-//                and().
-//                withUser("bob").
-//                password("bob123").
-//                authorities("ROLE_USER");
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+    }
 
-        //auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(NoOpPasswordEncoder.getInstance());
-        auth.jdbcAuthentication().dataSource(dataSource);
+    @Bean
+    public PasswordEncoder encoder() {
+
+        return new StandardPasswordEncoder("something");
     }
 
 }
