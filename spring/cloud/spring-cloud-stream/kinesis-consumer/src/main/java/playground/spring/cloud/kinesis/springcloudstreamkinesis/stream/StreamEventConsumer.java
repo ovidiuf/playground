@@ -18,6 +18,12 @@ public class StreamEventConsumer {
 
         byte[] payload = (byte[])e.getPayload();
 
+        System.out.println("\nPayload before deserialization:\n");
+
+        System.out.println(new String(payload));
+
+        System.out.println("\n");
+
         ObjectMapper om = new ObjectMapper();
 
         Map map = null;
