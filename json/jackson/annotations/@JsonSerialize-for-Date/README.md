@@ -1,3 +1,3 @@
-# @JsonFormat for Dates
+# @JsonSerialize Example
 
-NOKB: https://kb.novaordis.com/index.php/@JsonFormat#Formatting_Date
+NOKB: https://kb.novaordis.com/index.php/@JsonSerialize#Example
