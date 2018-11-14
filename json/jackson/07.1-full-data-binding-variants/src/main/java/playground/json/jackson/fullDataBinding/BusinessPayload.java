@@ -1,5 +1,7 @@
 package playground.json.jackson.fullDataBinding;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class BusinessPayload {

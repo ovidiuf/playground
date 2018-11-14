@@ -50,7 +50,7 @@ public class Main {
 
         byte[] content = baos.toByteArray();
         System.out.println(new String(content));
-        
+
         //
         // alternative when we want to generate String, not byte[]
         //
