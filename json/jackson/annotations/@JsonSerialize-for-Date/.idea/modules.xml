@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_@JsonSerialize_for_Dates.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_@JsonSerialize_for_Dates.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_@JsonSerialize_for_Dates_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_@JsonSerialize_for_Dates_main.iml" group="Playground_@JsonSerialize_for_Dates" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_@JsonSerialize_for_Dates_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_@JsonSerialize_for_Dates_test.iml" group="Playground_@JsonSerialize_for_Dates" />
+    </modules>
+  </component>
+</project>
