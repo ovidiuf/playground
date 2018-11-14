@@ -5,9 +5,19 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Main {
+
+    public static final DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSX");
+
+    static {
+
+        FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     public static void main(String[] args) throws Exception {
 
@@ -31,18 +41,17 @@ public class Main {
 
         String s = new String(content);
         System.out.println(s);
-
         String json =
                 "{" +
                         "\"type\":\"test\"," +
-                        "\"timestamp\":\"2018-11-14T06:28:56.374918Z\"," +
+                        "\"timestamp\":\"11/14/18 06:28:56+0000\"," +
                         "\"payload\":{" +
                         "   \"expiresAt\":\"2018-11-15T06:28:56.348Z\"" +
                         "}" +
                 "}";
 
         BusinessEvent e2 = objectMapper.readValue(json.getBytes(), BusinessEvent.class);
-
-        System.out.println(e2);
+        System.out.println("timestamp: " + FORMAT.format(e2.getTimestamp()));
+        System.out.println("expires at: " + FORMAT.format(e2.getPayload().getExpiresAt()));
     }
 }

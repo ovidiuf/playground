@@ -8,10 +8,10 @@ public class BusinessEvent {
 
     private String type;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSX")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yy HH:mm:ssZ")
     private Date timestamp;
 
-    private Object payload;
+    private BusinessPayload payload;
 
     public String getType() {
         return type;
@@ -29,11 +29,12 @@ public class BusinessEvent {
         this.timestamp = timestamp;
     }
 
-    public Object getPayload() {
+    public BusinessPayload getPayload() {
         return payload;
     }
 
-    public void setPayload(Object payload) {
+    public void setPayload(BusinessPayload payload) {
         this.payload = payload;
     }
+
 }

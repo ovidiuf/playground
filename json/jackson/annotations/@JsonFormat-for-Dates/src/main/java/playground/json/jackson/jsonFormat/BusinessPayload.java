@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class BusinessPayload {
 
+    // ISO 8601
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private Date expiresAt;
 
