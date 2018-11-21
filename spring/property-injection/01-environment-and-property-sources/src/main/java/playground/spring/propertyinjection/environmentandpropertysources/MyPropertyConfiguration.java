@@ -9,7 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Component
-@ConfigurationProperties(prefix = "playground.spring.pi.example01")
+@ConfigurationProperties(prefix = "playground.spring.pi")
 @Data
 @Validated
 public class MyPropertyConfiguration {
