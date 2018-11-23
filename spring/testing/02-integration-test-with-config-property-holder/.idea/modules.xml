@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/02-integration-test-with-config-property-holder.iml" filepath="$PROJECT_DIR$/02-integration-test-with-config-property-holder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/02-integration-test-with-config-property-holder_main.iml" filepath="$PROJECT_DIR$/.idea/modules/02-integration-test-with-config-property-holder_main.iml" group="02-integration-test-with-config-property-holder" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/02-integration-test-with-config-property-holder_test.iml" filepath="$PROJECT_DIR$/.idea/modules/02-integration-test-with-config-property-holder_test.iml" group="02-integration-test-with-config-property-holder" />
+    </modules>
+  </component>
+</project>
