@@ -33,3 +33,9 @@ dependencies {
     testImplementation('junit:junit:4.12')
     testImplementation('org.springframework:spring-test')
 }
+
+task printClasspath {
+    doLast {
+        configurations.runtimeClasspath.each { print it; print ':' }
+    }
+}
