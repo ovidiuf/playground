@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="01-spring-TestContext-framework-simplest.main" target="1.8" />
       <module name="01-spring-TestContext-framework-simplest.test" target="1.8" />
+      <module name="01-spring-TestContext-framework-simplest_main" target="1.8" />
+      <module name="01-spring-TestContext-framework-simplest_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

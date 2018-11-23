@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/01-spring-TestContext-framework-simplest.iml" filepath="$PROJECT_DIR$/01-spring-TestContext-framework-simplest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest.main.iml" filepath="$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest.test.iml" filepath="$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_main.iml" filepath="$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_main.iml" group="01-spring-TestContext-framework-simplest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_test.iml" filepath="$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_test.iml" group="01-spring-TestContext-framework-simplest" />
     </modules>
   </component>
 </project>

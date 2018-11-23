@@ -11,7 +11,9 @@ import playground.spring.testing.BComponent;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {AComponent.class, BComponent.class})
+@ContextConfiguration(classes = {
+        AComponent.class,
+        BComponent.class})
 public class AComponentIntegrationTests {
 
     @Autowired
