@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import playground.spring.testing.AComponent;
+import playground.spring.testing.BComponent;
 
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {AComponent.class})
-public class AComponentIntegrationTesting {
+@ContextConfiguration(classes = {AComponent.class, BComponent.class})
+public class AComponentIntegrationTests {
 
     @Autowired
     private AComponent aComponent;
@@ -20,5 +21,6 @@ public class AComponentIntegrationTesting {
     public void realContextInjectsComponent() {
 
         assertNotNull(aComponent);
+        assertNotNull(aComponent.getDependency());
     }
 }
