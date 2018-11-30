@@ -1,4 +1,4 @@
-package playground.spring.propertyinjection.environmentandpropertysources;
+package playground.spring.propertyinjection.profiles;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -31,7 +31,6 @@ public class CommandLineLoop {
         System.out.println("");
         System.out.println("  color: " + propertyConfiguration.getColor());
         System.out.println("   size: " + propertyConfiguration.getSize());
-        System.out.println("");
         System.out.println(" weight: " + weight);
         System.out.println("");
     }
