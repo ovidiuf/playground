@@ -25,6 +25,15 @@ public class SimplestApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        // view the CMK previously created
+
+        listSpecificCustomerMasterKey("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
+
+        //assertEquals(clear, clear2);
+
+    }
+
+    private static void createCustomerMasterKey() {
 
         AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
@@ -42,7 +51,11 @@ public class SimplestApplication implements CommandLineRunner {
 
         // created key keyId 0138371a-8054-4c96-9d1f-20a4db2c4ffd
         // arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd
+    }
 
+    private static void listAllCustomerMasterKeys() {
+
+        AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
         //
         // list all keys
@@ -53,45 +66,56 @@ public class SimplestApplication implements CommandLineRunner {
         ListKeysResult res = kmsClient.listKeys(req);
 
         System.out.println(res);
+    }
 
-        // view the CMK previously created
+    private static void listSpecificCustomerMasterKey(String cmkArn) {
 
-        String keyId = "arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd";
+        AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
-        DescribeKeyRequest req2 = new DescribeKeyRequest().withKeyId(keyId);
+        DescribeKeyRequest req2 = new DescribeKeyRequest().withKeyId(cmkArn);
 
         DescribeKeyResult res2 = kmsClient.describeKey(req2);
 
         System.out.println(res2);
+    }
+
+    /**
+     * Returns the key in clear.
+     */
+    private static byte[] generateDataKey(String cmkArn) {
+
+        AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
         //
         // generate a data key
         //
 
         GenerateDataKeyRequest dataKeyRequest = new GenerateDataKeyRequest();
-        dataKeyRequest.setKeyId(keyId);
+        dataKeyRequest.setKeyId(cmkArn);
         dataKeyRequest.setKeySpec("AES_256");
 
         GenerateDataKeyResult dataKeyResult = kmsClient.generateDataKey(dataKeyRequest);
 
-        ByteBuffer plaintextKey = dataKeyResult.getPlaintext();
-        byte[] clear = plaintextKey.array();
+        System.out.println(dataKeyResult);
 
         ByteBuffer encryptedKey = dataKeyResult.getCiphertextBlob();
         byte[] encrypted = encryptedKey.array();
 
-        System.out.println(dataKeyResult);
+        ByteBuffer plaintextKey = dataKeyResult.getPlaintext();
+        return plaintextKey.array();
+    }
 
-        //
-        // decrypt the data key
-        //
+    private static byte[] decryptDataKey(byte[] encryptedKey) {
 
-        DecryptRequest req3 = new DecryptRequest().withCiphertextBlob(encryptedKey);
+        ByteBuffer buffer = ByteBuffer.wrap(encryptedKey);
+
+        AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
+
+        DecryptRequest req3 = new DecryptRequest().withCiphertextBlob(buffer);
 
         ByteBuffer plaintextKey2 = kmsClient.decrypt(req3).getPlaintext();
-        byte[] clear2 = plaintextKey2.array();
 
-        assertEquals(clear, clear2);
+        return plaintextKey2.array();
     }
 
     private void assertEquals(byte[] b, byte[] b2) {
