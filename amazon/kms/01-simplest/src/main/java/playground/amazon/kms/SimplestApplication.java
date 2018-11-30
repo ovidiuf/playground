@@ -4,6 +4,8 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
+import com.amazonaws.services.kms.model.CreateKeyRequest;
+import com.amazonaws.services.kms.model.CreateKeyResult;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.DescribeKeyRequest;
 import com.amazonaws.services.kms.model.DescribeKeyResult;
@@ -44,13 +46,13 @@ public class SimplestApplication implements CommandLineRunner {
         // create a CMK
         //
 
-//        String desc = "experimental key created programmatically";
-//
-//        CreateKeyRequest req = new CreateKeyRequest().withDescription(desc);
-//
-//        CreateKeyResult res = client.createKey(req);
-//
-//        System.out.println(res);
+        String desc = "experimental key created programmatically";
+
+        CreateKeyRequest req = new CreateKeyRequest().withDescription(desc);
+
+        CreateKeyResult res = kmsClient.createKey(req);
+
+        System.out.println(res);
 
         // created key keyId 0138371a-8054-4c96-9d1f-20a4db2c4ffd
         // arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd
