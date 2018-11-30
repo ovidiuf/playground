@@ -1,5 +1,7 @@
 package playground.amazon.kms;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import com.amazonaws.services.kms.model.DecryptRequest;
@@ -27,10 +29,11 @@ public class SimplestApplication implements CommandLineRunner {
 
         // view the CMK previously created
 
-        listSpecificCustomerMasterKey("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
+        listAllCustomerMasterKeys("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
+
+        //listSpecificCustomerMasterKeyWithExplicitCredentials("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
 
         //assertEquals(clear, clear2);
-
     }
 
     private static void createCustomerMasterKey() {
@@ -68,15 +71,52 @@ public class SimplestApplication implements CommandLineRunner {
         System.out.println(res);
     }
 
-    private static void listSpecificCustomerMasterKey(String cmkArn) {
+    private static void listAllCustomerMasterKeys(String masterKeyArn) {
 
         AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
-        DescribeKeyRequest req2 = new DescribeKeyRequest().withKeyId(cmkArn);
+        DescribeKeyRequest req = new DescribeKeyRequest().withKeyId(masterKeyArn);
 
-        DescribeKeyResult res2 = kmsClient.describeKey(req2);
+        DescribeKeyResult res = kmsClient.describeKey(req);
 
-        System.out.println(res2);
+        System.out.println(res);
+    }
+
+    private static void listSpecificCustomerMasterKeyWithExplicitCredentials(String masterKeyArn) {
+
+        System.out.println("listing master key " + masterKeyArn + " using explicit AWS credentials");
+
+        AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
+
+        DescribeKeyRequest req =
+                new DescribeKeyRequest().
+                        withKeyId(masterKeyArn).
+                        withRequestCredentialsProvider(new AWSCredentialsProvider() {
+                            @Override
+                            public AWSCredentials getCredentials() {
+
+                                return new AWSCredentials() {
+
+                                    @Override
+                                    public String getAWSAccessKeyId() {
+                                        return "...";
+                                    }
+
+                                    @Override
+                                    public String getAWSSecretKey() {
+                                        return "...";
+                                    }
+                                };
+                            }
+
+                            @Override
+                            public void refresh() {
+                            }
+                        });
+
+        DescribeKeyResult res = kmsClient.describeKey(req);
+
+        System.out.println(res);
     }
 
     /**
