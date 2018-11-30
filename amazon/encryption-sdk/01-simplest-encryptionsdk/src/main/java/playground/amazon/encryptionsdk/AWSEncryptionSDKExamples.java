@@ -12,10 +12,10 @@ import java.util.Collections;
 import java.util.Map;
 
 @SpringBootApplication
-public class Application implements CommandLineRunner {
+public class AWSEncryptionSDKExamples implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(AWSEncryptionSDKExamples.class, args);
     }
 
     @Override
