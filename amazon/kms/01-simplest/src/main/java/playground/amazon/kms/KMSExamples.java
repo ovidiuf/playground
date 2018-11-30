@@ -20,10 +20,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.nio.ByteBuffer;
 
 @SpringBootApplication
-public class SimplestApplication implements CommandLineRunner {
+public class KMSExamples implements CommandLineRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(SimplestApplication.class, args);
+        SpringApplication.run(KMSExamples.class, args);
     }
 
     @Override
