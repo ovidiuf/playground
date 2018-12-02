@@ -14,10 +14,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles("heavy")
 @ContextConfiguration(classes = {
         AComponent.class,
         AComponentPropertyConfiguration.class})
+@ActiveProfiles("heavy")
 public class HeavyIntegrationTest {
 
     @Autowired

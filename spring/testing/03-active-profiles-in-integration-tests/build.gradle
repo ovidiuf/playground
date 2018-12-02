@@ -43,5 +43,4 @@ task printClasspath {
 test {
 
     systemProperty 'spring.profiles.active', 'heavy'
-
 }
