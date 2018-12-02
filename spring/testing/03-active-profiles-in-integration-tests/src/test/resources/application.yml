@@ -1,0 +1,5 @@
+
+playground:
+  spring:
+    testing:
+      name: "red"

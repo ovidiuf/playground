@@ -1,0 +1,6 @@
+
+playground:
+  spring:
+    testing:
+      name: "yellow"
+

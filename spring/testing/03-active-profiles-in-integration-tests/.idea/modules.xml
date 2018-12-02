@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_Active_Profiles_in_Integration_Tests.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_Active_Profiles_in_Integration_Tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_Active_Profiles_in_Integration_Tests.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_Active_Profiles_in_Integration_Tests.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_Active_Profiles_in_Integration_Tests.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_Active_Profiles_in_Integration_Tests.test.iml" />
+    </modules>
+  </component>
+</project>
