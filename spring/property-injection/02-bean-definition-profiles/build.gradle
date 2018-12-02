@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'playground.spring.profile'
+version = '1'
+sourceCompatibility = 1.8
+
+
+repositories {
+
+    mavenCentral()
+}
+
+dependencyManagement {
+
+    imports {
+
+        mavenBom 'io.spring.platform:platform-bom:Cairo-SR5'
+    }
+}
+
+dependencies {
+
+    implementation('org.springframework:spring-core')
+    implementation('org.springframework:spring-context')
+    implementation('org.springframework:spring-beans')
+}
+
+task printClasspath {
+
+    doLast {
+        configurations.runtimeClasspath.each { print it; print ':' }
+    }
+}
