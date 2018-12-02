@@ -10,8 +10,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        APPLICATION_CONTEXT.getEnvironment();
+
         ComponentA a = APPLICATION_CONTEXT.getBean(ComponentA.class);
 
-        System.out.println(a);
+        a.inspectEnvironment();
+
+        a.checkProperty(args[0]);
     }
 }
