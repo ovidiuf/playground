@@ -1,0 +1,10 @@
+
+some:
+  attribute: "bright"
+
+playground:
+  spring:
+    pi:
+      size: 25
+      color: "${some.attribute} red"
+      weight: 60
