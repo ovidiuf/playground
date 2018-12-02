@@ -8,6 +8,6 @@ CLASSPATH=$(dirname $0)/../build/classes/java/main:$(dirname $0)/../build/resour
 
 #echo classpath: ${CLASSPATH}
 
-#java -Dplayground.test.property=blah -cp ${CLASSPATH} ${MAIN_CLASS} "playground.test.property"
-java -cp ${CLASSPATH} ${MAIN_CLASS} "playground.test.property"
+#java -Dcolor="blue" -cp ${CLASSPATH} ${MAIN_CLASS} --color=red
+java  -cp ${CLASSPATH} ${MAIN_CLASS}
 

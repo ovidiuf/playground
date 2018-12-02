@@ -14,8 +14,10 @@ public class Main {
 
         ComponentA a = APPLICATION_CONTEXT.getBean(ComponentA.class);
 
-        a.inspectEnvironment();
+        String propertyName = "color";
 
-        a.checkProperty(args[0]);
+        //a.inspectEnvironment();
+
+        a.checkProperty(propertyName);
     }
 }
