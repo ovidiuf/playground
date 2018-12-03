@@ -2,22 +2,16 @@ package playground.spring.testing;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("a")
-public class AComponent {
+@Profile("heavy")
+public class AComponent implements WeightAwareComponent {
 
-    private AComponentPropertyConfiguration propertyConfiguration;
+    @Override
+    public String toString() {
 
-    @Autowired
-    public AComponent(AComponentPropertyConfiguration propertyConfiguration) {
-
-        this.propertyConfiguration = propertyConfiguration;
-    }
-
-    public AComponentPropertyConfiguration getPropertyConfiguration() {
-
-        return propertyConfiguration;
+        return "heavy";
     }
 }

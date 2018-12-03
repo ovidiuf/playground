@@ -32,6 +32,7 @@ dependencies {
 
     testImplementation('junit:junit:4.12')
     testImplementation('org.springframework:spring-test')
+    testImplementation('ch.qos.logback:logback-classic:1.2.3')
 }
 
 task printClasspath {
@@ -42,5 +43,7 @@ task printClasspath {
 
 test {
 
-    systemProperty 'spring.profiles.active', 'heavy'
+    testLogging.showStandardStreams = true
 }
+    
+ 
