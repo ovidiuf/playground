@@ -11,7 +11,6 @@ import playground.spring.testing.BComponent;
 import playground.spring.testing.WeightAwareComponent;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {AComponent.class, BComponent.class})
