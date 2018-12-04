@@ -31,7 +31,9 @@ public class KMSExamples implements CommandLineRunner {
 
         // view the CMK previously created
 
-        listAllCustomerMasterKeys("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
+        String previouslyCreated = "arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd";
+        String bamboo = "arn:aws:kms:us-west-2:144446676909:key/96a3a735-b8f5-4456-9488-ecbeb4087540";
+        listMasterKey(bamboo);
 
         //listSpecificCustomerMasterKeyWithExplicitCredentials("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
 
@@ -73,7 +75,9 @@ public class KMSExamples implements CommandLineRunner {
         System.out.println(res);
     }
 
-    private static void listAllCustomerMasterKeys(String masterKeyArn) {
+    private static void listMasterKey(String masterKeyArn) {
+
+        System.out.println("listing key: " + masterKeyArn);
 
         AWSKMS kmsClient = AWSKMSClientBuilder.defaultClient();
 
