@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/01-spring-TestContext-framework-simplest.iml" filepath="$PROJECT_DIR$/01-spring-TestContext-framework-simplest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_main.iml" filepath="$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_main.iml" group="01-spring-TestContext-framework-simplest" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_test.iml" filepath="$PROJECT_DIR$/.idea/modules/01-spring-TestContext-framework-simplest_test.iml" group="01-spring-TestContext-framework-simplest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_Spring_TestContext_Framework.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_Spring_TestContext_Framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_Spring_TestContext_Framework.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_Spring_TestContext_Framework.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Playground_Spring_TestContext_Framework.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Playground_Spring_TestContext_Framework.test.iml" />
     </modules>
   </component>
 </project>

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="02-integration-test-with-config-property-holder_main" target="1.10" />
-      <module name="02-integration-test-with-config-property-holder_test" target="1.10" />
+      <module name="Playground_Spring_TestFramework_and_Property_Configuration_Holders.main" target="1.10" />
+      <module name="Playground_Spring_TestFramework_and_Property_Configuration_Holders.test" target="1.10" />
     </bytecodeTargetLevel>
   </component>
 </project>

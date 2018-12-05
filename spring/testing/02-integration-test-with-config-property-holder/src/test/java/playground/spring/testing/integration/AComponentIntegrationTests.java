@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import playground.spring.testing.AComponent;
 import playground.spring.testing.AComponentPropertyConfiguration;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -27,5 +28,7 @@ public class AComponentIntegrationTests {
         String name = aComponent.getPropertyConfiguration().getName();
 
         System.out.println(name);
+
+        assertEquals("yellow", name);
     }
 }
