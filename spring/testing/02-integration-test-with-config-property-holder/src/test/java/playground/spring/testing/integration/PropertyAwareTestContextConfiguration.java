@@ -1,4 +1,4 @@
-package playground.spring.testing;
+package playground.spring.testing.integration;
 
 import org.springframework.boot.context.properties.ConfigurationBeanFactoryMetadata;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ConfigurationBeanFactoryMetadataProvider {
+public class PropertyAwareTestContextConfiguration {
 
     @Bean
     public ConfigurationPropertiesBindingPostProcessor getConfigurationPropertiesBindingPostProcessor() {
@@ -15,9 +15,8 @@ public class ConfigurationBeanFactoryMetadataProvider {
     }
 
     @Bean("org.springframework.boot.context.properties.ConfigurationBeanFactoryMetadata")
-    public static ConfigurationBeanFactoryMetadata getConfigurationBeanFactoryMetadata() {
+    public ConfigurationBeanFactoryMetadata getConfigurationBeanFactoryMetadata() {
 
         return new ConfigurationBeanFactoryMetadata();
     }
-
 }
