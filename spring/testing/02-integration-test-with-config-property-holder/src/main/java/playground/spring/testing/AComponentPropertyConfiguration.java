@@ -11,6 +11,11 @@ public class AComponentPropertyConfiguration {
 
     public AComponentPropertyConfiguration() {
 
+        //
+        // This is the default value and it should be overwritten by the value maintained in
+        // src/test/resources/application.yml
+        //
+
         this.name = "blue";
     }
 
