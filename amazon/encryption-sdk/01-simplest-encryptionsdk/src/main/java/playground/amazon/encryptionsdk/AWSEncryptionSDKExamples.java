@@ -23,7 +23,7 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
 
         System.out.println("encrypting ....");
 
-        String keyArn = "arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd";
+        String keyArn = "arn:aws:kms:us-west-2:144446676909:key/72c58fc9-5b32-4cbe-8d1f-034e90929989";
 
         //
         // Instantiate the SDK
