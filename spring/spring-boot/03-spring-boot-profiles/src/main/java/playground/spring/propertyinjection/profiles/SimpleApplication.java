@@ -6,18 +6,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EnvironmentAndPropertySourcesApplication implements CommandLineRunner {
+public class SimpleApplication implements CommandLineRunner {
 
     private final CommandLineLoop commandLineLoop;
 
     @Autowired
-    public EnvironmentAndPropertySourcesApplication(CommandLineLoop commandLineLoop) {
+    public SimpleApplication(CommandLineLoop commandLineLoop) {
 
         this.commandLineLoop = commandLineLoop;
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(EnvironmentAndPropertySourcesApplication.class, args);
+        SpringApplication.run(SimpleApplication.class, args);
     }
 
     @Override
