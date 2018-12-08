@@ -1,3 +1,20 @@
+
+
 playground:
   spring:
     color: "red"
+
+
+---
+spring.profiles: "san_francisco"
+
+playground:
+  spring:
+    color: "yellow"
+
+---
+spring.profiles: "new_york"
+
+playground:
+  spring:
+    color: "green"
