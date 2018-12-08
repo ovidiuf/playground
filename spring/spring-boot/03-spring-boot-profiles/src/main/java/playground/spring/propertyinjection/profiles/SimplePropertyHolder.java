@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "playground.spring")
+@ConfigurationProperties(prefix = "playground")
 public class SimplePropertyHolder {
 
     public static final String DEFAULT_COLOR = "blue";
