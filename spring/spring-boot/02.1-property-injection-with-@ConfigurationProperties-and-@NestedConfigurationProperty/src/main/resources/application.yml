@@ -1,0 +1,8 @@
+
+playground:
+  spring:
+    pi:
+      size: 35
+      stuff:
+        weight: 5
+
