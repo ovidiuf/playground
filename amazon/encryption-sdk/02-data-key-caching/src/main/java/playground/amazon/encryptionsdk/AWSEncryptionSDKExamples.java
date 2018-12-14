@@ -11,7 +11,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +29,7 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws Exception {
 
         String keyArn = "arn:aws:kms:us-west-2:144446676909:key/72c58fc9-5b32-4cbe-8d1f-034e90929989";
 
@@ -69,8 +73,10 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
 
         //encryptDecryptData(crypto, cryptoMaterialsManager, data, context, keyArn);
 
-        encryptDecryptDataInALoop(crypto, masterKeyProvider, null, data, context, 100);
-        //encryptDecryptDataInALoop(crypto, null, cryptoMaterialsManager, data, context, 100);
+        //List<Integer> times = encryptDecryptDataInALoop(crypto, masterKeyProvider, null, data, context, 1000);
+        List<Integer> times = encryptDecryptDataInALoop(crypto, null, cryptoMaterialsManager, data, context, 1000);
+
+        saveTimesAsCSV(times);
 
     }
 
@@ -122,11 +128,14 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
 
     }
 
-    private void encryptDecryptDataInALoop(
+    /**
+     * @return a vector with times, in ms.
+     */
+    private List<Integer> encryptDecryptDataInALoop(
             AwsCrypto crypto, KmsMasterKeyProvider masterKeyProvider, CryptoMaterialsManager cryptoMaterialsManager,
             String data, Map<String, String> context, int count) {
 
-        long totalMs = 0;
+        List<Integer> times = new ArrayList<>();
 
         for(int i = 0; i < count; i ++) {
 
@@ -145,7 +154,8 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
                 decryptResult = crypto.decryptString(cryptoMaterialsManager, ciphertext);
             }
 
-            totalMs += (System.currentTimeMillis() - t0);
+            long dt = System.currentTimeMillis() - t0;
+            times.add((int)dt);
 
             if (!data.equals(decryptResult.getResult())) {
 
@@ -153,8 +163,25 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
             }
         }
 
-        double averageMsPerCycle = ((double)totalMs) / count;
+        return times;
+    }
 
-        System.out.println("average ms per cycle: " + averageMsPerCycle);
+    private void saveTimesAsCSV(List<Integer> times) throws Exception {
+
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("./times.csv"));
+
+        int i = 0;
+
+        bw.write("index, time (ms)\n");;
+
+        for(Integer t: times) {
+
+            bw.write((++ i) + ", " + t + "\n");
+        }
+
+        bw.close();
+
+        System.out.println(i  +  " records written");
     }
 }
