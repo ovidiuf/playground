@@ -43,8 +43,7 @@ public class AttributeConverterApplication implements CommandLineRunner {
             A a2 = o.get();
 
             System.out.println("retrieved from DB: " + a2);
-        }
-        else {
+        } else {
 
             System.out.println("id " + id + " not found");
         }

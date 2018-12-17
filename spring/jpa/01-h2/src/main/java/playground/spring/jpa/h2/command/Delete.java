@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * Deletes the record whose ID is provided.
- *
+ * <p>
  * delete 20
  */
 public class Delete implements Command {

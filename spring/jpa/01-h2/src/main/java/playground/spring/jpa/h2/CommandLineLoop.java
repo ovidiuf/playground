@@ -30,7 +30,7 @@ public class CommandLineLoop {
 
     public void run() throws Exception {
 
-        while(true) {
+        while (true) {
 
             System.out.print("> ");
 
@@ -59,30 +59,24 @@ public class CommandLineLoop {
             if (hint.startsWith("create")) {
 
                 new Create(line.substring("insert".length())).execute(aRepository);
-            }
-            else if (hint.startsWith("update")) {
+            } else if (hint.startsWith("update")) {
 
                 new Update(line.substring("update".length())).execute(aRepository);
-            }
-            else if (hint.startsWith("delete")) {
+            } else if (hint.startsWith("delete")) {
 
                 new Delete(line.substring("delete".length())).execute(aRepository);
-            }
-            else if (hint.startsWith("list")) {
+            } else if (hint.startsWith("list")) {
 
                 new List().execute(aRepository);
-            }
-            else if (hint.startsWith("help")) {
+            } else if (hint.startsWith("help")) {
 
                 new Help().execute(null);
-            }
-            else {
+            } else {
 
                 throw new IllegalArgumentException("unknown command: " + hint);
             }
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
             System.err.println("[error]: " + e.getMessage() + "\n> ");
         }

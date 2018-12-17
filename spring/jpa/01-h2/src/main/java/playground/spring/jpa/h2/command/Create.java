@@ -5,7 +5,7 @@ import playground.spring.jpa.h2.repository.ARepository;
 
 /**
  * Creates a record with the given name. The ID will be automatically generated.
- *
+ * <p>
  * create Menlo Park
  */
 public class Create implements Command {
