@@ -1,7 +1,6 @@
 # Spring Cloud Stream Amazon Kinesis Consumer
 
-A consumer that listens to events arriving on a stream and pretty-prints them.
+NOKB:
 
-Contains a reasonably good JsonRenderer.
-
-See [NOKB Spring Cloud Stream AWS Kinesis Binder](https://kb.novaordis.com/index.php/Spring_Cloud_Stream_AWS_Kinesis_Binder#Playground_Example).
+* [Spring Cloud Stream Programming Model](https://kb.novaordis.com/index.php/Spring_Cloud_Stream#Programming_Model)
+* [Amazon Kinesis Binder](https://kb.novaordis.com/index.php/Spring_Cloud_Stream_AWS_Kinesis_Binder#Playground_Examples})
