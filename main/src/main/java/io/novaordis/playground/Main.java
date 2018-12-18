@@ -16,5 +16,20 @@
 
 package io.novaordis.playground;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+        List<String> list = new ArrayList<>();
+
+
+        list.get(10);
+
+
+
+        //list.add(10, "blah");
+    }
 }
