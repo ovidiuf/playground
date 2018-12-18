@@ -13,13 +13,14 @@ management:
 #    name: admin
 #    password: 2c76788d-e661-49fd-baba-4b41e7c1dd47
 
-spring:
-  cloud:
-    stream:
-      bindings:
-        channel-from-kinesis:
-          destination: ovidiu-test
-          content-type: application/json
+spring.cloud.stream:
+  bindings:
+    channel-from-kinesis:
+      destination: ovidiu-test
+      content-type: application/json
+      consumer:
+        headerMode: none
+
 cloud:
   aws:
     region:

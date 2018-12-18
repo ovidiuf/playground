@@ -27,6 +27,11 @@ public class KinesisProducerApplication implements CommandLineRunner {
 
             String line = br.readLine();
 
+            if (line.trim().isEmpty()) {
+
+                continue;
+            }
+
             producer.send(line);
         }
 

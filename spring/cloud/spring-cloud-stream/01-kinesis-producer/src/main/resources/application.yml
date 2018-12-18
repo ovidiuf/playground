@@ -15,8 +15,11 @@ cloud.aws.region.static: us-west-2
 # this setting is ignored by Kinesis binder - it creates missing channel regardless.
 spring.integration.channels.autoCreate: false
 
-spring.cloud.stream.bindings:
-  test-output-channel:
-    destination: ovidiu-test
-    content-type: application/json
+spring.cloud.stream:
+  bindings:
+    test-output-channel:
+      destination: ovidiu-test
+      content-type: application/json
+      producer:
+        headerMode: none
 
