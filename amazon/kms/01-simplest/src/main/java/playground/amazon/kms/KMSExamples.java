@@ -11,6 +11,7 @@ import com.amazonaws.services.kms.model.DescribeKeyRequest;
 import com.amazonaws.services.kms.model.DescribeKeyResult;
 import com.amazonaws.services.kms.model.GenerateDataKeyRequest;
 import com.amazonaws.services.kms.model.GenerateDataKeyResult;
+import com.amazonaws.services.kms.model.KeyListEntry;
 import com.amazonaws.services.kms.model.ListKeysRequest;
 import com.amazonaws.services.kms.model.ListKeysResult;
 import org.springframework.boot.CommandLineRunner;
@@ -29,11 +30,16 @@ public class KMSExamples implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        //listAllCustomerMasterKeys();
+
+
+        createCustomerMasterKey();
+
         // view the CMK previously created
 
-        String previouslyCreated = "arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd";
-        String bamboo = "arn:aws:kms:us-west-2:144446676909:key/96a3a735-b8f5-4456-9488-ecbeb4087540";
-        listMasterKey(bamboo);
+//        String previouslyCreated = "arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd";
+//        String bamboo = "arn:aws:kms:us-west-2:144446676909:key/96a3a735-b8f5-4456-9488-ecbeb4087540";
+//        listMasterKey(bamboo);
 
         //listSpecificCustomerMasterKeyWithExplicitCredentials("arn:aws:kms:us-west-2:673499572719:key/0138371a-8054-4c96-9d1f-20a4db2c4ffd");
 
@@ -72,7 +78,11 @@ public class KMSExamples implements CommandLineRunner {
 
         ListKeysResult res = kmsClient.listKeys(req);
 
-        System.out.println(res);
+        for(KeyListEntry e: res.getKeys()) {
+
+            System.out.println(e);
+            System.out.println();
+        }
     }
 
     private static void listMasterKey(String masterKeyArn) {

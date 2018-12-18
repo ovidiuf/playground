@@ -21,21 +21,29 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        System.out.println("encrypting ....");
+        //String keyArn = "arn:aws:kms:us-west-2:144446676909:key/72c58fc9-5b32-4cbe-8d1f-034e90929989";
 
-        String keyArn = "arn:aws:kms:us-west-2:144446676909:key/72c58fc9-5b32-4cbe-8d1f-034e90929989";
+        String keyArn2 = "arn:aws:kms:us-west-2:144446676909:key/18cab717-2c75-48e8-bec2-fd4881f6e654";
 
-        //
-        // Instantiate the SDK
-        //
+        String currentKey = keyArn2;
 
         final AwsCrypto crypto = new AwsCrypto();
 
-        //
         // Set up the KmsMasterKeyProvider backed by the default credentials
-        //
+        final KmsMasterKeyProvider masterKeyProvider = new KmsMasterKeyProvider(currentKey);
 
-        final KmsMasterKeyProvider prov = new KmsMasterKeyProvider(keyArn);
+        final Map<String, String> context = Collections.singletonMap("Example", "String");
+
+//        String ciphertext = encrypt(crypto, masterKeyProvider, "something", context);
+//
+//        System.out.println(ciphertext);
+
+        String ciphertext = "AYADeKxBwEkNon86hxZaTFh2mVYAcAACAAdFeGFtcGxlAAZTdHJpbmcAFWF3cy1jcnlwdG8tcHVibGljLWtleQBEQTJCQlp1bit5LzV5cGtKZWhvTHJxZTFEemZmbUxjdEdhVjFrRnI4YVRtNGgvRG15dXJhc20zZHRGTFN2WVVoKzV3PT0AAQAHYXdzLWttcwBLYXJuOmF3czprbXM6dXMtd2VzdC0yOjE0NDQ0NjY3NjkwOTprZXkvNzJjNThmYzktNWIzMi00Y2JlLThkMWYtMDM0ZTkwOTI5OTg5ALgBAgEAeNrdUVr9agEil/WZsJxKqpU+/YhQEz5SiSfflGsRXs0GAYiCT7mErIK14DBFXR+kUP4AAAB+MHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAy53/dqWBj7LK9WKtkCARCAOzX7yGKvqhUmBxqnXEeBWelQhsdQbrI6kMzyYoQNwCgliLOah7Q1shv8mzfA45b9lSahwF7YmyUptndPAgAAAAAMAAAQAAAAAAAAAAAAAAAAAPICKUATFsNPkHF2jNfX+kj/////AAAAAQAAAAAAAAAAAAAAAQAAAAmYJl2OYOCgyg4fyFeKCLMvI9vkEupm0jNHAGcwZQIwZxLfjsP12Plzd0X0NSM5sH8WETQNWy8pfa76/pqO9D1W3D6HqWWKAYZwRHekuoGsAjEAzuEiR2cTbaAfpGjBqoVcuMprdMRZ7F261b+fGlGFIVLarvNtjkIPk8aAJx+8vTC7";
+
+        System.out.println(decrypt(crypto, masterKeyProvider, ciphertext, context));
+    }
+
+    private String encrypt(AwsCrypto crypto, KmsMasterKeyProvider masterKeyProvider, String cleartext, Map<String, String> context) {
 
         //
         // Encrypt the data
@@ -47,29 +55,29 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
         // blogs.aws.amazon.com/security/post/Tx2LZ6WBJJANTNW/How-to-Protect-the-Integrity-of-Your-Encrypted-Data-by-Using-AWS-Key-Management
         //
 
-        final Map<String, String> context = Collections.singletonMap("Example", "String");
 
-        String data = "something";
 
-        final String ciphertext = crypto.encryptString(prov, data, context).getResult();
+        //noinspection UnnecessaryLocalVariable
+        final String ciphertext = crypto.encryptString(masterKeyProvider, cleartext, context).getResult();
 
-        System.out.println("data: \"" + data + "\" (length " + data.length() + "), ciphertext: " + ciphertext + "(length " + ciphertext.length() + ")");
+        //System.out.println("data: \"" + data + "\" (length " + data.length() + "), ciphertext: " + ciphertext + "(length " + ciphertext.length() + ")");
 
-        //
-        // Decrypt the data
-        //
+        return ciphertext;
+    }
 
-        final CryptoResult<String, KmsMasterKey> decryptResult = crypto.decryptString(prov, ciphertext);
+    private String decrypt(AwsCrypto crypto, KmsMasterKeyProvider masterKeyProvider, String ciphertext, Map<String, String> context) {
+
+        final CryptoResult<String, KmsMasterKey> decryptResult = crypto.decryptString(masterKeyProvider, ciphertext);
 
         //
         // Before returning the plaintext, verify that the customer master key that was used in the encryption operation
         // was the one supplied to the master key provider.
         //
 
-        if (!decryptResult.getMasterKeyIds().get(0).equals(keyArn)) {
-
-            throw new IllegalStateException("Wrong key ID!");
-        }
+//        if (!decryptResult.getMasterKeyIds().get(0).equals(keyArn)) {
+//
+//            throw new IllegalStateException("Wrong key ID!");
+//        }
 
         //
         // Also, verify that the encryption context in the result contains the encryption context supplied to the
@@ -85,10 +93,6 @@ public class AWSEncryptionSDKExamples implements CommandLineRunner {
             }
         }
 
-        //
-        // Now we can return the plaintext data
-        //
-
-        System.out.println("Decrypted: " + decryptResult.getResult());
+        return decryptResult.getResult();
     }
 }
