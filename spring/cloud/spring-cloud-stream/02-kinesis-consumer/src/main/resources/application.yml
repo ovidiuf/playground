@@ -18,7 +18,7 @@ spring:
     stream:
       bindings:
         channel-from-kinesis:
-          destination: bizEventOut
+          destination: ovidiu-test
           content-type: application/json
 cloud:
   aws:
