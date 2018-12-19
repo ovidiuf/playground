@@ -2,7 +2,7 @@
 spring.cloud.stream:
   bindings:
     channel-from-kinesis:
-      destination: ovidiu-test
+      destination: bamboo-fds-external-events
 
 cloud:
   aws:
