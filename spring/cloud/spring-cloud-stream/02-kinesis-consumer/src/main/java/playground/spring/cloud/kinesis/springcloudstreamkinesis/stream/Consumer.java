@@ -9,11 +9,16 @@ import org.springframework.stereotype.Component;
 public class Consumer {
 
     @StreamListener(InputChannelFactory.INPUT_CHANNEL_NAME)
-    public void handle(Message<String> e) {
+    public void handle(Message e) {
 
-        String payload = e.getPayload();
+        byte[] payload = (byte[])e.getPayload();
 
-        System.out.println("payload: " + payload);
+        System.out.println("received payload of length " + payload.length);
+
+        String payloadAsString = new String(payload);
+
+        System.out.println("payload as string: " + payloadAsString);
+
         System.out.println("headers:");
 
         MessageHeaders headers = e.getHeaders();
