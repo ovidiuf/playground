@@ -4,16 +4,13 @@ import com.amazonaws.services.kinesis.AmazonKinesis;
 import com.amazonaws.services.kinesis.AmazonKinesisClientBuilder;
 import com.amazonaws.services.kinesis.model.PutRecordRequest;
 import com.amazonaws.services.kinesis.model.PutRecordResult;
-import com.amazonaws.services.kinesis.model.PutRecordsRequest;
-import com.amazonaws.services.kinesis.model.PutRecordsRequestEntry;
-import com.amazonaws.services.kinesis.model.PutRecordsResult;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
 
 @SpringBootApplication
 public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
@@ -25,8 +22,6 @@ public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println(".");
-
         AmazonKinesisClientBuilder clientBuilder = AmazonKinesisClientBuilder.standard();
 
 //        clientBuilder.setRegion(regionName);
@@ -35,16 +30,18 @@ public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
 
         AmazonKinesis kinesisClient = clientBuilder.build();
 
-        putRecord(kinesisClient, "ovidiu-test");
+        byte[] content = getContent();
+
+        putRecord(kinesisClient, "ovidiu-test", content);
     }
 
-    private void putRecord(AmazonKinesis kinesisClient, String streamName) throws Exception {
+    private void putRecord(AmazonKinesis kinesisClient, String streamName, byte[] content) throws Exception {
 
         PutRecordRequest putRecordRequest = new PutRecordRequest();
 
         putRecordRequest.setStreamName(streamName);
 
-        putRecordRequest.setData(ByteBuffer.wrap("testData".getBytes()));
+        putRecordRequest.setData(ByteBuffer.wrap(content));
 
         putRecordRequest.setPartitionKey("partitionKey-1");
 
@@ -56,5 +53,36 @@ public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
 
         //        String sequenceNumberOfPreviousRecord = putRecordResult.getSequenceNumber();
     }
+
+    private static byte[] getContent() throws Exception {
+
+        byte[] result;
+
+        //result = getContentFromString();
+
+        result = getContentFromFile();
+
+        return result;
+    }
+
+    private static byte[] getContentFromString() {
+
+        return "test-string".getBytes();
+    }
+
+    private static byte[] getContentFromFile() throws Exception {
+
+        String fileName = "/Users/ovidiu/tmp/one-authorization.txt";
+
+        File f = new File(fileName);
+
+        if (!f.canRead()) {
+
+            throw new IllegalArgumentException("file " + f + " does not exist or it cannot be read");
+        }
+
+        return Files.readAllBytes(f.toPath());
+    }
+
 }
 
