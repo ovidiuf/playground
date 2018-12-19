@@ -28,11 +28,13 @@ public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
 //        clientBuilder.setCredentials(credentialsProvider);
 //        clientBuilder.setClientConfiguration(config);
 
+        String streamName = "ovidiu-test";
+
         AmazonKinesis kinesisClient = clientBuilder.build();
 
         byte[] content = getContent();
 
-        putRecord(kinesisClient, "ovidiu-test", content);
+        putRecord(kinesisClient, streamName, content);
     }
 
     private void putRecord(AmazonKinesis kinesisClient, String streamName, byte[] content) throws Exception {
@@ -41,11 +43,11 @@ public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
 
         putRecordRequest.setStreamName(streamName);
 
-        putRecordRequest.setData(ByteBuffer.wrap(content));
-
-        putRecordRequest.setPartitionKey("partitionKey-1");
+        putRecordRequest.setPartitionKey("something else");
 
         //        putRecordRequest.setSequenceNumberForOrdering( sequenceNumberOfPreviousRecord );
+
+        putRecordRequest.setData(ByteBuffer.wrap(content));
 
         PutRecordResult putRecordResult = kinesisClient.putRecord(putRecordRequest);
 
