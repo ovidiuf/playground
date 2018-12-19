@@ -22,9 +22,7 @@ public class Producer {
 
     void send(String payload) {
 
-        Map<String, Object> headers = Collections.singletonMap("test-header-key", "test-header-value");
-
-        Message m = new GenericMessage<>(payload, headers);
+        Message<String> m = new GenericMessage<>(payload);
 
         outputChannel.send(m);
     }

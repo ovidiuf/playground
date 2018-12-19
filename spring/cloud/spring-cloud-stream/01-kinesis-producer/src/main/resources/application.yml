@@ -20,6 +20,3 @@ spring.cloud.stream:
     test-output-channel:
       destination: ovidiu-test
       content-type: application/json
-      producer:
-        headerMode: none
-
