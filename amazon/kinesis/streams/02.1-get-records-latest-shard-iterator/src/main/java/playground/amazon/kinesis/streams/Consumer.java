@@ -27,10 +27,6 @@ class Consumer {
 
         AmazonKinesisClientBuilder clientBuilder = AmazonKinesisClientBuilder.standard();
 
-//        clientBuilder.setRegion(regionName);
-//        clientBuilder.setCredentials(credentialsProvider);
-//        clientBuilder.setClientConfiguration(config);
-
         this.kinesisClient = clientBuilder.build();
     }
 
@@ -38,7 +34,7 @@ class Consumer {
 
         Shard s = getSoleShard(streamName);
 
-        String shardIterator = getInitialShardIterator(streamName, s.getShardId(), ShardIteratorType.TRIM_HORIZON);
+        String shardIterator = getInitialShardIterator(streamName, s.getShardId(), ShardIteratorType.LATEST);
 
         System.out.println("polling " + streamName + "/" + s.getShardId() + " for records ...");
 
