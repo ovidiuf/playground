@@ -60,9 +60,9 @@ public class KinesisStreamsPutRecordApplication implements CommandLineRunner {
 
         byte[] result;
 
-        //result = getContentFromString();
+        result = getContentFromString();
 
-        result = getContentFromFile();
+        //result = getContentFromFile();
 
         return result;
     }
