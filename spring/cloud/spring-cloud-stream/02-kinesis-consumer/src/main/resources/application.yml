@@ -2,7 +2,8 @@
 spring.cloud.stream:
   bindings:
     channel-from-kinesis:
-      destination: bamboo-fds-external-events
+      #destination: bamboo-fds-internal-events
+      destination: biz-pri-v2-data
 
 cloud:
   aws:

@@ -1,0 +1,21 @@
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud: INFO
+    playground:
+      spring:
+        cloud:
+          stream: DEBUG
+
+cloud.aws.region.static: us-west-2
+
+spring.cloud.stream.bindings:
+ test-output-channel:
+  destination: biz-pri-v2-data
+  content-type: application/json
+  producer:
+    # this suppresses embedding headers with AWS Kinesis Binders
+    headerMode: none
