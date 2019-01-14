@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import playground.spring.jpa.h2.command.Create;
 import playground.spring.jpa.h2.command.Delete;
+import playground.spring.jpa.h2.command.FindById;
+import playground.spring.jpa.h2.command.FindByName;
 import playground.spring.jpa.h2.command.Help;
 import playground.spring.jpa.h2.command.List;
 import playground.spring.jpa.h2.command.Update;
@@ -59,19 +61,32 @@ public class CommandLineLoop {
             if (hint.startsWith("create")) {
 
                 new Create(line.substring("insert".length())).execute(aRepository);
-            } else if (hint.startsWith("update")) {
+            }
+            else if (hint.startsWith("update")) {
 
                 new Update(line.substring("update".length())).execute(aRepository);
-            } else if (hint.startsWith("delete")) {
+            }
+            else if (hint.startsWith("delete")) {
 
                 new Delete(line.substring("delete".length())).execute(aRepository);
-            } else if (hint.startsWith("list")) {
+            }
+            else if (hint.startsWith("list")) {
 
                 new List().execute(aRepository);
-            } else if (hint.startsWith("help")) {
+            }
+            else if (hint.startsWith("help")) {
 
                 new Help().execute(null);
-            } else {
+            }
+            else if (hint.startsWith("findbyid")) {
+
+                new FindById(line.substring("findbyid".length())).execute(aRepository);
+            }
+            else if (hint.startsWith("findbyname")) {
+
+                new FindByName(line.substring("findbyname".length())).execute(aRepository);
+            }
+            else {
 
                 throw new IllegalArgumentException("unknown command: " + hint);
             }

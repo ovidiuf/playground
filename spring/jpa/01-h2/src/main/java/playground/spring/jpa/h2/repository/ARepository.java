@@ -6,4 +6,6 @@ import playground.spring.jpa.h2.model.A;
 
 @Repository
 public interface ARepository extends CrudRepository<A, Long> {
+
+    A findByName(String name);
 }
