@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
         AComponent.class,
         BComponent.class,
         SharedSingleton.class})
-public class OtherIntegrationTests {
+public class TwoIntegrationTests {
 
     @Autowired
     private AComponent aComponent;
