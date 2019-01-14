@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Playground_Spring_TestContext_Framework_Parallelism.main" target="1.10" />
+      <module name="Playground_Spring_TestContext_Framework_Parallelism.test" target="1.10" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
