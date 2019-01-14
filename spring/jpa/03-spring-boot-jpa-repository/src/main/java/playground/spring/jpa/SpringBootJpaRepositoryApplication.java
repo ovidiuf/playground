@@ -48,8 +48,14 @@ public class SpringBootJpaRepositoryApplication implements CommandLineRunner {
         System.out.println("all items: " + allItems);
         System.out.println("items created between 01/01/17 and 01/01/18: " + timeBoundedItems);
 
+        //
+        // we then query for an item built between 2015 dates, we should get an empty list
+        //
 
+        List<Item> timeBoundedItems2 =
+                repository.getItemByCreatedIsBetween(TIMESTAMP.parse("01/01/15"), TIMESTAMP.parse("12/31/15"));
 
+        System.out.println(timeBoundedItems2.size() + " items found");
     }
 }
 
