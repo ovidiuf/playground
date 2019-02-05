@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aea4d34c-6984-423e-91cb-d616f2c1ddd2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amazon-api-gateway-curl-cli" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api.config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delete" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/get" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/post" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/put" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gw" beforeDir="false" afterPath="$PROJECT_DIR$/gw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Blue.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Blue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Main.java" afterDir="false" />
     </list>
@@ -24,13 +17,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gw">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="983">
-              <caret line="114" column="100" selection-start-line="114" selection-start-column="100" selection-end-line="114" selection-end-column="100" />
+            <state relative-caret-position="1296">
+              <caret line="304" lean-forward="true" selection-start-line="304" selection-end-line="304" />
               <folding>
-                <element signature="e#295#1586#0" />
-                <element signature="e#309#441#0" />
+                <element signature="e#1711#3095#0" />
+                <element signature="e#2398#2405#0" />
                 <element signature="e#2474#2487#0" />
                 <element signature="e#2349#2353#0" />
+                <element signature="e#3240#3585#0" />
+                <element signature="e#3285#3291#0" />
+                <element signature="e#3345#3351#0" />
+                <element signature="e#3367#3373#0" />
+                <element signature="e#3388#3394#0" />
+                <element signature="e#3410#3416#0" />
+                <element signature="e#3431#3437#0" />
+                <element signature="e#3475#3481#0" />
                 <element signature="e#3433#4217#0" />
                 <element signature="e#3529#3548#0" />
                 <element signature="e#3577#3596#0" />
@@ -56,14 +57,17 @@
                 <element signature="e#6179#6183#0" />
                 <element signature="e#6201#6215#0" />
                 <element signature="e#6538#6743#0" />
-                <element signature="e#7037#7040#0" />
-                <element signature="e#7192#7211#0" />
-                <element signature="e#7102#7105#0" />
-                <element signature="e#7157#7160#0" />
-                <element signature="e#7331#7354#0" />
-                <element signature="e#7245#7248#0" />
-                <element signature="e#7387#7400#0" />
-                <element signature="e#7286#7289#0" />
+                <element signature="e#7107#7110#0" />
+                <element signature="e#7172#7175#0" />
+                <element signature="e#7227#7230#0" />
+                <element signature="e#7315#7318#0" />
+                <element signature="e#7356#7359#0" />
+                <element signature="e#7176#7182#0" />
+                <element signature="e#7196#7215#0" />
+                <element signature="e#7244#7267#0" />
+                <element signature="e#7286#7299#0" />
+                <element signature="e#7309#7313#0" />
+                <element signature="e#7744#7750#0" />
                 <element signature="e#7565#7571#0" />
                 <element signature="e#7595#7600#0" />
                 <element signature="e#7713#7717#0" />
@@ -182,12 +186,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1549389329221</updated>
-      <workItem from="1549389331938" duration="11925000" />
+      <workItem from="1549389331938" duration="12425000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11925000" />
+    <option name="totallyTimeSpent" value="12425000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1148" y="30" width="2656" height="1844" extended-state="0" />
@@ -271,13 +275,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gw">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="983">
-          <caret line="114" column="100" selection-start-line="114" selection-start-column="100" selection-end-line="114" selection-end-column="100" />
+        <state relative-caret-position="1296">
+          <caret line="304" lean-forward="true" selection-start-line="304" selection-end-line="304" />
           <folding>
-            <element signature="e#295#1586#0" />
-            <element signature="e#309#441#0" />
+            <element signature="e#1711#3095#0" />
+            <element signature="e#2398#2405#0" />
             <element signature="e#2474#2487#0" />
             <element signature="e#2349#2353#0" />
+            <element signature="e#3240#3585#0" />
+            <element signature="e#3285#3291#0" />
+            <element signature="e#3345#3351#0" />
+            <element signature="e#3367#3373#0" />
+            <element signature="e#3388#3394#0" />
+            <element signature="e#3410#3416#0" />
+            <element signature="e#3431#3437#0" />
+            <element signature="e#3475#3481#0" />
             <element signature="e#3433#4217#0" />
             <element signature="e#3529#3548#0" />
             <element signature="e#3577#3596#0" />
@@ -303,14 +315,17 @@
             <element signature="e#6179#6183#0" />
             <element signature="e#6201#6215#0" />
             <element signature="e#6538#6743#0" />
-            <element signature="e#7037#7040#0" />
-            <element signature="e#7192#7211#0" />
-            <element signature="e#7102#7105#0" />
-            <element signature="e#7157#7160#0" />
-            <element signature="e#7331#7354#0" />
-            <element signature="e#7245#7248#0" />
-            <element signature="e#7387#7400#0" />
-            <element signature="e#7286#7289#0" />
+            <element signature="e#7107#7110#0" />
+            <element signature="e#7172#7175#0" />
+            <element signature="e#7227#7230#0" />
+            <element signature="e#7315#7318#0" />
+            <element signature="e#7356#7359#0" />
+            <element signature="e#7176#7182#0" />
+            <element signature="e#7196#7215#0" />
+            <element signature="e#7244#7267#0" />
+            <element signature="e#7286#7299#0" />
+            <element signature="e#7309#7313#0" />
+            <element signature="e#7744#7750#0" />
             <element signature="e#7565#7571#0" />
             <element signature="e#7595#7600#0" />
             <element signature="e#7713#7717#0" />

@@ -11,15 +11,13 @@ cat << EOF
 
 A shell wrapper around curl that assembles and sends Amazon API Gateway requests.
 
-Usage:
+To send Amazon API Gateway requets:
 
-    Send API Gateway requests:
+    $(basename $0) [common-options] get|post|put|delete <resource-path> [json-body]
 
-        $(basename $0) [common-options] get|post|put|delete <resource-path> [json-body]
+To dump configuration:
 
-    Dump configuration:
-
-        $(basename $0) config
+    $(basename $0) config
 
 Common Options:
 
@@ -44,8 +42,8 @@ Configuration File:
 
     Several request components can be configure in a local configuration file (${CONFIGURATION_FILE_NAME}):
 
-        api_id=<api-id-value>
-        stage=<stage-name>
+    api_id=<api-id-value>
+    stage=<stage-name>
 
 Help:
 
@@ -118,7 +116,7 @@ function main() {
 
     elif [[ ${command} = "config" ]]; then
 
-        dump-config
+        dump-config "${command_line_api_id}" "${command_line_stage_name}" "${resource_path}" 
 
     else
 
@@ -266,6 +264,29 @@ function get-configuration-file() {
 }
 
 #
+# returns the request URL at stdout or return 1 on failure.
+#
+function get-url() {
+
+    debug "get-url($@)"
+
+    local command_line_api_id=$1
+    local command_line_stage_name=$2
+    local resource_path=$3
+
+    local url="https://"
+
+    url="${url}$(get-api-id ${command_line_api_id})" || return 1
+    url="${url}.execute-api.$(get-region)" || return 1
+    url="${url}.amazonaws.com/$(get-stage-name ${command_line_stage_name})" || return 1
+    url="${url}${resource_path}"
+
+    debug "returning url: ${url}"
+
+    echo ${url}
+}
+
+#
 # Assemble and execute the curl command
 #
 function execute-curl() {
@@ -282,14 +303,9 @@ function execute-curl() {
     # assemble the url
     #
 
-    local url="https://"
+    local url
 
-    url="${url}$(get-api-id ${command_line_api_id})" || return 1
-    url="${url}.execute-api.$(get-region)" || return 1
-    url="${url}.amazonaws.com/$(get-stage-name ${command_line_stage_name})" || return 1
-    url="${url}${resource_path}"
-
-    debug "url: ${url}"
+    url=$(get-url "${command_line_api_id}" "${command_line_stage_name}" "${resource_path}") || return 1
 
     #
     # assemble the -X argument
@@ -328,7 +344,17 @@ function execute-curl() {
 
 function dump-config() {
 
-    info "blah"
+    local command_line_api_id=$1
+    local command_line_stage_name=$2
+    local resource_path=$3
+
+    info ""
+    info "Configuration File:  $(get-configuration-file)"
+    info "Default API ID:      $(get-api-id)"
+    info "Default stage name:  $(get-stage-name)"
+    info "URL:                 $(get-url "${command_line_api_id}" "${command_line_stage_name}" "${resource_path}")"
+    info ""
+
 }
 
 main "$@"
