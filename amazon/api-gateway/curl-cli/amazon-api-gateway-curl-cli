@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+
+[[ -z "${SHLIB_DIR}" ]] && { echo "[error]: SHLIB_DIR not defined" 1>&2; exit 1; }
+[[ -f ${SHLIB_DIR}/std.shlib ]] && . ${SHLIB_DIR}/std.shlib || { echo "[error]: ${SHLIB_DIR}/std.shlib not found" 1>&2; exit 1; }
+
+CONFIGURATION_FILE_NAME=api.config
+
+function display-help() {
+
+cat << EOF
+
+Usage:
+
+    get|post|put|delete [common-options] <resource-path>
+
+Common Options:
+
+    --api-id=<api-id> specifies the Amazon API Gateway RestApi ID. The command line value, if specified, takes
+      precedence over the value read from the configuration file.
+
+EOF
+}
+
+function main() {
+
+    local resource_path
+    local command_line_api_id
+
+    while [[ -n "$1" ]]; do
+
+        if [[ "$1" = "-v" || "$1" = "--verbose" ]]; then
+
+            export VERBOSE=true
+
+        elif [[ "$1" = "-d" || "$1" = "--debug" ]]; then
+
+            export VERBOSE=true
+            export DEBUG=true
+
+        elif [[ "$1" = "-h" || "$1" = "--help" ]]; then
+
+            display-help
+            exit 0;
+
+        elif [[ "${1:0:9}" = "--api-id=" ]]; then
+
+            command_line_api_id=${1:9}
+
+        elif [[ -z ${resource_path} ]]; then
+
+            resource_path=$1
+
+        else
+
+            error "unknown argument: $1"
+            exit 1
+        fi
+
+        shift
+
+    done
+
+
+    [[ -z ${resource_path} ]] && { echo ""; error "no resource path provided"; echo ""; display-help; exit 1; }
+
+    #
+    # Build the curl command
+    #
+
+    debug "building URL ..."
+
+    local url="https://"
+
+    url="${url}$(get-api-id ${command_line_api_id})" || exit 1
+    url="${url}.execute-api.$(get-region)" || exit 1
+    url="${url}.amazonaws.com/$(get-stage-name)" || exit 1
+    url="${url}${resource_path}"
+
+    local method
+    method=$(get-method) || exit 1
+
+    local curl_X_arg
+    [[ ${method} != "GET" ]] && curl_X_arg="-X ${method} "
+
+    local curl_command
+
+    curl_command="curl -v ${curl_X_arg}${url}" || exit 1
+
+    echo "${curl_command}"
+
+    ${curl_command}
+}
+
+#
+# returns the normalized HTTP method name at stdout, or fails (returns 1) if no method name cannot be inferred
+#
+function get-method() {
+
+    if [[ $(basename $0) = "get" ]]; then
+
+        echo "GET"
+
+    elif [[ $(basename $0) = "post" ]]; then
+
+        echo "POST"
+
+    elif [[ $(basename $0) = "put" ]]; then
+
+        echo "PUT"
+
+    elif [[ $(basename $0) = "delete" ]]; then
+
+        echo "DELETE"
+
+    else
+        error "cannot convert $0 into a known HTTP method name"
+        return 1
+    fi
+}
+
+#
+# returns the Amazon API Gateway REST API ID from various configuration sources (configuration file, command line, etc.)
+# or fails (returns 1) if the API ID cannot be inferred.
+#
+function get-api-id() {
+
+    debug "get-api-id($@)"
+
+    local command_line_api_id=$1 # may be empty
+
+    if [[ -n "${command_line_api_id}" ]]; then
+
+        echo "${command_line_api_id}"
+
+    else
+
+        #
+        # attempt to read it from the config file, and fail if not found
+        #
+
+        local parameter_name="api_id"
+
+        debug "get-api-id() attempts to read API ID from configuration file ..."
+
+        local api_id_from_config_file
+
+        api_id_from_config_file=$(read-from-config-file ${parameter_name}) || warn "${parameter_name} not found in configuration file"
+
+        [[ -z ${api_id_from_config_file} ]] && { error "no API ID specified, configure it in $(get-configuration-file) or use --api-id= on command line"; return 1; }
+
+        echo "${api_id_from_config_file}"
+    fi
+}
+
+#
+# returns the Amazon AWS region from various configuration sources (configuration file, command line, etc.)
+# or fails (returns 1) if the region cannot be inferred.
+#
+function get-region() {
+
+    echo "us-west-2"
+}
+
+#
+# returns the Amazon API Gateway stage name from various configuration sources (configuration file, command line, etc.)
+# or fails (returns 1) if the stage name cannot be inferred.
+#
+function get-stage-name() {
+
+    echo "v1"
+}
+
+#
+# returns the value of the configuration parameter whose name is specified as the first argument at stdout or empty
+# string if not found. Fails (returns 1) if the configuration file is not found or cannot be read
+#
+function read-from-config-file() {
+
+    debug "read-from-config-file($@)"
+
+    local parameter_name=$1
+
+    local config_file
+
+    config_file=$(get-configuration-file) || return 1
+
+    debug "read-from-config-file() configuration file: ${config_file}"
+
+    local line
+
+    line=$(cat ${config_file} | grep "${parameter_name}") || { debug "${parameter_name} not found in ${config_file}"; return 1; }
+
+    debug "line: ${line}"
+
+    local value
+
+    value=$(echo ${line} | sed -e 's/^'${parameter_name}'=//') || return 1
+
+    [[ -z "${value}" ]] && { error "configuration parameter ${parameter_name} not found in ${config_file}"; return 1; }
+
+    echo ${value}
+}
+
+#
+# returns the name of the configuration file at stdout. The file must exist and must be readable, otherwise
+# the method fails (returns 1)
+#
+function get-configuration-file() {
+
+    debug "get-configuration-file($@)"
+
+    [[ -f "${CONFIGURATION_FILE_NAME}" ]] || { error "configuration file ${CONFIGURATION_FILE_NAME} not found"; return 1; }
+
+    echo ${CONFIGURATION_FILE_NAME}
+}
+
+main "$@"
