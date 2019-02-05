@@ -1,0 +1,334 @@
+#!/usr/bin/env bash
+
+[[ -z "${SHLIB_DIR}" ]] && { echo "[error]: SHLIB_DIR not defined" 1>&2; exit 1; }
+[[ -f ${SHLIB_DIR}/std.shlib ]] && . ${SHLIB_DIR}/std.shlib || { echo "[error]: ${SHLIB_DIR}/std.shlib not found" 1>&2; exit 1; }
+
+CONFIGURATION_FILE_NAME=gw.config
+
+function display-help() {
+
+cat << EOF
+
+A shell wrapper around curl that assembles and sends Amazon API Gateway requests.
+
+Usage:
+
+    Send API Gateway requests:
+
+        $(basename $0) [common-options] get|post|put|delete <resource-path> [json-body]
+
+    Dump configuration:
+
+        $(basename $0) config
+
+Common Options:
+
+    -v|--verbose: turns on the logging verbosity of the shell wrapper.
+
+    --api-id=<api-id> specifies the Amazon API Gateway RestApi ID. If specified on command line, the value
+      takes precedence over the value read from the configuration file. API ID can be configured in the
+      configuration file with "api_id=<api-id-value>"
+
+    --stage=<stage-name> specifies the Amazon API Gateway Stage name. If specified on command line, the
+      value takes precedence over the value read from the configuration file. Stage name can be configured
+      in the configuration file with "stage=<stage-name-value>"
+
+JSON Body:
+
+    Optionally, a fully-formed JSON body can be provided on the command line. It must be enclosed in
+    single-quotes as shown below:
+
+        post /items '{"id": "23ds23d", "size": 5, "color": "blue"}'
+
+Configuration File:
+
+    Several request components can be configure in a local configuration file (${CONFIGURATION_FILE_NAME}):
+
+        api_id=<api-id-value>
+        stage=<stage-name>
+
+Help:
+
+    This help can be obtained with get|post|put|delete -h|--help
+
+
+EOF
+}
+
+function main() {
+
+    local command
+    local body
+    local resource_path
+    local command_line_api_id
+    local command_line_stage_name
+
+    while [[ -n "$1" ]]; do
+
+        if [[ "$1" = "-v" || "$1" = "--verbose" ]]; then
+
+            export VERBOSE=true
+
+        elif [[ "$1" = "-d" || "$1" = "--debug" ]]; then
+
+            export VERBOSE=true
+            export DEBUG=true
+
+        elif [[ "$1" = "-h" || "$1" = "--help" ]]; then
+
+            display-help
+            exit 0;
+
+        elif [[ "${1:0:9}" = "--api-id=" ]]; then
+
+            command_line_api_id=${1:9}
+
+        elif [[ "${1:0:8}" = "--stage=" ]]; then
+
+            command_line_stage_name=${1:8}
+
+        elif [[ -z ${command} ]]; then
+
+            command=$1
+
+        elif [[ -z ${resource_path} ]]; then
+
+            resource_path=$1
+
+        elif [[ -z ${body} ]]; then
+
+            body=$1
+
+        else
+
+            error "unknown argument: $1"
+            exit 1
+        fi
+
+        shift
+
+    done
+
+    [[ -z ${command} ]] && { display-help; exit 1; }
+
+
+    if [[ ${command} = "get" ||  ${command} = "put" ||  ${command} = "post" ||  ${command} = "delete" ]]; then
+
+        execute-curl ${command} "${command_line_api_id}" "${command_line_stage_name}" "${resource_path}" "${body}" || exit 1
+
+    elif [[ ${command} = "config" ]]; then
+
+        dump-config
+
+    else
+
+        error "unknown command: ${command}"
+    fi
+}
+
+#
+# returns the normalized HTTP method name at stdout, or fails (returns 1) if no method name cannot be inferred
+#
+function normalize-http-method() {
+
+    local method=$1
+
+    # this only works with the GNU sed
+
+    method=$(echo "${method}" | sed -e 's/^\(.*\)$/\U\1/')
+
+    debug "method: ${method}"
+
+    if [[ ${method} = "GET" || ${method} = "POST" || ${method} = "PUT" || ${method} = "DELETE" ]]; then
+
+        echo ${method}
+
+    else
+
+        error "cannot convert $1 into a known HTTP method name (is GNU sed installed on the system?)"
+        return 1
+    fi
+}
+
+#
+# returns the Amazon API Gateway REST API ID from various configuration sources (configuration file, command line, etc.)
+# or fails (returns 1) if the API ID cannot be inferred.
+#
+function get-api-id() {
+
+    debug "get-api-id($@)"
+
+    local command_line_api_id=$1 # may be empty
+
+    if [[ -n "${command_line_api_id}" ]]; then
+
+        echo "${command_line_api_id}"
+
+    else
+
+        #
+        # attempt to read it from the config file, and fail if not found
+        #
+
+        local parameter_name="api_id"
+
+        debug "get-api-id() attempts to read API ID from configuration file ..."
+
+        local api_id_from_config_file
+
+        api_id_from_config_file=$(read-from-config-file ${parameter_name}) || warn "${parameter_name} not found in configuration file"
+
+        [[ -z ${api_id_from_config_file} ]] && { error "no API ID specified, configure it in $(get-configuration-file) or use --api-id= on command line"; return 1; }
+
+        echo "${api_id_from_config_file}"
+    fi
+}
+
+#
+# returns the Amazon AWS region from various configuration sources (configuration file, command line, etc.)
+# or fails (returns 1) if the region cannot be inferred.
+#
+function get-region() {
+
+    echo "us-west-2"
+}
+
+#
+# returns the Amazon API Gateway stage name from various configuration sources (configuration file, command line, etc.)
+# or fails (returns 1) if the stage name cannot be inferred.
+#
+function get-stage-name() {
+
+    debug "get-stage-name($@)"
+
+    local command_line_stage_name=$1 # may be empty
+
+    if [[ -n "${command_line_stage_name}" ]]; then
+
+        echo "${command_line_stage_name}"
+
+    else
+
+        #
+        # attempt to read it from the config file, and fail if not found
+        #
+
+        local parameter_name="stage"
+
+        debug "get-stage-name() attempts to read the stage name from configuration file ..."
+
+        local stage_name_from_config_file
+
+        stage_name_from_config_file=$(read-from-config-file ${parameter_name}) || warn "${parameter_name} not found in configuration file"
+
+        [[ -z ${stage_name_from_config_file} ]] && { error "no stage name specified, configure it in $(get-configuration-file) or use --stage= on command line"; return 1; }
+
+        echo "${stage_name_from_config_file}"
+    fi
+}
+
+#
+# returns the value of the configuration parameter whose name is specified as the first argument at stdout or empty
+# string if not found. Fails (returns 1) if the configuration file is not found or cannot be read
+#
+function read-from-config-file() {
+
+    debug "read-from-config-file($@)"
+
+    local parameter_name=$1
+
+    local config_file
+
+    config_file=$(get-configuration-file) || return 1
+
+    debug "read-from-config-file() configuration file: ${config_file}"
+
+    local line
+
+    line=$(cat ${config_file} | grep "${parameter_name}") || { debug "${parameter_name} not found in ${config_file}"; return 1; }
+
+    debug "line: ${line}"
+
+    echo ${line} | sed -e 's/^'${parameter_name}'=//'
+}
+
+#
+# returns the name of the configuration file at stdout. The file must exist and must be readable, otherwise
+# the method fails (returns 1)
+#
+function get-configuration-file() {
+
+    debug "get-configuration-file($@)"
+
+    [[ -f "${CONFIGURATION_FILE_NAME}" ]] || { error "configuration file ${CONFIGURATION_FILE_NAME} not found"; return 1; }
+
+    echo ${CONFIGURATION_FILE_NAME}
+}
+
+#
+# Assemble and execute the curl command
+#
+function execute-curl() {
+
+    local method=$1
+    local command_line_api_id=$2
+    local command_line_stage_name=$3
+    local resource_path=$4
+    local body=$5
+
+    debug "execute-curl(method=${method}, command_line_api_id=${command_line_api_id}, command_line_stage_name=${command_line_stage_name}, resource_path=${resource_path}, body=${body})"
+
+    #
+    # assemble the url
+    #
+
+    local url="https://"
+
+    url="${url}$(get-api-id ${command_line_api_id})" || return 1
+    url="${url}.execute-api.$(get-region)" || return 1
+    url="${url}.amazonaws.com/$(get-stage-name ${command_line_stage_name})" || return 1
+    url="${url}${resource_path}"
+
+    debug "url: ${url}"
+
+    #
+    # assemble the -X argument
+    #
+
+    local X_arg
+    method=$(normalize-http-method ${method}) || return 1
+    local X_arg="-X ${method}"
+
+    debug "X_arg: ${X_arg}"
+
+    #
+    # If there is a body, write the body into a local file
+    #
+
+    local body_args
+
+    if [[ -n "${body}" ]]; then
+
+        echo "${body}" > ./${method}-body.json
+        body_args="--data-binary @./${method}-body.json"
+
+        debug "body_args: ${body_args}"
+    fi
+
+    info
+    info
+    info curl -v ${X_arg} -H "Content-Type: application/json" ${url} ${body_args}
+    info
+    info
+
+    curl -v ${X_arg} -H "Content-Type: application/json" ${url} ${body_args}
+
+    info
+}
+
+function dump-config() {
+
+    info "blah"
+}
+
+main "$@"

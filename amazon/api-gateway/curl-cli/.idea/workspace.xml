@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aea4d34c-6984-423e-91cb-d616f2c1ddd2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amazon-api-gateway-curl-cli" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/delete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/get" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/post" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/put" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Blue.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Blue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../main/src/main/java/io/novaordis/playground/Main.java" afterDir="false" />
     </list>
@@ -15,10 +22,69 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/amazon-api-gateway-curl-cli">
+        <entry file="file://$PROJECT_DIR$/gw">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="859">
-              <caret line="144" column="76" selection-start-line="144" selection-start-column="76" selection-end-line="144" selection-end-column="76" />
+            <state relative-caret-position="983">
+              <caret line="114" column="100" selection-start-line="114" selection-start-column="100" selection-end-line="114" selection-end-column="100" />
+              <folding>
+                <element signature="e#295#1586#0" />
+                <element signature="e#309#441#0" />
+                <element signature="e#2474#2487#0" />
+                <element signature="e#2349#2353#0" />
+                <element signature="e#3433#4217#0" />
+                <element signature="e#3529#3548#0" />
+                <element signature="e#3577#3596#0" />
+                <element signature="e#3922#3936#0" />
+                <element signature="e#3950#3964#0" />
+                <element signature="e#4016#4039#0" />
+                <element signature="e#4183#4206#0" />
+                <element signature="e#4410#4435#0" />
+                <element signature="e#4648#5478#0" />
+                <element signature="e#4752#4775#0" />
+                <element signature="e#4804#4827#0" />
+                <element signature="e#5172#5186#0" />
+                <element signature="e#5200#5214#0" />
+                <element signature="e#5266#5293#0" />
+                <element signature="e#5440#5467#0" />
+                <element signature="e#5773#6363#0" />
+                <element signature="e#5979#5990#0" />
+                <element signature="e#6027#6038#0" />
+                <element signature="e#6050#6064#0" />
+                <element signature="e#6082#6096#0" />
+                <element signature="e#6113#6124#0" />
+                <element signature="e#6160#6164#0" />
+                <element signature="e#6179#6183#0" />
+                <element signature="e#6201#6215#0" />
+                <element signature="e#6538#6743#0" />
+                <element signature="e#7037#7040#0" />
+                <element signature="e#7192#7211#0" />
+                <element signature="e#7102#7105#0" />
+                <element signature="e#7157#7160#0" />
+                <element signature="e#7331#7354#0" />
+                <element signature="e#7245#7248#0" />
+                <element signature="e#7387#7400#0" />
+                <element signature="e#7286#7289#0" />
+                <element signature="e#7565#7571#0" />
+                <element signature="e#7595#7600#0" />
+                <element signature="e#7713#7717#0" />
+                <element signature="e#7746#7750#0" />
+                <element signature="e#7759#7765#0" />
+                <element signature="e#7815#7821#0" />
+                <element signature="e#7863#7872#0" />
+                <element signature="e#7920#7925#0" />
+                <element signature="e#7829#7832#0" />
+                <element signature="e#8016#8021#0" />
+                <element signature="e#7925#7928#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gw.config">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="1" lean-forward="true" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -37,6 +103,14 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>get-method</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>normalize-http-method</replace>
+    </replaceStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
@@ -44,15 +118,18 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/api.config" />
         <option value="$PROJECT_DIR$/amazon-api-gateway-curl-cli" />
+        <option value="$PROJECT_DIR$/gw.config" />
+        <option value="$PROJECT_DIR$/gw" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1045" />
-    <option name="y" value="72" />
-    <option name="width" value="2759" />
-    <option name="height" value="1802" />
+    <option name="x" value="1148" />
+    <option name="y" value="30" />
+    <option name="width" value="2656" />
+    <option name="height" value="1844" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -105,15 +182,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1549389329221</updated>
-      <workItem from="1549389331938" duration="6176000" />
+      <workItem from="1549389331938" duration="11925000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6176000" />
+    <option name="totallyTimeSpent" value="11925000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1045" y="72" width="2759" height="1802" extended-state="0" />
+    <frame x="1148" y="30" width="2656" height="1844" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
@@ -121,7 +198,7 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32388663" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2800306" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -149,6 +226,9 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.config" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
@@ -162,8 +242,87 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/amazon-api-gateway-curl-cli">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="859">
-          <caret line="144" column="76" selection-start-line="144" selection-start-column="76" selection-end-line="144" selection-end-column="76" />
+        <state relative-caret-position="60">
+          <caret line="94" column="18" lean-forward="true" selection-start-line="94" selection-start-column="18" selection-end-line="94" selection-end-column="18" />
+          <folding>
+            <element signature="n#!!block;n#get-method#0" />
+            <element signature="n#!!block;n#get-api-id#0" />
+            <element signature="n#!!block;n#get-region#0" />
+            <element signature="e#4683#5497#0" />
+            <element signature="n#!!block;n#read-from-config-file#0" />
+            <element signature="n#!!block;n#get-configuration-file#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api.config">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gw.config">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="1" lean-forward="true" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="983">
+          <caret line="114" column="100" selection-start-line="114" selection-start-column="100" selection-end-line="114" selection-end-column="100" />
+          <folding>
+            <element signature="e#295#1586#0" />
+            <element signature="e#309#441#0" />
+            <element signature="e#2474#2487#0" />
+            <element signature="e#2349#2353#0" />
+            <element signature="e#3433#4217#0" />
+            <element signature="e#3529#3548#0" />
+            <element signature="e#3577#3596#0" />
+            <element signature="e#3922#3936#0" />
+            <element signature="e#3950#3964#0" />
+            <element signature="e#4016#4039#0" />
+            <element signature="e#4183#4206#0" />
+            <element signature="e#4410#4435#0" />
+            <element signature="e#4648#5478#0" />
+            <element signature="e#4752#4775#0" />
+            <element signature="e#4804#4827#0" />
+            <element signature="e#5172#5186#0" />
+            <element signature="e#5200#5214#0" />
+            <element signature="e#5266#5293#0" />
+            <element signature="e#5440#5467#0" />
+            <element signature="e#5773#6363#0" />
+            <element signature="e#5979#5990#0" />
+            <element signature="e#6027#6038#0" />
+            <element signature="e#6050#6064#0" />
+            <element signature="e#6082#6096#0" />
+            <element signature="e#6113#6124#0" />
+            <element signature="e#6160#6164#0" />
+            <element signature="e#6179#6183#0" />
+            <element signature="e#6201#6215#0" />
+            <element signature="e#6538#6743#0" />
+            <element signature="e#7037#7040#0" />
+            <element signature="e#7192#7211#0" />
+            <element signature="e#7102#7105#0" />
+            <element signature="e#7157#7160#0" />
+            <element signature="e#7331#7354#0" />
+            <element signature="e#7245#7248#0" />
+            <element signature="e#7387#7400#0" />
+            <element signature="e#7286#7289#0" />
+            <element signature="e#7565#7571#0" />
+            <element signature="e#7595#7600#0" />
+            <element signature="e#7713#7717#0" />
+            <element signature="e#7746#7750#0" />
+            <element signature="e#7759#7765#0" />
+            <element signature="e#7815#7821#0" />
+            <element signature="e#7863#7872#0" />
+            <element signature="e#7920#7925#0" />
+            <element signature="e#7829#7832#0" />
+            <element signature="e#8016#8021#0" />
+            <element signature="e#7925#7928#0" />
+          </folding>
         </state>
       </provider>
     </entry>
