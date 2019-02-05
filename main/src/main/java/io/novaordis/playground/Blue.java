@@ -16,5 +16,16 @@
 
 package io.novaordis.playground;
 
-public class Blue {
+public class Blue<T> {
+
+    private T[] storage;
+
+    public Blue() {
+
+        this.storage = new T[100];
+
+
+    }
+
+
 }
