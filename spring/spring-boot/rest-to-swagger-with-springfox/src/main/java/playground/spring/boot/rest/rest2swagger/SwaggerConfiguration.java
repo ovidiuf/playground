@@ -55,7 +55,7 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Docket aApi() {
+    public Docket swaggerSpecification() {
 
         Docket docket = new Docket(DocumentationType.SWAGGER_2);
 
