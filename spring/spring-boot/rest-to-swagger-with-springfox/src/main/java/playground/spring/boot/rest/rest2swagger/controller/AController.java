@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Ovidiu Feodorov <ofeodorov@uplift.com>
+ * @author Ovidiu Feodorov <ofeodorov@feodorov.com>
  * @since 2019-02-14
  */
 @RestController

@@ -39,7 +39,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 /**
- * @author Ovidiu Feodorov <ofeodorov@uplift.com>
+ * @author Ovidiu Feodorov <ofeodorov@feodorov.com>
  * @since 2019-02-14
  */
 @Configuration
@@ -137,16 +137,6 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
                 build();
     }
 
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
     @Bean
     UiConfiguration uiConfig() {
 
@@ -166,6 +156,20 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
                 supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS).
                 validatorUrl(null).
                 build();
+    }
+
+    //
+    // this is needed for UI support
+    //
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 }
