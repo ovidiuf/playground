@@ -6,7 +6,7 @@ Code to explore swagger-parser and swagger-core.
 
 # NOKB
 
-NOKB: [NOKB Swagger Concepts - Vendor Extensions](https://kb.novaordis.com/index.php/Swagger_Concepts#Vendor_Extensions).
+[NOKB Swagger Concepts - Vendor Extensions](https://kb.novaordis.com/index.php/Swagger_Concepts#Vendor_Extensions).
 
 # Build and Run
 
