@@ -13,5 +13,5 @@ public class JsonExamples {
 
         return Json.mapper().writeValueAsString(swagger);
     }
-    
+
 }

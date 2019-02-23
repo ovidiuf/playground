@@ -23,7 +23,5 @@ public class Main {
 
         String s = JsonExamples.convertToJsonString(swagger);
         System.out.println(s);
-
-
     }
 }
