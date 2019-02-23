@@ -1,0 +1,77 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "themyscira"
+  },
+
+
+
+
+  "host": "bc67pgnscj.execute-api.us-west-2.amazonaws.com",
+  "basePath": "/themyscira",
+  "schemes": [
+    "https"
+  ],
+
+  "paths": {
+
+    "/inhabitants": {
+
+      "get": {
+
+
+
+
+        "operationId": "getUsingGET",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "schema": {
+              "$ref": "#/definitions/ArrayOfInhabitant"
+            }
+          },
+
+
+
+          "401": {
+            "description": "401 response"
+          },
+          "403": {
+            "description": "403 response"
+          },
+          "404": {
+            "description": "404 response"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": "http://playground-nlb-95d74901c7b728b1.elb.us-west-2.amazonaws.com:10001/inhabitants",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http_proxy"
+        }
+      }
+    }
+  },
+  "definitions": {
+
+    "Inhabitant": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "Inhabitant"
+    },
+    "ArrayOfInhabitant": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Inhabitant"
+      }
+    }
+  }
+}

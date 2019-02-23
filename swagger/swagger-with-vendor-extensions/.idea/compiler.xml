@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="swagger-with-vendor-extensions.main" target="1.10" />
+      <module name="swagger-with-vendor-extensions.test" target="1.10" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
