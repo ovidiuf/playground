@@ -7,12 +7,11 @@
 
 apply plugin: 'java'
 
-
 task printClasspath {
 
-        doLast {
-            configurations.runtimeClasspath.each { print it; print ':' }
-        }
+    doLast {
+        configurations.runtimeClasspath.each { print it; print ':' }
+    }
 }
 
 repositories {
@@ -22,7 +21,7 @@ repositories {
 
 dependencies {
 
-    compileOnly('org.slf4j:slf4j-api:1.7.6')
+    implementation('org.slf4j:slf4j-api:1.7.6')
     implementation('org.slf4j:slf4j-log4j12:1.7.6')
     implementation "io.swagger:swagger-parser:1.0.42"
     implementation "io.swagger:swagger-parser:1.0.42:sources"

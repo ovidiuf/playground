@@ -1,7 +1,6 @@
 package playground.swagger;
 
 import io.swagger.models.Swagger;
-import io.swagger.parser.SwaggerParser;
 import io.swagger.util.Json;
 
 import java.io.File;
@@ -18,20 +17,16 @@ public class Main {
 
         String filePath = args[0];
 
-        final SwaggerParser parser = new SwaggerParser();
+        AmazonAPIGatewaySpecificationBuilder amazonSpecBuilder = new AmazonAPIGatewaySpecificationBuilder();
 
-        Swagger original = parser.read(filePath);
+        Swagger amazonSwagger =
+                amazonSpecBuilder.
+                        withSwaggerFile(new File(filePath)).
+                        withIntegrationEndpoint("http://playground-nlb-95d74901c7b728b1.elb.us-west-2.amazonaws.com:10001").
+                        withTitle("themyscira").
+                        withDescription("Themyscira API").
+                        build();
 
-        //
-        // write the original
-        //
-
-        Files.write(new File("./processed-original.json").toPath(), Json.pretty(original).getBytes());
-
-        AmazonAPIGatewayExtensionManager em = new AmazonAPIGatewayExtensionManager();
-
-        Swagger withVendorExtensions = em.applyExtensions(original);
-
-        Files.write(new File("./with-vendor-extensions.json").toPath(), Json.pretty(withVendorExtensions).getBytes());
+        Files.write(new File("./with-vendor-extensions.json").toPath(), Json.pretty(amazonSwagger).getBytes());
     }
 }
