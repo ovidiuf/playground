@@ -18,8 +18,10 @@ public class Main {
 
         Swagger swagger = parser.read(filePath);
 
-        String s = YamlExamples.convertToYamlString(swagger);
+//        String s = YamlExamples.convertToYamlString(swagger);
+//        System.out.println(s);
 
+        String s = JsonExamples.convertToJsonString(swagger);
         System.out.println(s);
 
 
