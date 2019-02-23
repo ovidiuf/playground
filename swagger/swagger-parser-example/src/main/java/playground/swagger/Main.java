@@ -18,6 +18,10 @@ public class Main {
 
         Swagger swagger = parser.read(filePath);
 
-        System.out.println(swagger);
+        String s = YamlExamples.convertToYamlString(swagger);
+
+        System.out.println(s);
+
+
     }
 }
