@@ -7,10 +7,27 @@
 
 apply plugin: 'java'
 
+repositories {
 
-task printClasspath {
-        doLast {
-            configurations.runtimeClasspath.each { print it; print ':' }
-        }
+    mavenCentral()
 }
 
+dependencies {
+
+    // SDK 1
+    //implementation 'com.amazonaws:aws-java-sdk-lambda:1.11.509'
+
+    // This is required for integration with API Gateway
+    compile 'com.amazonaws:aws-lambda-java-events:2.2.5'
+    compile 'com.amazonaws:aws-lambda-java-core:1.2.0'
+
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
+jar {
+
+    from {
+
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
