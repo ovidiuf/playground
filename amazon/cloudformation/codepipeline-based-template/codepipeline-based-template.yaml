@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "Template to create infrastructure for CodePipeline-driven services. A GitHub project hosting such a service
+              should describe its build process as a CodeBuild buildspec file, named by default project-buildspec.yml. The
+              buildspec file must be present in the root directory. The project must also describe its resource needs
+              as a CodeFormation template, named by default project-cloudformation-template.yml. The CloudFormation
+              template file should be present in the root directory."
+
+Parameters:
+  GitHubRepository:
+    Type: String
+    Description: "The GitHub repository that hosts the code for this project. Strictly the repository name should be provided, https://github.com/my-example-org/ is implied"
+  Branch:
+    Type: String
+    Default: master
+    Description: "The GitHub branch of the repository to pull from."
+  Runtime:
+    Type: String
+    Default: java
+    AllowedValues:
+      - java
+    Description: "The runtime of this component"
+  EnvironmentType:
+    Type: String
+    Default: test
+    Description: "The environment type (prod, stage, qa, test, etc.). Some environment types require human approval for transition between some stages"
+  DeploymentStackName:
+    Type: String
+    Description: "The already deployed stack to deploy into, should have things like Networking and other setup"
+  Buildspec:
+    Type: String
+    Default: project-buildspec.yml
+    Description: "The name of the buildspec file that should be present in the root of the repository."
+  ServiceTemplate:
+    Type: String
+    Default: project-cloudformation-template.yml
+    Description: "The CloudFormation template file that should be present in the root of the repository."
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "GitHub Source Repository"
+        Parameters:
+          - GitHubRepository
+          - Branch
+          - Runtime
+      - Label:
+          default: "Deployment Details"
+        Parameters:
+          - EnvironmentType
+          - DeploymentStackName
+      - Label:
+          default: "Overrides"
+        Parameters:
+          - Buildspec
+          - ServiceTemplate
+    ParameterLabels:
+      EnvironmentType:
+        default: "Environment Type"
+      DeploymentStackName:
+        default: "CloudFormation Deployment Target Stack"
+      Buildspec:
+        default: "CodeBuild Buildspec Filename"
+      ServiceTemplate:
+        default: "CloudFormation Service Template Filename"
+
+Conditions:
+  AutoDeploy:
+    !Not [!Equals [!Ref EnvironmentType, "prod"]]
+
+Mappings:
+  RuntimeDependentValues:
+    java:
+      ImageType: 'aws/codebuild/java:openjdk-8'
+    python:
+      ImageType: 'aws/codebuild/python:2.7.12'
+
+Resources:
+
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Join ['-', !Split ['.', !Ref GitHubRepository]]
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: !Ref AWS::StackName
+      ServiceRole:
+        Fn::ImportValue: !Sub '${AWS::Region}-CodeBuildServiceRole'
+      Artifacts:
+        Type: S3
+        NamespaceType: NONE
+        Packaging: NONE
+        Location:
+          Fn::ImportValue: !Sub '${AWS::Region}-BuildBucket'
+        Name: !Join ['_', [!Sub '${AWS::Region}', !Join ['_', !Split ['.', !Ref GitHubRepository]]]]
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: !FindInMap ['RuntimeDependentValues', !Ref Runtime, 'ImageType']
+        PrivilegedMode: true
+        EnvironmentVariables:
+          - Name: TARGET_BUCKET
+            Value:
+              Fn::ImportValue: !Sub '${AWS::Region}-BuildBucket'
+          - Name: REPOSITORY_URI
+            Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepository}
+          - Name: SVC_TEMPLATE
+            Value: !Ref ServiceTemplate
+          - Name: ENV
+            Value: !Ref EnvironmentType
+      Source:
+        Type: GITHUB
+        Location:
+          Fn::Join: ['',['https://github.com/example/', !Ref GitHubRepository, '.git']]
+        Auth:
+          Type: OAUTH
+        BuildSpec: !Ref Buildspec
+      TimeoutInMinutes: 20
