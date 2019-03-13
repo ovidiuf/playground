@@ -1,11 +1,22 @@
 package playground.spring.rest.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class A {
 
-    private final int id;
-    private final String name;
-    private final int size;
+    private Integer id;
+    private String name;
+    private Integer size;
+
+    /**
+     * Ignore the ID.
+     */
+    public void updateFrom(A a) {
+
+        setName(a.getName());
+        setSize(a.getSize());
+    }
 }

@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
-curl -v http://localhost:8080/a
+id=$1
+
+if [[ -z ${id} ]]; then
+
+    curl -v http://localhost:8080/a
+
+else
+
+    curl -v http://localhost:8080/a/${id}
+
+fi
 
 echo ""

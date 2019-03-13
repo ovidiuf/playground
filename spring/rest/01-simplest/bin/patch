@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+ID=1
+
+curl -v -X PATCH \
+ -H "Content-Type: application/json" \
+ -d '{"id":1000, "name":"brown", "size":99}' \
+ http://localhost:8080/a/${ID}
+
+echo ""

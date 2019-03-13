@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+ID=2
+
+curl -v -X PUT \
+ -H "Content-Type: application/json" \
+ -d '{"id":1000, "name":"yellow", "size":77}' \
+ http://localhost:8080/a/${ID}
+
+echo ""
