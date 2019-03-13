@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+curl -v -X POST \
+ -H "Content-Type: application/json" \
+ -d '{"id":3, "name":"yellow", "size":77}' \
+ http://localhost:8080/a
+
+echo ""
