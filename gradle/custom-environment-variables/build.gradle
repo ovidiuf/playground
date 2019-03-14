@@ -12,10 +12,18 @@ ext {
     projectExtPropertyInformedByEnvironmentVariable = "default value"
 
     String s = System.getenv("CUSTOM_ENVIRONMENT_VARIABLE");
-    if (s != null) {
 
-        projectExtPropertyInformedByEnvironmentVariable = s;
+    if (s == null) {
+
+        throw new InvalidUserDataException("this Gradle build needs 'CUSTOM_ENVIRONMENT_VARIABLE' environment variable to be defined and meaningful, but the variable was not found in the environment!");
     }
+
+    projectExtPropertyInformedByEnvironmentVariable = s;
+    
+//    if (s != null) {
+//
+//        projectExtPropertyInformedByEnvironmentVariable = s;
+//    }
 }
 
 task printClasspath {
