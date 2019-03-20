@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="passing-configuration-on-command-line.main" target="1.10" />
+      <module name="passing-configuration-on-command-line.test" target="1.10" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

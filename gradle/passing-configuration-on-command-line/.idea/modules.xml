@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/passing-configuration-on-command-line.iml" filepath="$PROJECT_DIR$/passing-configuration-on-command-line.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/passing-configuration-on-command-line.main.iml" filepath="$PROJECT_DIR$/.idea/modules/passing-configuration-on-command-line.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/passing-configuration-on-command-line.test.iml" filepath="$PROJECT_DIR$/.idea/modules/passing-configuration-on-command-line.test.iml" />
+    </modules>
+  </component>
+</project>
