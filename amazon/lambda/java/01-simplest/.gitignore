@@ -16,6 +16,9 @@ target
 .idea/**/shelf
 .idea/**/libraries
 .idea/**/gradle.xml
+.idea/modules/Playground_Simplest_Java_Lambda.main.iml
+.idea/modules/Playground_Simplest_Java_Lambda.test.iml
+
 out/
 
 # Mac

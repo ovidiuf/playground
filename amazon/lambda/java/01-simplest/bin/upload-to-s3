@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+aws s3 cp "$(dirname $0)/../build/libs/Playground Simplest Java Lambda.jar" s3://ovidiu-experiments
