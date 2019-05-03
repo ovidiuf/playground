@@ -6,6 +6,8 @@
  */
 
 apply plugin: 'java'
+apply plugin: 'application'
+mainClassName = "playground.b.Main"
 
 
 task printClasspath {
