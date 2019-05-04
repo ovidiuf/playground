@@ -6,7 +6,19 @@
  */
 
 apply plugin: 'java'
+apply plugin: 'application'
 
+mainClassName = "playground.c.Main"
+
+repositories {
+
+    mavenLocal()
+}
+
+dependencies {
+
+    implementation 'playground.b:b:1.0'
+}
 
 task printClasspath {
         doLast {

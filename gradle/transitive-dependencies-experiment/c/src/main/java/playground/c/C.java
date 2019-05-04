@@ -5,4 +5,10 @@ package playground.c;
  * @since 05/03/2019
  */
 public class C {
+
+    @Override
+    public String toString() {
+
+        return "C";
+    }
 }

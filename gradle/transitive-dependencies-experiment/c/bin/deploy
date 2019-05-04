@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+[[ -f ~/tmp/c.zip ]] && rm ~/tmp/c.zip
+[[ -d ~/tmp/c ]] && rm -r ~/tmp/c
+unzip $(dirname $0)/../build/distributions/c.zip -d ~/tmp
+
+
