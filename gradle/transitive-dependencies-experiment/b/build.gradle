@@ -7,7 +7,36 @@
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'maven-publish'
+
 mainClassName = "playground.b.Main"
+
+repositories {
+    
+    mavenLocal()
+}
+
+dependencies {
+
+    implementation 'playground.a:a:1.0'
+}
+
+publishing {
+
+    repositories {
+
+        mavenLocal()
+    }
+
+    publications {
+        javacomp(MavenPublication) {
+            groupId 'playground.b'
+            artifactId 'b'
+            version '1.0'
+            from components.java
+        }
+    }
+}
 
 
 task printClasspath {
