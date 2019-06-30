@@ -2,6 +2,8 @@ package playground.consistent.hashing.impl.client;
 
 import playground.consistent.hashing.Client;
 import playground.consistent.hashing.ClusterAddress;
+import playground.consistent.hashing.NodeAddress;
+import playground.consistent.hashing.impl.UserErrorException;
 import playground.consistent.hashing.impl.clustermanager.ClusterManager;
 import playground.consistent.hashing.impl.SameAddressSpaceReferenceClusterAddress;
 import playground.consistent.hashing.impl.clustermanager.ClusterView;
@@ -12,18 +14,18 @@ import playground.consistent.hashing.impl.clustermanager.ClusterView;
  */
 public class SameAddressSpaceClient<K, V> implements Client<K, V> {
 
-    private ClusterManager clusterManager;
+    private ClusterAddress clusterAddress;
 
-    private int cachedClusterVersion;
+    private ClusterView<K> cachedClusterView;
 
     @Override
     public void connect(ClusterAddress ca) {
 
-        this.clusterManager = ((SameAddressSpaceReferenceClusterAddress)ca).getClusterManager();
+        this.clusterAddress = ca;
 
         updateClusterView();
 
-        System.out.println(this + " has connected to " + clusterManager);
+        System.out.println(this + " has connected to " + ca);
     }
 
     @Override
@@ -31,7 +33,20 @@ public class SameAddressSpaceClient<K, V> implements Client<K, V> {
 
         insureLocalViewIsConsistent();
 
-        System.out.println("wrote " + key + "=" + value + " to node ?");
+        //
+        // look up the node to write to
+        //
+
+        NodeAddress na = cachedClusterView.getNodeForKey(key);
+
+        if (na == null) {
+
+            throw new IllegalStateException("no node to handle the key exists");
+        }
+
+        throw new RuntimeException("NOT YET IMPLEMENTED: write() -> locating the node to write to");
+
+        //System.out.println("wrote " + key + "=" + value + " to node ?");
     }
 
     @Override
@@ -43,6 +58,12 @@ public class SameAddressSpaceClient<K, V> implements Client<K, V> {
     }
 
     @Override
+    public ClusterView<K> getClusterView() {
+
+        return cachedClusterView;
+    }
+
+    @Override
     public String toString() {
 
         return "client[" + Integer.toHexString(System.identityHashCode(this)) + "]";
@@ -50,16 +71,20 @@ public class SameAddressSpaceClient<K, V> implements Client<K, V> {
 
     public String getInfo() {
 
-        return this + " connected to " + clusterManager;
+        return this + " connected to " + clusterAddress;
     }
 
     private void insureLocalViewIsConsistent() {
 
-        if (clusterManager.getClusterVersion() == cachedClusterVersion) {
+        ClusterManager clusterManager = ((SameAddressSpaceReferenceClusterAddress)clusterAddress).getClusterManager();
+
+        if (clusterManager.getClusterVersion() == cachedClusterView.getClusterVersion()) {
 
             //
             // local view is consistent
             //
+
+            System.out.println("local cluster view (version " + cachedClusterView.getClusterVersion() + ") is consistent");
 
             return;
         }
@@ -80,14 +105,14 @@ public class SameAddressSpaceClient<K, V> implements Client<K, V> {
      */
     private void updateClusterView() {
 
+        ClusterManager clusterManager = ((SameAddressSpaceReferenceClusterAddress)clusterAddress).getClusterManager();
+
         //
         // this must be atomic so the cluster is not modified while we're updating the view
         //
 
-        ClusterView v = clusterManager.getClusterView();
+        this.cachedClusterView = clusterManager.getClusterView();
 
-        this.cachedClusterVersion = v.getClusterVersion();
-
-        System.out.println(this + " updated cluster view");
+        System.out.println(this + " updated cluster view to version " + cachedClusterView.getClusterVersion());
     }
 }

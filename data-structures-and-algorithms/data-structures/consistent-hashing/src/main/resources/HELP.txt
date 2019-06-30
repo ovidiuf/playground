@@ -3,11 +3,20 @@ Consistent hashing simulation.
 
 Commands:
 
-    info -
+    info - displays the topology of the simulation.
 
-    write -
+    nodes - displays the current nodes
 
-    exit -
+    write <key> <value> - writes the key/value pair directly into the appropriate node.
+
+    read <key> - reads the key from the appropriate node. Reports null if no such key.
+
+    add [hash-wheel-location] - simulate adding a new storage node. Optionally, a hash
+        wheel location can be specified, so the new node will be added in that exact
+        location in the hash wheel. If no location is specified, the node will be added
+        in a random location on the hash wheel.
+
+    exit - stops and discards the simulation.
 
     help - this help.
 

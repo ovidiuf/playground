@@ -7,7 +7,7 @@ import playground.consistent.hashing.impl.clustermanager.ClusterManager;
  * @author ovidiu@feodorov.com
  * @since 06/15/2019
  */
-public class SameAddressSpaceReferenceClusterAddress extends ClusterAddress {
+public class SameAddressSpaceReferenceClusterAddress implements ClusterAddress {
 
     private ClusterManager clusterManager;
 
@@ -21,4 +21,9 @@ public class SameAddressSpaceReferenceClusterAddress extends ClusterAddress {
         return clusterManager;
     }
 
+    @Override
+    public String toString() {
+
+        return "cluster://" + Integer.toHexString(System.identityHashCode(clusterManager));
+    }
 }

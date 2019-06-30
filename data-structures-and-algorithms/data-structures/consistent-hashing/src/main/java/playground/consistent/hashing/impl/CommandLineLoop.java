@@ -1,10 +1,13 @@
 package playground.consistent.hashing.impl;
 
+import playground.consistent.hashing.NodeAddress;
+import playground.consistent.hashing.impl.clustermanager.ClusterView;
+
 import java.io.BufferedReader;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * @author ovidiu@feodorov.com
@@ -48,9 +51,17 @@ class CommandLineLoop {
 
                     info();
                 }
+                else if ("nodes".equalsIgnoreCase(line)) {
+
+                    nodes();
+                }
                 else if (line.startsWith("write")) {
 
                     write(line.substring("write".length()));
+                }
+                else if (line.startsWith("add")) {
+
+                    add(line.substring("add".length()));
                 }
                 else if (line.startsWith("help")) {
 
@@ -73,6 +84,23 @@ class CommandLineLoop {
         System.out.println(cluster.getInfo());
     }
 
+    private void nodes() {
+
+        ClusterView cv = cluster.getClient().getClusterView();
+
+        //noinspection unchecked
+        List<NodeAddress> nodes = cv.getNodeAddresses();
+
+        if (nodes.isEmpty()) {
+
+            System.out.println("no nodes");
+        }
+        else {
+
+            throw new RuntimeException("NOT YET IMPLEMENTED");
+        }
+    }
+
     private void write(String line) throws UserErrorException {
 
         line = line.trim();
@@ -87,8 +115,41 @@ class CommandLineLoop {
         String key = line.substring(0, spaceIndex);
         String value = line.substring(spaceIndex + 1).trim();
 
-        //noinspection unchecked
-        cluster.getClient().write(key, value);
+        try {
+
+            //noinspection unchecked
+            cluster.getClient().write(key, value);
+        }
+        catch(IllegalStateException e) {
+
+            throw new UserErrorException(e.getMessage());
+        }
+    }
+
+    private void add(String line) throws UserErrorException {
+
+        line = line.trim();
+
+        if (line.isEmpty()) {
+
+            //
+            // random node
+            //
+
+            throw new RuntimeException("NOT YET IMPLEMENTED: add() node in random location");
+
+        }
+        else {
+
+            //
+            // node at a specific location on the hash wheel
+            //
+
+            String hashWheelLocation = line;
+
+            throw new RuntimeException("NOT YET IMPLEMENTED: add() node at this location in hash wheel: " + hashWheelLocation);
+        }
+
     }
 
     private void displayHelp() throws UserErrorException {

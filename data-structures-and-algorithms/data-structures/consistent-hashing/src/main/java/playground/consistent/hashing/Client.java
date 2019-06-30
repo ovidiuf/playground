@@ -1,5 +1,7 @@
 package playground.consistent.hashing;
 
+import playground.consistent.hashing.impl.clustermanager.ClusterView;
+
 /**
  * @author ovidiu@feodorov.com
  * @since 06/15/2019
@@ -22,4 +24,9 @@ public interface Client<K, V> {
      * @exception RuntimeException on underlying failure
      */
     V read(K key);
+
+    /**
+     * @return the view of the cluster the client currently has.
+     */
+    ClusterView<K> getClusterView();
 }
