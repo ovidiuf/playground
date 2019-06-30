@@ -1,6 +1,9 @@
 package playground.consistent.hashing.impl;
 
 import java.io.BufferedReader;
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
@@ -8,6 +11,8 @@ import java.io.InputStreamReader;
  * @since 06/15/2019
  */
 class CommandLineLoop {
+
+    private static final String HELP_FILE_NAME = "HELP.txt";
 
     private SameAddressSpaceClusterSimulation cluster;
 
@@ -47,6 +52,10 @@ class CommandLineLoop {
 
                     write(line.substring("write".length()));
                 }
+                else if (line.startsWith("help")) {
+
+                    displayHelp();
+                }
                 else {
 
                     throw new UserErrorException("unknown command '" + line + "'");
@@ -80,5 +89,32 @@ class CommandLineLoop {
 
         //noinspection unchecked
         cluster.getClient().write(key, value);
+    }
+
+    private void displayHelp() throws UserErrorException {
+
+        ClassLoader cl = CommandLineLoop.this.getClass().getClassLoader();
+
+        InputStream is = cl.getResourceAsStream(HELP_FILE_NAME);
+
+        if (is == null) {
+
+            throw new UserErrorException(HELP_FILE_NAME + " not found in classpath");
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+
+            String line;
+
+            while((line = br.readLine()) != null) {
+
+                System.out.println(line);
+            }
+        }
+        catch(IOException e) {
+
+            throw new UserErrorException("failed to read " + HELP_FILE_NAME);
+        }
+
     }
 }

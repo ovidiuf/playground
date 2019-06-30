@@ -27,6 +27,8 @@ public class ClusterManager {
 
         this.nodes = new HashSet<>();
         this.clusterVersion = 0;
+
+        System.out.println(this + " constructed");
     }
 
     @Override

@@ -1,0 +1,13 @@
+
+Consistent hashing simulation.
+
+Commands:
+
+    info -
+
+    write -
+
+    exit -
+
+    help - this help.
+

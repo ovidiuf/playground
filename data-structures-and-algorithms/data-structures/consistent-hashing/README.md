@@ -23,3 +23,7 @@ r
 > get a
 
 ```
+
+# Command Line Help
+
+In-line [HELP](./src/main/resources/HELP.txt).

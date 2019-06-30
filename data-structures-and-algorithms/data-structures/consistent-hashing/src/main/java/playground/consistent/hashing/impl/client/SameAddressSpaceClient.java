@@ -88,7 +88,6 @@ public class SameAddressSpaceClient<K, V> implements Client<K, V> {
 
         this.cachedClusterVersion = v.getClusterVersion();
 
-        throw new RuntimeException("updateClusterView() NOT YET FULLY IMPLEMENTED");
+        System.out.println(this + " updated cluster view");
     }
-
 }

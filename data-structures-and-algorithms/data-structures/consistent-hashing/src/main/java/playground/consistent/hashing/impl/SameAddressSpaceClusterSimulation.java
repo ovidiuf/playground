@@ -2,6 +2,7 @@ package playground.consistent.hashing.impl;
 
 
 import playground.consistent.hashing.Client;
+import playground.consistent.hashing.ClusterAddress;
 import playground.consistent.hashing.impl.client.SameAddressSpaceClient;
 import playground.consistent.hashing.impl.clustermanager.ClusterManager;
 
@@ -21,13 +22,18 @@ public class SameAddressSpaceClusterSimulation<K, V> {
 
     private SameAddressSpaceClusterSimulation() {
 
-        this.clusterManager = new ClusterManager();
+        System.out.println("constructing cluster simulation ...");
 
-        this.client = new SameAddressSpaceClient();
+        clusterManager = new ClusterManager();
 
-        System.out.println("connecting " + client + " to " + clusterManager);
+        //noinspection unchecked
+        client = new SameAddressSpaceClient();
 
-        this.client.connect(clusterManager.getClusterAddress());
+        System.out.println("connecting " + client + " to " + clusterManager + " ...");
+
+        ClusterAddress clusterAddress = clusterManager.getClusterAddress();
+
+        client.connect(clusterAddress);
 
         System.out.println(this + " initialized");
     }
@@ -48,9 +54,10 @@ public class SameAddressSpaceClusterSimulation<K, V> {
 
         System.out.println("initializing cluster simulation ...");
 
-        SameAddressSpaceClusterSimulation cluster = new SameAddressSpaceClusterSimulation();
+        SameAddressSpaceClusterSimulation simulation = new SameAddressSpaceClusterSimulation();
 
-        CommandLineLoop cll = new CommandLineLoop(cluster);
-        cll.run();
+        CommandLineLoop c = new CommandLineLoop(simulation);
+
+        c.run();
     }
 }
