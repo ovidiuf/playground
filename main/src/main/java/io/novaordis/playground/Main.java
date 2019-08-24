@@ -21,17 +21,11 @@ import java.util.List;
 
 public class Main {
 
-
-
     public static void main(String[] args) throws Exception {
 
-        List<String> list = new ArrayList<>();
+        int result = 8 / 2 * (2 + 2);
 
+        System.out.println(result);
 
-        list.get(10);
-
-
-
-        //list.add(10, "blah");
     }
 }
