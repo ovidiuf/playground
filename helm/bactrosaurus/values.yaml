@@ -1,5 +1,9 @@
 
+#color: "red"
+
 size: 10
+
+nuance: "dark"
 
 characteristics:
   shape: "square"

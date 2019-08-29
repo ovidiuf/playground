@@ -3,10 +3,11 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
 data:
-  color: "blue"
+  color: {{ default "blue" .Values.color }}
+  nuancedColor: {{ printf "%s-blue" .Values.nuance }}
   size: {{ .Values.size }}
-  shape: {{ .Values.characteristics.shape }}
-  thickness: {{ .Values.characteristics.thickness }}
+  shape: {{ .Values.characteristics.shape | upper | quote }}
+  thickness: {{ quote .Values.characteristics.thickness }}
   description: {{ .Chart.Description }}
   kubernetesVersion: {{ .Capabilities.KubeVersion.Major }}.{{ .Capabilities.KubeVersion.Minor }}
   templateName: {{ .Template.Name }}

@@ -10,6 +10,12 @@ Simple template replacement is demonstrated:
 * {{ .Capabilities.KubeVersion.Major }}
 * {{ .Template.Name }}
 
+Function and pipeline usage is also demonstrated:
+
+* {{ quote .Values.characteristics.shape }}
+* {{ .Values.characteristics.shape | upper | quote }}
+* {{ default "blue" .Values.color }}
+
 
 It can be installed as:
 
