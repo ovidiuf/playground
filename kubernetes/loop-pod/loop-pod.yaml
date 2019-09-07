@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: loop
 spec:
+  hostname: elysium
   containers:
   - name: loop-container
     image: docker.io/ovidiufeodorov/loop:latest
