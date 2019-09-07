@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loop
+spec:
+  containers:
+  - name: loop-container
+    image: docker.io/ovidiufeodorov/loop:latest
