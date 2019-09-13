@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loop
+spec:
+  containers:
+    - name: loop
+      image: ovidiufeodorov/loop:latest
+      env:
+        - name: SIMPLE_COLOR_0
+          value: '{{ index .Values.simpleColors 0 }}'
+        - name: SIMPLE_COLOR_1
+          value: '{{ index .Values.simpleColors 1 }}'
+        - name: COMPLEX_COLOR_0
+          value: '{{ (index .Values.complexColors 0).shade }}-{{ (index .Values.complexColors 0).name }}'
+        - name: COMPLEX_COLOR_1
+          value: '{{ (index .Values.complexColors 1).shade }}-{{ (index .Values.complexColors 1).name }}'

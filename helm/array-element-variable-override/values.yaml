@@ -1,0 +1,23 @@
+# Default values for pod-deployment.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+#
+# This is chart configuration, exposed as an array.
+#
+# We can override it at installation time with
+#
+# --set complexColors[0].name=green
+#
+#
+simpleColors:
+  - 'blue'
+  - 'red'
+
+complexColors:
+  - name: blue
+    shade: dark
+  - name: red
+    shade: light
+
