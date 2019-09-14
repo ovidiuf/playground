@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: loop
+  name: a
 spec:
   containers:
     - name: loop
