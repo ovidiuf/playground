@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      color: 'blue'
+  template:
+    metadata:
+      name: busybox
+      labels:
+        color: 'blue'
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command: ['sh', '-c', 'while true; do echo .; sleep 1; done']
+
