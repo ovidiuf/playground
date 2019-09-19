@@ -13,8 +13,12 @@ spec:
       labels:
         color: 'blue'
     spec:
+#      initContainers:
+#        - name: wait-on-cassandra
+#          image: busybox:1.28
+#          command: ['sh', '-c', 'until nslookup cassandra; do echo waiting for cassandra to start ...; sleep 2; done']
       containers:
         - name: busybox
-          image: busybox
+          image: busybox:1.28
           command: ['sh', '-c', 'while true; do echo .; sleep 1; done']
 
