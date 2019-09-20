@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-kubectl apply -f ./loop-pod.yaml
+kubectl apply -f ./pod.yaml
