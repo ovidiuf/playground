@@ -1,8 +1,9 @@
 # Signal-Aware Loop Container    
 
-A container based on centos that loops ==and displays
-a incrementing counter at stdout. Once the container runs, it can be used to log into
-with 
+A container based on centos that loops and displays an incrementing counter at stdout and stderr. The container
+reacts to SIGTERM and SIGINT.
+ 
+Once the container runs, it can be used to log into with: 
 
 ```bash
 docker exec -it <containerid> bash
