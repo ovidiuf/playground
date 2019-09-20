@@ -1,6 +1,6 @@
-# Loop Container    
+# Signal-Aware Loop Container    
 
-This is very simple container based on centos that simply enters a loop and displays
+A container based on centos that loops ==and displays
 a incrementing counter at stdout. Once the container runs, it can be used to log into
 with 
 
@@ -8,7 +8,7 @@ with
 docker exec -it <containerid> bash
 ```
   
-The container is publicly available as docker.io/ovidiufeodorov/loop:latest.
+The container is publicly available as [docker.io/ovidiufeodorov/loop:latest](https://hub.docker.com/r/ovidiufeodorov/loop).
 
 Build and publish:
 

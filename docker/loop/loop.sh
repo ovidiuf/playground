@@ -5,13 +5,44 @@
 # SUBJECT_NAME
 #
 
-echo_content=${SUBJECT_NAME}
-[ -z "${echo_content}" ] && echo_content="no 'SUBJECT_NAME' environment variable defined"
-cnt=0
+#
+# The docker runtime sends a TERM when it wants to gracefully shut down the container
+#
+function handle-TERM() {
 
-while [ true ]; do
-  echo "stdout: ${cnt},  ${echo_content}"
-  echo "sterr: ${cnt},  ${echo_content}" 1>&2
-  cnt=$(expr ${cnt} + 1)
-  sleep 1
-done
+    echo "SIGTERM received ..."
+    exit 0
+}
+
+#
+# On Ctrl-C
+#
+function handle-INT() {
+
+    echo "SIGINT received ..."
+    exit 0
+}
+
+function main() {
+
+    trap handle-TERM TERM
+    trap handle-INT INT
+
+    cnt=0
+    local content
+
+    while [[ true ]]; do
+
+        content=${cnt}
+
+        [[ -n ${SUBJECT_NAME} ]] && content="${content}, ${SUBJECT_NAME}"
+
+        echo "stdout: ${content}"
+        echo "sterr:  ${content}" 1>&2
+
+        cnt=$(expr ${cnt} + 1)
+        sleep 1
+    done
+}
+
+main "$@"
