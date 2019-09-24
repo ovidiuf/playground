@@ -1,0 +1,7 @@
+dependencies:
+- name: b
+  version: 1.0.0
+  repository: file://../b
+  import-values:
+    - child: something
+      parent: somethingElse
