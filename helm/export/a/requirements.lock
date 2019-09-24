@@ -1,6 +1,0 @@
-dependencies:
-- name: b
-  repository: file://../b
-  version: 1.0.0
-digest: sha256:a5304f1c1659d9657198f7d0d801e339fb32fbcc3c31dba330b2da2276eb7274
-generated: "2019-09-24T15:04:11.475914-07:00"
