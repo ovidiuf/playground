@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: a-loop
+  name: c-loop
   labels:
     color: '{{ .Values.color }}'
+    common-color: '{{ .Values.commonColor }}'
 spec:
   containers:
     - name: loop

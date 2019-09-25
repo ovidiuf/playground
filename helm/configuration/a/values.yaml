@@ -1,6 +1,7 @@
-# color contains the color of this release
 color: 'blue'
-subject: 'have a nice day'
+
+b:
+  color: 'fuchsia'
 
 
 
