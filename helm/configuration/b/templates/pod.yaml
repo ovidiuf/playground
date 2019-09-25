@@ -4,6 +4,7 @@ metadata:
   name: b-loop
   labels:
     color: '{{ .Values.color }}'
+    shape: '{{ .Values.shape }}'
 spec:
   containers:
     - name: loop

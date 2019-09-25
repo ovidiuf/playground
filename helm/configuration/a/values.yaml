@@ -2,6 +2,7 @@ color: 'blue'
 
 b:
   color: 'fuchsia'
+  shape: 'round'
 
 
 

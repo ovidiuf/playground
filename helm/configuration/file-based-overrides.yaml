@@ -1,0 +1,4 @@
+color: 'magenta'
+b:
+  color: 'fuchsia'
+#  color: '${COLOR}'
