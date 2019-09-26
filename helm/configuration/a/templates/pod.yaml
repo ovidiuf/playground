@@ -4,6 +4,10 @@ metadata:
   name: a-loop
   labels:
     color: '{{ .Values.color }}'
+    size: '{{ .Values.size }}'
+    capacity: '{{ .Values.components.engine.capacity }}'
+    shape0: '{{ index .Values.shapes 0 }}'
+    shape1: '{{ index .Values.shapes 1 }}'
 spec:
   containers:
     - name: loop

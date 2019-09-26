@@ -1,4 +1,13 @@
 color: 'blue'
+size: 10
+
+components:
+  engine:
+    capacity: 4
+
+shapes:
+  - circle
+  - square
 
 b:
   color: 'fuchsia'
