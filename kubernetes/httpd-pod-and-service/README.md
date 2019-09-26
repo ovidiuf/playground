@@ -18,14 +18,19 @@ After components settle, the web server can be accessed at http://localhost/
 
 ## Operations
 
-Logs:
+### Invoke
+
+```bash
+curl http://localhost
+```
+
+### Logs
 
 ```bash
 kubectl logs -f httpd-pod
 ```
 
-
-Log into the container:
+### Log into the container
  
 ```bash
 kubectl exec -it httpd-pod bash
