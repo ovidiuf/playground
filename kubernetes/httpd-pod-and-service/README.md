@@ -27,11 +27,11 @@ curl http://localhost
 ### Logs
 
 ```bash
-kubectl logs -f httpd-pod
+kubectl logs -f httpd
 ```
 
 ### Log into the container
  
 ```bash
-kubectl exec -it httpd-pod bash
+kubectl exec -it httpd bash
 ```
