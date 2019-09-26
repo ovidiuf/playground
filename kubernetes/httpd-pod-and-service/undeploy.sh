@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-kubectl delete pod httpd-pod
-kubectl delete service httpd-service
+kubectl delete pod httpd
+kubectl delete service httpd
