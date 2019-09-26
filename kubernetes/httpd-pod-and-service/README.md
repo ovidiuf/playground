@@ -1,4 +1,4 @@
-# httpd Pod
+# httpd Pod and Service
 
 The simplest possible infrastructure (naked httpd pod and service) that stands up a web server to answer
 requests.
