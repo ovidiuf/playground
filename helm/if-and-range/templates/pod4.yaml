@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-4
+spec:
+  containers:
+    - name: httpd
+      image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+      volumeMounts:
+        {{- range .Values.volumesAndMounts.volumesMounts }}
+        - {{- . | toYaml | nindent 10 -}}
+        {{- end }}
+  volumes:
+    {{- range .Values.volumesAndMounts.volumes }}
+    - {{ . | toYaml | nindent 6 -}}
+    {{- end }}
+
