@@ -1,9 +1,8 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: loop-pod
-  namespace: blue
+  name: httpd
 spec:
   containers:
-    - name: loop-container
-      image: loop:1
+    - name: httpd
+      image: docker.io/ovidiufeodorov/httpd:latest
