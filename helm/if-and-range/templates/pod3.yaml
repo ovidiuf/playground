@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-3
+spec:
+  containers:
+    - name: httpd
+      image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+      env:
+      {{- range $k, $v := .Values.shapes }}
+      - name: {{ $k }}
+        value: {{ $v | upper -}}
+      {{ end }}

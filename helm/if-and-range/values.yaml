@@ -1,0 +1,17 @@
+image:
+  repository: ovidiufeodorov/httpd
+  tag: latest
+
+#
+# a range action will iterate over these and expose them as environment variables
+#
+colors:
+  - blue
+  - red
+  - green
+  - yellow
+
+shapes:
+  FIRST_SHAPE: square
+  SECOND_SHAPE: circle
+  THIRD_SHAPE: triangle
