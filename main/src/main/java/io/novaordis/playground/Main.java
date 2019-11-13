@@ -26,11 +26,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        File f = new File("/I/am/sure/there/is/no/such/file");
+        String s = "560.0.1.19";
 
-        byte[] content = Files.readAllBytes(f.toPath());
 
-        System.out.println("content " + content.length);
+        s = s.substring(0, s.indexOf('.'));
 
+        s.equalsIgnoreCase()
+        System.out.println(s);
     }
 }
