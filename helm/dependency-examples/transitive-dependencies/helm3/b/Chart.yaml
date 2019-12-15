@@ -1,0 +1,7 @@
+apiVersion: v2
+name: b
+version: 1.0.0
+dependencies:
+  - name: c
+    version: 1.0.0
+    repository: http://localhost/charts
