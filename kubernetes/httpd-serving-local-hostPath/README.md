@@ -21,22 +21,3 @@ After components settle, the web server can be accessed at http://localhost/
 ./undeploy.sh
 ```
 
-## Operations
-
-### Invoke
-
-```bash
-curl http://localhost
-```
-
-### Logs
-
-```bash
-kubectl logs -f httpd
-```
-
-### Log into the container
- 
-```bash
-kubectl exec -it httpd bash
-```
