@@ -1,20 +1,29 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: 'httpd'
+  name: 'httpd-local'
+  labels:
+    function: 'httpd-server'
 spec:
   containers:
   - name: 'httpd'
     image: docker.io/ovidiufeodorov/httpd:latest
+    volumeMounts:
+      - name: 'httpd-local-root'
+        mountPath: '/usr/local/apache2/htdocs'
+  volumes:
+    - name: 'httpd-local-root'
+      hostPath:
+        path: /Users/ovidiu/runtime/httpd-root
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: 'httpd'
+  name: 'httpd-local'
 spec:
   type: 'LoadBalancer'
   selector:
-    function: 'httpd'
+    function: 'httpd-server'
   ports:
     - name: 'http'
       protocol: 'TCP'
