@@ -1,4 +1,9 @@
 # Gradle
+
+Chart.lock
+*.tgz
+
+
 build
 .gradle
 

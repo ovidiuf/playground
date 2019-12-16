@@ -4,4 +4,4 @@ version: 1.0.0
 dependencies:
   - name: b
     version: 1.0.0
-    repository: ./b
+    repository: http://localhost/charts
