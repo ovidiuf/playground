@@ -26,12 +26,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        String s = "560.0.1.19";
+        String s = "1.2.3 s93r543534";
 
-
-        s = s.substring(0, s.indexOf('.'));
-
-        s.equalsIgnoreCase()
-        System.out.println(s);
+        System.out.println(s.replaceAll(" .*", ""));
+        System.out.println(s.replaceAll(".* ", ""));
     }
 }
