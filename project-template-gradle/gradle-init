@@ -372,9 +372,9 @@ function setup-bash-wrapper() {
     mkdir ${project_root_dir}/bin && debug "created ${project_root_dir}/bin"
 
     (cd ${project_root_dir}/bin; \
-        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/bash.shlib; \
-        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/gradle.shlib; \
-        curl -s -O https://raw.githubusercontent.com/ovidiuf/templates/master/gradle-run-wrapper-template) || \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/shell-tools/master/lib/bash.shlib; \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/shell-tools/master/lib/gradle/gradle.shlib; \
+        curl -s -O https://raw.githubusercontent.com/ovidiuf/shell-tools/master/lib/gradle/gradle-run-wrapper-template) || \
         { error "failed to download templates from https://raw.githubusercontent.com/ovidiuf/templates/master"; exit 1; }
 
     #
