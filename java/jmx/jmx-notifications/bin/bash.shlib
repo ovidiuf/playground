@@ -1,0 +1,689 @@
+#!/usr/bin/env bash
+
+BASH_SHLIB_VERSION=1.5.0
+
+#
+# Generic bash functionality
+#
+
+export VERBOSE=false
+export HELP=false
+export SEPARATOR=$'\x1f' # US - unit separator
+export DEBUG_OUTPUT
+export DRY_RUN=false
+export ERROR_HEADER="[error]:"
+export FAIL_HEADER="[error]:"
+export WARNING_HEADER="[warning]:"
+export TMP_FILE_NAME_PREFIX="shell-tools"
+
+#
+# The global array that maintains the remaining "non-common" arguments, to be re-set as positional arguments.
+#
+declare -a ARGS
+
+#
+# A function that extracts common arguments such as "--verbose", "-v", "help", "--help" or "version" from the command
+# line arguments and sets the appropriate global variables, while setting the remaining command line arguments as
+# elements of a global array.
+#
+# In some cases, process-common-arguments() executes an internal command and exists, as it is the case for "version":
+# the content of the VERSION variable is displayed at stdout and the function invokes exit 0.
+#
+#
+# Option Handled       Global Variable Set     Action
+#
+# -v, --verbose        export VERBOSE=true     none
+# -h, --help, help     export HELP=true        none
+# version              N/A                     Display ${VERSION} and exit 0
+#
+# To restore all arguments that have not been processed, as positional arguments, use as as shown below:
+#
+# process-common-arguments "$@" && set -- "${ARGS[@]}" || { echo "failed to process common arguments" 1>&2; exit 1; }
+#
+# Help Pattern:
+#
+# process-common-arguments() sets HELP=true if it sees help|--help|-h among its arguments, and removes the argument from
+# the list. This approach allows commands to display help regardless of the relative order of the command and the help
+# argument on the command line.
+#
+function process-common-arguments() {
+
+    declare -a | grep -q "declare -a ARGS" || { error "${FUNCNAME[0]}(): 'ARGS' indexed array not declared"; exit 1; }
+
+    local index=0
+
+    while [[ $# -gt 0 ]]; do
+
+        if [[ $1 = "--verbose" || $1 = "-v" ]]; then
+
+            export VERBOSE=true
+
+        elif [[ $1 = "help" || $1 = "--help" || $1 = "-h" ]]; then
+
+            export HELP=true
+
+        elif [[ $1 = "version" ]]; then
+
+            local version=${VERSION}
+            [[ -z ${version} ]] && version="N/A"
+            echo ${version}
+            exit 0
+
+        else
+
+            ARGS[${index}]=$1
+            ((index++))
+
+        fi
+
+        shift
+
+    done
+}
+
+#
+# Gets an 'OPTIONS' associative array whose keys are the literal of the options to look for (e.g. "--something") and
+# extracts the values of the specified options from the positional parameters presented to the function. The 'OPTIONS'
+# associative array must be declared, allocated and have at least a value, otherwise process-options() will exit the
+# shell with an error code.
+#
+# The keys of the 'OPTIONS' associative array are the option literals: if the option is --something, the key must be
+# "--something" - must include the double dashes. If the option is -a, then the key is "-a" - must include the single
+# dash.
+#
+# The values of the 'OPTIONS' associative array must contain the option "specifications". A specification is a space
+# separated list, passed as string. The specification contains, in order, the option type (as "string", "integer",
+# "boolean") and then zero or more aliases, all space-separated.
+#
+# The identified option values are returned within the same associative array. If more than one identical options
+# are present on the command line, the last one wins.
+#
+# Boolean options: Only the option literal must be present in the positional parameter list to count as "true". There
+#    is no need to specify --do-something true or --do-something false, though if they are present, they will be
+#    processed. If the boolean option is not present on the command line, the corresponding associative array result
+#    value is "false"
+#
+# Integer options: the values are checked to make sure they're numerals.
+#
+# The function arguments that do not match any option are returned as content of the global ARGS array, in a pattern
+# that is similar to the one used by the process-common-arguments() function.
+#
+# Usage:
+#
+#           declare -a ARGS
+#           declare -A OPTIONS
+#           OPTIONS["--path"]="string -p"
+#           OPTIONS["--count"]="integer -c --COUNT"
+#           OPTIONS["--debug"]="boolean"
+#           process-options "$@"
+#           fail-on-unknown-arguments
+#
+# If, for example, the arguments are "--debug --path something", 'OPTIONS' content will be:
+#
+# OPTIONS["--path"]="something"
+# OPTIONS["--debug"]="true"
+#
+# TODO: Introduce equivalent --something=<value>, which should behave similarly to --something <value>
+#
+function process-options() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    declare -A | grep -q "declare -A OPTIONS" || { error "${FUNCNAME[0]}(): 'OPTIONS' associative array not declared"; exit 1; }
+    [[ ${#OPTIONS[@]} -eq 0 ]] && { error "${FUNCNAME[0]}(): 'OPTIONS' associative array contains no values"; exit 1; }
+    declare -a | grep -q "declare -a ARGS" || { error "${FUNCNAME[0]}(): 'ARGS' indexed array not declared"; exit 1; }
+
+    local opt
+    local opt_spec
+    local match
+    local type
+    local -a aliases
+    local args_index=0
+    local option
+    local option_argument
+    local do_not_shift=false
+
+    declare -A results
+    while [[ -n $1 ]]; do
+        option=$1
+        option_argument=""
+        match=false
+
+        for opt in "${!OPTIONS[@]}"; do
+
+            opt_spec=${OPTIONS[${opt}]}
+            type=${opt_spec%% *}
+            opt_spec=${opt_spec#${type}}
+            read -r -a aliases <<< "${opt_spec}"
+            aliases[${#aliases[@]}]=${opt}
+
+            for opt_alias in ${aliases[@]}; do
+
+                if [[ ${option} = ${opt_alias} ]]; then
+                    #
+                    # option match - either the main option or an alias
+                    #
+                    match=true
+                    if [[ ${type} = "boolean" ]]; then
+
+                        #
+                        # look ahead - if the next argument is "true" or "false", assign it to the option, otherwise
+                        # set the option to "true"
+                        #
+                        [[ -z ${option_argument} ]] && { shift; option_argument=$1; }
+                        if [[ ${option_argument} = "true" ]]; then
+                            results[${opt}]="true"
+                        elif [[ ${option_argument} = "false" ]]; then
+                            results[${opt}]="false"
+                        else
+                            #
+                            # unrelated argument, default is true, but we also must avoid shifting again at the end of
+                            # the big loop, because at this moment $1 contains the next option and we do not want to
+                            # lose it
+                            #
+                            results[${opt}]="true"
+                            do_not_shift=true
+                        fi
+                        debug "${option} matched boolean option and it was assigned to ${results[${opt}]}"
+
+                    elif [[ ${type} = "string" ]]; then
+                        [[ -z ${option_argument} ]] && { shift; option_argument=$1; }
+                        [[ -z ${option_argument} || ${option_argument:0:1} = "-" ]] && { error "missing ${opt_alias} string value"; exit 1; }
+                        results[${opt}]="${option_argument}"
+                        debug "${option} ${type} value set to ${results[${opt}]}"
+                    elif [[ ${type} = "integer" ]]; then
+                        [[ -z ${option_argument} ]] && { shift; option_argument=$1; }
+                        [[ -z ${option_argument} || ${option_argument:0:1} = "-" ]] && { error "missing ${opt_alias} integer value"; exit 1; }
+                        #
+                        # check it's integer
+                        #
+                        if ! expr ${option_argument} + 1 >/dev/null 2>&1; then
+                            error "${opt_alias} requires an integer value but got '${option_argument}'"
+                            exit 1
+                        fi
+                        results[${opt}]=${option_argument}
+                        debug "${option} ${type} value set to ${results[${opt}]}"
+                    else
+                        error "${FUNCNAME[0]}(): invalid option type '${type}' for option ${opt_alias}"
+                        exit 1;
+                    fi
+                    #
+                    # do not break, continue processing, the last match wins
+                    #
+                fi
+            done
+        done
+
+        if ! ${match}; then
+            debug "${option} matches no option, will be added to ARGS"
+            ARGS[${args_index}]=${option}
+            ((args_index++))
+        fi
+
+        ! ${do_not_shift} && shift;
+        do_not_shift=false
+    done
+
+    #
+    # clear the 'OPTIONS' map and transfer the results - default boolean to explicit "false"
+    #
+    for opt in "${!OPTIONS[@]}"; do
+        opt_spec=${OPTIONS[${opt}]}
+        type=${opt_spec%% *}
+        if [[ ${type} = "boolean" ]]; then
+            OPTIONS[${opt}]="false"
+        else
+            unset OPTIONS[${opt}]
+        fi
+    done
+    for opt in "${!results[@]}"; do
+        OPTIONS[${opt}]=${results[${opt}]}
+    done
+    unset results
+}
+
+#
+# By default, the function assumes that everything found in the ARGS indexed array are unknown arguments and exits the
+# current shell with an error message and a non-zero exit code. If an optional argument is provided, is interpreted
+# as the index in the ARGS array from which unknown arguments are present. If there are such arguments, exit the current
+# shell with an error code.
+#
+function fail-on-unknown-arguments() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    [[ ${#ARGS[@]} -eq 0 ]] && return 0
+
+    local i=$1
+    [[ -z ${i} ]] && i=0 # we assume all arguments are unknown
+
+    expr ${i} + 1 >/dev/null || fail "invalid array index: ${i}"
+
+    local unknown_args
+
+    while [[ ${i} -lt ${#ARGS[@]} ]]; do
+        [[ -z ${unknown_args} ]] && unknown_args=${ARGS[${i}]} || unknown_args="${unknown_args}, ${ARGS[${i}]}"
+        ((i++))
+    done
+
+    [[ -z ${unknown_args} ]] && return 0
+
+    error "unknown argument(s): ${unknown_args}"
+    exit 1
+}
+#
+# Send the arguments to stderr, prepended with the value of ${FAIL_HEADER} and exits with a non-zero code (255).
+# If DEBUG_OUTPUT is set, also send output there.
+#
+function fail() {
+
+    echo ${FAIL_HEADER} $@ 1>&2
+    [[ -n ${DEBUG_OUTPUT} ]] && echo ${FAIL_HEADER} $@ >> ${DEBUG_OUTPUT}
+    exit 255
+}
+
+#
+# Send the argument information at stderr, prepended with the value of ${ERROR_HEADER}, but do not exit and return 0
+# instead. If DEBUG_OUTPUT is set, also send output there.
+#
+function error {
+
+    echo ${ERROR_HEADER} $@ 1>&2
+    [[ -n ${DEBUG_OUTPUT} ]] && echo ${ERROR_HEADER} $@ >> ${DEBUG_OUTPUT}
+    return 0
+}
+
+#
+# Send a warning at stderr (not to interfere with function returns) prepended with the value of ${WARNING_HEADER}
+# If DEBUG_OUTPUT is set, also send output there.
+#
+function warn {
+
+    echo ${WARNING_HEADER} $@ 1>&2
+    [[ -n ${DEBUG_OUTPUT} ]] && echo ${WARNING_HEADER} $@ >> ${DEBUG_OUTPUT}
+    return 0
+}
+
+#
+# Send info at stderr (not to interfere with function returns)
+# If DEBUG_OUTPUT is set, also send output there.
+#
+function info {
+
+    echo $@ 1>&2
+    [[ -n ${DEBUG_OUTPUT} ]] && echo $@ >> ${DEBUG_OUTPUT}
+    return 0
+}
+
+#
+# If VERBOSE is set, send debug info at stderr (not to interfere with function returns) or to DEBUG_OUTPUT, if set.
+#
+# Recommended pattern to debug function calls:
+#
+#   debug "${FUNCNAME[0]}($@)"
+#
+function debug() {
+
+    ! ${VERBOSE} && return 0
+    [[ -z ${DEBUG_OUTPUT} ]] && echo $@ 1>&2 || echo $@ >> ${DEBUG_OUTPUT}
+    return 0
+}
+
+#
+# If VERBOSE is set, dump the content of the file given as argument at stderr (not to interfere with function returns)
+# or to DEBUG_OUTPUT, if set. If the file does not exist or cannot be read, report accordingly
+#
+function debug-file() {
+
+    ! ${VERBOSE} && return 0
+
+    local file=$1
+    [[ -z ${file} ]] && { debug "no file provided"; return 0; }
+    [[ -f ${file} ]] || { debug "no such file: ${file}"; return 0; }
+    [[ -r ${file} ]] || { debug "file is not readable: ${file}"; return 0; }
+    [[ -z ${DEBUG_OUTPUT} ]] && cat ${file} 1>&2 || cat ${file} >> ${DEBUG_OUTPUT}
+    return 0
+}
+
+#
+# Read a line interactively from stdin and convert it according to the specified type.
+#
+# Type:
+# * string
+# * secret (a string that does not get echoed out at stdin, and for which a confirmation is required)
+# * integer
+# * boolean
+#
+# The function renders the prompt followed by a ": ", which does not need to be added to the prompt argument.
+#
+# The function returns the validated value to stdout and a zero return code.
+#
+# If validation fails, or some other error the function returns an empty string at stdout, an error string at stderr
+# and a non-zero error code.
+#
+# If the function receives Ctrl-C while it is waiting for input, the whole shell exits.
+#
+# Example:
+#
+# local color
+# if color=$(input string "please provide a color"); then
+#     #
+#     # success
+#     #
+#     echo "color: ${color}"
+# else
+#     #
+#     # input failure, an error message was already sent to stderr; for Ctrl-C, the whole shell exits.
+#     #
+#     ...
+# fi
+#
+
+
+#
+# TODO: incomplete implementation
+#
+function input() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local type=$1
+    shift
+    local prompt="$@"
+
+    [[ -z ${type} ]] && fail "${FUNCNAME[0]}(): a type (string, secret, integer, boolean) is required"
+    [[ ${type} != "string" && ${type} != "secret" ]] && fail "invalid type ${type}. Only string, secret, integer and boolean are supported."
+
+    local input
+
+#    if [[ ${type} = "secret" ]]; then
+#        if read -s -p "${prompt}: " input; then
+#            debug "successful secret first input: ***"
+#            local input2
+#            if read -s -p "enter the same value one more time for validation: " input2; then
+#                debug "successful secret second input: ***"
+#                if [[ ${input} != ${input2} ]]; then
+#                    fail "secret values do not match"
+#                fi
+#            else
+#                fail "read exit with a non-zero error code (Ctrl-C, etc.)"
+#            fi
+#        else
+#            fail "read exit with a non-zero error code (Ctrl-C, etc.)"
+#        fi
+#    fi
+
+    if read -p "${prompt}: " input; then
+        if [[ ${type} = "string" ]]; then
+            debug "successful string input: ${input}"
+        elif [[ ${type} = "integer" ]]; then
+            debug "successful input: ${input}"
+        elif [[ ${type} = "boolean" ]]; then
+            debug "successful input: ${input}"
+        else
+            fail "invalid type ${type}. Only string, secret, integer and boolean are supported."
+        fi
+    else
+        fail "read exit with a non-zero error code (Ctrl-C, etc.)"
+    fi
+    echo "${input}"
+    return 0
+}
+
+#
+# Creates a temporary directory with a random name (in a designated temporary area of the filesystem, usually /tmp) and
+# returns its name. The caller must insure the directory is removed if not useful anymore, otherwise they will
+# accumulate.
+#
+# Usage pattern:
+#
+#   local tmp_dir
+#   tmp_dir=$(get-tmp-dir) || exit 1
+#   ...
+#
+#   rm -r ${tmp_dir} && debug "deleted temporary directory ${tmp_dir}" || warn "failed to delete temporary directory ${tmp_dir}"
+#
+function get-tmp-dir() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local dir="/tmp/$(get-tmp-file-name)"
+    mkdir ${dir} || fail "failed to create temporary directory ${dir}"
+    debug "created temporary directory and returning ${dir}"
+
+    echo ${dir}
+}
+
+#
+# A temporary file name. It does not create the file and it is responsible for deleting it. Relies on the value of
+# the TMP_FILE_NAME_PREFIX variable to
+#
+function get-tmp-file-name() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local prefix=$1 # optional
+
+    [[ -z ${prefix} ]] && prefix=${TMP_FILE_NAME_PREFIX}
+    [[ -z ${prefix} ]] && prefix=".tmp"
+
+    echo "${prefix}-$(date +'%y%m%d%H%M%S')-${RANDOM}"
+}
+
+#
+# Turns a relative path to absolute path, returning the absolute path at stdout.
+# If the path is already absolute, the function is a noop. The function does not attempt to validate the path in any
+# way.
+#
+function to-absolute-path() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local path=$1
+    local abs_path
+
+    [[ -z ${path} ]] && fail "${FUNCNAME[0]}($@) 'path' not provided"
+
+    if [[ ${path:0:1} = "/" ]]; then
+
+        abs_path=${path}
+
+    else
+
+        #
+        # relative
+        #
+
+        path=${path#./}
+        abs_path=$(pwd)/${path}
+    fi
+
+    debug "absolute path: ${abs_path}"
+
+
+    #
+    # remove trailing /.
+    #
+
+    abs_path=${abs_path%/.}
+    echo ${abs_path}
+
+}
+
+#
+# returns at stdout the major version of the bash running this code
+#
+# bash 3:
+# GNU bash, version 3.2.57(1)-release (x86_64-apple-darwin18)
+# Copyright (C) 2007 Free Software Foundation, Inc.
+#
+function bash-major-version() {
+
+    bash --version | head -n 1 | sed -e 's/^.*version \(.\).*$/\1/'
+}
+
+#
+# exit with a non-zero exit code if the local bash version is smaller than 4
+#
+function check-bash-version() {
+
+    local bash_major_version
+    bash_major_version=$(bash-major-version)
+    debug "bash major version: ${bash_major_version}"
+    if [ ${bash_major_version} -lt 4 ]; then echo "[error]: bash 4 or higher is required, please upgrade" 1>&2; exit 1; fi
+}
+
+#
+# Pull a file from an URL. The URL can be remote (https://example.com/test.zip) or local (file:///tmp/test.zip,
+# file://./test.zip).
+# The first argument is the file URL.
+# The second argument is the target. If the target is a directory, the file is placed in that directory under its
+# original name. If the target does not exist, or it is a file, the downloaded file will get that name, and the
+# specified file, if exists, will be overwritten.
+#
+function pull() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local url=$1
+    local target=$2
+
+    [[ -z ${url} ]] && fail "${FUNCNAME[0]}(): 'url' not provided"
+    [[ -z ${target} ]] && fail "${FUNCNAME[0]}(): 'target' not provided"
+    
+    ! is-http-url ${url} >/dev/null && fail "NOT YET IMPLEMENTED: ${url} not supported yet"
+
+    if [[ -d ${target} ]]; then
+        debug "target ${target} is a directory"
+        (cd ${target}; curl -s ${url} -O) || fail "failed to download ${url}"
+    else
+        debug "target ${target} is a file"
+        #
+        # ${target} is a file, create all required directories and use the file name to download content into
+        #
+        local dir=$(dirname ${target})
+        local target_filename=$(basename ${target})
+        local source_filename=${url##*/}
+        debug "source_filename: ${source_filename}"
+        [[ ! -d ${dir} ]] && { mkdir -p ${dir} && debug "created ${dir}" || fail "failed to create ${dir}"; }
+        (cd ${dir}; curl -s ${url} -O) || fail "failed to download ${url}"
+        mv ${dir}/${source_filename} ${dir}/${target_filename} && debug "created file ${dir}/${target_filename}" || \
+            fail "failed to mv ${dir}/${source_filename} ${dir}/${target_filename}"
+     fi
+}
+
+#
+# executes a command while being aware of the "DRY_RUN" and "VERBOSE" contexts.
+# arg0: the command, as a single argument. IMPORTANT: Enclose it between double quotes when passing it to the function
+# arg1: optional - false if we want the function to NOT report "failed to execute command ..." on failure. By
+#       default, in absence of any second argument, the function reports failure
+# arg3: optional - the target command "dry run" option, if available. If specified, the invocation of the target
+#       command will be modified to include it
+#
+# Usage:
+#
+# local command="...."
+# execute "${command}" false --native-command-dry-run
+#
+#
+function execute {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local command="$1"
+    [[ -z ${command} ]] && fail "'command' not provided"
+    local report_failure=true
+    [[ $2 = "false" ]] && report_failure=false
+    local target_command_dry_run_option=$3
+
+    if ${DRY_RUN}; then
+
+        if [[ -n ${target_command_dry_run_option} ]]; then
+
+            #
+            # we inject the target command dry run option as the first argument
+            #
+
+            if [[ ${command/ /} = ${command} ]]; then
+                #
+                # no spaces
+                #
+                command="${command} ${target_command_dry_run_option}"
+            else
+                #
+                # insert the native dry run argument after the first space
+                #
+                command="$(echo ${command} | sed -e 's/ / '${target_command_dry_run_option}' /')"
+            fi
+        else
+
+            #
+            # just display the command
+            #
+            info "[dry-run]: ${command}"
+            return 0
+        fi
+    fi
+
+    info "${command}"
+
+    ${command} || { ${report_failure} && fail "failed to execute ${command}"; }
+}
+
+#
+# Return 0 if the URL is a local filesystem URL, non-zero value otherwise. The URL does not need to resolve.
+# If valid file URL, return the URL value (without the protocol specification) at stdout
+#
+function is-file-url() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local url=$1
+    [[ -z ${url} ]] && fail "${FUNCNAME[0]}(): 'url' not provided"
+
+    local file=${url#file://}
+
+    if echo ${file} | grep -q ":"; then
+        return 1
+    fi
+
+    echo ${file}
+    return 0
+}
+
+#
+# Return 0 if the URL is a http/https URL, 1 otherwise. The URL does not need to resolve.
+# If valid http/https URL, return the URL value at stdout
+#
+function is-http-url() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local url=$1
+    [[ -z ${url} ]] && fail "${FUNCNAME[0]}(): 'url' not provided"
+
+    [[ ${url} != ${url#http://} || ${url} != ${url#https://} ]] && { echo "${url}"; return 0; }
+    return 1
+}
+
+#
+# Return 0 if the URL is a NFS URL, 1 otherwise. The URL does not need to resolve.
+# If valid NFS URL, return a space separated list ast stdout: the first element is the NFS host and the second is the
+# path
+#
+function is-nfs-url() {
+
+    debug "${FUNCNAME[0]}($@)"
+
+    local url=$1
+    [[ -z ${url} ]] && fail "${FUNCNAME[0]}(): 'url' not provided"
+
+    [[ ${url} = ${url#nfs://} ]] && return 1
+
+    local url2=${url#nfs://}
+    local host=${url2%%/*}
+    [[ ${host} = ${url2} ]] && fail "invalid NFS URL, not in host/path format: ${url}"
+    local path=${url2#${host}}
+    echo "${host} ${path}"
+    return 0
+}
