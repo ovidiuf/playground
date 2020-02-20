@@ -19,6 +19,10 @@ https://kb.novaordis.com/index.php/Writing_a_Terraform_Module#Playground
 
 ## Operations
 
+### Prerequisites
+
+Check whether previous state (`.terraform`, `terraform.tfstate`) exists, and clear accordingly.
+
 ### Install
 
 ```bash
