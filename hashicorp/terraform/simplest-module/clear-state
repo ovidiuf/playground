@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+rm -rf $(dirname $0)/.terraform
+rm -rf $(dirname $0)/terraform.tfstate*
