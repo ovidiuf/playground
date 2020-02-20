@@ -26,15 +26,15 @@ provider "aws" {
 
 resource "aws_instance" "ec2-instance" {
 
-  count                       = 1
   ami                         = var.ami_id
   instance_type               = var.instance_type
-  ssh_key_pair_name           = var.ssh_key_pair_name
+  key_name                    = var.ssh_key_pair_name
   subnet_id                   = var.subnet_id
-  security_group_ids          = var.security_group_ids
+  security_groups             = var.security_group_ids
   associate_public_ip_address = false
 
   tags = {
     Name = "simplest"
+    Environment = "infra-playground"
   }
 }

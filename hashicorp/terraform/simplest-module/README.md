@@ -21,4 +21,16 @@ https://kb.novaordis.com/index.php/Writing_a_Terraform_Module#Playground
 
 ### Install
 
+```bash
+cd simplest-ec2-instance
+terraform init
+terraform plan
+terraform apply
+```
+
 ### Uninstall 
+
+```bash
+cd simplest-ec2-instance
+terraform destroy
+```
