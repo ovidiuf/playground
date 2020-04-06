@@ -26,9 +26,17 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        String s = "1.2.3 s93r543534";
+        Something s = new Something();
 
-        System.out.println(s.replaceAll(" .*", ""));
-        System.out.println(s.replaceAll(".* ", ""));
+        System.out.println(s);
+
+        System.out.println(Comparable.class.isAssignableFrom(s.getClass()));
+    }
+
+    static class Something implements Comparable {
+
+        @Override public int compareTo(Object o) {
+            return 0;
+        }
     }
 }
