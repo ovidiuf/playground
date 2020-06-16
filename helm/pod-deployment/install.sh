@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-helm install --name httpd $(dirname $0)
+helm install httpd $(dirname $0)

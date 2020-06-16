@@ -1,3 +1,4 @@
 target
+.gradle
 workspace.xml
 .idea/workspace.xml

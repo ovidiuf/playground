@@ -16,27 +16,23 @@
 
 package io.novaordis.playground;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        Something s = new Something();
 
-        System.out.println(s);
+        String p = "a, b,    c, d,e,f";
+        String[] sa = p.split(", *");
+        Set<String> packages = new HashSet<>(Arrays.asList(sa));
 
-        System.out.println(Comparable.class.isAssignableFrom(s.getClass()));
-    }
+        for(String i: packages) {
 
-    static class Something implements Comparable {
-
-        @Override public int compareTo(Object o) {
-            return 0;
+            System.out.println(i);
         }
     }
+
 }
