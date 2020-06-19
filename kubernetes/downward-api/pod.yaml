@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: loop
+spec:
+  containers:
+  - name: loop
+    image: docker.io/ovidiufeodorov/loop:latest
+    volumeMounts:
+      - name: podinfo
+        mountPath: /etc/podinfo
+  volumes:
+  - name: podinfo
+    downwardAPI:
+      items:
+        - path: "metadata/name"
+          fieldRef:
+            fieldPath: metadata.name
