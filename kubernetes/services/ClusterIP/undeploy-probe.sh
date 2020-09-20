@@ -5,3 +5,6 @@ line=$(kubectl get pods --all-namespaces | grep probe)
 namespace=${line%% *}
 
 kubectl -n ${namespace} delete pod probe --grace-period=0 --force && echo "probe undeployed from namespace ${namespace}"
+
+
+
