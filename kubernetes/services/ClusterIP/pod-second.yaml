@@ -4,6 +4,7 @@ metadata:
   name: httpd-2
   labels:
     function: serves-http
+    color: red
 spec:
   containers:
     - name: httpd

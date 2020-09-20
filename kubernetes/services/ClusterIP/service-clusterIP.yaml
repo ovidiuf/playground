@@ -5,13 +5,9 @@ metadata:
 spec:
   ports:
   - port: 80
-    name: a
     protocol: TCP
     targetPort: 'http'
-  - port: 81
-    name: b
-    protocol: TCP
-    targetPort: 81
   selector:
     function: serves-http
-  sessionAffinity: ClientIP
+    color: yellow
+  #sessionAffinity: ClientIP
