@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+$(dirname $0)/update-index-html-address
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /usr/local/apache2/logs/httpd.pid
+
+exec httpd -DFOREGROUND "$@"
