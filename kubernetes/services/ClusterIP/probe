@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+line=$(kubectl get pods --all-namespaces | grep probe)
+[[ -z ${line} ]] && { echo "[warning]: no probe pod found"; exit 0; }
+namespace=${line%% *}
+
+kubectl -n ${namespace} exec -it probe bash

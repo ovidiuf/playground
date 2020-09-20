@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: probe
+spec:
+  containers:
+    - name: httpd
+      image: docker.io/ovidiufeodorov/httpd
+      # imagePullPolicy: Always
+
