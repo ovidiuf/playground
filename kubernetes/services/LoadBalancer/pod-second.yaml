@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-2
+  labels:
+    function: serves-http
+    #color: red
+spec:
+  containers:
+    - name: httpd
+      image: docker.io/ovidiufeodorov/httpd
+      ports:
+        - containerPort: 80
+          protocol: TCP
+          name: 'http'
