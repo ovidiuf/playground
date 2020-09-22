@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd
+  labels:
+    function: serves-http
+spec:
+  containers:
+    - name: httpd-a
+      image: docker.io/ovidiufeodorov/httpd
+      ports:
+        - containerPort: 80
+          protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+            - ls
+            - /tmp/ready
+    - name: httpd-b
+      image: docker.io/ovidiufeodorov/httpd
+      env:
+        - name: HTTPD_PORT
+          value: '81'
+      ports:
+        - containerPort: 81
+          protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+            - ls
+            - /tmp/ready
