@@ -14,6 +14,12 @@ ip addr show dev eth0 | grep inet | awk '{print $2}'
 
 The container is publicly available as [docker.io/ovidiufeodorov/httpd:latest](https://hub.docker.com/r/ovidiufeodorov/httpd).
 
+## Configuration
+
+###Port
+
+The httpd binds by default on port 80. To change this, inject HTTPD_PORT=<port> environment variable in the container's environment.
+
 ##Run in Foreground 
  
  ```bash

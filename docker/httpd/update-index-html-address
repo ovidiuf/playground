@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
+httpd_port=${1:-"80"}
+
 target_file=/usr/local/apache2/htdocs/index.html
 addr=$(ip addr show dev eth0 | grep inet | awk '{print $2}')
 addr=${addr%/*}
-sed -i 's/^IP address:.*$/IP address: '${addr}'/' ${target_file}
+sed -i 's/^IP address:.*$/IP address: '${addr}':'${httpd_port}'/' ${target_file}
