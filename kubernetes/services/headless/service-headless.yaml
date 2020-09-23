@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-headless
+spec:
+  clusterIP: None
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    function: serves-http
