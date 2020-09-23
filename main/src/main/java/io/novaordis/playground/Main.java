@@ -16,23 +16,24 @@
 
 package io.novaordis.playground;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        Pattern p = Pattern.compile("\"reason\" *: *\"Forbidden\"");
 
-        String p = "a, b,    c, d,e,f";
-        String[] sa = p.split(", *");
-        Set<String> packages = new HashSet<>(Arrays.asList(sa));
+        String s = "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"namespaces \\\"c3\\\" is forbidden: User \\\"system:serviceaccount:c3:default\\\" cannot get resource \\\"namespaces\\\" in API group \\\"\\\" in the namespace \\\"c3\\\"\",\"reason\":\"Forbidden\",\"details\":{\"name\":\"c3\",\"kind\":\"namespaces\"},\"code\":403}\n";
 
-        for(String i: packages) {
+        Matcher m = p.matcher(s);
 
-            System.out.println(i);
-        }
+        System.out.println("found: " + m.find());
+
+
+
+
     }
 
 }
