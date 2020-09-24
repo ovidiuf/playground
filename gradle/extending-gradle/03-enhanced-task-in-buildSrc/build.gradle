@@ -1,3 +1,1 @@
-import playground.gradle.CustomEnhancedTask
-
-task customEnhancedTask (type: CustomEnhancedTask)
+task greeting(type: playground.gradle.CustomEnhancedTask)
