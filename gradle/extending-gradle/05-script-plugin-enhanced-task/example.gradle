@@ -1,0 +1,8 @@
+class CustomEnhancedTask extends DefaultTask {
+    @TaskAction
+    public void impl() {
+        System.out.println("this is an in-line enhanced task declared in a script plugin")
+    }
+}
+task custEnhTask(type: CustomEnhancedTask)
+
