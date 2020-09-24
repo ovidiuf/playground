@@ -1,0 +1,3 @@
+import playground.gradle.CustomEnhancedTask
+
+task customEnhancedTask (type: CustomEnhancedTask)
