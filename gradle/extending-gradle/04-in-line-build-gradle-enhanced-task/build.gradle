@@ -1,8 +1,8 @@
 class CustomEnhancedTask extends DefaultTask {
     @TaskAction
-    public void impl() {
+    void impl() {
         System.out.println("this is an in-line enhanced task")
     }
 }
 
-task custEnhTask(type: CustomEnhancedTask)
+task customTask(type: CustomEnhancedTask)
