@@ -1,0 +1,3 @@
+task customSimpleTask {
+    println 'this is a simple task'
+}
