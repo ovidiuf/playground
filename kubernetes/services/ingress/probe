@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-line=$(kubectl get pods --all-namespaces | grep probe)
-[[ -z ${line} ]] && { echo "[warning]: no probe pod found"; exit 0; }
-namespace=${line%% *}
+namespace=$(kubectl get pod --all-namespaces -l function=probe -o jsonpath="{.items[*].metadata.namespace}")
 
 kubectl -n ${namespace} exec -it probe -- bash
