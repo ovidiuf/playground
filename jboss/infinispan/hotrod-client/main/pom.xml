@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j-version>1.7.12</slf4j-version>
         <junit-version>4.12</junit-version>
-        <infinispan-version>8.2.4.Final</infinispan-version>
+        <infinispan-version>10.1.1.Final</infinispan-version>
     </properties>
 
     <profiles>
