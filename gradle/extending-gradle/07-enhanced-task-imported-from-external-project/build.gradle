@@ -1,0 +1,10 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'playground.gradle.standalone-task:06-enhanced-task-developed-in-standalone-project:0.1.0'
+    }
+}
+
+task custEnhTask(type: playground.gradle.CustomEnhancedTask)
