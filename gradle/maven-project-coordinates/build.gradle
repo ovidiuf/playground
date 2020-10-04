@@ -1,0 +1,26 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group = "playground.mpc"
+description = "This is an example project"
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+    publications {
+        javacomp(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+task blah {
+    doLast {
+        println "Project Name:        ${project.name}"
+        println "Project Group:       ${project.group}"
+        println "Project Version:     ${project.version}"
+        println "Project Description: ${project.description}"
+        println "Project Path:        ${project.path}"
+    }
+}
