@@ -1,0 +1,23 @@
+plugins {
+  id 'java'
+  id 'maven-publish'
+}
+
+group = "playground.gradle.standalone-task"
+version = "0.1.0"
+//rootProject.name = 'something'
+
+dependencies {
+  implementation gradleApi()
+}
+
+publishing {
+  repositories {
+    mavenLocal()
+  }
+  publications {
+    javacomp(MavenPublication) {
+      from components.java
+    }
+  }
+}
