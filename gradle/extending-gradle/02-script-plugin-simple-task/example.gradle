@@ -1,3 +1,11 @@
 task customSimpleTask {
-    println 'this is a simple task'
+
+    // task configuration closure
+    println 'this code is executed during the build configuration phase'
+
+    doLast {
+
+        // this code is executed during the build execution phase
+        println "this is a simple task"
+    }
 }
