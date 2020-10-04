@@ -1,0 +1,6 @@
+
+
+logger.quiet "blah"
+
+task blah {
+}
