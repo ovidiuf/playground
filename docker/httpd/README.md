@@ -12,13 +12,19 @@ that reports the IP address of the container, as returned by:
 ip addr show dev eth0 | grep inet | awk '{print $2}'
 ```    
 
+The index file is actively updated during the httpd server boot process, unless the NO_INDEX_UPDATE environment variable is set in the container's environment. If the variable is set, no index.html file modification is attempted.
+
 The container is publicly available as [docker.io/ovidiufeodorov/httpd:latest](https://hub.docker.com/r/ovidiufeodorov/httpd).
 
 ## Configuration
 
 ###Port
 
-The httpd binds by default on port 80. To change this, inject HTTPD_PORT=<port> environment variable in the container's environment.
+The httpd binds by default on port 80. To change this, inject HTTPD_PORT=&lt;port> environment variable in the container's environment.
+
+###Don't Modify the index.html File
+
+Set NO_INDEX_UPDATE=true.
 
 ##Run in Foreground 
  

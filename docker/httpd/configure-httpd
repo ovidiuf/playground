@@ -11,15 +11,17 @@ fi
 
 echo "using httpd port ${httpd_port}"
 
-#
-# Update index.html with port and address
-#
-target_file=/usr/local/apache2/htdocs/index.html
-addr=$(ip addr show dev eth0 | grep inet | awk '{print $2}')
-addr=${addr%/*}
-echo "using address ${addr}"
-sed -i 's/^IP address:.*$/IP address: '${addr}':'${httpd_port}'/' ${target_file}
-
+if [[ -z ${NO_INDEX_UPDATE} ]]; then
+  #
+  # Update index.html with port and address
+  #
+  target_file=/usr/local/apache2/htdocs/index.html
+  echo "updating ${target_file}"
+  addr=$(ip addr show dev eth0 | grep inet | awk '{print $2}')
+  addr=${addr%/*}
+  echo "address ${addr}"
+  sed -i 's/^IP address:.*$/IP address: '${addr}':'${httpd_port}'/' ${target_file}
+fi
 #
 # Update httpd.conf with new port
 #
