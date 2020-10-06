@@ -8,6 +8,10 @@ spec:
   containers:
   - name: 'httpd'
     image: docker.io/ovidiufeodorov/httpd:latest
+    #imagePullPolicy: Never
+    #env:
+    #  - name: HTTPD_PORT
+    #    value: "22222"
 ---
 apiVersion: v1
 kind: Service
