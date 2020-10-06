@@ -9,19 +9,19 @@ spec:
   - name: 'httpd'
     image: docker.io/ovidiufeodorov/httpd:latest
     #imagePullPolicy: Never
-    env:
+    #env:
     #  - name: HTTPD_PORT
     #    value: "22222"
     # This inhibits automatic index.html update
-      - name: NO_INDEX_UPDATE
-        value: "true"
-    volumeMounts:
-      - name: local-root
-        mountPath: /usr/local/apache2/htdocs
-  volumes:
-    - name: local-root
-      hostPath:
-        path: /Users/ovidiufeodorov/tmp/httpd
+    #  - name: NO_INDEX_UPDATE
+    #    value: "true"
+    #volumeMounts:
+    #  - name: local-root
+    #    mountPath: /usr/local/apache2/htdocs
+  #volumes:
+  #  - name: local-root
+  #    hostPath:
+  #      path: /Users/ovidiufeodorov/tmp/httpd
 ---
 apiVersion: v1
 kind: Service
