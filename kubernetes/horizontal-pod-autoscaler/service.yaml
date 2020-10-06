@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd
+spec:
+  type: 'LoadBalancer'
+  selector:
+    function: serves-http
+  ports:
+    - name: 'http'
+      protocol: 'TCP'
+      port: 80
+      targetPort: 80
