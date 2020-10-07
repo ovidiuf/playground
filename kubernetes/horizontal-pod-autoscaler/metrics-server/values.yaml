@@ -1,0 +1,6 @@
+image:
+  repository: k8s.gcr.io/metrics-server/metrics-server
+  tag: v0.3.7
+args:
+  - --kubelet-insecure-tls
+  - --cert-dir=/tmp

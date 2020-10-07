@@ -32,4 +32,4 @@ spec:
       volumes:
         - name: local-root
           hostPath:
-            path: /Users/ovidiufeodorov/tmp/httpd
+            path: /Users/ovidiufeodorov/playground/kubernetes/horizontal-pod-autoscaler/http-root
