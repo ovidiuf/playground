@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="420c7710-fa27-4429-b224-65fa3018e791" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/_a.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/_generic-configmap-2.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/_generic-configmap-3.tpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/configmap-2.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/configmap-3.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.helmignore" beforeDir="false" afterPath="$PROJECT_DIR$/.helmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.idea/named-template-with-define.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/named-template-with-define.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/Chart.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Chart.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/templates/NOTES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/templates/NOTES.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/templates/_helpers.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/templates/_helpers.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/templates/configmap.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configmap.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../named-template-with-define/values.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/values.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="JupyterTrust" id="203ab68c-db71-47d4-800f-8d5f37f342bf" />
+  <component name="KubernetesApiPersistence">
+    <option name="context" value="docker-desktop" />
+    <option name="namespace" value="default" />
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/named-template-with-define.iml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1iZCFSWNi8siuRGYjYOhO3MfvLN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="420c7710-fa27-4429-b224-65fa3018e791" name="Default Changelist" comment="" />
+      <created>1567124004169</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1567124004169</updated>
+      <workItem from="1567124005513" duration="33000" />
+      <workItem from="1602105624488" duration="2331000" />
+      <workItem from="1602117499463" duration="3404000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="772" y="305" width="1577" height="658" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1602118913472">
+      <screen x="68" y="23" width="2492" height="1417" />
+    </state>
+    <state x="772" y="305" width="1577" height="658" key="com.intellij.history.integration.ui.views.FileHistoryDialog/2560.23.2560.1577/68.23.2492.1417@68.23.2492.1417" timestamp="1602118913472" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

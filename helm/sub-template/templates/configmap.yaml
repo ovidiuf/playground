@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-cm
+  {{- include "sub-template.a" . | indent 2 }}
+data:
+  color: "blue"
