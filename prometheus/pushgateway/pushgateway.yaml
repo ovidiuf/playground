@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'pushgateway'
+  labels:
+    function: 'pushgateway'
+spec:
+  containers:
+  - name: 'pushgateway'
+    image: prom/pushgateway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'pushgateway'
+spec:
+  type: 'LoadBalancer'
+  selector:
+    function: 'pushgateway'
+  ports:
+    - name: 'pushgateway'
+      protocol: 'TCP'
+      port: 9091
+      targetPort: 9091
