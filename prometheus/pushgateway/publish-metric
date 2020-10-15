@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+[[ -z $1 ]] && { echo "a fractional value should be specified" 1>&2; exit 1; }
+value=$1
+
+metric_name="some_metric"
+job_name="some_job"
+
+echo "${metric_name} ${value}" | curl --data-binary @- http://localhost:9091/metrics/job/${job_name}
+echo "published ${metric_name}:${value} for job ${job_name}"
