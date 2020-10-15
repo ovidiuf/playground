@@ -14,7 +14,7 @@ kind: Service
 metadata:
   name: 'pushgateway'
   labels:
-    function: 'prometheus-target'
+    function: 'pushgateway-target'
 spec:
   type: 'ClusterIP'
   selector:
