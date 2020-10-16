@@ -1,5 +1,5 @@
 prometheus:
-  url: http://prometheus-kube-prometheus-prometheus.prometheus.svc
+  url: http://prometheus-kube-prometheus-prometheus.prom.svc
 rules:
   external: []
   custom:
