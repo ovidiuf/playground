@@ -1,50 +1,13 @@
 prometheus:
   url: http://prometheus-kube-prometheus-prometheus.prometheus.svc
-
 rules:
-  default: true
-  custom: []
-# - seriesQuery: '{__name__=~"^some_metric_count$"}'
-#   resources:
-#     template: <<.Resource>>
-#   name:
-#     matches: ""
-#     as: "my_custom_metric"
-#   metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
-  # Mounts a configMap with pre-generated rules for use. Overrides the
-  # default, custom, external and resource entries
-  existing:
   external: []
-# - seriesQuery: '{__name__=~"^some_metric_count$"}'
-#   resources:
-#     template: <<.Resource>>
-#   name:
-#     matches: ""
-#     as: "my_external_metric"
-#   metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
-  resource: {}
-#   cpu:
-#     containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>}[3m])) by (<<.GroupBy>>)
-#     nodeQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>, id='/'}[3m])) by (<<.GroupBy>>)
-#     resources:
-#       overrides:
-#         instance:
-#           resource: node
-#         namespace:
-#           resource: namespace
-#         pod:
-#           resource: pod
-#     containerLabel: container
-#   memory:
-#     containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>}) by (<<.GroupBy>>)
-#     nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
-#     resources:
-#       overrides:
-#         instance:
-#           resource: node
-#         namespace:
-#           resource: namespace
-#         pod:
-#           resource: pod
-#     containerLabel: container
-#   window: 3m
+  custom:
+    - seriesQuery: 'synthetic_service_metric{exported_namespace="default",exported_service="synthetic-service"}'
+      resources:
+        overrides:
+          exported_service: {resource: "service"}
+          exported_namespace: {resource: "namespace"}
+      name:
+        as: 'synthetic_service_metric'
+      metricsQuery: 'synthetic_service_metric{exported_namespace="default",exported_service="synthetic-service"}'

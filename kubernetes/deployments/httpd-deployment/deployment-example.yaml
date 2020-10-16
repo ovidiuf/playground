@@ -18,6 +18,9 @@ spec:
       containers:
         - name: 'httpd'
           image: docker.io/ovidiufeodorov/httpd:latest
+          resources:
+            requests:
+              cpu: '100m'
 ---
 apiVersion: v1
 kind: Service
