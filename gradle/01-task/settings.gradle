@@ -1,6 +1,1 @@
-
-
-logger.quiet "blah"
-
-task blah {
-}
+gradle.ext.color = 'blue'
