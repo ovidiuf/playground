@@ -1,0 +1,5 @@
+{{- $SubTemplateArgs := dict -}}
+{{- $_0 := set $SubTemplateArgs "Name" "example" -}}
+{{- $_1 := set . "SubTemplateArgs" $SubTemplateArgs -}}
+{{- $ListExample := list "something" "something-else" -}}
+{{- include "sub-template-root-dict-manipulation.generic" . }}

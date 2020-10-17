@@ -1,0 +1,13 @@
+prometheus:
+  url: http://prometheus-kube-prometheus-prometheus.prom.svc
+rules:
+  external: []
+  custom:
+    - seriesQuery: 'synthetic_service_metric{exported_namespace="default",exported_service="synthetic-service"}'
+      resources:
+        overrides:
+          exported_service: {resource: "service"}
+          exported_namespace: {resource: "namespace"}
+      name:
+        as: 'synthetic_service_metric'
+      metricsQuery: 'synthetic_service_metric{exported_namespace="default",exported_service="synthetic-service"}'

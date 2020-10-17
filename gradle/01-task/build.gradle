@@ -1,0 +1,5 @@
+task display {
+    doLast {
+        print shape
+    }
+}

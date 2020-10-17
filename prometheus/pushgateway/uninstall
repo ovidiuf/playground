@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+kubectl -n prometheus delete -f ./pushgateway.yaml
+

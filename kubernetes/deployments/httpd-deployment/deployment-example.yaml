@@ -1,0 +1,37 @@
+#
+# includes the deployment and the associated Service to make the pod reachable by web browser/curl
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'httpd'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: 'httpd'
+  template:
+    metadata:
+      labels:
+        app: 'httpd'
+    spec:
+      containers:
+        - name: 'httpd'
+          image: docker.io/ovidiufeodorov/httpd:latest
+          resources:
+            requests:
+              cpu: '100m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'httpd'
+spec:
+  type: 'LoadBalancer'
+  selector:
+    app: 'httpd'
+  ports:
+    - name: 'http'
+      protocol: 'TCP'
+      port: 80
+      targetPort: 80

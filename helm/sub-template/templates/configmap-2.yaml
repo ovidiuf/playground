@@ -1,0 +1,1 @@
+{{- include "sub-template.generic-config-map-2" (dict "name" "test" "color" "red") }}

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+[[ -z $1 ]] && { echo "a numeric value (possibly fractional) expected" 1>&2; exit 1; }
+value=$1
+
+pushgateway_host=localhost
+pushgateway_port=9091
+metric_name=synthetic_service_metric
+job_name=synthetic-job
+namespace_name=default
+service_name=synthetic-service
+
+echo "${metric_name} ${value}" | curl --data-binary @- http://${pushgateway_host}:${pushgateway_port}/metrics/job/${job_name}/namespace/${namespace_name}/service/${service_name}
+echo "published ${metric_name}:${value} for job=${job_name},namespace=${namespace_name},service=${service_name}"

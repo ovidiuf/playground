@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+helm install prometheus-adapter prometheus-community/prometheus-adapter -f ./prometheus-adapter-overlay.yaml

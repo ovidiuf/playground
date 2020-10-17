@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
-
-$(dirname $0)/update-index-html-address ${HTTPD_PORT}
-[ -n "${HTTPD_PORT}" ] && { sed -i 's/^Listen .*$/Listen '${HTTPD_PORT}'/' /usr/local/apache2/conf/httpd.conf && echo "httpd will listen on ${HTTPD_PORT}"; }
+$(dirname $0)/configure-httpd ${HTTPD_PORT}
 
 # Apache gets grumpy about PID files pre-existing
 rm -f /usr/local/apache2/logs/httpd.pid

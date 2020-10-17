@@ -1,0 +1,22 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: experimental
+spec:
+  minReplicas: 1
+  maxReplicas: 5
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: httpd
+  metrics:
+    - type: Object
+      object:
+        metric:
+          name: synthetic_service_metric
+        describedObject:
+          kind: Service
+          name: synthetic-service
+        target:
+          type: Value
+          value: 2000

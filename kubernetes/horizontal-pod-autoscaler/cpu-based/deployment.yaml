@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'httpd'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      function: serves-http
+  template:
+    metadata:
+      name: 'httpd'
+      labels:
+        function: serves-http
+    spec:
+      containers:
+        - name: 'httpd'
+          image: docker.io/ovidiufeodorov/httpd:latest
+          #imagePullPolicy: Never
+          env:
+          #  - name: HTTPD_PORT
+          #    value: "22222"
+          # This inhibits automatic index.html update
+            - name: NO_INDEX_UPDATE
+              value: "true"
+          volumeMounts:
+            - name: local-root
+              mountPath: /usr/local/apache2/htdocs
+          resources:
+            requests:
+              cpu: 50m
+      volumes:
+        - name: local-root
+          hostPath:
+            path: /Users/ovidiufeodorov/playground/kubernetes/horizontal-pod-autoscaler/http-root
