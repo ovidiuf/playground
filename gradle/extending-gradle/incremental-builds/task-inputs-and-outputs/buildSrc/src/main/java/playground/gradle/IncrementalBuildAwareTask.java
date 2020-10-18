@@ -7,6 +7,6 @@ public class IncrementalBuildAwareTask extends DefaultTask {
 
    @TaskAction
    void impl() {
-      System.out.println("this is an custom enhanced task developed in buildSrc");
+      System.out.println("example has run");
    }
 }
