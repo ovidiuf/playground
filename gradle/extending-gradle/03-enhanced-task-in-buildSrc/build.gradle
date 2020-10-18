@@ -1,1 +1,1 @@
-task greeting(type: playground.gradle.CustomEnhancedTask)
+task customTask(type: playground.gradle.CustomEnhancedTask)
