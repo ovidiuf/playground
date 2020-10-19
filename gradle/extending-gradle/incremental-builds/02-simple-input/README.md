@@ -1,6 +1,6 @@
 # Overview
 
-An example of incremental build where a task has one output and zero inputs.
+An example of incremental build where a task declares a simple value input.
 
 # NOKB
 
