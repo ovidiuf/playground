@@ -1,3 +1,0 @@
-import playground.gradle.IncrementalBuildAwareTask
-
-task example(type: IncrementalBuildAwareTask)
