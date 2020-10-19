@@ -1,0 +1,5 @@
+import playground.gradle.IncrementalBuildAwareTask
+
+task example(type: IncrementalBuildAwareTask) {
+    output = new File(buildDir, "test.txt")
+}
