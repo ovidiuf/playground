@@ -1,15 +1,17 @@
 import java.nio.file.Files
 
 dependencies {
-    api project(':common-project')
+    implementation project(':common-project')
 }
 
-task fatJar(type: Jar, dependsOn: jar) {
+task fatJar(type: Jar) {
 
-    archiveBaseName = 'fat-jar'
+    dependsOn jar, ':common-project:jar'
 
-    def List<File> sources = new ArrayList<>();
-    from configurations.compileClasspath.collect {
+    archiveBaseName = 'fat-jar-all'
+
+    List<File> sources = new ArrayList<>();
+    from configurations.runtimeClasspath.collect {
         sources.add(it)
         it.isDirectory() ? it : it.exists() ? zipTree(it) : it
     }
