@@ -8,9 +8,9 @@ task fatJar(type: Jar, dependsOn: jar) {
     from configurations.compileClasspath.collect { it.isDirectory() ? it : it.exists() ? zipTree(it) : it }
     exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
     zip64 true
-    with jar
     manifest.attributes 'Main-Class': "playground.Main"
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    with jar
 }
 
 task explore {
