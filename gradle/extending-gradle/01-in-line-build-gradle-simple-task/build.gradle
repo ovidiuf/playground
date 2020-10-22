@@ -4,8 +4,25 @@ task customSimpleTask {
     println 'this code is executed during the build configuration phase'
 
     doLast {
-
         // this code is executed during the build execution phase
         println "this is a simple task"
     }
+}
+
+task('anotherCustomSimpleTask') {
+
+    doLast {
+        // this code is executed during the build execution phase
+        println "another is a simple task"
+    }
+}
+
+task display {
+
+    println customSimpleTask.name
+    println project.customSimpleTask.name
+
+    println tasks.named('customSimpleTask').get().name
+    println tasks.getByPath('customSimpleTask').name
+
 }

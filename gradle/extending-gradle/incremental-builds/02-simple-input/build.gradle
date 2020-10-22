@@ -1,0 +1,6 @@
+import playground.gradle.IncrementalBuildAwareTask
+
+task example(type: IncrementalBuildAwareTask) {
+    customVersion = project.customVersion
+    output = new File(buildDir, "customVersion.txt")
+}
