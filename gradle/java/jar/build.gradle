@@ -1,58 +1,21 @@
-
-//def tasksBefore = [], tasksAfter = []
-//project.tasks.each { tasksBefore.add(it.name) }
 apply plugin: 'java'
-//project.tasks.each { tasksAfter.add(it.name) }
-//tasksAfter.removeAll(tasksBefore);
-//println 'tasks introduced by plugin' + tasksAfter
 
-group = "io.novaordis.playground.gradle"
-version = "1.0"
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+group = "playground"
+version = "0.1.0"
 
-repositories {
-
-    mavenCentral()
+def fatJarConfig = {
+    zip64 true
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from configurations.testRuntimeClasspath.collect { it.isDirectory() ? it : it.exists() ? zipTree(it) : it }
+    exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+    with jar
 }
 
-configurations.all {
-
-    resolutionStrategy.cacheChangingModulesFor 3600, 'seconds'
+task extraJar(type: Jar, dependsOn: jar) {
+    manifest.attributes 'Main-Class': "playground.Main"
+    archiveBaseName = 'example'
+    zip64 true
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from configurations.testRuntimeClasspath.collect { it.isDirectory() ? it : it.exists() ? zipTree(it) : it }
+    exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
 }
-
-dependencies {
-
-    implementation 'org.slf4j:slf4j-api:1.7.12'
-    testImplementation 'junit:junit:4.+'
-}
-
-compileJava {
-
-    options.compilerArgs += ['-Xlint']
-}
-
-javadoc {
-
-    options.charSet = 'UTF-8'
-}
-
-configurations {
-
-    testImplementation.exclude group: 'com.example'
-}
-
-task runMain(type: JavaExec) {
-
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'io.novaordis.playground.gradle.java.Main'
-}
-
-task displayconfigs {
-    doFirst {
-        println "project dependency configurations: "
-        configurations.each { println '  ' + it.name }
-    }
-}
-
-task noop

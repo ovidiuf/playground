@@ -1,0 +1,30 @@
+
+dependencies {
+    api project(':common-project')
+}
+
+task fatJar(type: Jar, dependsOn: jar) {
+    archiveBaseName = 'fat-jar'
+    from configurations.compileClasspath.collect { it.isDirectory() ? it : it.exists() ? zipTree(it) : it }
+    exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+    zip64 true
+    with jar
+    manifest.attributes 'Main-Class': "playground.Main"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+task explore {
+    doLast {
+        configurations.compileClasspath.collect {
+            if (it.isDirectory()) {
+                println "directory: " + it
+            }
+            else {
+                println "file: " + it
+            }
+        }
+//        for(Object c: project.configurations.iterator()) {
+//            println c
+//        }
+    }
+}
