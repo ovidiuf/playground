@@ -7,10 +7,10 @@ spec:
   - name: 'httpd'
     image: docker.io/ovidiufeodorov/httpd:latest
     volumeMounts:
-      - name: infra-playground-dev-8
+      - name: example 
         mountPath: /efs
         # subPath: ''
   volumes:
-    - name: infra-playground-dev-8
+    - name: example
       persistentVolumeClaim:
         claimName: infra-playground-dev-8
