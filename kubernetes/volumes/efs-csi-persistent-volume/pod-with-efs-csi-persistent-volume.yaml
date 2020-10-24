@@ -9,7 +9,7 @@ spec:
     volumeMounts:
       - name: example 
         mountPath: /efs
-        # subPath: ''
+        # subPath: something
   volumes:
     - name: example
       persistentVolumeClaim:
