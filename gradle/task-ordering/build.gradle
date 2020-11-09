@@ -1,0 +1,13 @@
+task a {
+    doLast {
+        println "this is A"
+    }
+}
+
+task b {
+    doLast {
+        println "this is B"
+    }
+}
+
+b.mustRunAfter a
