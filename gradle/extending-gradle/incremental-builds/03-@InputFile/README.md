@@ -1,6 +1,6 @@
 # Overview
 
-An example of incremental build where a task declares a simple value input.
+An example of incremental build where a task declares a simple file input.
 
 # NOKB
 

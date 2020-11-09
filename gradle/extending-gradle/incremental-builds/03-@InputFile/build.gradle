@@ -1,8 +1,8 @@
 import playground.gradle.IncrementalBuildAwareTask
 
 task example(type: IncrementalBuildAwareTask) {
-    customVersion = project.customVersion
-    output = new File(buildDir, "customVersion.txt")
+    inputFile = new File('src/main/example/A.txt')
+    output = new File(buildDir, "A-uppercased.txt")
 }
 
 task clean(type: Delete) {
