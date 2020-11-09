@@ -1,0 +1,21 @@
+apply plugin: 'java'
+
+group = "playground"
+version = "0.1.0"
+
+def fatJarConfig = {
+    zip64 true
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from configurations.testRuntimeClasspath.collect { it.isDirectory() ? it : it.exists() ? zipTree(it) : it }
+    exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+    with jar
+}
+
+task extraJar(type: Jar, dependsOn: jar) {
+    manifest.attributes 'Main-Class': "playground.Main"
+    archiveBaseName = 'example'
+    zip64 true
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from configurations.testRuntimeClasspath.collect { it.isDirectory() ? it : it.exists() ? zipTree(it) : it }
+    exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+}

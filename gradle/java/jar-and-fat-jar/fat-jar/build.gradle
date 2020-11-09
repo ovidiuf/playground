@@ -1,0 +1,32 @@
+import java.nio.file.Files
+
+dependencies {
+    implementation project(':common-project')
+}
+
+task fatJar(type: Jar) {
+
+    dependsOn jar, ':common-project:jar'
+
+    archiveBaseName = 'fat-jar-all'
+
+    List<File> sources = new ArrayList<>();
+    from configurations.runtimeClasspath.collect {
+        sources.add(it)
+        it.isDirectory() ? it : it.exists() ? zipTree(it) : it
+    }
+    Arrays.sort(sources);
+    StringBuilder sb = new StringBuilder();
+    for(File f: sources) {
+        sb.append(f).append("\n")
+    }
+    File report = new File("/Users/ovidiufeodorov/tmp/gradle/sources.txt");
+    Files.write(report.toPath(), sb.toString().bytes)
+    println "report written to " + report
+
+    exclude ('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+    zip64 true
+    manifest.attributes 'Main-Class': "playground.Main"
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    with jar
+}

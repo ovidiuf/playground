@@ -1,4 +1,10 @@
+
+//def tasksBefore = [], tasksAfter = []
+//project.tasks.each { tasksBefore.add(it.name) }
 apply plugin: 'java'
+//project.tasks.each { tasksAfter.add(it.name) }
+//tasksAfter.removeAll(tasksBefore);
+//println 'tasks introduced by plugin' + tasksAfter
 
 group = "io.novaordis.playground.gradle"
 version = "1.0"
@@ -48,3 +54,5 @@ task displayconfigs {
         configurations.each { println '  ' + it.name }
     }
 }
+
+task noop

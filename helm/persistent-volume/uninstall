@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+namespace=of
+helm uninstall -n ${namespace} test

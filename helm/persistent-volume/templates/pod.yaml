@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd
+spec:
+  containers:
+    - name: httpd
+      image: docker.io/ovidiufeodorov/httpd:latest
+      volumeMounts:
+        - mountPath: /test
+          name: efs
+  volumes:
+    - name: efs
+      persistentVolumeClaim:
+        claimName: cm-playground-efs-2

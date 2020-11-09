@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+namespace=of
+helm install -n ${namespace} test $(dirname $0)
