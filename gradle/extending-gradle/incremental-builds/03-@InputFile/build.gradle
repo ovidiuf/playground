@@ -1,0 +1,13 @@
+import playground.gradle.IncrementalBuildAwareTask
+
+task example(type: IncrementalBuildAwareTask) {
+    customVersion = project.customVersion
+    output = new File(buildDir, "customVersion.txt")
+}
+
+task clean(type: Delete) {
+    delete buildDir
+    doLast {
+        println "deleted ${buildDir}"
+    }
+}
