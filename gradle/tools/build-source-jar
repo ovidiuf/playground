@@ -3,7 +3,7 @@
 function main() {
 
   local source_dir=$1
-  [[ -z ${source_dir} ]] && { echo "specify the directory into which the source ZIP was expanded" 1>&2; exit 1; }
+  [[ -z ${source_dir} ]] && { echo "specify the directory into which the GitHub Gradle source ZIP was expanded" 1>&2; exit 1; }
   [[ -d ${source_dir} ]] || { echo "not a directory: ${source_dir}" 1>&2; exit 1; }
   [[ -f ${source_dir}/version.txt ]] || { echo "${source_dir} does not seem to be a Gradle source directory, version.txt is missing" 1>&2; exit 1; }
   [[ -d ${source_dir}/subprojects ]] || { echo "${source_dir} does not seem to be a Gradle source directory, subprojects subdirectory is missing" 1>&2; exit 1; }
@@ -29,6 +29,7 @@ function main() {
           fi
       fi
   done
+  echo "done"
 }
 
 main "$@"
