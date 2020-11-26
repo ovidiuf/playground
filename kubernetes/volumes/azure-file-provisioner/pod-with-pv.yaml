@@ -13,4 +13,4 @@ spec:
   volumes:
     - name: example
       persistentVolumeClaim:
-        claimName: azure-files-pvc
+        claimName: azure-files-test-pvc

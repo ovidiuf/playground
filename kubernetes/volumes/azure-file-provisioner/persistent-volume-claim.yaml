@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: azure-files-pvc
+  name: azure-files-test-pvc
 spec:
   accessModes:
   - ReadWriteMany
