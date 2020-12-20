@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+context=default/api-nnqreelp-eastus2-aroapp-io:6443/kube:admin
+namespace=of
+
+[[ $(kubectl config current-context) != "${context}" ]] && { echo "not in right context: ${context}" 1>&2; exit 1; }
+
+#helm -n ${namespace} install postgresql bitnami/postgresql -f ./openshift-postgresql-overlay.yaml
+helm -n ${namespace} install postgresql https://artifacts.example.com/v1/helm/postgresql-8.1.2.tgz -f ./openshift-postgresql-overlay.yaml

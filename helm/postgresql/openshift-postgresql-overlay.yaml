@@ -1,0 +1,13 @@
+image:
+  registry: artifacts.example.com
+  repository: mdillon/postgis
+  tag: 9.6
+shmVolume:
+  enabled: true
+securityContext:
+  enabled: true
+  fsGroup: '1000620000'
+  runAsUser: '1000620000'
+volumePermissions:
+  securityContext:
+    runAsUser: '1000620000'

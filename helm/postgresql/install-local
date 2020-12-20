@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+context=docker-desktop
+namespace=default
+
+[[ $(kubectl config current-context) != "${context}" ]] && { echo "not in right context: ${context}" 1>&2; exit 1; }
+
+helm -n ${namespace} install cassandra bitnami/cassandra -f ./local-cassandra-overlay.yaml

@@ -1,0 +1,9 @@
+replicaCount: 1
+image:
+  registry: artifacts.example.com
+  repository: cassandra
+  tag: 3.11.9-debian-10-r30
+podSecurityContext:
+  fsGroup: 1000620000
+containerSecurityContext:
+  runAsUser: 1000620000
