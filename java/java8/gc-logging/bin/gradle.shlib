@@ -43,5 +43,7 @@ function get-gradle-runtime-classpath() {
 function main() {
 
     #java -Xmx1G -verbose:gc -XX:+PrintGC -XX:+PrintGCDetails -cp ${CLASSPATH} ${MAIN_CLASS} "$@"
-    java -Xmx1G -Xloggc:/dev/stdout -XX:+PrintGCDateStamps -XX:+PrintGCDetails -cp ${CLASSPATH} ${MAIN_CLASS} "$@"
+    # -XX:NativeMemoryTracking=summary -XX:+UnlockDiagnosticVMOptions -XX:+PrintNMTStatistics
+    # -XX:MaxMetaspaceSize=200m -XX:MetaspaceSize=100m
+    java -Xmx2G -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics -Xloggc:/dev/stdout -XX:+PrintGCDateStamps -XX:+PrintGCDetails  -cp ${CLASSPATH} ${MAIN_CLASS} "$@"
 }
