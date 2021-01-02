@@ -31,6 +31,9 @@ function main() {
     cnt=0
     local content
 
+    echo "running as UID: $(id -u)"
+    echo "running as GID: $(id -g)"
+
     while [[ true ]]; do
 
         content=${cnt}

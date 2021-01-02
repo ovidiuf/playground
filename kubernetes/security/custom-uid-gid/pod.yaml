@@ -1,11 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: 'httpd'
+  name: 'loop'
 spec:
   securityContext:
     runAsUser: 7777
     runAsGroup: 8888
   containers:
-  - name: 'httpd'
-    image: docker.io/ovidiufeodorov/httpd:latest
+  - name: 'loop'
+    image: experimental/loop:latest
+    imagePullPolicy: IfNotPresent
