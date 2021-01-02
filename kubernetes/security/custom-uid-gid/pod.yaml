@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'httpd'
+spec:
+  securityContext:
+    runAsUser: 7777
+    runAsGroup: 8888
+  containers:
+  - name: 'httpd'
+    image: docker.io/ovidiufeodorov/httpd:latest
