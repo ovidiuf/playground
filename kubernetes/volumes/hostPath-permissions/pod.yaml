@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'loop'
+spec:
+  securityContext:
+    runAsUser: 11111
+    runAsGroup: 22222
+  containers:
+  - name: 'loop'
+    image: experimental/loop:latest
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - name: 'volume-01'
+        #mountPath: '/volume-01'
+        mountPath: '/usr/local/share/blue/server/config'
+  volumes:
+    - name: 'volume-01'
+      hostPath:
+        path: /Users/ovidiufeodorov/tmp/volume-01

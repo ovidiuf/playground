@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+d=/Users/ovidiufeodorov/tmp/volume-01
+[[ -d ${d} ]] || { mkdir ${d} && echo "created ${d}"; }
+
+kubectl apply -f ./pod.yaml
