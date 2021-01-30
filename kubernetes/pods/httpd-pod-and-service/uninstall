@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-kubectl delete -f ./pod-and-service.yaml
+namespace=default
+
+kubectl -n ${namespace} delete -f ./pod-and-service.yaml
 
