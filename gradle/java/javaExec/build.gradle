@@ -7,10 +7,23 @@
 
 apply plugin: 'java'
 
-
 task printClasspath {
         doLast {
             configurations.runtimeClasspath.each { print it; print ':' }
         }
 }
+
+task execute(type: JavaExec) {
+
+    dependsOn('build')
+    jvmArgs = ['-Xmx1g']
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'playground.javaExec.Main'
+    args = ['A', 'B', 'C']
+    environment "SOME_ENV_VAR", "some value"
+    environment "SOME_OTHER_ENV_VAR", "some other value"
+    systemProperties = [ "some.prop": "some.value", "some.other.prop": "some.other.value" ]
+}
+
+
 
