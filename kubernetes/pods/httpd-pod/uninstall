@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 
-namespace=default
-
-kubectl -n ${namespace} delete -f ./pod-and-service.yaml
-
+namespace=$(cat $(dirname $0)/install | grep "^namespace=" | sed -e 's/^.*=//')
+kubectl -n ${namespace} delete -f ./httpd-pod.yaml
