@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+namespace=of
+
+kubectl -n ${namespace} apply -f ./scriptless-loop-pod-hostpath.yaml

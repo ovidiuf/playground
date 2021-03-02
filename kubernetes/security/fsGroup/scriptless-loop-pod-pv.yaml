@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'scriptless-loop'
+spec:
+  securityContext:
+    #runAsUser: 1111
+    #runAsUser: 0
+    #runAsGroup: 2222
+    #runAsGroup: 0
+    fsGroup: 3333
+  containers:
+  - name: 'scriptless-loop'
+    image: docker.io/ovidiufeodorov/scriptless-loop:latest
+    volumeMounts:
+      - name: volume-1
+        mountPath: /data/volume-1
+        #subPath: subPath
+  volumes:
+    - name: volume-1
+      persistentVolumeClaim:
+        claimName: cm-playground-of
+
+
+
