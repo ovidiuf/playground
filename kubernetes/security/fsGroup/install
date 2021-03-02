@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#namespace=of
 namespace=default
 
 kubectl -n ${namespace} apply -f ./loop-pod.yaml
