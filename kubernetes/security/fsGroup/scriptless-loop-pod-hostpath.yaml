@@ -6,14 +6,13 @@ spec:
   securityContext:
     runAsUser: 1111
     runAsGroup: 2222
-    #fsGroup: 3333
+    fsGroup: 3333
   containers:
   - name: 'scriptless-loop'
     image: docker.io/ovidiufeodorov/scriptless-loop:latest
     volumeMounts:
       - name: volume-1
         mountPath: /data
-        #subPath: subPath
   volumes:
     - name: volume-1
       hostPath:
