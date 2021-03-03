@@ -6,7 +6,7 @@ spec:
   securityContext:
     runAsUser: 1111
     runAsGroup: 2222
-    fsGroup: 3333
+    #fsGroup: 3333
   containers:
   - name: 'scriptless-loop'
     image: docker.io/ovidiufeodorov/scriptless-loop:latest
@@ -17,8 +17,8 @@ spec:
   volumes:
     - name: volume-1
       hostPath:
-        #path: /Users/ovidiu/tmp/test
-        path: /Users/ovidiu/.c3-k8s/hostPath
+        path: /Users/ovidiu/tmp/test
+        type: Directory
 
 
 
