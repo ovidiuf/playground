@@ -1,3 +1,5 @@
+@Library('c3@task/of/PLAT-33422') _
+
 properties([
         parameters([
                 string(name: 'shape', defaultValue: 'square', description: 'The build shape'),
