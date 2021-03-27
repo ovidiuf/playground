@@ -1,3 +1,18 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'idea'
+}
+
+task run(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "playground.Main"
+}
+
+task sample {
+
+    doFirst {
+
+        def p = project
+        print "project name ${p.name}"
+    }
 }
