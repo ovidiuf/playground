@@ -1,0 +1,16 @@
+#
+# A PVC that uses a PV with an associated Access Point (ap)
+#
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cm-playground-of-ap1
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: efs-csi
+  volumeMode: Filesystem
+  volumeName: cm-playground-of-ap1

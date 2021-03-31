@@ -4,10 +4,10 @@ metadata:
   name: 'scriptless-loop'
 spec:
   securityContext:
-    #runAsUser: 1111
     #runAsUser: 0
-    #runAsGroup: 2222
     #runAsGroup: 0
+    runAsUser: 1111
+    runAsGroup: 2222
     fsGroup: 3333
   containers:
   - name: 'scriptless-loop'
@@ -15,11 +15,16 @@ spec:
     volumeMounts:
       - name: volume-1
         mountPath: /data/volume-1
-        #subPath: subPath
+        subPath: dir1
+      - name: volume-2
+        mountPath: /data/volume-2
   volumes:
     - name: volume-1
       persistentVolumeClaim:
+        #claimName: cm-playground-of-ap1
         claimName: cm-playground-of
+    - name: volume-2
+      emptyDir: {}
 
 
 
