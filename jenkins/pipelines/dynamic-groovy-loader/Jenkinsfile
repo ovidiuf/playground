@@ -1,0 +1,12 @@
+String NODE_LABEL = 'infra-worker-2.1.0'
+
+node(NODE_LABEL) {
+    loadGroovyCodeFromRepository(this, "groovy/src")
+}
+
+def static loadGroovyCodeFromRepository(def pipeline, String srcDir) {
+
+    pipeline.println("loadGroovyCodeFromRepository(${srcDir})")
+}
+
+
