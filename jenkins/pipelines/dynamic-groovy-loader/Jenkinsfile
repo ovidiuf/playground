@@ -1,12 +1,24 @@
+import java.nio.file.Files
+import java.nio.file.Path
+
 String NODE_LABEL = 'infra-worker-2.1.0'
 
 node(NODE_LABEL) {
-    loadGroovyCodeFromRepository(this, "groovy/src")
+    loadGroovyCodeFromRepository(this)
 }
 
-def static loadGroovyCodeFromRepository(def pipeline, String srcDir) {
+def static loadGroovyCodeFromRepository(def pipeline) {
 
-    pipeline.println("loadGroovyCodeFromRepository(${srcDir})")
+    Path tmpDir = Files.createTempDirectory("test")
+    pipeline.println("tmpDir: ${tmpDir}")
+    Path packageDir = Path.get(tmpDir.getPath(), "playground")
+    Files.createDirectories(packageDir);
+    Path utilFile = Files.copy(Path.of("groovy/src/playground/Util.groovy"), packageDir)
+    pipeline.println("copied to temporary directory: ${utilFile}")
+    pipeline.class.classLoader.addClasspath(tmpDir.toFile())
+
+
+
 }
 
 
