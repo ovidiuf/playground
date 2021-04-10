@@ -1,19 +1,47 @@
+properties([
+  parameters([
+    string(name: 'credentialId', defaultValue: '', description: 'The credential ID'),
+  ])
+])
 String NODE_LABEL = 'infra-worker-2.1.0'
 node(NODE_LABEL) {
+  try {
+    sh 'mkdir repo'
+    dir('repo') {
+      checkout([
+        $class: 'GitSCM',
+        branches: [[name: 'master']],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [
+          [$class: 'CloneOption', noTags: true, reference: '', timeout: 40, depth: 1],
+          [$class: 'PruneStaleBranch']
+        ],
+        submoduleCfg: [],
+        userRemoteConfigs: [
+          [url: 'https://github.com/ovidiuf/playground.git']
+        ]
+      ])
+    }
 
-        dir("testRoot/dirA/subDirA") {
-                writeFile(file: 'test1.bats', text: 'something')
-        }
-        dir("testRoot/dirB/subDirB") {
-                writeFile(file: 'test2.bats', text: 'something')
-        }
+    withCredentials([usernamePassword(credentialsId: params.credentialId, usernameVariable: 'username', passwordVariable: 'password')]) {
 
-        dir("testRoot") {
-                def files = findFiles(glob: '**/*.bats')
-                for(def f: files) {
-                        print "name: ${f.name}, path: ${f.path}, directory: ${f.directory}, length: ${f.length}, lastModified: ${f.lastModified}"
-                }
-        }
+      print "credentialId: ${params.credentialId}"
+      String mainArg = "something"
+
+      // wrong use of string interpolation for security sensitive information
+      sh "repo/jenkins/pipelines/credentials-binding-plugin/test-script -u ${username} -p ${password} ${mainArg}"
+
+      // correct from a security point of view, but it this case ${mainArg} is resolved to empty string at runtime,
+      // because there is no mainArg environment variable.
+      sh 'repo/jenkins/pipelines/credentials-binding-plugin/test-script -u ${username} -p ${password} ${mainArg}'
+
+      // correct
+      sh "repo/jenkins/pipelines/credentials-binding-plugin/test-script -u \${username} -p \${password} ${mainArg}"
+    }
+  }
+  finally {
+    sh 'rm -rf repo'
+  }
 }
 
 
