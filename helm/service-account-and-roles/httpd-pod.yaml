@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'httpd'
+  labels:
+    function: 'httpd'
+spec:
+  serviceAccount: test-service-account
+  containers:
+  - name: 'httpd'
+    image: docker.io/ovidiufeodorov/httpd:latest
