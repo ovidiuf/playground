@@ -1,0 +1,7 @@
+String NODE_LABEL = 'infra-worker-2.4.0'
+
+node(NODE_LABEL) {
+        sh 'echo ...'
+}
+
+
