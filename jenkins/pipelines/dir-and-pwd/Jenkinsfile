@@ -1,0 +1,21 @@
+String NODE_LABEL = 'infra-worker-2.4.0'
+
+node(NODE_LABEL) {
+
+  println "pwd 1: ${pwd()}"
+
+  dir('tmp') {
+    println "pwd 2: ${pwd()}"
+  }
+
+  println "pwd 3: ${pwd()}"
+
+  dir('/tmp') {
+    println "pwd 4: ${pwd()}"
+  }
+
+  println "pwd 5: ${pwd()}"
+
+}
+
+
