@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+package_name=jdk.internal.org.objectweb.asm
+
+for l in $(java --list-modules); do
+  l=${l%@*}
+  IFS="$(printf '\n\r')"
+  for e in $(java --describe-module "${l}"); do
+    [[ ! ${e} =~ ^exports ]] && continue
+    pn=${e#exports }
+    [[ ${pn} =~ javax.swing.border ]] && echo ${pn}
+  done
+  IFS="$(printf ' \t\n')"
+done
