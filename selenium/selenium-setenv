@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+export SELENIUM_STANDALONE_SERVER_JAR=/Users/ovidiu/onedrive/runtime/selenium/selenium-server-standalone-3.9.1.jar
+export SELENIUM_STANDALONE_SERVER_LOG_DIR=/Users/ovidiu/onedrive/runtime/selenium/log/
+
+
