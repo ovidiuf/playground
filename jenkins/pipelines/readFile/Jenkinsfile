@@ -1,0 +1,8 @@
+String NODE_LABEL = 'infra-worker-2.4.0'
+node(NODE_LABEL) {
+
+        String content = readFile('/no/such/file.txt')
+        print "content: ${content}"
+}
+
+

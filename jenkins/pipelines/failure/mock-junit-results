@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+echo "mocking junit results"
+
+[[ ! -d ./target ]] && mkdir ./target
+
+file='./target/results.xml'
+
+if [[ $1 = "fail" ]]; then
+cat > ${file} <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="testsuite1" tests="2" errors="1" failures="1">
+  <testcase name="test1" classname="test1">
+    <error message="I have errored out"></error>
+  </testcase>
+  <testcase name="test2" classname="test2">
+    <failure message="I have failed"></failure>
+  </testcase>
+</testsuite>
+EOF
+  echo "wrote ${file}:"
+  cat ${file}
+else
+cat > ${file} <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="testsuite1" tests="2" errors="0" failures="0">
+  <testcase name="test1" classname="test1"/>
+  <testcase name="test2" classname="test2"/>
+</testsuite>
+EOF
+  echo "wrote ${file}:"
+  cat ${file}
+fi

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+#
+# called with: -u <username> -p <password> mainArg
+#
+
+function scramble() {
+  local s=$1
+  s=${s//s/5}
+  s=${s//e/3}
+  s=${s//o/0}
+  echo ${s}
+}
+
+echo "the script received $(scramble $2), $(scramble $4), $5 as arguments"
+echo "the value of the \$username environment variable: $(scramble ${username})"
+echo "the value of the \$password environment variable: $(scramble ${password})"
+
+

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "entering long running ...."
+sleep_secs=60
+echo "sleeping for ${sleep_secs} secs"
+sleep ${sleep_secs}
+echo "done sleeping, exiting long running ...."

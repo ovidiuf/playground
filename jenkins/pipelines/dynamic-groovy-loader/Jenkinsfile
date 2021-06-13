@@ -1,0 +1,143 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.Path
+
+String NODE_LABEL = 'infra-worker-2.1.0'
+
+// relative to the repository root
+String srcDir = 'jenkins/pipelines/dynamic-groovy-loader/groovy/src'
+String masterTempDir = Files.createTempDirectory("jenkins").toString()
+
+try {
+    node(NODE_LABEL) {
+        checkoutRepository()
+        //
+        // the repository is checked out on the node's filesystem, so read the file content from there and place it on the
+        // master's filesystem, where the pipeline classloader will load it from.
+        //
+        String groovySrcDirRelativeToWorkspace = "playground/${srcDir}"
+        List<GroovyCodeUnit> codeUnits = loadGroovyCodeUnitsFromNode(this, groovySrcDirRelativeToWorkspace)
+        writeGroovyCodeOnMasterAndLoadClasses(this, masterTempDir, codeUnits)
+    }
+
+    // TODO this does not work, it complains No signature of method: java.lang.Class.hello() is applicable for argument types: (WorkflowScript) values: [WorkflowScript@28448c77]
+    B.hello(this)
+
+}
+finally {
+    print "deleting master temp directory ${masterTempDir}"
+    deleteDirectoryRecursively(this, masterTempDir)
+}
+
+def static loadGroovyCodeUnitsFromNode(def pipeline, String groovySrcDirRelativeToWorkspace) {
+    List<GroovyCodeUnit> result = new ArrayList<>()
+    pipeline.dir(groovySrcDirRelativeToWorkspace) {
+        String groovyFileNames = pipeline.sh(script: 'find . -name *.groovy', returnStdout: true)
+        for(String gfn: groovyFileNames.split('\n')) {
+            File f = new File(gfn)
+            String sourceDir = f.getParent();
+            String fileName = f.getName();
+            pipeline.print "reading ${sourceDir}/${fileName} content from node"
+            String content = pipeline.readFile(sourceDir + "/" + fileName)
+            result.add(new GroovyCodeUnit(sourceDir, fileName, content))
+        }
+    }
+    return result
+}
+
+//
+// It is important to avoid mixing file operations on nodes and file operations on master as part of the same method
+//
+@NonCPS
+def static writeGroovyCodeOnMasterAndLoadClasses(def pipeline, String masterTempDir, List<GroovyCodeUnit> cs) {
+
+    for(GroovyCodeUnit cu : cs) {
+        String rp = cu.relativePath
+        Path packageDir = Paths.get(masterTempDir, rp);
+        if (!Files.isDirectory(packageDir)) {
+            Files.createDirectories(packageDir);
+            pipeline.print "created directory ${packageDir}"
+        }
+        Path groovyFile = Paths.get(packageDir.toString(), cu.fileName)
+        Files.write(groovyFile, cu.content.getBytes())
+        pipeline.print "wrote file ${groovyFile}"
+    }
+
+    pipeline.class.classLoader.addClasspath(masterTempDir)
+
+    for(GroovyCodeUnit cu : cs) {
+        def loadedClasses = pipeline.class.classLoader.getLoadedClasses()
+        def loadedClass
+        for(def lc: loadedClasses) {
+            if (lc.getName().equals(cu.fullyQualifiedClassName)) {
+                loadedClass = lc
+                break
+            }
+        }
+        if (loadedClass == null) {
+            try {
+                loadedClass = pipeline.class.classLoader.parseClass(cu.content)
+                pipeline.print "loaded ${cu.fullyQualifiedClassName} from ${cu.relativePath}/${cu.fileName} as ${loadedClass}"
+            }
+            catch(e) {
+                pipeline.print "failed to load class ${cu.fullyQualifiedClassName}"
+                throw e
+            }
+        }
+        pipeline.getBinding().setVariable(cu.className, loadedClass)
+    }
+}
+
+def checkoutRepository() {
+    sh 'sudo rm -rf *; mkdir playground'
+    dir('playground') {
+        checkout([
+                $class                           : 'GitSCM',
+                branches                         : [[name: 'master']],
+                doGenerateSubmoduleConfigurations: false,
+                extensions                       : [
+                        [$class: 'CloneOption', noTags: true, reference: '', timeout: 40, depth: 1],
+                        [$class: 'PruneStaleBranch']
+                ],
+                submoduleCfg                     : [],
+                userRemoteConfigs                : [
+                        [url: 'https://github.com/ovidiuf/playground.git']
+                ]])
+    }
+}
+
+def static deleteDirectoryRecursively(def pipeline, String d) {
+    File df = new File(d)
+    String[] files = df.list()
+    for(String s: files) {
+        File f = new File(d, s)
+        if (f.isDirectory()) {
+            deleteDirectoryRecursively(pipeline, f.getPath())
+        }
+        else {
+            if (f.delete()) pipeline.print "deleted ${f}"
+        }
+    }
+    if (df.delete()) pipeline.print "deleted ${df}"
+}
+
+class GroovyCodeUnit {
+
+    String relativePath
+    String packageName
+    String fileName
+    String className
+    String fullyQualifiedClassName
+    String content
+
+    GroovyCodeUnit(String relativePath, String fileName, String content) {
+        this.relativePath =  relativePath.replaceAll('^\\./', '')
+        this.packageName = this.relativePath.replaceAll("/", ".")
+        this.fileName = fileName
+        this.className = fileName.replaceAll(".groovy", "")
+        this.content = content
+        this.fullyQualifiedClassName = packageName + "." + className
+    }
+}
+
+

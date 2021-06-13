@@ -1,0 +1,19 @@
+String NODE_LABEL = 'infra-worker-2.1.0'
+node(NODE_LABEL) {
+
+        dir("testRoot/dirA/subDirA") {
+                writeFile(file: 'test1.bats', text: 'something')
+        }
+        dir("testRoot/dirB/subDirB") {
+                writeFile(file: 'test2.bats', text: 'something')
+        }
+
+        dir("testRoot") {
+                def files = findFiles(glob: '**/*.bats')
+                for(def f: files) {
+                        print "name: ${f.name}, path: ${f.path}, directory: ${f.directory}, length: ${f.length}, lastModified: ${f.lastModified}"
+                }
+        }
+}
+
+

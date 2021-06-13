@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "this goes to stdout"
+echo "this goes to stderr" 1>&2
+
+exit 1

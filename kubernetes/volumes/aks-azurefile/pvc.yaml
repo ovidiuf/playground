@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: infra-playground-dev-8
+  name: test-azurefile-1
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: efs-sc
-  volumeName: infra-playground-dev-8
+  storageClassName: azurefile
   resources:
     requests:
       storage: 1Gi

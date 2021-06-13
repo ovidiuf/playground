@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+namespace=$(cat $(dirname $0)/install-hostpath | grep "^namespace=" | sed -e 's/^.*=//')
+kubectl -n ${namespace} delete -f ./scriptless-loop-pod-hostpath.yaml
+

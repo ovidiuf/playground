@@ -1,0 +1,35 @@
+String NODE_LABEL = 'infra-worker-2.4.0'
+
+node(NODE_LABEL) {
+  sh 'rm -rf ./tmp'
+  sh 'mkdir ./tmp'
+  dir('tmp') {
+          try {
+                  checkout([
+                          $class           : 'GitSCM',
+                          branches         : [[name: 'master']],
+                          userRemoteConfigs: [
+                                  [url: 'https://github.com/ovidiuf/playground.git']
+                          ]
+                  ])
+
+
+                  try {
+                          String stdout = sh(returnStdout: true, returnStatus: false, script: './jenkins/pipelines/sh/probe')
+                          print "we got this as result of sh invocation: ${stdout.trim()}"
+                  }
+                  catch(Exception e) {
+                          print "the sh invocation failed"
+                  }
+                  //int exitCode = sh(returnStatus: true, script: './jenkins/pipelines/sh/probe')
+                  //if (exitCode != 0) throw new RuntimeException('my script failed')
+          }
+          finally {
+                  deleteDir()
+          }
+  }
+
+
+}
+
+

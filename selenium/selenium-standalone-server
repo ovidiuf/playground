@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+function usage() {
+  cat <<EOF
+A script that manages a local standalone selenium server, by executing its JAR in a JVM. Relies on the following
+environment variables:
+
+- SELENIUM_STANDALONE_SERVER_JAR: absolute or relative path to the selenium standalone server JAR. The file must
+    exits, otherwise the environment validation fails.
+- SELENIUM_STANDALONE_SERVER_LOG_DIR: absolute or relative path to the selenium standalone server log directory. The
+    directory must exist and be writable, otherwise the environment validation fails.
+
+Usage:
+
+ $(basename $0) start|stop|status
+
+EOF
+}
+
+function main() {
+  local command=$1
+  [[ -z ${command} ]] && {
+    usage
+    exit 0
+  }
+  "do-${command}"
+}
+
+function do-start() {
+  check-environment
+  if do-status >/dev/null; then
+    echo "server already started"
+    return 0
+  fi
+  local chromedriver_location
+  chromedriver_location=$(which chromedriver) || {
+    echo "'which chromedriver' failed, is chromedriver installed locally?" 1>&2
+    exit 1
+  }
+  [[ -z ${chromedriver_location} ]] && {
+    echo "'which chromedriver' returned an empty string, is chromedriver installed locally?" 1>&2
+    exit 1
+  }
+  local command="java -Dwebdriver.chrome.driver=${chromedriver_location} -jar ${SELENIUM_STANDALONE_SERVER_JAR}"
+  local logfile='selenium.log'
+  SELENIUM_STANDALONE_SERVER_LOG_DIR=${SELENIUM_STANDALONE_SERVER_LOG_DIR%/}
+  echo "${command}"
+  echo "server launched in background, log in ${SELENIUM_STANDALONE_SERVER_LOG_DIR}/${logfile}"
+  ${command} 1>${SELENIUM_STANDALONE_SERVER_LOG_DIR}/${logfile} 2>&1 &
+}
+function do-stop() {
+  check-environment
+  local pid
+  pid=$(get-pid)
+  [[ -z ${pid} ]] && { echo "selenium server is not running"; return 0; }
+  kill "${pid}" && echo "selenium server (PID ${pid}) signaled to stop" || { echo "failed to kill ${pid}" 1>&2; exit 1; }
+}
+
+#
+# Return 0 if the server is running properly and a non-zero value if the server is not started or it is in an
+# invalid state. Send additional information to stdout.
+#
+function do-status() {
+  check-environment
+  local pid
+  pid=$(get-pid)
+  [[ -z ${pid} ]] && {
+    echo "selenium server is not running"
+    return 1
+  }
+  echo "selenium server running with PID ${pid}"
+  return 0
+}
+
+#
+# Return the PID at stdout (or empty string if the server is not running)
+#
+function get-pid() {
+  local jar_name=${SELENIUM_STANDALONE_SERVER_JAR##*/}
+  local ps_output
+  ps_output=$(ps -ef | grep 'java.*-jar.*'"${jar_name}" | grep -v grep)
+  [[ -z ${ps_output} ]] && return 0
+  set - ${ps_output}
+  echo "$2"
+  return 0
+}
+
+#
+# exit with a non-zero return value if the environment is not valid
+#
+function check-environment() {
+  [[ -z ${SELENIUM_STANDALONE_SERVER_JAR} ]] && {
+    echo "no 'SELENIUM_STANDALONE_SERVER_JAR' environment variable defined" 1>&2
+    exit 1
+  }
+  [[ -f ${SELENIUM_STANDALONE_SERVER_JAR} ]] || {
+    echo "SELENIUM_STANDALONE_SERVER_JAR not a file or cannot be read: ${SELENIUM_STANDALONE_SERVER_JAR}" 1>&2
+    exit 1
+  }
+  [[ -z ${SELENIUM_STANDALONE_SERVER_LOG_DIR} ]] && {
+    echo "no 'SELENIUM_STANDALONE_SERVER_LOG_DIR' environment variable defined" 1>&2
+    exit 1
+  }
+  [[ -d ${SELENIUM_STANDALONE_SERVER_LOG_DIR} ]] || {
+    echo "SELENIUM_STANDALONE_SERVER_LOG_DIR not a directory: ${SELENIUM_STANDALONE_SERVER_LOG_DIR}" 1>&2
+    exit 1
+  }
+  [[ -w ${SELENIUM_STANDALONE_SERVER_LOG_DIR} ]] || {
+    echo "SELENIUM_STANDALONE_SERVER_LOG_DIR not writable: ${SELENIUM_STANDALONE_SERVER_LOG_DIR}" 1>&2
+    exit 1
+  }
+}
+
+main "$@"

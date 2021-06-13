@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+namespace=blue
+
+kubectl -n ${namespace} apply -f ./httpd-pod.yaml

@@ -1,0 +1,21 @@
+String NODE_LABEL = 'infra-worker-2.1.0'
+
+node(NODE_LABEL) {
+
+        stage('stage A') {
+                print('pipeline> in stage A')
+
+                stage('stage A.1') {
+                        print('pipeline> in stage A.1')
+                }
+                stage('stage A.2') {
+                        print('pipeline> in stage A.1')
+                }
+
+        }
+        stage('stage B') {
+                print('pipeline> in stage B')
+        }
+}
+
+

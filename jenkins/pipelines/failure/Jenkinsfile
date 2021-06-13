@@ -1,0 +1,71 @@
+String NODE_LABEL = 'infra-worker-2.4.0'
+
+node(NODE_LABEL) {
+
+  sh 'rm -rf ./tmp'
+  sh 'mkdir ./tmp'
+  dir('tmp') {
+    try {
+      checkout([
+              $class: 'GitSCM',
+              branches: [[name: 'master']],
+              userRemoteConfigs: [
+                      [url: 'https://github.com/ovidiuf/playground.git']
+              ]
+      ])
+
+      def fileName = './target/results.xml'
+
+      stage('stage1') {
+        try {
+          catchError() {
+            sh 'jenkins/pipelines/failure/long-running'
+          }
+        }
+        finally {
+          print ">>>> execute mandatory cleanup code"
+        }
+      }
+
+//      stage('stage1') {
+//        sh 'jenkins/pipelines/failure/mock-junit-results fail'
+//        if (fileExists(fileName)) print "file ${fileName} exists"
+//        junit '**/*.xml'
+//      }
+
+//      stage('stage1') {
+//        print 'stage1'
+//      }
+
+//      stage('stage2') {
+//        sh 'jenkins/pipelines/failure/mock-junit-results'
+//        junit '**/*.xml'
+//      }
+
+//      stage('stage2') {
+//        print 'stage2'
+//        currentBuild.result = 'FAILURE'
+//      }
+
+//      stage('stage2') {
+//        print 'stage2'
+//        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+//          throw new RuntimeException("synthetic")
+//        }
+//      }
+
+//      stage('stage3') {
+//        print 'stage3'
+//      }
+
+//      stage('stage4') {
+//        print 'executing stage 4'
+//      }
+    }
+    finally {
+      deleteDir()
+    }
+  }
+}
+
+

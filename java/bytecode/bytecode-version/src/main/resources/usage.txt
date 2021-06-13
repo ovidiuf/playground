@@ -1,0 +1,6 @@
+A program that reads a compiled Java class and prints the minor and major version.
+
+Usage:
+
+    java -jar bytecode-version.jar <class-file-path>
+

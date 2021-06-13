@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'httpd'
+spec:
+  containers:
+  - name: 'httpd'
+    image: docker.io/ovidiufeodorov/httpd:latest
+    volumeMounts:
+      - name: example 
+        mountPath: /efs
+        # subPath: something
+  volumes:
+    - name: example
+      persistentVolumeClaim:
+        claimName: test-pvc1
