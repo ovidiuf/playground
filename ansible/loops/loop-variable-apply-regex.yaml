@@ -1,0 +1,18 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: Read module descriptors from the JDK directory
+      find:
+        paths: "/Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home/jmods"
+        patterns: '*.jmod'
+      register: java_modules_result
+#    - name: debug
+#      debug:
+#        msg: "{{ item }}"
+#      #loop: "{{ java_modules_result.files | json_query('[*].path') | regex_replace('^(.*/Contents/Home)/jmods/(.*)\\.jmod$', 'jrt://\\1!/\\2') }}"
+#      loop: "{{ java_modules_result.files | json_query('[*].path') }}"
+    - name: debug
+      debug:
+        msg: "{{item}}"
+      loop:  "{{ java_modules_result.files | json_query('[*].path') | map('regex_replace', '(.*/Contents/Home)/jmods/(.*)\\.jmod', 'jrt://\\1!/\\2') | list }}"
+

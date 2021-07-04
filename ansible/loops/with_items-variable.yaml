@@ -1,0 +1,15 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: find matching directories
+      find:
+        paths: /Users/ovidiu/tmp/x
+        patterns: '*'
+        use_regex: no
+        recurse: no
+        file_type: directory
+      register: find_result
+    - name: debug
+      debug:
+        msg: "{{ item }}"
+      with_items: "{{ find_result.files | json_query('[*].path') }}"

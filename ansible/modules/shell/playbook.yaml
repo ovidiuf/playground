@@ -1,0 +1,16 @@
+- name: test playbook
+  hosts: localhost
+  vars:
+    test_var: 11
+  tasks:
+    - name: test shell
+      shell: "{ unset JAVA_HOME; /usr/libexec/java_home -v {{ test_var }}; }"
+      register: execution_result
+    - name: Set java_home
+      set_fact:
+        java_home: "{{ execution_result.stdout }}"
+    - name: "debug"
+      debug:
+        var: java_home
+
+

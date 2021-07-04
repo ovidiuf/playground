@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<box>
+  <object name="A" color="red">square</object>
+  <object name="B" color="fuchsia">circle</object>
+  <object name="C" color="blue">triangle</object>
+</box>

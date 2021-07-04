@@ -1,0 +1,7 @@
+- name: my play
+  hosts: localhost
+  vars:
+  tasks:
+    - name: Debug
+      debug:
+        msg: "value of {{ color | default('blue') }}"

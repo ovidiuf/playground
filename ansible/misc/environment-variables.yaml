@@ -1,0 +1,6 @@
+- name: test
+  hosts: localhost
+  tasks:
+    - name: Get HOME Environment Variable
+      debug:
+        msg: "{{ ansible_env.HOME }}"

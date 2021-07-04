@@ -1,0 +1,21 @@
+---
+- name: test playbook
+  hosts: localhost
+  vars:
+    java:
+      version: 11
+      vendor: Amazon
+    intellij:
+      version: 2021.2
+    java_installed_or_upgraded: True
+    java_home: /Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home
+    intellij_global_jdk_table_file: /Users/ovidiu/tmp/update-corretto-jdk-table/jdk.table.xml
+    intellij_project_misc_xml_file: /Users/ovidiu/tmp/update-corretto-jdk-table/misc.xml
+  tasks:
+    - import_tasks: "{{ ansible_test_task_file }}"
+    - name:
+      debug:
+        msg: "{{ java.vendor }} Java {{ java.version }} installed or upgraded: {{ java_installed_or_upgraded }}, Java Home: {{ java_home }}"
+
+
+

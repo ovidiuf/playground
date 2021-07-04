@@ -1,0 +1,13 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: XML Experiments
+      xml:
+        file: /Users/ovidiu/playground/ansible/modules/community.general.xml/data/test.xml
+        xpath: /box/object[@name='B']
+        content: 'attribute'
+      register: result
+    - name: debug
+      debug:
+        msg: '{{ result.matches[0].object.color }}'
+

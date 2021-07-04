@@ -1,0 +1,19 @@
+---
+- name: play A
+  hosts: localhost
+  vars:
+    some_var: some_value
+  roles:
+    - some-role
+  tasks:
+    - name: task A
+      find:
+        paths: "/etc"
+        patterns: "hosts"
+        file_type: file
+      register: all_you_need_to_know_about_etc_hosts
+    - name: display the content of a variable
+      ansible.builtin.debug:
+        msg: The content of all_you_need_to_know_about_etc_hosts is {{ all_you_need_to_know_about_etc_hosts }}
+- name: play B
+  hosts: localhost

@@ -1,0 +1,13 @@
+- name: my play
+  hosts: localhost
+  tasks:
+    - name: List
+      command: "ls -l /tmp"
+      register: brew_prefix_cmd
+      changed_when: false
+    - name: Set Homebrew installation directory
+      set_fact:
+        pkg_manager_install_dir: "{{ brew_prefix_cmd.stdout }}"
+    - name: Set Homebrew installation directory
+      debug:
+        msg: "{{ brew_prefix_cmd }}"

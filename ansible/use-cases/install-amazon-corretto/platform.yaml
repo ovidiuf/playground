@@ -1,0 +1,12 @@
+---
+- name: test
+  hosts: localhost
+  pre_tasks:
+    - include_vars:
+        file: 'vars/default.yaml'
+    - include_vars:
+        file: 'vars/gradle.yaml'
+  roles:
+    - role-1
+
+

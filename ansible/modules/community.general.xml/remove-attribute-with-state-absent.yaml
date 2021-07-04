@@ -1,0 +1,9 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: test
+      xml:
+        file: /Users/ovidiu/tmp/test.xml
+        xpath: /box/object[@name='B']/@color
+        state: absent
+

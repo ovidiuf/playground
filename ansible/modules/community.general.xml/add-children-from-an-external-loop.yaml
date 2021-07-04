@@ -1,0 +1,17 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: Build an XML element from the content of a directory
+      xml:
+        file: /Users/ovidiu/tmp/test2.xml
+        xpath: /a
+        pretty_print: true
+        add_children:
+          - b:
+              path: '{{ item  }}'
+      with_items:
+        - '/tmp/1'
+        - '/tmp/2'
+        - '/tmp/3'
+
+

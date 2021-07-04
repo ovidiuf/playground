@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+[[ -z ${ANSIBLE_TEST_TASK_FILE} ]] && { echo "Set 'ANSIBLE_TEST_TASK_FILE' environment variable with to point to the absolute path of the task file to test" 1>&2; exit 1; }
+[[ -z ${ANSIBLE_BECOME_PASS} ]] && { echo "Set 'ANSIBLE_BECOME_PASS' environment variable" 1>&2; exit 1; }
+
+echo "test task file ANSIBLE_TEST_TASK_FILE: ${ANSIBLE_TEST_TASK_FILE}"
+ansible-playbook --extra-vars "{\"ansible_test_task_file\": \"${ANSIBLE_TEST_TASK_FILE}\", \"ansible_become_pass\": \"${ANSIBLE_BECOME_PASS}\"}" ./test-playbook.yaml

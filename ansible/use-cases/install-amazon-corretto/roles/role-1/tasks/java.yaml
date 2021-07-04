@@ -1,0 +1,37 @@
+---
+- name: "Determine Homebrew cask name for {{ java.vendor }} Java {{ java.version }}"
+  block:
+    - name:
+      when: java.vendor == "Amazon" and java.version == 11
+      set_fact:
+        java_cask_name: corretto11
+    - name:
+      when: java.vendor == "Amazon" and java.version == 8
+      set_fact:
+        java_cask_name: corretto8
+
+- name: Check for unsupported Java vendor/version combination
+  when: java_cask_name is not defined
+  fail:
+    msg: "Unsupported Java vendor/version combination: {{ java.vendor }}/{{ java.version }}"
+
+- name: "Install {{ java_cask_name }} Homebrew Cask"
+  homebrew_cask:
+    name: "{{ java_cask_name }}"
+    #sudo_password: "{{ ansible_become_pass }}"
+  register: java_installation_result
+
+- name: Setting Update Fact
+  set_fact:
+    java_installed_or_updated: "{{ java_installation_result.changed | bool}}"
+
+- name: "info"
+  when: java_installed_or_updated
+  debug:
+    msg: "Java was Installed or Updated"
+
+- name: "info"
+  when: not java_installed_or_updated
+  debug:
+    msg: "Java was NOT modified"
+

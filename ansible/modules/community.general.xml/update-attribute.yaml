@@ -1,0 +1,10 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: test
+      xml:
+        file: /Users/ovidiu/playground/ansible/modules/community.general.xml/data/test.xml
+        xpath: /box/object[@name='B']
+        attribute: 'color'
+        value: 'fuchsia'
+

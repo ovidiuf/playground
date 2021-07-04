@@ -1,0 +1,10 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: debug
+      debug:
+        msg: "{{ item }}"
+      loop:
+        - A
+        - B
+        - C

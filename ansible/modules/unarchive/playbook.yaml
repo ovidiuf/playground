@@ -1,0 +1,17 @@
+- name: test
+  hosts: localhost
+  tasks:
+#    - name: List the content of an archive
+#      unarchive:
+#        src: /Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home/lib/src.zip
+#        dest: /tmp
+#        list_files: true
+#      register: unarchive_result
+    - name: List the content of an archive
+      command: unzip -l /Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home/lib/src.zip
+      register: unzip_result
+    - name: debug
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ unzip_result.stdout_lines | select('match', '^.*module-info.java') | map('regex_replace', '.* +(.*)/module-info.java', '\\1') | list }}"
+

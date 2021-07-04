@@ -1,0 +1,14 @@
+- name: test
+  hosts: localhost
+  become_user: root
+  vars:
+    intellij_version: 2021.2
+    intellij_configuration_path: "{{ ansible_env.HOME }}/Library/Application Support/JetBrains/IntelliJIdea{{ intellij_version }}"
+    #intellij_jdk_table_file: "{{ intellij_configuration_path }}/options/jdk.table.xml"
+    intellij_jdk_table_file: /Users/ovidiu/tmp/update-corretto-jdk-table/jdk.table.xml
+    java_11_home: /Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home
+    java_11_upgraded: False
+  tasks:
+    - import_tasks: tasks/main.yaml
+
+

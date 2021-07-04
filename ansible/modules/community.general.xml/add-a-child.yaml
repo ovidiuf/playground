@@ -1,0 +1,21 @@
+#
+# adding a child element with attributes AND value
+#
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: Add an element with the required attributes
+      xml:
+        file: /Users/ovidiu/tmp/test.xml
+        xpath: /box
+        pretty_print: true
+        add_children:
+          - object:
+              name: 'D'
+              color: 'yellow'
+    - name: Update added element with the correct value
+      xml:
+        file: /Users/ovidiu/tmp/test.xml
+        xpath: /box/object[@name='D' and @color='yellow']
+        value: 'rectangle'
+

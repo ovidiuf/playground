@@ -23,17 +23,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Pattern p = Pattern.compile("\"reason\" *: *\"Forbidden\"");
+        Pattern PATTERN = Pattern.compile("([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)");
+        String argument="ReplicaSet \"v9-cs-app-l-temp-74d84c88f5\" has successfully progressed.";
+        Matcher m = PATTERN.matcher(argument);
 
-        String s = "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"metadata\":{},\"status\":\"Failure\",\"message\":\"namespaces \\\"c3\\\" is forbidden: User \\\"system:serviceaccount:c3:default\\\" cannot get resource \\\"namespaces\\\" in API group \\\"\\\" in the namespace \\\"c3\\\"\",\"reason\":\"Forbidden\",\"details\":{\"name\":\"c3\",\"kind\":\"namespaces\"},\"code\":403}\n";
-
-        Matcher m = p.matcher(s);
-
-        System.out.println("found: " + m.find());
-
-
-
-
+        System.out.println(m.find());
+        System.out.println(m.group(0));
     }
 
 }

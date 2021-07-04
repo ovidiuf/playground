@@ -1,0 +1,69 @@
+- name: test playbook
+  hosts: localhost
+  tasks:
+    - name: test
+      xml:
+        file: /Users/ovidiu/tmp/jdk.table.2.xml
+        xpath: /application/component[@name='ProjectJdkTable']
+        pretty_print: true
+        add_children:
+          - jdk:
+              # <jdk> attributes
+              version: "2"
+              # <jdk> sub-nodes <name>, <type>, ... <roots>
+              _:
+                - name:
+                    value: "corretto-12"
+                - type:
+                    value: "JavaSDK"
+                - version:
+                    value: "Amazon Corretto version 12.0.77"
+                - homePath:
+                    value: "/Library/Java/JavaVirtualMachines/amazon-corretto-12.jdk/Contents/Home"
+                - roots:
+                    # <roots> sub-nodes <annotationPath>, <classPath>, ...
+                    _:
+                      - annotationsPath:
+                          # <annotationsPath> sub-node <root>
+                          _:
+                            - root:
+                                # <root> attributes
+                                type: "composite"
+                                # <root> sub-nodes <root>
+                                _:
+                                  - root:
+                                      # <root> attributes
+                                      url: "jar://$APPLICATION_HOME_DIR$/plugins/java/lib/jdkAnnotations.jar!/"
+                                      type: "simple"
+                      - classPath:
+                          _:
+                            - root:
+                                type: "composite"
+                                _:
+                                  - root:
+                                      url: "jrt:///Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home!/java.base"
+                                      type: "simple"
+                                  - root:
+                                      url: "jrt:///Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home!/java.compiler"
+                                      type: "simple"
+                      - javadocPath:
+                          _:
+                            - root:
+                                type: "composite"
+                      - sourcePath:
+                          _:
+                            - root:
+                                type: "composite"
+                                _:
+                                  - root:
+                                      url: "jar:///Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home/lib/src.zip!/java.se"
+                                      type: "simple"
+                                  - root:
+                                      url: "jar:///Library/Java/JavaVirtualMachines/amazon-corretto-11.jdk/Contents/Home/lib/src.zip!/jdk.aot"
+                                      type: "simple"
+                - additional:
+
+
+
+
+

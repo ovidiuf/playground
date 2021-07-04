@@ -1,0 +1,120 @@
+---
+#
+# Checks that all files and directories we're relying on exist
+#
+- name: Stat IntelliJ configuration directory
+  stat:
+    path: "{{ intellij_configuration_path }}"
+  register: intellij_configuration_path_info
+
+- name: Ensure that IntelliJ configuration directory exist
+  assert:
+    that: "{{ intellij_configuration_path_info.stat.exists }}"
+    fail_msg: "{{ intellij_configuration_path_info.stat.path }} does not exit"
+
+- name: Stat IntelliJ JDK table file
+  stat:
+    path: "{{ intellij_jdk_table_file }}"
+  register: intellij_jdk_table_file_info
+
+- name: Ensure that IntellJ JDK table file exists
+  assert:
+    that: "{{ intellij_jdk_table_file_info.stat.exists }}"
+    fail_msg: "{{ intellij_jdk_table_file }} does not exit"
+
+- name: Determine whether current Ansible-installed Amazon Java is in the IntellJ JDK Table
+  xml:
+    path: "{{ intellij_jdk_table_file }}"
+    xpath: /application/component[@name='ProjectJdkTable']/jdk/homePath[@value='{{ java_11_home }}']
+    count: on
+  register: homePath
+
+- name: Ensure that the IntelliJ JDK Table contains at maximum one current Ansible-installed Amazon Java
+  assert:
+    that: homePath.count <= 1
+    fail_msg: "more than one {{ java_11_home }} matches found in JDK Table {{ intellij_jdk_table_file }}: {{ homePath.count }}"
+
+- name: If current Amazon Java was in the IntellJ JDK Table and current Amazon Java was upgraded, remove the JDK from the IntellJ JDK Table
+  when: homePath.count == 1 and java_11_upgraded
+  debug:
+    msg: "remove Java 11 from the JDK Table"
+
+- name: If current Amazon Java was not in the IntellJ JDK Table or current Amazon Java was upgraded, add the JDK to the IntellJ JDK Table
+  when: homePath.count == 0 or java_11_upgraded
+  block:
+    - name: Add the <jdk> element structure to the IntellJ JDK Table
+      xml:
+        file: "{{ intellij_jdk_table_file }}"
+        xpath: /application/component[@name='ProjectJdkTable']
+        pretty_print: true
+        add_children:
+          - jdk:
+              version: "2"
+              _:
+                - name:
+                    value: "corretto-11"
+                - type:
+                    value: "JavaSDK"
+                - version:
+                    value: "Amazon Corretto version 11" # TODO: get the exact version from the installed binary
+                - homePath:
+                    value: "{{ java_11_home }}"
+                - roots:
+                    _:
+                      - annotationsPath:
+                          _:
+                            - root:
+                                type: "composite"
+                                _:
+                                  - root:
+                                      url: "jar://$APPLICATION_HOME_DIR$/plugins/java/lib/jdkAnnotations.jar!/"
+                                      type: "simple"
+                      - classPath:
+                          _:
+                            - root:
+                                type: "composite"
+                      - javadocPath:
+                          _:
+                            - root:
+                                type: "composite"
+                      - sourcePath:
+                          _:
+                            - root:
+                                type: "composite"
+                - additional:
+
+    - name: Read module descriptors from $JAVA_HOME/jmods
+      find:
+        paths: "{{ java_11_home }}/jmods"
+        patterns: '*.jmod'
+      register: java_modules_result
+
+    - name: Update <application><component><jdk><roots><classPath><root> with JDK modules read from $JAVA_HOME/jmods
+      xml:
+        file: "{{ intellij_jdk_table_file }}"
+        xpath: /application/component[@name='ProjectJdkTable']/jdk/homePath[@value='{{ java_11_home }}']/../roots/classPath/root[@type='composite']
+        pretty_print: true
+        add_children:
+          - root:
+              url: "{{ item }}"
+              type: "simple"
+      loop: "{{ java_modules_result.files | json_query('[*].path') | map('regex_replace', '(.*/Contents/Home)/jmods/(.*)\\.jmod', 'jrt://\\1!/\\2') | list }}"
+
+    - name: Read module descriptors from $JAVA_HOME/lib/src.zip
+      command:
+        argv:
+          - unzip
+          - -l
+          - "{{ java_11_home }}/lib/src.zip"
+      register: unzip_result
+
+    - name: Update <application><component><jdk><roots><sourcePath><root> with jar:// URLs relative to src.zip
+      xml:
+        file: "{{ intellij_jdk_table_file }}"
+        xpath: /application/component[@name='ProjectJdkTable']/jdk/homePath[@value='{{ java_11_home }}']/../roots/sourcePath/root[@type='composite']
+        pretty_print: true
+        add_children:
+          - root:
+              url: "jar://{{ java_11_home }}/lib/src.zip!/{{ item }}"
+              type: "simple"
+      loop: "{{ unzip_result.stdout_lines | select('match', '^.*module-info.java') | map('regex_replace', '.* +(.*)/module-info.java', '\\1') | list }}"

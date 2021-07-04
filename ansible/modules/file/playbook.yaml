@@ -1,0 +1,9 @@
+- name: test
+  hosts: localhost
+  tasks:
+    - name: Create a directory in a root-protected area
+      become: yes
+      file:
+        path: "/etc/resolver2"
+        state: directory
+        mode: "0755"
