@@ -16,6 +16,7 @@
 
 package io.novaordis.playground;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,12 +24,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Pattern PATTERN = Pattern.compile("([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)(-)([a-zA-Z0-9.]+)");
-        String argument="ReplicaSet \"v9-cs-app-l-temp-74d84c88f5\" has successfully progressed.";
-        Matcher m = PATTERN.matcher(argument);
+        testMethod("a");
+    }
 
-        System.out.println(m.find());
-        System.out.println(m.group(0));
+    public static void testMethod(String ... args) {
+
+        Arrays.asList(args).
+
+        System.out.println(args[0]);
+        System.out.println(args[1]);
     }
 
 }
