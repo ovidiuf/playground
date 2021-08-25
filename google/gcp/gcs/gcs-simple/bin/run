@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+[ -f $(dirname $0)/bash.shlib ] && . $(dirname $0)/bash.shlib || { echo "$(dirname $0)/bash.shlib not found" 1>&2; exit 1; }
+[ -f $(dirname $0)/gradle.shlib ] && . $(dirname $0)/gradle.shlib || { echo "$(dirname $0)/gradle.shlib not found" 1>&2; exit 1; }
+
+MAIN_CLASS=playground.google.gcs.Main
+CLASSPATH=$(dirname $0)/../build/classes/java/main:$(dirname $0)/../build/resources/main:$(get-gradle-runtime-classpath $(dirname $0)/..) || exit 1
+
+#echo classpath: ${CLASSPATH}
+
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/ovidiu/tmp/test-sa-key-file.json"
+
+[[ -f ${GOOGLE_APPLICATION_CREDENTIALS} ]] || { echo "no service account key file ${GOOGLE_APPLICATION_CREDENTIALS} found. Generate the service account key file, place it in the correct location and try agaion" 1>&2; exit 1; }
+
+main "$@"
