@@ -16,23 +16,31 @@
 
 package io.novaordis.playground;
 
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Random;
 
-public class Main {
-
-    public static void main(String[] args) {
-
-        testMethod("a");
+public class Main{
+    private static Random r = new Random();
+    private static int times = 1000000;
+    private static int sums[] = new int[times];
+    public static void main(String[] args) throws Exception {
+        System.out.println("Hello Mama and Maya! I am going to roll the dice two times, for " + times + " times ...");
+        for(int i = 0; i < times; i ++) {
+            int diceValue1 = simulateDice();
+            int diceValue2 = simulateDice();
+            //System.out.println("(" + diceValue1 + ", " + diceValue2 + ")");
+            int sum = diceValue1 + diceValue2;
+            sums[i] = sum;
+        }
+        Thread.sleep(1000L);
+        System.out.println("Now we are computing the average, hang tight ...");
+        double sum = 0;
+        for(int i = 0; i < times; i ++) {
+            sum += sums[i];
+        }
+        System.out.println(sum/times);
     }
 
-    public static void testMethod(String ... args) {
-
-        Arrays.asList(args).
-
-        System.out.println(args[0]);
-        System.out.println(args[1]);
+    public static int simulateDice() {
+        return r.nextInt(6) + 1;
     }
-
 }
