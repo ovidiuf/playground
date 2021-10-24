@@ -1,0 +1,1 @@
+NOKB: https://kb.novaordis.com/index.php/Maximize_K-Clustering_Spacing#Overview
