@@ -1,0 +1,1 @@
+NOKB: https://kb.novaordis.com/index.php/Maximum_Weight_Independent_Set_Problem#Overview
