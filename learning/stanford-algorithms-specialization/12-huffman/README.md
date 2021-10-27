@@ -1,0 +1,1 @@
+NOKB: https://kb.novaordis.com/index.php/Binary_Codes#The_Huffman_Algorithm
