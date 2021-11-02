@@ -1,0 +1,1 @@
+NOKB: https://kb.novaordis.com/index.php/Optimal_Binary_Search_Trees
