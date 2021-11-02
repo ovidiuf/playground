@@ -1,0 +1,1 @@
+NOKB: https://kb.novaordis.com/index.php/The_Knapsack_Problem
