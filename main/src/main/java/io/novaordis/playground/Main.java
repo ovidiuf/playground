@@ -16,31 +16,17 @@
 
 package io.novaordis.playground;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Main{
-    private static Random r = new Random();
-    private static int times = 1000000;
-    private static int sums[] = new int[times];
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello Mama and Maya! I am going to roll the dice two times, for " + times + " times ...");
-        for(int i = 0; i < times; i ++) {
-            int diceValue1 = simulateDice();
-            int diceValue2 = simulateDice();
-            //System.out.println("(" + diceValue1 + ", " + diceValue2 + ")");
-            int sum = diceValue1 + diceValue2;
-            sums[i] = sum;
-        }
-        Thread.sleep(1000L);
-        System.out.println("Now we are computing the average, hang tight ...");
-        double sum = 0;
-        for(int i = 0; i < times; i ++) {
-            sum += sums[i];
-        }
-        System.out.println(sum/times);
+        int i = -11486;
+        System.out.println(i % 9997);
+        Map<String, Integer> m = new HashMap<>();
+        m.keySet();
     }
 
-    public static int simulateDice() {
-        return r.nextInt(6) + 1;
-    }
 }
