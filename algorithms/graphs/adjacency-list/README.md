@@ -1,0 +1,1 @@
+NOKB https://kb.novaordis.com/index.php/Graph_as_Adjacency_Lists_in_Java
