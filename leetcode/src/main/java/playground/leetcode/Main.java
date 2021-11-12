@@ -8,6 +8,7 @@ public class Main {
         //new L0394().run();
         //new L0981().run();
         //new L0871().run();
-        new L1048().run();
+        //new L1048().run();
+        new L0714().run();
     }
 }

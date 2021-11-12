@@ -58,5 +58,5 @@ function main() {
     debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
   fi
   set -- "${ARGS[@]}"
-  java -cp "${CLASSPATH}" ${debug_args} "${MAIN_CLASS}" "$@"
+  java -cp "${CLASSPATH}" -Xss100M ${debug_args} "${MAIN_CLASS}" "$@"
 }
