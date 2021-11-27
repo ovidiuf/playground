@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+GRADLE_SHLIB_VERSION=0.2
+
+#
+# return 0 if the directory passed as argument is a Gradle project home, non-zero otherwise
+#
+function is-gradle-project() {
+
+    debug "${FUNCNAME[0]}($*)"
+
+    local project_dir=$1
+
+    [[ -z ${project_dir} ]] && fail "'project_dir' not provided"
+    [[ -f ${project_dir}/build.gradle ]] && return 0 || return 1
+}
+
+#
+# return classpath at stdout. Gradle needs to be configured with a printClasspath task:
+#
+# task printClasspath {
+#        doLast {
+#            configurations.runtimeClasspath.each { print it; print ':' }
+#        }
+# }
+#
+# Note that the returned classpath does not include ./build/classes/java/main or ./build/resources/main, if you need it
+# you will have to add in in the upper layer
+#
+function get-gradle-runtime-classpath() {
+
+    debug "${FUNCNAME[0]}($*)"
+
+    local project_dir=$1
+
+    [[ -z ${project_dir} ]] && fail "${FUNCNAME[0]}(): 'project_dir' not provided"
+    [[ -d ${project_dir} ]] || fail "${FUNCNAME[0]}(): project_dir not a directory: ${project_dir}"
+    [[ -f ${project_dir}/build.gradle ]] || fail "${FUNCNAME[0]}(): project_dir ${project_dir} not a Gradle project directory, build.gradle missing"
+
+    (cd "${project_dir}" || { echo "failed to cd ${project_dir}"; exit 1; } && gradle -q printClasspath)
+}
+
+function main() {
+  declare -a ARGS
+  local index=0
+  local DEBUG=false
+  while [[ -n $1 ]]; do
+    if [[ $1 = "-d" ]]; then
+      DEBUG=true
+    else
+      ARGS[${index}]=$1
+      ((index++))
+    fi
+    shift
+  done
+  local debug_args
+  if ${DEBUG}; then
+    debug_args="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+  fi
+  set -- "${ARGS[@]}"
+  java -ea -Xmx22G -cp "${CLASSPATH}" ${debug_args} "${MAIN_CLASS}" "$@"
+}
