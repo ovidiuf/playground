@@ -1,0 +1,6 @@
+image:
+  registry: docker.io
+  repository: ovidiufeodorov/smoke
+  tag: latest
+replicas: 3
+serviceType: LoadBalancer

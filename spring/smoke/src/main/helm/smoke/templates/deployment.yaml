@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smoke
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: smoke
+  template:
+    metadata:
+      name: smoke
+      labels:
+        app: smoke
+    spec:
+      containers:
+        - name: httpd
+          image: '{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          imagePullPolicy: IfNotPresent
