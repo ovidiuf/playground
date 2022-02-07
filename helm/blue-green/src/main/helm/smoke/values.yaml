@@ -1,0 +1,6 @@
+image:
+  registry: docker.io
+  repository: ovidiufeodorov/httpd
+  tag: latest
+replicas: 3
+serviceType: LoadBalancer
