@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+curl -s -X GET "https://api.datadoghq.com/api/v1/org" \
+-H "Content-Type: application/json" \
+-H "DD-API-KEY: ${DATADOG_API_KEY}" \
+-H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}"
+

@@ -1,9 +1,8 @@
-from datadog import initialize, api
+from datadog import initialize
 
 
 def main():
-    print('.')
     initialize()
-    print('initialized')
+
 
 main()
