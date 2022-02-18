@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+$(dirname $0)/venv/bin/python $(dirname $0)/src/main/python/main.py
+
+
