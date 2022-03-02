@@ -1,4 +1,4 @@
 apiVersion: v2
 appVersion: "1.0"
-name: 'configmap'
+name: 'configmap-data'
 version: 1.0.0

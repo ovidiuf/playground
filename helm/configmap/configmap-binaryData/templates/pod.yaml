@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'httpd'
+spec:
+  containers:
+    - name: 'httpd'
+      image: docker.io/ovidiufeodorov/httpd:latest
+      volumeMounts:
+        - name: config
+          mountPath: /etc/configMap
+          readOnly: true
+  volumes:
+    - name: config
+      configMap:
+        name: test-configmap-binarydata
