@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+namespace=of
+kubectl -n ${namespace} delete -f ./configMap-and-Pod.yaml

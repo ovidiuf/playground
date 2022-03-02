@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blue
+data:
+  quantity: "3"
+binaryData:
+  sample.txt.gz: 'H4sIAH6zH2IAAwvJyCxWAKJErpLUihIFruLE3IKcVD0uLgAXdw7tGQAAAA=='
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 'httpd'
+  labels:
+    function: 'httpd'
+spec:
+  containers:
+    - name: 'httpd'
+      image: docker.io/ovidiufeodorov/httpd:latest
+      volumeMounts:
+        - name: blue-config
+          mountPath: /etc/configMap
+          readOnly: true
+  volumes:
+    - name: blue-config
+      configMap:
+        name: blue
+
+
+
+
