@@ -1,8 +1,18 @@
-name = "long"
-print(f'my name is {name}')
-print(f"my name is {name}")
-print(f"""
+class MyClass():
+    def __init__(self, color):
+        self.color = color
 
-   my name is {name}
 
-""")
+    def confess(self):
+        print(f'i am a {self.color} MyClass')
+
+class MySubClass(MyClass):
+
+    def confess(self):
+        print(f'i am a {self.color} MySubClass')
+
+
+c = MySubClass('red')
+
+
+c.confess()
