@@ -1,8 +1,4 @@
-name = "long"
-print(f'my name is {name}')
-print(f"my name is {name}")
-print(f"""
 
-   my name is {name}
+s = "abc"
 
-""")
+print(s[0:2])
