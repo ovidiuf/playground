@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Nova Ordis LLC
+ * Copyright (c) 2022 Nova Ordis LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.novaordis.playground;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class SomeClass {
 
-public class Main{
-    public static void main(String[] args) throws Exception {
-
-        SomeSubClass i = new SomeSubClass();
-        i.someMethod();
+    public void someMethod() {
+        System.out.println("SomeClass.someMethod()");
     }
 }

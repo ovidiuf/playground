@@ -1,8 +1,7 @@
+import logging
 
-def my_func():
-    pass
+logging.basicConfig(level=logging.DEBUG)
+some_logger = logging.getLogger('some-logger')
 
-class MyClass:
-    pass
-
-print(globals())
+logging.debug('debugging')
+some_logger.debug('debugging via some_logger')

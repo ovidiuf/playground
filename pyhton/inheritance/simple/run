@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+#[[ -z ${PYTHONPATH} ]] && PYTHONPATH="$(dirname $0)/.." || PYTHONPATH=${PYTHONPATH}:"$(dirname $0)/.."
+#export PYTHONPATH
+
+"$(dirname $0)/venv/bin/python3" "$(dirname $0)/classes.py"
