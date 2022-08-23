@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
 export PYTHONPATH=$(dirname $0)/src
-./venv/bin/python3 -m some_package "$@"
+#./venv/bin/python3 -m some_package "$@"
+./venv/bin/python3 main.py "$@"
