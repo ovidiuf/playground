@@ -1,18 +1,19 @@
-import logging
-from A import SomeClass
+class Box:
+    def __init__(self):
+        self.color = None
 
-# logging.basicConfig(level=logging.DEBUG)
-# some_logger = logging.getLogger('some-logger')
-#
-# logging.debug('debugging')
-# some_logger.debug('debugging via some_logger')
+    def paint(self, value):
+        self.color = value
 
-sc = SomeClass()
-sc.some_property = 'elephant'
-assert sc.some_property == 'elephant'
 
-# from Color import Color
-# c = Color("bright red")
-# print(c.name)
-# c.name = "red"
-# print(c.name)
+boxes = [Box(), Box(), Box()]
+
+[b.paint('blue') for b in boxes]
+
+for b in boxes:
+    assert b.color == 'blue'
+
+
+
+
+
