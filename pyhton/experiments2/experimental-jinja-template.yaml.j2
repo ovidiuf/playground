@@ -1,0 +1,17 @@
+{%- macro recursively_render_data_structure(d, overall_offset, recursion_level_indentation) -%}
+{%- if d is boolean %}{{ d | lower }}
+{%- elif d is number %}{{ d }}
+{%- elif d is string %}"{{ d }}"
+{%- elif d is mapping -%}
+  {%- for key, value in d.items() %}
+{{ overall_offset }}{{ ' ' * recursion_level_indentation }}{{ key }}: {{ recursively_render_data_structure(value, overall_offset, recursion_level_indentation + 2) }}
+  {%- endfor %}
+{%- elif d is iterable %}
+  {%- for i in d %}
+{{ overall_offset }}{{ ' ' * recursion_level_indentation }} - {{ recursively_render_data_structure(i, overall_offset, recursion_level_indentation + 4) }}
+  {%- endfor %}
+{%- else %}ERROR: UNKNOWN VALUE {{ d }}
+{%- endif %}
+{%- endmacro -%}
+
+{{- recursively_render_data_structure(m, '', 0) }}

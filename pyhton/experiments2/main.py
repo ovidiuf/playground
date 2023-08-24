@@ -1,24 +1,44 @@
-# from jinja2 import Environment
-#
-# rds_create_gslb_record = True
-# template_as_text = '''
-#   {% if rds_create_gslb_record == false %}
-#   rds:create_gslb_record: false
-#   {% elif rds_create_gslb_record %}
-#   rds:create_gslb_record: {{ rds_create_gslb_record }}
-#   gslb:property_owner_group: aiml-di-automation-bot-user
-#   gslb:dns_internal_only: true
-#   gslb:comment: CNAME
-#   {% endif %}
-# '''
-# rtemplate = Environment().from_string(template_as_text)
-# data = rtemplate.render(rds_create_gslb_record=rds_create_gslb_record)
-# print(data)
-from datetime import datetime
+import yaml
+from jinja2 import Environment, FileSystemLoader
+from pathlib import Path
+
+tdir = Path('.')
+template = Environment(loader=FileSystemLoader(tdir)).get_template('experimental-jinja-template.yaml.j2')
+yaml_data = """
+config:
+  color: blue
+  size: 1
+  enabled: true
+  samples:
+    - name: venice
+      neighborhoods:
+        cannaregio: 1
+        castello: 2
+        giudecca: 3
+    - name: genoa
+      neighborhoods:
+        molo: 1
+        foce: 2
+        marassi: 3
+    - name: florence
+      neighborhoods:
+        santamaria: 1
+        sanmarco: 2
+        santacroce: 3
+        no-such-neighborhood:
+          - a1: v1
+            a2: v2
+          - b
+          - c
+"""
+m = yaml.safe_load(yaml_data)
+rendered_text = template.render(m=m)
+print(rendered_text)
+
+m2 = yaml.safe_load(rendered_text)
+assert m == m2
 
 
-def some_func(par1: str='blue') -> str:
-    return par1.upper()
 
 
-assert some_func() == "BLUE"
+
